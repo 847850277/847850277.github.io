@@ -20,31 +20,35 @@
     var CONFIG = {"hostname":"847850277.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="好记性不如烂笔头">
-<meta property="og:type" content="website">
-<meta property="og:title" content="zhengpengde.vip">
-<meta property="og:url" content="https://847850277.github.io/index.html">
+  <meta name="description" content="mysql死锁记录死锁发生的场景模拟死锁 模拟订单数3千笔，然后同一时刻把消息发送至MQ，消费端分为C端消费和B端消费 1、TestNG录制了从创建客户到下订单的过程 2、然后把订单号摘选出来，利用模拟接口把所有的数据发送至RabbitMQ   其中C端消费会报获取锁等待超时错误 其中B端消费会报数据库死锁  程序报错说明 其中B端的费用明细新增会产生死锁 报错现象为：新增费用明细会报数据库死锁">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql数据库死锁记">
+<meta property="og:url" content="https://847850277.github.io/2021/11/08/db/mysql/mysql-death-lock-note/index.html">
 <meta property="og:site_name" content="zhengpengde.vip">
-<meta property="og:description" content="好记性不如烂笔头">
+<meta property="og:description" content="mysql死锁记录死锁发生的场景模拟死锁 模拟订单数3千笔，然后同一时刻把消息发送至MQ，消费端分为C端消费和B端消费 1、TestNG录制了从创建客户到下订单的过程 2、然后把订单号摘选出来，利用模拟接口把所有的数据发送至RabbitMQ   其中C端消费会报获取锁等待超时错误 其中B端消费会报数据库死锁  程序报错说明 其中B端的费用明细新增会产生死锁 报错现象为：新增费用明细会报数据库死锁">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-11-08T10:00:00.000Z">
+<meta property="article:modified_time" content="2021-11-08T10:06:44.412Z">
 <meta property="article:author" content="zhengpeng">
-<meta property="article:tag" content="zhengpengde.vip">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="mysql">
+<meta property="article:tag" content="死锁">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://847850277.github.io/">
+<link rel="canonical" href="https://847850277.github.io/2021/11/08/db/mysql/mysql-death-lock-note/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>zhengpengde.vip</title>
+  <title>mysql数据库死锁记 | zhengpengde.vip</title>
   
 
 
@@ -143,9 +147,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -161,10 +166,9 @@
       <meta itemprop="name" content="zhengpengde.vip">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/11/08/db/mysql/mysql-death-lock-note/" class="post-title-link" itemprop="url">mysql数据库死锁记</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          mysql数据库死锁记
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -197,7 +201,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="mysql死锁记录"><a href="#mysql死锁记录" class="headerlink" title="mysql死锁记录"></a>mysql死锁记录</h1><h3 id="死锁发生的场景"><a href="#死锁发生的场景" class="headerlink" title="死锁发生的场景"></a>死锁发生的场景</h3><h3 id="模拟死锁"><a href="#模拟死锁" class="headerlink" title="模拟死锁"></a>模拟死锁</h3><ul>
+        <h1 id="mysql死锁记录"><a href="#mysql死锁记录" class="headerlink" title="mysql死锁记录"></a>mysql死锁记录</h1><h3 id="死锁发生的场景"><a href="#死锁发生的场景" class="headerlink" title="死锁发生的场景"></a>死锁发生的场景</h3><h3 id="模拟死锁"><a href="#模拟死锁" class="headerlink" title="模拟死锁"></a>模拟死锁</h3><ul>
 <li><code>模拟订单数3千笔，然后同一时刻把消息发送至MQ，消费端分为C端消费和B端消费</code><ul>
 <li>1、TestNG录制了从创建客户到下订单的过程</li>
 <li>2、然后把订单号摘选出来，利用模拟接口把所有的数据发送至RabbitMQ</li>
@@ -245,155 +249,35 @@
 
 
 
-      
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag"># 数据库</a>
+              <a href="/tags/mysql/" rel="tag"># mysql</a>
+              <a href="/tags/%E6%AD%BB%E9%94%81/" rel="tag"># 死锁</a>
+          </div>
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://847850277.github.io/2021/11/08/hello-world/">
+        
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="zhengpeng">
-      <meta itemprop="description" content="好记性不如烂笔头">
-    </span>
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="zhengpengde.vip">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/11/08/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-11-08 15:12:29 / 修改时间：15:42:12" itemprop="dateCreated datePublished" datetime="2021-11-08T15:12:29+08:00">2021-11-08</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%85%B6%E4%BB%96/" itemprop="url" rel="index"><span itemprop="name">其他</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/11/08/hello-world/" rel="prev" title="Hello World">
+      <i class="fa fa-chevron-left"></i> Hello World
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://847850277.github.io/2021/11/08/algorithm/two-pointer&sliding-window/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="zhengpeng">
-      <meta itemprop="description" content="好记性不如烂笔头">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="zhengpengde.vip">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/11/08/algorithm/two-pointer&sliding-window/" class="post-title-link" itemprop="url">算法之双指针和滑动窗口</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-11-08 15:12:29 / 修改时间：15:50:23" itemprop="dateCreated datePublished" datetime="2021-11-08T15:12:29+08:00">2021-11-08</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">基础</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><h2 id="常见力扣题目"><a href="#常见力扣题目" class="headerlink" title="常见力扣题目"></a>常见力扣题目</h2>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-
   
 
 
@@ -446,6 +330,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#mysql%E6%AD%BB%E9%94%81%E8%AE%B0%E5%BD%95"><span class="nav-number">1.</span> <span class="nav-text">mysql死锁记录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%BB%E9%94%81%E5%8F%91%E7%94%9F%E7%9A%84%E5%9C%BA%E6%99%AF"><span class="nav-number">1.0.1.</span> <span class="nav-text">死锁发生的场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E6%8B%9F%E6%AD%BB%E9%94%81"><span class="nav-number">1.0.2.</span> <span class="nav-text">模拟死锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E6%8A%A5%E9%94%99%E8%AF%B4%E6%98%8E"><span class="nav-number">1.0.3.</span> <span class="nav-text">程序报错说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%92%E6%9F%A5%E6%AD%BB%E9%94%81%E6%AD%A5%E9%AA%A4"><span class="nav-number">1.0.4.</span> <span class="nav-text">排查死锁步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B0%E5%A2%9E%E8%B4%B9%E7%94%A8%E6%98%8E%E7%BB%86%E6%AD%BB%E9%94%81%E4%BF%A1%E6%81%AF"><span class="nav-number">1.0.4.1.</span> <span class="nav-text">新增费用明细死锁信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%B0%E5%BD%95%E5%AE%8C%E6%95%B4%E7%89%88%E6%96%B0%E5%A2%9E%E8%B4%B9%E7%94%A8%E6%98%8E%E7%BB%86%E6%AD%BB%E9%94%81"><span class="nav-number">1.0.4.2.</span> <span class="nav-text">记录完整版新增费用明细死锁</span></a></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
