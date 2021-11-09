@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"847850277.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="bug清单">
+  <meta name="description" content="bug清单表格            序号     时间     问题现象描述     原因     解决方式     流程总结     引伸思考     参考链接               1     2021-08-21     springboot上传文件，报流关闭错误     项目中增加了全局的GlobalWebAppConfig，其中的配置导致流关闭失效     移除@EnableWe">
 <meta property="og:type" content="article">
 <meta property="og:title" content="bug">
 <meta property="og:url" content="https://847850277.github.io/2015/07/01/bug/bug/index.html">
 <meta property="og:site_name" content="zhengpengde.vip">
-<meta property="og:description" content="bug清单">
+<meta property="og:description" content="bug清单表格            序号     时间     问题现象描述     原因     解决方式     流程总结     引伸思考     参考链接               1     2021-08-21     springboot上传文件，报流关闭错误     项目中增加了全局的GlobalWebAppConfig，其中的配置导致流关闭失效     移除@EnableWe">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2015-07-01T01:00:00.000Z">
-<meta property="article:modified_time" content="2021-11-09T03:39:55.716Z">
+<meta property="article:modified_time" content="2021-11-09T08:35:23.267Z">
 <meta property="article:author" content="zhengpeng">
 <meta property="article:tag" content="bug">
 <meta name="twitter:card" content="summary">
@@ -220,7 +220,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-11-09 11:39:55" itemprop="dateModified" datetime="2021-11-09T11:39:55+08:00">2021-11-09</time>
+                <time title="修改时间：2021-11-09 16:35:23" itemprop="dateModified" datetime="2021-11-09T16:35:23+08:00">2021-11-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -238,7 +238,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>5</span>
+              <span>5k</span>
             </span>
 
         </div>
@@ -250,7 +250,553 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="bug清单"><a href="#bug清单" class="headerlink" title="bug清单"></a>bug清单</h1>
+        <h1 id="bug清单表格"><a href="#bug清单表格" class="headerlink" title="bug清单表格"></a>bug清单表格</h1><html>
+<table> 
+    <tr>
+    <th>序号</th>
+    <th>时间</th>
+    <th>问题现象描述</th>
+    <th>原因</th>
+    <th>解决方式</th>
+    <th>流程总结</th>
+    <th>引伸思考</th>
+    <th>参考链接</th>
+    </tr>
+    <tr>
+    <th>1</th>
+    <th>2021-08-21</th>
+    <th>springboot上传文件，报流关闭错误</th>
+    <th>项目中增加了全局的GlobalWebAppConfig，其中的配置导致流关闭失效</th>
+    <th>移除@EnableWebMvc注解</th>
+    <th>
+    1.本地复现<br/>
+    2.定位问题点 （移除pom），注释依赖<br/>
+    3.确定问题点确实是新增配置<br/>
+    4.网上搜索解决方式<br/>
+    </th>
+    <th></th>
+    </tr>
+    <tr>
+    <th>2</th>
+    <th>2021-08-21</th>
+    <th>某些sql会在limit后追加一个limit，导致查询sql报错</th>
+    <th>
+    PageHelper 非安全调用方式，项目中使用方式为PageHelper.startPage,此种方式背后实现原理为：<br/>
+ThreadLocal设置线程局部变量，tomcat线程次会缓存请求，可能导致threadlocal中的线程变量被其他线程访问到
+    </th>
+    <th>springmvc层增加全局的拦截器，
+然后手动移除一下pageHelper的变量</th>
+    <th>
+    1.定位问题<br/>
+    2.网上搜索确实发现limit可能会是pagehelper导致<br/>
+    3.再次定位threadlocal设置变量，设置tomcat工作线程设置为1个。<br/>
+    4.本地手写分页复现场景，分页参数设置，未查询数据库，手动触发报错<br/>
+    5.增加全局分页拦截器解决<br/>
+    </th>
+    <th></th>
+    <th></th>
+    </tr>
+    <tr>
+    <th>3</th>
+    <th>2021-08-23</th>
+    <th>请求接口，返回90044错误</th>
+    <th>
+    2.0网关配置中，只建立了bi的服务，在角色那一栏并未配置bi相关的服务
+    </th>
+    <th>
+    2.0网关配置erp-api的相关权限
+    </th>
+    <th>
+    1、定位问题9004<br/>
+    2、查询9004为请求接口超出授权范围<br/>
+    3、访问灰度复现出改问题<br/>
+    4、找运维老师确认2.0网关的配置问题<br/>
+    5、确认配置问题、增加配置<br/>
+    </th>
+    <th></th>
+    <th></th>
+    </tr>
+    <tr>
+    <th>4</th>
+    <th>2021-08-25</th>
+    <th>小程序获取手机号授权，并未生成响应的学员记录</th>
+    <th>
+    营销服务调用crm服务，crm服务新增授权类型客户的时候没有写入电话字段
+    </th>
+    <th>
+    入口出增加电话字段
+    </th>
+    <th>
+    1、httplog寻找入参数，
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> `alc<span class="operator">-</span>http<span class="operator">-</span>log`.http_log </span><br><span class="line"><span class="keyword">where</span> `<span class="keyword">system</span>` <span class="operator">=</span> <span class="string">&#x27;marketing-center&#x27;</span> </span><br><span class="line"><span class="keyword">and</span> url <span class="operator">=</span> <span class="string">&#x27;/recruitMini/mobile&#x27;</span> </span><br><span class="line"><span class="keyword">and</span> request_time <span class="operator">&gt;=</span> <span class="string">&#x27;20201-08-23 18:40:00&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<br/>
+    2、入参拿着本地调试<br/>
+    3、定位问题为crm写入处<br/>
+    4、crm处写入值<br/>
+    </th>
+    <th></th>
+    <th></th>
+    </tr>
+    <tr>
+    <th>5</th>
+    <th>2021-08-25</th>
+    <th>crm服务导入数据、特定的获客渠道（异界交换）才能够导入</th>
+    <th>
+    crm调用基础字典服务获取获取渠道字典只能获取parentId不为空的获取渠道、
+实际的数据有很多条
+    </th>
+    <th>
+    获取字典处调整为获取所有的获客渠道，
+crm也调用获取所有的获客渠道
+    </th>
+    <th>
+    1、下载导入模版 <br/>
+    2、启动对应环境参数的项目、复现问题 <br/>
+    3、定位问题为获取字典处，未获取到完全的获客渠道 <br/>
+    </th>
+    <th></th>
+    </tr>
+    <tr>
+    <th>6</th>
+    <th>2021-08-25</th>
+    <th>支付成功后，在crm的h5页面填入分单的数据、结果分单后的比例并没有按对应比例保存</th>
+    <th>
+    1、历史设计如此、在填写分单业绩处逻辑为判断是否有无生成业绩，<br/>
+    若是业绩未生成，其对应填写的比例也不会保存。
+    </th>
+    <th>
+    无
+    </th>
+    <th>
+    1、本地启动程序<br/>
+    2、复现该问题<br/>
+    3、读历史的代码，发现历史代码也是要生成业绩后才会记录分单的比例<br/>
+    </th>
+    <th></th>
+    <th></th>
+    </tr>
+    <tr>
+    <th>7</th>
+    <th>2021-08-25</th>
+    <th>有一个定时然后推送消息的功能，同时推送短信和微信模版消息。<br/>
+    执行定时后，短信推送了，但是模版消息并未推送。</th>
+    <th>
+    服务调用链路为：教务服务 -》营销服务 -》推送消息服务<br/>
+其中营销服务调用推送消息服务的请求地址被改成空了，然后调用服务出问题。
+    </th>
+    <th>
+    还原为正确的调用地址
+    </th>
+    <th>
+    1、定位问题<br/>
+        查看推送服务的日志<br/>
+        查看推送服务的http日志<br/>
+    2、查看营销调用推送服务的代码<br/>
+    3、把调用地址修改为正确的地址<br/>
+    4、问题解决<br/>
+    </th>
+    <th></th>
+    <th></th>
+    </tr>
+    <tr>
+    <th>8</th>
+    <th>2021-08-25</th>
+    <th>订单支付成功，生成了3条相同的费用明细，同时生成了三个正式学员，
+有预警邮件提醒</th>
+    <th>
+    支付回调后置处理策略未添加事物注解，导致部分流程成功，部分流程失败
+    </th>
+    <th>
+    回调后置策略增加事物注解
+    </th>
+    <th>
+    1.观察现象，确定费用明细生成，同时排查到正式学员生成多条，初步定位回调后置处理策略未在同一个事物里面<br/>
+    2.定位问题，确认代码中为增加事物注解<br/>
+    3.后置处理策略增加事物注解，解决改问题<br/>
+    </th>
+    <th>
+    事物注解是如何生效的？同时默认回滚策略是RuntimeExcetipn类
+    </th>
+    <th></th>
+    </tr>
+    <tr>
+    <th>9</th>
+    <th>2021-08-30</th>
+    <th>在正式学员列表里面，搜索姓名姓名无法找到该学员，但是搜索学员昵称或者电话号码又可以找到该学员。<br/>
+点击进入详细页里面，发现学员的姓名又是正常显示.包括学员费用明细里面也是一样的<br/>
+初步现象就是意向学员的名字和正式学员的名字不一致<br/>
+erp修改意向校区，发赠课券后所属校区为空<br/></th>
+    <th>
+    正式学员表的名字和意向学员表的名字不一致，编辑crm信息处有bug，
+导致信息未保持一致性
+    </th>
+    <th>
+    修复crm编辑处的bug，使两处编辑保持一致
+    </th>
+    <th>
+    1.观察现象，拿着贾舒涵的名称搜索确实会出现改问题<br/>
+    2.定位问题点，正式学员状态的变更入口，编辑客户信息导致<br/>
+    3.修复问题<br/>
+    </th>
+    <th>
+    </th>
+    <th></th>
+    </tr>
+    <tr>
+    <th>10</th>
+    <th>2021-08-30</th>
+    <th>通过转介绍渠道来的新的意向客户数据，其跟进人的扫码归属人字段未写入值</th>
+    <th>
+    营销服务调用crm服务编辑客户的跟进人信息时候，未传递跟进人参数
+迁移代码导致代码丢失
+    </th>
+    <th>
+    营销服务调crm服务时候，传跟进人参数
+    </th>
+    <th>
+    1.复现（耗时长），不同分支的程序，已经接口参数，接口要做什么事情不清晰，很久之前的代码。<br/>
+        接口做的事情用注释标注清楚<br/>
+        1.1 httplog 辅助，抓入参数<br/>
+        1.1.1 读代码逻辑，标注代码做了那些事情<br/>
+    1.2 拿入参调试，找现场的快照情况<br/>
+    1.3 DEBUG断点调试<br/>
+        1.3.2.定位问题（耗时长），对比代码<br/>
+    3.增加跟进人传参数，解决问题<br/>
+    </th>
+    <th>
+    </th>
+    <th></th>
+    </tr>
+    <tr>
+    <th>11</th>
+    <th>2021-08-30</th>
+    <th>omo转介绍小程序，提交了预约相关信息，其生成了活动记录，但是并未生成客户记录</th>
+    <th>
+    crm代码迁移，新增客户逻辑的代码丢失，导致不会生成意向客户记录
+    </th>
+    <th>
+    对比以前的customer分支，找回丢失的代码逻辑
+    </th>
+    <th>
+    1.复现（耗时长）<br/>
+        1.1 拿参数 <br/>
+        1.2 读代码逻辑 <br/>
+        1.3 断点调试 <br/>
+        1.4 找到出问题的点 <br/>
+        1.5 排查原因 <br/>
+    2.定位问题，代码丢失，相应分支和逻辑比较<br/>
+    </th>
+    <th>
+    </th>
+    <th></th>
+    </tr>
+    <tr>
+    <th>12</th>
+    <th>2021-09-01</th>
+    <th>数据字典的校区由新校变成老校定时未生效</th>
+    <th>
+    生产的xxl-job的执行器地址未配置正确
+    </th>
+    <th>
+    调整为正确的执行器地址
+    </th>
+    <th>
+    1.定位问题<br/>
+    1.1 找代码，通读代码逻辑<br/>
+    1.2 对比配置，然后看xxl-job的执行日志<br/>
+    1.3 定位xxl-job的配置问题<br/>
+    1.4 调整配置，功能修复成功<br/>
+    </th>
+    <th>
+    </th>
+    <th></th>
+    </tr>
+    <tr>
+    <th>13</th>
+    <th>2021-09-01</th>
+    <th>启动项目提示拿不到数据库的链接</th>
+    <th>
+    apollo配置问题<br/>
+    1.配置的格式问题<br/>
+    2.有特殊符号，然后认不到<br/>
+    3.app.id和apollo配置的不一致<br/>
+    </th>
+    <th>
+    调整apollo的配置为正确的项目
+    </th>
+    <th>
+    1.观察现象<br/>
+    1.1 启动项目拿不到正确的数据库url<br/>
+    1.2 初步定位问题为apollo配置问题<br/>
+    1.3 肉眼对比配置<br/>
+    1.4 肉眼对比app.id<br/>
+    1.5 重启检测是否生效<br/>
+    </th>
+    <th>
+    </th>
+    <th></th>
+    </tr>
+    <tr>
+    <th>14</th>
+    <th>2021-09-02</th>
+    <th>暑期三节课发起支付后，订单支付状态未变更为支付中</th>
+    <th>
+    1.支付中心拆分后，更改订单状态为支付中逻辑上提到业务处理层<br/>
+    2.营销三节课未添加更改支付中的逻辑<br/>
+    </th>
+    <th>
+    添加更改订单状态为支付中的代码逻辑
+    </th>
+    <th>
+    1.观察现象<br/>
+    2.定位问题<br/>
+    3.提交代码修复问题<br/>
+    </th>
+    <th>
+    `状态的判断处理都抽枚举类来统一处理`
+    </th>
+    <th></th>
+    </tr>
+    <tr>
+    <th>15</th>
+    <th>2021-09-02</th>
+    <th>修复跟进人bug</th>
+    <th>
+    1.客户详细存在跟进人为空的数据<br/>
+    2.sql查询的逻辑为即查询跟进人的id，又查询冗余跟进人名称，
+同时冗余跟进人名称会存在为空的数据<br/>
+    </th>
+    <th>
+    若名称为空，跟进id查询一遍名称
+    </th>
+    <th>
+    1.定位问题<br/>
+    2.本地复现<br/>
+    3.修改bug，未完全本地验证查询逻辑就让测试打包验证<br/>
+    4.优化，本地验证数据正确性能后<br/>
+    </th>
+    <th>
+    </th>
+    <th></th>
+    </tr>
+    <tr>
+    <th>16</th>
+    <th>2021-09-08</th>
+    <th>导出正式学员列表增加扫码归属人和收单人员两列字段</th>
+    <th>
+    1.导出的数据需要手动添加两列<br/>
+    2.通过学号关联客户id，然后客户id查询跟进人信息<br/>
+    </th>
+    <th>
+    1.用sql查询出来满足条件的跟进人数据（group_concat函数）<br/>
+    2.然后再匹配顺序
+    </th>
+    <th>
+    1.用sql查询出满足条件的数据（group_concat函数）<br/>
+    2.用代码匹配顺序（编辑器的列编辑模式）<br/>
+        2.1 代码的切割，然后匹配相同输入<br/>
+    3.粘贴进excel中<br/>
+    </th>
+    <th>
+    `凡是能用程序处理就不CV`
+    </th>
+    <th></th>
+    </tr>
+    <tr>
+    <th>17</th>
+    <th>2021-09-09</th>
+    <th>优惠券退款，点击驳回或者废除。若原状态为已经回收，
+其状态还是变更成未使用，并没有退回为原本状态</th>
+    <th>
+    1.用户领取优惠券状态字段只有一个。若点击退款后，其状态变更为退款中，
+并没有历史状态的记录
+    </th>
+    <th>
+    领取记录表扩展增加字段“回收状态”，若已经回收，把回收状态设置为已经回收
+然后，审核的时候，<br/>
+1.联合判断一下回收状态，若此时已经回收，则回退成回收<br/>
+2.若已经过期，过期标志 + 过期时间联合判断<br/>
+3.其他置为未使用<br/>
+    </th>
+    <th>
+    1.定位问题。状态值并没有快照记录<br/>
+    2.解决问题。增加退款状态字段<br/>
+    3.回收时写入已经退款，其他后置操作把回收状态还原<br/>
+    4.回收完成后，同时过期状态没有生效<br/>
+        4.1. 找当时的参数记录。打日志重要性。<br/>
+        4.2. 定位问题点，用http的参数请求接口发现但是并未走到对应的代码分支，导致设置过期状态未执行<br/>
+        4.3 逻辑分支判断用布尔值去判断<br/>
+    </th>
+    <th>
+    </th>
+    <th></th>
+    </tr>
+    <tr>
+    <th>18</th>
+    <th>2021-09-22</th>
+    <th>线上支付在使用支付宝付款时候提示“操作失败：网络或者服务器错误”</th>
+    <th>
+    1.网络问题导致？<br/>
+2.后台接口报错？
+    </th>
+    <th>
+    </th>
+    <th>
+    1.定位问题，排查httplog的请求接口情况<br/>
+    2.观察并未发送请求到后台<br/>
+    3.同时源头并未接入httplog服务<br/>
+    4.再仔细观察报错信息<br/>
+    正确流程：<br/>
+        1.观察报错信息为“操作失败：网络或者服务器错误”<br/>
+        2.什么情况下后段会报该异常<br/>
+        3.初步定位问题为网络情况<br/>
+    </th>
+    <th>
+    </th>
+    <th></th>
+    </tr>
+    <tr>
+    <th>19</th>
+    <th>2021-09-24</th>
+    <th>定时同步标签，但是其值并未写入数据库</th>
+    <th>
+    1.用户id为入参数的客户id，并不是获取到的客户id<br/>
+    2.二分查找法并未执行
+    </th>
+    <th>
+    1.把客户id的传参数改为数据库获取的客户ID<br/>
+    2.二分查找方法改为Map.get 判断是否存在  
+    </th>
+    <th>
+    1.发现问题<br/>
+    2.本地debug复现问题<br/>
+    3.修改传参数的代码<br/>
+    3.1 优化参数值打log，并且需要的参数都在方法的上面<br/>
+    </th>
+    <th>
+    `二分查找针对有序的列表才适用`
+    </th>
+    <th></th>
+    </tr>
+    <tr>
+    <th>20</th>
+    <th>2021-09-24</th>
+    <th>selenium模拟微信登陆选择封面图失败，报js的异常</th>
+    <th>
+    js函数执行失败，
+    </th>
+    <th>
+    调整为正确的js函数
+    </th>
+    <th>
+    1.java debug报错<br/>
+    2.调整java代码，然后调试正确<br/>
+    2.1 优化，chrome用控制台把js调试完了后，再把对应js函数拷贝过期<br/>
+    3.js执行函数太快，窗口都未弹出来就执行函数<br/>
+    3.1 贴合业务想想执行流程<br/>
+    4.复现调试解决<br/>
+    </th>
+    <th>
+    </th>
+    <th></th>
+    </tr>
+    <tr>
+    <th>21</th>
+    <th>2021-09-29</th>
+    <th>活动小程序部分用户唤起支付控件失败</th>
+    <th>
+    新用户创建的时候需要去打“企业微信”相关的标签，<br/>
+    调用微信中心的服务接口（全量查询），该接口直接每次去调用微信相关数据<br/>
+    导致接口超时<br/>
+    </th>
+    <th>
+    用定时去调用
+    </th>
+    <th>
+    1.听产品的复述，有些用户唤醒不了控件<br/>
+    2.用http-log去追踪<br/>
+    2.1 抓到参数<br/>
+    2.2 用postman确实发现出问题<br/>
+    2.3 读代码，跟服务http-log请求和响应<br/>
+    2.4 定位问题点为crm服务的新增客户逻辑打标签处<br/>
+    </th>
+    <th>
+    </th>
+    <th></th>
+    </tr>
+    <th>22</th>
+    <th>2021-10-11</th>
+    <th>模拟代码用队列发送前置消息失败，但是走支付流程真实付款，前置流程成功。
+且调用发送MQ的方法为同一个，并无差异</th>
+    <th>
+    发送MQ成功，因为参数少了支付渠道和支付单号，看到的现象就是前置不执行
+    </th>
+    <th>
+    补齐前置发送的参数
+    </th>
+    <th>
+    1.反复重试<br/>
+    2.并未复现<br/>
+    2.1 看消费端日志？ 并未去看。【更好的解决方式就是看消费端日志】<br/>
+    2.2 突然想起来参数少了一些，于是增加参数尝试<br/>
+    3.前置流程也成功<br/>
+    </th>
+    <th>
+    </th>
+    <th></th>
+    </tr>
+     </tr>
+    <th>23</th>
+    <th>2021-10-11</th>
+    <th>
+    模拟支付集成测试用例的数据驱动的开发<br/>
+    问题点：<br/>
+        1、怎么获取模拟数据？<br/>
+        2、取得接口响应后怎么把响应结果记录下来？<br/>
+    </th>
+    <th>
+    </th>
+    <th>
+    </th>
+    <th>
+    用数据驱动去模拟<br/>
+        1、首先想到的是把数据存储在txt，在一个方法里面走完流程<br/>
+        2、优化为数据存储到excel，解决记录响应<br/>
+        3、excel存储优化为记录到数据库、解决excel 记录响应的时候不好对应到是哪一条数据上去<br/>
+    </th>
+    <th>
+    </th>
+    <th></th>
+    </tr>
+    <th>24</th>
+    <th>2021-11-09</th>
+    <th>
+    hexo 下的分类和表签无法显示，怎么解决？
+    </th>
+    <th>
+    </th>
+    <th>
+    </th>
+    <th>
+    1.新建一个页面，命名为 tags 。命令如下：
+    <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new page <span class="string">&quot;tags&quot;</span></span><br></pre></td></tr></table></figure>
+    2.编辑刚新建的页面，将页面的类型设置为 tags ，主题将自动为这个页面显示标签云。页面内容如下：
+    <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: <span class="string">&quot;tags&quot;</span></span><br><span class="line"><span class="built_in">type</span>: tags</span><br><span class="line">layout: <span class="string">&quot;tags&quot;</span></span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+    3.在菜单中添加链接。编辑 主题配置文件 ，添加 tags 到 menu 中，如下:
+    <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">menu:</span><br><span class="line">    home: /</span><br><span class="line">    archives: /archives</span><br><span class="line">    tags: /tags</span><br></pre></td></tr></table></figure>
+    </th>
+    <th>
+    </th>
+    <th>
+    <a href = 'https://www.zhihu.com/question/29017171'>hexo下的分类和表签无法显示</a>
+    </th>
+    </tr>
+
+</table>
+</html>
+
+
+
     </div>
 
     
@@ -332,7 +878,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#bug%E6%B8%85%E5%8D%95"><span class="nav-number">1.</span> <span class="nav-text">bug清单</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#bug%E6%B8%85%E5%8D%95%E8%A1%A8%E6%A0%BC"><span class="nav-number">1.</span> <span class="nav-text">bug清单表格</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -395,7 +941,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">137k</span>
+    <span title="站点总字数">142k</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
   </div>
