@@ -17,13 +17,13 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"847850277.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"zhengpengde.vip","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="mysql死锁记录死锁发生的场景模拟死锁 模拟订单数3千笔，然后同一时刻把消息发送至MQ，消费端分为C端消费和B端消费 1、TestNG录制了从创建客户到下订单的过程 2、然后把订单号摘选出来，利用模拟接口把所有的数据发送至RabbitMQ   其中C端消费会报获取锁等待超时错误 其中B端消费会报数据库死锁  程序报错说明 其中B端的费用明细新增会产生死锁 报错现象为：新增费用明细会报数据库死锁">
 <meta property="og:type" content="article">
 <meta property="og:title" content="mysql数据库死锁记">
-<meta property="og:url" content="https://847850277.github.io/2021/11/08/db/mysql/mysql-death-lock-note/index.html">
+<meta property="og:url" content="http://zhengpengde.vip/2021/11/08/db/mysql/mysql-death-lock-note/index.html">
 <meta property="og:site_name" content="zhengpengde.vip">
 <meta property="og:description" content="mysql死锁记录死锁发生的场景模拟死锁 模拟订单数3千笔，然后同一时刻把消息发送至MQ，消费端分为C端消费和B端消费 1、TestNG录制了从创建客户到下订单的过程 2、然后把订单号摘选出来，利用模拟接口把所有的数据发送至RabbitMQ   其中C端消费会报获取锁等待超时错误 其中B端消费会报数据库死锁  程序报错说明 其中B端的费用明细新增会产生死锁 报错现象为：新增费用明细会报数据库死锁">
 <meta property="og:locale" content="zh_CN">
@@ -35,7 +35,7 @@
 <meta property="article:tag" content="死锁">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://847850277.github.io/2021/11/08/db/mysql/mysql-death-lock-note/">
+<link rel="canonical" href="http://zhengpengde.vip/2021/11/08/db/mysql/mysql-death-lock-note/">
 
 
 <script id="page-configurations">
@@ -102,7 +102,7 @@
       <h1 class="site-title">zhengpengde.vip</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
-      <p class="site-subtitle" itemprop="description">zhengpengde.vip blog 好记性不如烂笔头 cv记录</p>
+      <p class="site-subtitle" itemprop="description">zhengpengde blog 好记性不如烂笔头</p>
   </div>
 
   <div class="site-nav-right">
@@ -154,7 +154,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://847850277.github.io/2021/11/08/db/mysql/mysql-death-lock-note/">
+    <link itemprop="mainEntityOfPage" href="http://zhengpengde.vip/2021/11/08/db/mysql/mysql-death-lock-note/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -344,16 +344,16 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">分类</span>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">标签</span>
       </div>
   </nav>

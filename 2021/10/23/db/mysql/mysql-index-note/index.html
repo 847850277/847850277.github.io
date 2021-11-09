@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zhengpengde.vip","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="mysql索引及事务笔记索引是什么？类比字典，字典的目录，为值创建目录，通过索引能够快速定位值的物理磁盘位置。 为什么要使用索引？磁盘IO读写，磁盘一页的数据是4k，mysql的innodb默认是16kb。若每次去磁盘读取，非常的消耗计算机的IO，为了避免磁盘的全盘扫描，所以引入了索引这么个玩意。  索引存放的位置： myisam：索引和数据分开存储 innodb：索引和数据存储在同一文件  索引">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql索引及事务笔记">
+<meta property="og:url" content="http://zhengpengde.vip/2021/10/23/db/mysql/mysql-index-note/index.html">
+<meta property="og:site_name" content="zhengpengde.vip">
+<meta property="og:description" content="mysql索引及事务笔记索引是什么？类比字典，字典的目录，为值创建目录，通过索引能够快速定位值的物理磁盘位置。 为什么要使用索引？磁盘IO读写，磁盘一页的数据是4k，mysql的innodb默认是16kb。若每次去磁盘读取，非常的消耗计算机的IO，为了避免磁盘的全盘扫描，所以引入了索引这么个玩意。  索引存放的位置： myisam：索引和数据分开存储 innodb：索引和数据存储在同一文件  索引">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-10-23T10:00:00.000Z">
+<meta property="article:modified_time" content="2021-11-09T01:54:08.590Z">
+<meta property="article:author" content="zhengpeng">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="mysql">
+<meta property="article:tag" content="索引">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://zhengpengde.vip/2021/10/23/db/mysql/mysql-index-note/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>mysql索引及事务笔记 | zhengpengde.vip</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">zhengpengde.vip</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">zhengpengde blog 好记性不如烂笔头</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://zhengpengde.vip/2021/10/23/db/mysql/mysql-index-note/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="zhengpeng">
+      <meta itemprop="description" content="好记性不如烂笔头">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zhengpengde.vip">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          mysql索引及事务笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-10-23 18:00:00" itemprop="dateCreated datePublished" datetime="2021-10-23T18:00:00+08:00">2021-10-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-11-09 09:54:08" itemprop="dateModified" datetime="2021-11-09T09:54:08+08:00">2021-11-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/mysql/" itemprop="url" rel="index"><span itemprop="name">mysql</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="mysql索引及事务笔记"><a href="#mysql索引及事务笔记" class="headerlink" title="mysql索引及事务笔记"></a>mysql索引及事务笔记</h1><h2 id="索引是什么？"><a href="#索引是什么？" class="headerlink" title="索引是什么？"></a>索引是什么？</h2><pre><code>类比字典，字典的目录，为值创建目录，通过索引能够快速定位值的物理磁盘位置。
+为什么要使用索引？磁盘IO读写，磁盘一页的数据是4k，mysql的innodb默认是16kb。若每次去磁盘读取，非常的消耗计算机的IO，为了避免磁盘的全盘扫描，所以引入了索引这么个玩意。
+</code></pre>
+<p>索引存放的位置：</p>
+<pre><code>myisam：索引和数据分开存储
+innodb：索引和数据存储在同一文件
+</code></pre>
+<h3 id="索引的分类："><a href="#索引的分类：" class="headerlink" title="索引的分类："></a>索引的分类：</h3><ul>
+<li><p>主键索引</p>
+</li>
+<li><p>普通索引</p>
+</li>
+<li><p>唯一索引</p>
+</li>
+<li><p>组合索引</p>
+<ul>
+<li>最左前缀法则</li>
+</ul>
+</li>
+<li><p>全文索引</p>
+</li>
+</ul>
+<h2 id="索引的数据结构："><a href="#索引的数据结构：" class="headerlink" title="索引的数据结构："></a>索引的数据结构：</h2><pre><code>使用了索引查找避免了全表扫描的IO，为什么索引查找会快速，能避免全表扫描，其使用了什么类型的数据结构支撑其查找快速呢？
+</code></pre>
+<h3 id="常见的数据结构"><a href="#常见的数据结构" class="headerlink" title="常见的数据结构"></a>常见的数据结构</h3><h4 id="线性表"><a href="#线性表" class="headerlink" title="线性表"></a>线性表</h4><ul>
+<li>顺序线性表，如数组</li>
+<li>链式线性表，如单向链表，双向链表<h4 id="栈和队列和串和广义表"><a href="#栈和队列和串和广义表" class="headerlink" title="栈和队列和串和广义表"></a>栈和队列和串和广义表</h4></li>
+<li>顺序栈，链式栈，顺序队列，链式队列</li>
+<li>定长串和动态串</li>
+<li>数组和广义表</li>
+</ul>
+<h4 id="树"><a href="#树" class="headerlink" title="树"></a>树</h4><pre><code>树的数据结构是什么样？
+</code></pre>
+<h5 id="多叉树"><a href="#多叉树" class="headerlink" title="多叉树"></a>多叉树</h5><pre><code>非二叉树
+</code></pre>
+<h5 id="二叉树"><a href="#二叉树" class="headerlink" title="二叉树"></a>二叉树</h5><pre><code>所有的节点的叶子节点数量不超过2个，可以是0、1、2个。
+</code></pre>
+<h5 id="二叉查找树（binary-search-tree）"><a href="#二叉查找树（binary-search-tree）" class="headerlink" title="二叉查找树（binary search tree）"></a>二叉查找树（binary search tree）</h5><h5 id="平衡二叉查找树（AVL-Trees-Balanced-binary-search-trees）"><a href="#平衡二叉查找树（AVL-Trees-Balanced-binary-search-trees）" class="headerlink" title="平衡二叉查找树（AVL Trees (Balanced binary search trees）"></a>平衡二叉查找树（AVL Trees (Balanced binary search trees）</h5><h5 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h5><p>红黑树是一种自平衡的二叉查找树，除了符合二叉查找树的基本性能之外还有以下特性：</p>
+<ul>
+<li>结点是黑色或者红色</li>
+<li>根节点是黑色</li>
+<li>每个叶子结点都是黑色的空节点（NIL结点）</li>
+<li>每个红色结点的两个叶子结点都是黑色（从每个叶子到根的所有路径上不能有两个连续的红色结点）。</li>
+<li>从任一结点到其每个叶子的所有路径都包含相同数目的黑色结点。</li>
+</ul>
+<h5 id="B树"><a href="#B树" class="headerlink" title="B树"></a>B树</h5><p>全称<code>Balance-tree</code>(平衡多路查找树)，<code>平衡</code>的意思是左边和右边分布均匀。多路的意思是相对于二叉树而言的，二叉树就是二路查找树，查找时只有两条路，<code>而B-tree有多条路，即父节点有多个子节点</code>。</p>
+<p>使用B-tree结构可以<code>显著减少定位记录时所经历的中间过程</code>，从而加快存取速度。这个数据结构一般用于数据库的索引，综合效率较高</p>
+<p><code>查找过程</code></p>
+<h5 id="B-树"><a href="#B-树" class="headerlink" title="B+树"></a>B+树</h5><p><code>B+树是B树的一个升级版</code>，相对于B树来说B+树更充分的利用了节点的空间，让查询速度更加稳定，其速度完全接近于二分法查找。为什么说B+树查找的效率要比B树更高、更稳定；我们先看看两者的区别。</p>
+<p>对比差异</p>
+<ul>
+<li>B+跟B树不同<code>B+树的非叶子节点不保存关键字记录的指针</code>，只进行数据索引，这样使得B+树每个非叶子节点所能保存的关键字大大增加；</li>
+<li>B+树叶子节点保存了父节点的所有关键字记录的指针，所有数据地址必须要到叶子节点才能获取到。所以每次数据查询的次数都一样；</li>
+<li>B+树叶子节点的关键字从小到大有序排列，左边结尾数据都会保存右边节点开始数据的指针。</li>
+<li>非叶子节点的子节点数=关键字数（来源百度百科）（根据各种资料 这里有两种算法的实现方式，另一种为非叶节点的关键字数=子节点数-1（来源维基百科)，虽然他们数据排列结构不一样，但其原理还是一样的Mysql 的B+树是用第一种方式实现）;</li>
+</ul>
+<p>特点</p>
+<ul>
+<li>1、B+树的层级更少：相较于B树B+每个非叶子节点存储的关键字数更多，树的层级更少所以查询数据更快；</li>
+<li>2、B+树查询速度更稳定：B+所有关键字数据地址都存在叶子节点上，所以每次查找的次数都相同所以查询速度要比B树更稳定;</li>
+<li>3、B+树天然具备排序功能：B+树所有的叶子节点数据构成了一个有序链表，在查询大小区间的数据时候更方便，数据紧密性很高，缓存的命中率也会比B树高。</li>
+<li>4、B+树全节点遍历更快：B+树遍历整棵树只需要遍历所有的叶子节点即可，，而不需要像B树一样需要对每一层进行遍历，这有利于数据库做全表扫描。</li>
+<li>5、单表的极限在2千万左右能快速的检索出来，若超过该阈值检索较慢。</li>
+</ul>
+<h2 id="explain-sql执行计划"><a href="#explain-sql执行计划" class="headerlink" title="explain sql执行计划"></a>explain sql执行计划</h2><h3 id="字段详细解释"><a href="#字段详细解释" class="headerlink" title="字段详细解释"></a>字段详细解释</h3><ul>
+<li>id<blockquote>
+<p>执行序号，序号越大越先执行，若序号相同，从上到下执行。</p>
+</blockquote>
+</li>
+<li>select_type<blockquote>
+<p>查询类型，挺多种，具体自行百度解释</p>
+</blockquote>
+</li>
+<li>table<blockquote>
+<p>当前查询的表名字</p>
+</blockquote>
+</li>
+<li>partitions<blockquote>
+<p>匹配的分区</p>
+</blockquote>
+</li>
+<li>type<blockquote>
+<p>当前表内访问方式，性能由好到坏<br/><br>  system &gt; const &gt; eq_ref &gt; ref &gt; range &gt; index &gt; all<br/><br>  更详细请自行百度。<br/><br>  一般sql语句若是range以下都需要注意，可能需要优化<br/></p>
+</blockquote>
+</li>
+<li>possible_keys<blockquote>
+<p>可能命中的索引</p>
+</blockquote>
+</li>
+<li>key<blockquote>
+<p>真正使用的索引</p>
+</blockquote>
+</li>
+<li>key_len<blockquote>
+<p>mysql使用索引时候计算出来的长度，有个计算公式</p>
+</blockquote>
+</li>
+<li>ref<blockquote>
+<p>ref列显示使用哪个列或常数与key一起从表中选择行。</p>
+</blockquote>
+</li>
+<li>rows<blockquote>
+<p>命中记录的条件，满足筛选条件查询出来的数目</p>
+</blockquote>
+</li>
+<li>filtered<blockquote>
+<p>按表条件过滤行的百分比</p>
+</blockquote>
+</li>
+<li>Extra<blockquote>
+<p>Extra是对执行计划的额外说明，包含重要信息。</p>
+</blockquote>
+<ul>
+<li>const row not found   –&gt; 所要查询的表为空</li>
+<li>Distinct –&gt; mysql正在查询distinct值，因此当它每查到一个distinct值之后就会停止当前组的搜索，去查询下一个值</li>
+<li>Impossible WHERE –&gt; where条件总为false，表里没有满足条件的记录</li>
+<li>Impossible WHERE noticed after reading const tables –&gt; 在优化器评估了const表之后，发现where条件均不满足</li>
+<li>no matching row in const table –&gt; 当前join的表为const表，不能匹配</li>
+<li>Not exists –&gt; 优化器发现内表记录不可能满足where条件</li>
+<li>Select tables optimized away –&gt; 在没有group by子句时，对于MyISAM的select count(*)操作，或者当对于min(),max()的操作可以利用索引优化，优化器发现只会返回一行。</li>
+<li>Using filesort –&gt; 使用filesort来进行order by操作</li>
+<li>Using index –&gt; 覆盖索引</li>
+<li>Using index for group-by –&gt; 对于group by列或者distinct列，可以利用索引检索出数据，而不需要去表里查数据、分组、排序、去重等等</li>
+<li>Using join buffer –&gt; 之前的表连接在nested loop之后放进join buffer，再来和本表进行join。适用于本表的访问type为range，index或all</li>
+<li>Using sort_union,using union,using intersect –&gt; index_merge的三种情况</li>
+<li>Using temporary –&gt; 使用了临时表来存储中间结果集，适用于group by，distinct，或order by列为不同表的列。</li>
+<li>Using where –&gt; 在存储引擎层检索出记录后，在server利用where条件进行过滤，并返回给客户端</li>
+</ul>
+</li>
+</ul>
+<h3 id="优化原则"><a href="#优化原则" class="headerlink" title="优化原则"></a>优化原则</h3><ul>
+<li>1、尽量使用覆盖索引，以及查询条件命中索引</li>
+<li>2、联合索引使其满足最左匹配原则</li>
+<li>3、使用 ！= 或者&lt;&gt;会导致全表扫描</li>
+<li>4、少用or或者in条件，内部优化器可能回让会让查询条件不走索引，把其从业务层面拆分为少字段的in</li>
+<li>5、is null 和 is not null会全表扫描，给字段设置默认值</li>
+<li>6、模糊匹配，通配符以%开头会导致全表扫描</li>
+<li>7、不能在索引列上做函数、计算、类型转换</li>
+</ul>
+<h3 id="排序优化"><a href="#排序优化" class="headerlink" title="排序优化"></a>排序优化</h3><ul>
+<li>尽量使其排序条件命中索引，如果存在联合索引，使其满足最左匹配原则。</li>
+</ul>
+<h3 id="mysql之filesort原理"><a href="#mysql之filesort原理" class="headerlink" title="mysql之filesort原理"></a>mysql之filesort原理</h3><h3 id="分页优化"><a href="#分页优化" class="headerlink" title="分页优化"></a>分页优化</h3><blockquote>
+<p>见以下例子，使其走覆盖索引</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from table inner join (select id from table group by name limit 10000,10) b on table.id = b.id </span><br></pre></td></tr></table></figure>
+
+
+<h3 id="join优化"><a href="#join优化" class="headerlink" title="join优化"></a>join优化</h3><ul>
+<li>NLJ算法，迭代循环遍历，全表扫描小表，根据小表循环大表</li>
+<li>一般关联条件增加索引字段</li>
+<li>若未加索引，mqsql会创建小表的缓冲区，然后把数据加载进内存，然后【迭代循环遍历，全表扫描小表，根据小表循环大表】。</li>
+</ul>
+<h3 id="in-和exiset优化"><a href="#in-和exiset优化" class="headerlink" title="in 和exiset优化"></a>in 和exiset优化</h3><blockquote>
+<p>in和exist可以互转，两种sql等价</p>
+</blockquote>
+<blockquote>
+<p>用in情况，in条件的表数据列较少，a表数据多，b表数据少</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from a where a.name in (select name from b where age &gt; 20)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>用exiset的条件，条件列的数据比较多，a表数据多，b表数据少</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from b where exist (select id from a where a.name = b.name)</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="mysql的锁与事物"><a href="#mysql的锁与事物" class="headerlink" title="mysql的锁与事物"></a>mysql的锁与事物</h3><h4 id="表锁"><a href="#表锁" class="headerlink" title="表锁"></a>表锁</h4><blockquote>
+<ul>
+<li>共享锁，读锁</li>
+<li>排他锁，写锁</li>
+</ul>
+</blockquote>
+<p>演示读锁的sql（锁整张表）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 窗口一</span></span><br><span class="line"><span class="comment">-- 设置手动提交事物</span></span><br><span class="line"><span class="keyword">set</span> @<span class="variable">@autocommit</span><span class="operator">=</span><span class="number">0</span>;</span><br><span class="line"><span class="keyword">SHOW</span> VARIABLES <span class="keyword">like</span> <span class="string">&#x27;%autocommit%&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 开启事物</span></span><br><span class="line"><span class="keyword">begin</span> ;</span><br><span class="line"><span class="comment">-- 加读锁</span></span><br><span class="line">lock tables refact_basicdata.depart read ;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 读数据</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> refact_basicdata.depart;</span><br><span class="line"><span class="keyword">commit</span> ;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 窗口二</span></span><br><span class="line"><span class="comment">-- 设置手动提交事物</span></span><br><span class="line"><span class="keyword">set</span> @<span class="variable">@autocommit</span><span class="operator">=</span><span class="number">0</span>;</span><br><span class="line"><span class="keyword">SHOW</span> VARIABLES <span class="keyword">like</span> <span class="string">&#x27;%autocommit%&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 开启事物</span></span><br><span class="line"><span class="keyword">begin</span> ;</span><br><span class="line"><span class="comment">-- 读数据</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> refact_basicdata.depart;</span><br><span class="line"><span class="keyword">commit</span> ;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>演示写锁的sql（锁整张表）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 窗口一</span></span><br><span class="line"><span class="keyword">set</span> @<span class="variable">@autocommit</span><span class="operator">=</span><span class="number">0</span>;</span><br><span class="line"><span class="keyword">SHOW</span> VARIABLES <span class="keyword">like</span> <span class="string">&#x27;%autocommit%&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 开启事物</span></span><br><span class="line"><span class="keyword">begin</span> ;</span><br><span class="line"><span class="comment">-- 加写锁</span></span><br><span class="line">lock tables refact_basicdata.depart write ;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 新增数据</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> refact_basicdata.depart(id,NAME,CREATETIME) <span class="keyword">values</span> (<span class="string">&#x27;111&#x27;</span>,<span class="string">&#x27;test&#x27;</span>,now());</span><br><span class="line">unlock tables ;</span><br><span class="line"></span><br><span class="line"><span class="keyword">commit</span> ;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 这条命令能够查看当前有那些表是打开的。In_use列表示有多少线程正在使用某张表，Name_locked表示表名是否被锁</span></span><br><span class="line"><span class="keyword">show</span> <span class="keyword">open</span> tables;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 窗口二</span></span><br><span class="line"><span class="keyword">set</span> @<span class="variable">@autocommit</span><span class="operator">=</span><span class="number">0</span>;</span><br><span class="line"><span class="keyword">SHOW</span> VARIABLES <span class="keyword">like</span> <span class="string">&#x27;%autocommit%&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 开启事物</span></span><br><span class="line"><span class="keyword">begin</span> ;</span><br><span class="line"><span class="comment">-- 读数据</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> refact_basicdata.depart;</span><br><span class="line"><span class="keyword">commit</span> ;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="行锁"><a href="#行锁" class="headerlink" title="行锁"></a>行锁</h3><p>行锁的种类</p>
+<ul>
+<li>LOCK_ORDINARY：也称为 Next-Key Lock，锁一条记录及其之前的间隙，这是 RR 隔离级别用的最多的锁，从名字也能看出来；</li>
+<li>LOCK_GAP：间隙锁（区间值），锁两个记录之间的 GAP，防止记录插入；</li>
+<li>LOCK_REC_NOT_GAP：只锁记录；</li>
+<li>LOCK_INSERT_INTENSION：插入意向 GAP 锁，插入记录时使用，是 LOCK_GAP 的一种特例。</li>
+</ul>
+<p>演示锁一行的sql</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">-- 窗口一</span></span><br><span class="line"><span class="keyword">set</span> @<span class="variable">@autocommit</span><span class="operator">=</span><span class="number">0</span>;</span><br><span class="line"><span class="keyword">SHOW</span> VARIABLES <span class="keyword">like</span> <span class="string">&#x27;%autocommit%&#x27;</span>;</span><br><span class="line"><span class="comment">-- 开启事物</span></span><br><span class="line"><span class="keyword">begin</span> ;</span><br><span class="line">update refact_basicdata.depart <span class="keyword">set</span> NAME <span class="operator">=</span> <span class="string">&#x27;22222&#x27;</span> <span class="keyword">where</span> ID <span class="operator">=</span> <span class="string">&#x27;111&#x27;</span>;</span><br><span class="line"><span class="comment">-- 新增数据</span></span><br><span class="line"><span class="comment">-- commit动作等窗口二执行了update语句后再执行</span></span><br><span class="line"><span class="keyword">commit</span> ;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 窗口二</span></span><br><span class="line"><span class="keyword">set</span> @<span class="variable">@autocommit</span><span class="operator">=</span><span class="number">0</span>;</span><br><span class="line"><span class="keyword">SHOW</span> VARIABLES <span class="keyword">like</span> <span class="string">&#x27;%autocommit%&#x27;</span>;</span><br><span class="line"><span class="comment">-- 开启事物</span></span><br><span class="line"><span class="keyword">begin</span> ;</span><br><span class="line"><span class="comment">-- 读数据</span></span><br><span class="line">update refact_basicdata.depart <span class="keyword">set</span> NAME <span class="operator">=</span> <span class="string">&#x27;333&#x27;</span> <span class="keyword">where</span> ID <span class="operator">=</span> <span class="string">&#x27;111&#x27;</span>;</span><br><span class="line"><span class="keyword">commit</span> ;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="事物"><a href="#事物" class="headerlink" title="事物"></a>事物</h4><p>什么是事物</p>
+<blockquote>
+<p>事务由单独单元的一个或者多个sql语句组成，在这个单元中，每个mysql语句时相互依赖的。而整个单独单元作为一个不可分割的整体。<code>要没都成功，要么都失败</code></p>
+</blockquote>
+<p>四大特性</p>
+<ul>
+<li>原子性<ul>
+<li>不能再切割</li>
+</ul>
+</li>
+<li>一致性<ul>
+<li>事物提交前，和回滚后的数据保持一致</li>
+</ul>
+</li>
+<li>持久性<ul>
+<li> 一个事务一旦提交，则会永久的改变数据库的数据</li>
+</ul>
+</li>
+<li>隔离性<ul>
+<li>一个事务的执行不受其他事物的干扰</li>
+</ul>
+</li>
+</ul>
+<p>事物的隔离级别</p>
+<ul>
+<li>读未提交<ul>
+<li>脏读</li>
+</ul>
+</li>
+<li>读已经提交<ul>
+<li>不可重复读</li>
+</ul>
+</li>
+<li>可重复读<ul>
+<li>幻读（虚读）</li>
+</ul>
+</li>
+<li>序列化读<ul>
+<li>隔离级别高,易消耗资源</li>
+</ul>
+</li>
+</ul>
+<p>查询事物隔离级别和设置隔离级别的sql:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">//mysql隔离级别查询</span><br><span class="line">select @@tx_isolation;</span><br><span class="line"></span><br><span class="line">//设置mysql的隔离级别：</span><br><span class="line">set session transaction isolation level 设置事务隔离级别</span><br><span class="line"></span><br><span class="line">//设置read uncommitted级别：</span><br><span class="line">set session transaction isolation level read uncommitted;</span><br><span class="line"></span><br><span class="line">//设置read committed级别：</span><br><span class="line">set session transaction isolation level read committed;</span><br><span class="line"></span><br><span class="line">//设置repeatable read级别：</span><br><span class="line">set session transaction isolation level repeatable read;</span><br><span class="line"></span><br><span class="line">//设置serializable级别：</span><br><span class="line">set session transaction isolation level serializable;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>脏读举例：A事物读取到B事物未提交的新增数据</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">-- 窗口一新增</span></span><br><span class="line"><span class="keyword">set</span> @<span class="variable">@autocommit</span><span class="operator">=</span><span class="number">0</span>;</span><br><span class="line"><span class="keyword">SHOW</span> VARIABLES <span class="keyword">like</span> <span class="string">&#x27;%autocommit%&#x27;</span>;</span><br><span class="line"><span class="comment">-- 设置隔离级别为读未提交</span></span><br><span class="line"><span class="keyword">set</span> session transaction isolation level read uncommitted;</span><br><span class="line"><span class="comment">-- 查询隔离级别</span></span><br><span class="line"><span class="keyword">select</span> @<span class="variable">@tx</span>_isolation;</span><br><span class="line"><span class="comment">-- 开启事物</span></span><br><span class="line"><span class="keyword">begin</span> ;</span><br><span class="line"><span class="comment">-- 新增</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> refact_basicdata.depart(ID,NAME,CREATETIME) <span class="keyword">values</span> (<span class="number">666</span>,<span class="string">&#x27;666&#x27;</span>,now());</span><br><span class="line"><span class="comment">-- 等窗口二执行了再执行提交</span></span><br><span class="line"><span class="keyword">commit</span> ;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 窗口二查询到窗口一新增未提交事物的数据</span></span><br><span class="line"><span class="keyword">set</span> @<span class="variable">@autocommit</span><span class="operator">=</span><span class="number">0</span>;</span><br><span class="line"><span class="keyword">SHOW</span> VARIABLES <span class="keyword">like</span> <span class="string">&#x27;%autocommit%&#x27;</span>;</span><br><span class="line"><span class="comment">-- 设置隔离级别为读未提交</span></span><br><span class="line"><span class="keyword">set</span> session transaction isolation level read uncommitted;</span><br><span class="line"><span class="comment">-- 查询隔离级别</span></span><br><span class="line"><span class="keyword">select</span> @<span class="variable">@tx</span>_isolation;</span><br><span class="line"><span class="comment">-- 开启事物</span></span><br><span class="line"><span class="keyword">begin</span> ;</span><br><span class="line"><span class="comment">-- 查询到未提交的数据</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> refact_basicdata.depart <span class="keyword">where</span> ID <span class="operator">=</span> <span class="number">666</span>;</span><br><span class="line"><span class="keyword">commit</span> ;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>不可重复读举例子：窗口A分别提交新增三条数据，窗口B开启一个事物，然后A第一次提交事物，能读取到A的，A第二次提交也能，B也能读取到，A第三次提交，B也能读取到</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 窗口一</span></span><br><span class="line"><span class="keyword">set</span> @<span class="variable">@autocommit</span><span class="operator">=</span><span class="number">0</span>;</span><br><span class="line"><span class="keyword">SHOW</span> VARIABLES <span class="keyword">like</span> <span class="string">&#x27;%autocommit%&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 设置隔离级别为读未提交</span></span><br><span class="line"><span class="keyword">set</span> session transaction isolation level read committed;</span><br><span class="line"><span class="comment">-- 查询隔离级别</span></span><br><span class="line"><span class="keyword">select</span> @<span class="variable">@tx</span>_isolation;</span><br><span class="line"><span class="comment">-- 开启事物</span></span><br><span class="line"><span class="keyword">begin</span> ;</span><br><span class="line"><span class="comment">-- 新增</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> refact_basicdata.depart(ID,NAME,CREATETIME) <span class="keyword">values</span> (<span class="number">777</span>,<span class="string">&#x27;777&#x27;</span>,now());</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 提交</span></span><br><span class="line"><span class="keyword">commit</span> ;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">begin</span> ;</span><br><span class="line"><span class="comment">-- 新增</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> refact_basicdata.depart(ID,NAME,CREATETIME) <span class="keyword">values</span> (<span class="number">888</span>,<span class="string">&#x27;888&#x27;</span>,now());</span><br><span class="line"><span class="comment">-- 提交</span></span><br><span class="line"><span class="keyword">commit</span> ;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">begin</span> ;</span><br><span class="line"><span class="comment">-- 新增</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> refact_basicdata.depart(ID,NAME,CREATETIME) <span class="keyword">values</span> (<span class="number">999</span>,<span class="string">&#x27;999&#x27;</span>,now());</span><br><span class="line"><span class="comment">-- 提交</span></span><br><span class="line"><span class="keyword">commit</span> ;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 窗口二</span></span><br><span class="line"><span class="keyword">set</span> @<span class="variable">@autocommit</span><span class="operator">=</span><span class="number">0</span>;</span><br><span class="line"><span class="keyword">SHOW</span> VARIABLES <span class="keyword">like</span> <span class="string">&#x27;%autocommit%&#x27;</span>;</span><br><span class="line"><span class="comment">-- 设置隔离级别为读未提交</span></span><br><span class="line"><span class="keyword">set</span> session transaction isolation level read committed;</span><br><span class="line"><span class="comment">-- 查询隔离级别</span></span><br><span class="line"><span class="keyword">select</span> @<span class="variable">@tx</span>_isolation;</span><br><span class="line"><span class="comment">-- 开启事物</span></span><br><span class="line"><span class="keyword">begin</span> ;</span><br><span class="line"><span class="comment">-- 查询到未提交的数据</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> refact_basicdata.depart <span class="keyword">where</span> ID <span class="operator">=</span> <span class="number">777</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> refact_basicdata.depart <span class="keyword">where</span> ID <span class="operator">=</span> <span class="number">888</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> refact_basicdata.depart <span class="keyword">where</span> ID <span class="operator">=</span> <span class="number">999</span>;</span><br><span class="line"><span class="keyword">commit</span> ;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>可重复读举例，会产生幻读的现象。</p>
+<ul>
+<li>例子一，解决了不可重复读问题。在事物期间读取到的是一致的。</li>
+<li>例子二，产生幻读的现象<ul>
+<li>产生幻读背后的原因，MVCC（多版本控制思想）在该隔离级别下，更新操作，会比较事务版本号，若发现最新的事物的版本号，于当前的事物版本号不一致的话，便会从新去同步一次最新的事物版本号</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">解决不可重复读问题</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="comment">-- 窗口一</span></span><br><span class="line"><span class="keyword">set</span> @<span class="variable">@autocommit</span><span class="operator">=</span><span class="number">0</span>;</span><br><span class="line"><span class="keyword">SHOW</span> VARIABLES <span class="keyword">like</span> <span class="string">&#x27;%autocommit%&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 设置隔离级别为读未提交</span></span><br><span class="line"><span class="keyword">set</span> session transaction isolation level repeatable read;</span><br><span class="line"><span class="comment">-- 查询隔离级别</span></span><br><span class="line"><span class="keyword">select</span> @<span class="variable">@tx</span>_isolation;</span><br><span class="line"><span class="comment">-- 开启事物</span></span><br><span class="line"><span class="keyword">begin</span> ;</span><br><span class="line"><span class="comment">-- 新增</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> refact_basicdata.depart(ID,NAME,CREATETIME) <span class="keyword">values</span> (<span class="number">1010</span>,<span class="string">&#x27;1010&#x27;</span>,now());</span><br><span class="line"><span class="comment">-- 提交</span></span><br><span class="line"><span class="keyword">commit</span> ;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 等待事物二的查询完成后再次新增</span></span><br><span class="line"><span class="keyword">begin</span> ;</span><br><span class="line"><span class="comment">-- 新增</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> refact_basicdata.depart(ID,NAME,CREATETIME) <span class="keyword">values</span> (<span class="number">1011</span>,<span class="string">&#x27;1011&#x27;</span>,now());</span><br><span class="line"><span class="comment">-- 提交</span></span><br><span class="line"><span class="keyword">commit</span> ;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 窗口二</span></span><br><span class="line"><span class="keyword">set</span> @<span class="variable">@autocommit</span><span class="operator">=</span><span class="number">0</span>;</span><br><span class="line"><span class="keyword">SHOW</span> VARIABLES <span class="keyword">like</span> <span class="string">&#x27;%autocommit%&#x27;</span>;</span><br><span class="line"><span class="comment">-- 设置隔离级别为读未提交</span></span><br><span class="line"><span class="keyword">set</span> session transaction isolation level repeatable read;</span><br><span class="line"><span class="comment">-- 查询隔离级别</span></span><br><span class="line"><span class="keyword">select</span> @<span class="variable">@tx</span>_isolation;</span><br><span class="line"><span class="comment">-- 开启事物</span></span><br><span class="line"><span class="keyword">begin</span> ;</span><br><span class="line"><span class="comment">-- 查询到未提交的数据</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> refact_basicdata.depart <span class="keyword">where</span> ID <span class="keyword">in</span> (<span class="number">1010</span>,<span class="number">1011</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">commit</span> ;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 新增语句提交后再次去开启事物查询</span></span><br><span class="line"><span class="keyword">begin</span> ;</span><br><span class="line"><span class="comment">-- 查询到未提交的数据</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> refact_basicdata.depart <span class="keyword">where</span> ID <span class="keyword">in</span> (<span class="number">1010</span>,<span class="number">1011</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">commit</span> ;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">产生幻读问题</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 窗口一</span></span><br><span class="line"><span class="comment">-- 设置隔离级别为读未提交</span></span><br><span class="line"><span class="keyword">set</span> session transaction isolation level repeatable read;</span><br><span class="line"><span class="comment">-- 查询隔离级别</span></span><br><span class="line"><span class="keyword">select</span> @<span class="variable">@tx</span>_isolation;</span><br><span class="line"><span class="comment">-- 开启事物 等待窗口二的查询先执行</span></span><br><span class="line"><span class="keyword">begin</span> ;</span><br><span class="line"><span class="comment">-- 新增</span></span><br><span class="line">update refact_basicdata.depart <span class="keyword">set</span> NAME <span class="operator">=</span> concat(<span class="string">&#x27;test01&#x27;</span>,NAME)  <span class="keyword">where</span> ID <span class="operator">=</span> <span class="string">&#x27;1010&#x27;</span>;</span><br><span class="line"><span class="comment">-- 提交</span></span><br><span class="line"><span class="keyword">commit</span> ;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- 窗口二</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">-- 开启事物</span></span><br><span class="line"><span class="keyword">begin</span> ;</span><br><span class="line"><span class="comment">-- 查询</span></span><br><span class="line"><span class="keyword">select</span> ID,NAME <span class="keyword">from</span> refact_basicdata.depart <span class="keyword">where</span> ID <span class="operator">=</span> <span class="number">1010</span>;</span><br><span class="line"><span class="comment">-- 新增</span></span><br><span class="line">update refact_basicdata.depart <span class="keyword">set</span> NAME <span class="operator">=</span> concat(<span class="string">&#x27;test02&#x27;</span>,NAME)  <span class="keyword">where</span> ID <span class="operator">=</span> <span class="string">&#x27;1010&#x27;</span>;</span><br><span class="line"><span class="comment">-- 再次查询，发现把窗口一事物提交的值也查询进来了</span></span><br><span class="line"><span class="keyword">select</span> ID,NAME <span class="keyword">from</span> refact_basicdata.depart <span class="keyword">where</span> ID <span class="operator">=</span> <span class="number">1010</span>;</span><br><span class="line"><span class="keyword">commit</span> ;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="常问的mysql面试题"><a href="#常问的mysql面试题" class="headerlink" title="常问的mysql面试题"></a>常问的mysql面试题</h2><ul>
+<li>为什么非主键索引的叶子结点存放的是主键的指针<ul>
+<li>避免索引冗余存储</li>
+<li>方便数据的维护，如update操作，更新一条记录而非多条</li>
+</ul>
+</li>
+<li>mysql为什么要建立主键<ul>
+<li>主键会创建B+树结构的索引，方便查询检索，性能方面高效</li>
+</ul>
+</li>
+<li>主键为什么要使用自增<ul>
+<li>维护主键索引，其底层的数据结构为B+树，是一颗二叉查找树，自增的结构减少了树的平衡操作需要的耗时</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag"># 数据库</a>
+              <a href="/tags/mysql/" rel="tag"># mysql</a>
+              <a href="/tags/%E7%B4%A2%E5%BC%95/" rel="tag"># 索引</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/10/07/personal-tool/github-ranking-mp/" rel="prev" title="利用微信公众号来记录github的ranking">
+      <i class="fa fa-chevron-left"></i> 利用微信公众号来记录github的ranking
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/11/08/algorithm/two-pointer&sliding-window/" rel="next" title="算法之双指针和滑动窗口">
+      算法之双指针和滑动窗口 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#mysql%E7%B4%A2%E5%BC%95%E5%8F%8A%E4%BA%8B%E5%8A%A1%E7%AC%94%E8%AE%B0"><span class="nav-number">1.</span> <span class="nav-text">mysql索引及事务笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">1.1.</span> <span class="nav-text">索引是什么？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E7%9A%84%E5%88%86%E7%B1%BB%EF%BC%9A"><span class="nav-number">1.1.1.</span> <span class="nav-text">索引的分类：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9A"><span class="nav-number">1.2.</span> <span class="nav-text">索引的数据结构：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">1.2.1.</span> <span class="nav-text">常见的数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E8%A1%A8"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">线性表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%88%E5%92%8C%E9%98%9F%E5%88%97%E5%92%8C%E4%B8%B2%E5%92%8C%E5%B9%BF%E4%B9%89%E8%A1%A8"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">栈和队列和串和广义表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%91"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">树</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%A4%9A%E5%8F%89%E6%A0%91"><span class="nav-number">1.2.1.3.1.</span> <span class="nav-text">多叉树</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="nav-number">1.2.1.3.2.</span> <span class="nav-text">二叉树</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91%EF%BC%88binary-search-tree%EF%BC%89"><span class="nav-number">1.2.1.3.3.</span> <span class="nav-text">二叉查找树（binary search tree）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91%EF%BC%88AVL-Trees-Balanced-binary-search-trees%EF%BC%89"><span class="nav-number">1.2.1.3.4.</span> <span class="nav-text">平衡二叉查找树（AVL Trees (Balanced binary search trees）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BA%A2%E9%BB%91%E6%A0%91"><span class="nav-number">1.2.1.3.5.</span> <span class="nav-text">红黑树</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#B%E6%A0%91"><span class="nav-number">1.2.1.3.6.</span> <span class="nav-text">B树</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#B-%E6%A0%91"><span class="nav-number">1.2.1.3.7.</span> <span class="nav-text">B+树</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#explain-sql%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92"><span class="nav-number">1.3.</span> <span class="nav-text">explain sql执行计划</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E6%AE%B5%E8%AF%A6%E7%BB%86%E8%A7%A3%E9%87%8A"><span class="nav-number">1.3.1.</span> <span class="nav-text">字段详细解释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E5%8C%96%E5%8E%9F%E5%88%99"><span class="nav-number">1.3.2.</span> <span class="nav-text">优化原则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%92%E5%BA%8F%E4%BC%98%E5%8C%96"><span class="nav-number">1.3.3.</span> <span class="nav-text">排序优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mysql%E4%B9%8Bfilesort%E5%8E%9F%E7%90%86"><span class="nav-number">1.3.4.</span> <span class="nav-text">mysql之filesort原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E9%A1%B5%E4%BC%98%E5%8C%96"><span class="nav-number">1.3.5.</span> <span class="nav-text">分页优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#join%E4%BC%98%E5%8C%96"><span class="nav-number">1.3.6.</span> <span class="nav-text">join优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#in-%E5%92%8Cexiset%E4%BC%98%E5%8C%96"><span class="nav-number">1.3.7.</span> <span class="nav-text">in 和exiset优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mysql%E7%9A%84%E9%94%81%E4%B8%8E%E4%BA%8B%E7%89%A9"><span class="nav-number">1.3.8.</span> <span class="nav-text">mysql的锁与事物</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A1%A8%E9%94%81"><span class="nav-number">1.3.8.1.</span> <span class="nav-text">表锁</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A1%8C%E9%94%81"><span class="nav-number">1.3.9.</span> <span class="nav-text">行锁</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8B%E7%89%A9"><span class="nav-number">1.3.9.1.</span> <span class="nav-text">事物</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E9%97%AE%E7%9A%84mysql%E9%9D%A2%E8%AF%95%E9%A2%98"><span class="nav-number">1.4.</span> <span class="nav-text">常问的mysql面试题</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">zhengpeng</p>
+  <div class="site-description" itemprop="description">好记性不如烂笔头</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhengpeng</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
