@@ -20,8 +20,8 @@
     <content><![CDATA[<h1 id="bug清单表格"><a href="#bug清单表格" class="headerlink" title="bug清单表格"></a>bug清单表格</h1><html>
 <table> 
     <tr>
-    <th onclick="SortTable(this)" class="as">序号</th>
-    <th onclick="SortTable(this)" class="as">时间</th>
+    <th>序号</th>
+    <th>时间</th>
     <th>问题现象描述</th>
     <th>原因</th>
     <th>解决方式</th>
@@ -563,73 +563,9 @@ erp修改意向校区，发赠课券后所属校区为空<br/></th>
 
 </table>
 </html>
-<script type="text/javascript"> 
-    var tag=1;
-    function sortNumberAS(a, b)//升序
-    {
-        return a - b    
-    }
-    function sortNumberDesc(a, b)//降序
-    {
-        return b-a
-    }
-
-<pre><code>function SortTable(obj)&#123;
-    var td0s=document.getElementsByName(&quot;td0&quot;);//得到id为td0的一串列表，下相同
-    var td1s=document.getElementsByName(&quot;td1&quot;);
-    var td2s=document.getElementsByName(&quot;td2&quot;);
-    var td3s=document.getElementsByName(&quot;td3&quot;);
-    var tdArray0=[];
-    var tdArray1=[];
-    var tdArray2=[];
-    var tdArray3=[];
-    for(var i=0;i&lt;td0s.length;i++)&#123;
-        tdArray0.push(td0s[i].innerHTML);
-    &#125;//每串都写到数组中
-    for(var i=0;i&lt;td1s.length;i++)&#123;
-        tdArray1.push(parseInt(td1s[i].innerHTML));
-    &#125;
-    for(var i=0;i&lt;td2s.length;i++)&#123;
-        tdArray2.push(parseInt(td2s[i].innerHTML));
-    &#125;
-    for(var i=0;i&lt;td3s.length;i++)&#123;
-        tdArray3.push(parseInt(td3s[i].innerHTML));
-    &#125;
-    var tds = document.getElementsByName(&quot;td&quot; + obj.id.substr(2, 1));
-    //得到当前传入对象的那一列
-    var columnArray=[];
-    for(var i=0;i&lt;tds.length;i++)&#123;
-        columnArray.push(parseInt(tds[i].innerHTML));
-    &#125;//当前那一列都写入column这个栈，是逆序的
-    var orginArray=[];
-    for(var i=0;i&lt;columnArray.length;i++)&#123;
-        orginArray.push(columnArray[i]);
-    &#125;//将这一列的内容再存储一遍，一会原来列表修改以后，
-    //通过比对值的方式对应到当前行的内容，实现同行内容一起修改
-    if(obj.className==&quot;as&quot;)&#123;
-        columnArray.sort(sortNumberAS);   //排序后的新值，只排序了当前列
-        obj.className=&quot;desc&quot;;
-    &#125;else&#123;
-        columnArray.sort(sortNumberDesc);  //排序后的新值
-        obj.className=&quot;as&quot;;
-    &#125;
 
 
-    for(var i=0;i&lt;columnArray.length;i++)&#123;
-        for(var j=0;j&lt;orginArray.length;j++)&#123;
-            if(orginArray[j]==columnArray[i])&#123;
-                document.getElementsByName(&quot;td0&quot;)[i].innerHTML=tdArray0[j];
-                document.getElementsByName(&quot;td1&quot;)[i].innerHTML=tdArray1[j];
-                document.getElementsByName(&quot;td2&quot;)[i].innerHTML=tdArray2[j];
-                document.getElementsByName(&quot;td3&quot;)[i].innerHTML=tdArray3[j];
-                orginArray[j]=null;
-                break;
-            &#125;
-        &#125;
-    &#125;
-&#125;
-</code></pre>
-<p></script></p>
+
 ]]></content>
       <categories>
         <category>bug</category>
