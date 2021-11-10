@@ -15,19 +15,6 @@
       </tags>
   </entry>
   <entry>
-    <title>算法之双指针和滑动窗口</title>
-    <url>/2021/11/08/algorithm/two-pointer&amp;sliding-window/</url>
-    <content><![CDATA[<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><h2 id="常见力扣题目"><a href="#常见力扣题目" class="headerlink" title="常见力扣题目"></a>常见力扣题目</h2>]]></content>
-      <categories>
-        <category>基础</category>
-      </categories>
-      <tags>
-        <tag>algorithm</tag>
-        <tag>two-pointer</tag>
-        <tag>sliding-window</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>bug</title>
     <url>/2015/07/01/bug/bug/</url>
     <content><![CDATA[<h1 id="bug清单表格"><a href="#bug清单表格" class="headerlink" title="bug清单表格"></a>bug清单表格</h1><html>
@@ -54,6 +41,7 @@
     3.确定问题点确实是新增配置<br/>
     4.网上搜索解决方式<br/>
     </th>
+    <th></th>
     <th></th>
     </tr>
     <tr>
@@ -134,6 +122,7 @@ crm也调用获取所有的获客渠道
     2、启动对应环境参数的项目、复现问题 <br/>
     3、定位问题为获取字典处，未获取到完全的获客渠道 <br/>
     </th>
+    <th></th>
     <th></th>
     </tr>
     <tr>
@@ -4591,6 +4580,58 @@ innodb：索引和数据存储在同一文件
         <tag>数据库</tag>
         <tag>mysql</tag>
         <tag>死锁</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>算法之双指针和滑动窗口</title>
+    <url>/2021/11/08/algorithm/two-pointer-and-sliding-window/</url>
+    <content><![CDATA[<h2 id="双指针"><a href="#双指针" class="headerlink" title="双指针"></a>双指针</h2><blockquote>
+<p>数组里面通过一个快指针和一个慢指针，用一层循环完成原来需要两层循环做的事情</p>
+</blockquote>
+<ul>
+<li>多用于数组情况</li>
+<li>适用的力扣题目有<ul>
+<li>125.验证回文串</li>
+<li>141.环形链表</li>
+<li>344.翻转字符串</li>
+<li>11.盛水最多的容器</li>
+</ul>
+</li>
+</ul>
+<h3 id="上代码"><a href="#上代码" class="headerlink" title="上代码"></a>上代码</h3><ul>
+<li><p>验证回文串</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 双指针法</span></span><br><span class="line"><span class="comment">* <span class="doctag">@param</span> s</span></span><br><span class="line"><span class="comment">* <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isPalindrome</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> size = s.length();</span><br><span class="line">    <span class="keyword">int</span> slowIndex = size - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> fast = <span class="number">0</span>;fast&lt;=slowIndex;)&#123;</span><br><span class="line">        <span class="keyword">if</span>(!isNumAndAlphabet(s.charAt(fast)))&#123;</span><br><span class="line">            fast++;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(!isNumAndAlphabet(s.charAt(slowIndex)))&#123;</span><br><span class="line">            slowIndex--;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//判断条件不是会问</span></span><br><span class="line">        <span class="keyword">if</span>(Character.toLowerCase(s.charAt(fast)) != Character.toLowerCase(s.charAt(slowIndex)))&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        fast++;</span><br><span class="line">        slowIndex--;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 是字符和字母</span></span><br><span class="line"><span class="comment">* <span class="doctag">@param</span> s</span></span><br><span class="line"><span class="comment">* <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isNumAndAlphabet</span><span class="params">(<span class="keyword">char</span> s)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = s;</span><br><span class="line">    <span class="keyword">if</span>(i&gt;<span class="number">64</span> &amp;&amp; i&lt; <span class="number">91</span> || i&gt;<span class="number">96</span> &amp;&amp; i&lt;<span class="number">123</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(i&gt;<span class="number">47</span> &amp;&amp; i&lt;<span class="number">58</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li><p>翻转字符串</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/**</span><br><span class="line">    * 翻转字符串</span><br><span class="line">    * @param s</span><br><span class="line">    */</span><br><span class="line">public static void reverseString(char[] s) &#123;</span><br><span class="line">    int slow = s.length - 1;</span><br><span class="line">    int fast = 0;</span><br><span class="line">    while (fast  &lt; slow)&#123;</span><br><span class="line">        char temp = s[slow];</span><br><span class="line">        s[slow] = s[fast];</span><br><span class="line">        s[fast] = temp;</span><br><span class="line">        fast++;</span><br><span class="line">        slow--;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>盛水最多的容器</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="滑动窗口"><a href="#滑动窗口" class="headerlink" title="滑动窗口"></a>滑动窗口</h2><blockquote>
+<p>滑动窗口也可以理解成双指针算法<br>变更点有需要<code>固定窗口</code>。</p>
+</blockquote>
+<p>
+滑动窗口模版:
+
+<ul>
+<li><code>进</code>（一层循环）</li>
+<li><code>出</code>（确定窗口）</li>
+<li><code>算</code>（计算条件需要的数据，如最大值，最小值等）</p></li>
+</ul>
+<h3 id="上代码-1"><a href="#上代码-1" class="headerlink" title="上代码"></a>上代码</h3><ul>
+<li><ol start="3">
+<li>无重复字符的最长子串</li>
+</ol>
+</li>
+<li>窗口不固定<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">/**</span><br><span class="line">个人理解解法</span><br><span class="line">*/</span><br><span class="line">public int lengthOfLongestSubstring(String s) &#123;</span><br><span class="line">    int slow = 0;</span><br><span class="line">    int size = s.length();</span><br><span class="line">    if(size == 1)&#123;</span><br><span class="line">        return 1;</span><br><span class="line">    &#125;</span><br><span class="line">    int maxLength = 0;</span><br><span class="line">    for (int i = 1; i &lt; size; i++) &#123;</span><br><span class="line"></span><br><span class="line">        String subStr = s.substring(slow,i);</span><br><span class="line">        //窗口</span><br><span class="line">        while (isNotRepect(subStr) &amp;&amp; i!= slow )&#123;</span><br><span class="line"></span><br><span class="line">            maxLength = Math.max(maxLength,subStr.length());</span><br><span class="line">            if( i &lt; size)&#123;</span><br><span class="line">                i++;</span><br><span class="line">                subStr = s.substring(slow,i);</span><br><span class="line">            &#125;else &#123;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        if(!isNotRepect(subStr))&#123;</span><br><span class="line">            slow++;</span><br><span class="line">            //索引值减一</span><br><span class="line">            i--;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return maxLength;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line">    * 字符串不重复，利用map来</span><br><span class="line">    * @param subStr</span><br><span class="line">    * @return</span><br><span class="line">    */</span><br><span class="line">private  boolean isNotRepect(String subStr) &#123;</span><br><span class="line">    if(subStr.length() == 0)&#123;</span><br><span class="line">        return false;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    Map map = new HashMap();</span><br><span class="line">    for (int i = 0; i &lt; subStr.length(); i++) &#123;</span><br><span class="line">        map.put(subStr.charAt(i),subStr.charAt(i));</span><br><span class="line">    &#125;</span><br><span class="line">    if(subStr.length() == map.keySet().size())&#123;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line">    return false;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line">     * 标准滑动窗口</span><br><span class="line">     * @param s</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    public static int lengthOfLongestSubstringSlowWindowStarand(String s) &#123;</span><br><span class="line">        if (s.length()==0) return 0;</span><br><span class="line">        HashMap&lt;Character, Integer&gt; map = new HashMap&lt;Character, Integer&gt;();</span><br><span class="line">        int max = 0;</span><br><span class="line">        int left = 0;</span><br><span class="line">        for(int i = 0; i &lt; s.length(); i ++)&#123;</span><br><span class="line">            if(map.containsKey(s.charAt(i)))&#123;</span><br><span class="line">                left = Math.max(left,map.get(s.charAt(i)) + 1);</span><br><span class="line">            &#125;</span><br><span class="line">            map.put(s.charAt(i),i);</span><br><span class="line">            max = Math.max(max,i-left+1);</span><br><span class="line">        &#125;</span><br><span class="line">        return max;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+      <categories>
+        <category>基础</category>
+      </categories>
+      <tags>
+        <tag>algorithm</tag>
+        <tag>two-pointer</tag>
+        <tag>sliding-window</tag>
       </tags>
   </entry>
 </search>
