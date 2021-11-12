@@ -4659,4 +4659,38 @@ innodb：索引和数据存储在同一文件
         <tag>sliding-window</tag>
       </tags>
   </entry>
+  <entry>
+    <title>同步hexo文章到微信公众号</title>
+    <url>/2021/11/11/personal-tool/hexo-to-mp/</url>
+    <content><![CDATA[<h1 id="如何hexo的博文内容同步到公众号"><a href="#如何hexo的博文内容同步到公众号" class="headerlink" title="如何hexo的博文内容同步到公众号"></a>如何hexo的博文内容同步到公众号</h1><blockquote>
+<p>背景介绍，个人的hexo博客已经搭建完成。现在需要做的事把这些博文原封不动的同步到个人运营的微信公众号中。近两天参考了公众号有 <a href="https://crossoverjie.top/">crossoverjie</a> 和 <a href="https://www.pefish.club/">猪吃鱼的技术播客</a>,他们的公众号都实现了同步博文到公众号的功能，最近两天一直在思考如何实现。</p>
+</blockquote>
+<blockquote>
+<p>经了解，<code>其是手动一篇一篇的复制粘贴过去。</code>,既然这样，那便是找一个支持markdown格式的微信编辑器也能满足了</p>
+</blockquote>
+<h2 id="内容搬运"><a href="#内容搬运" class="headerlink" title="内容搬运"></a>内容搬运</h2><ul>
+<li>支持markdown的微信编辑器<ul>
+<li><a href="https://github.com/doocs/md">doocs</a></li>
+<li><a href="https://github.com/lyricat/wechat-format">wechat-format</a></li>
+<li><a href="https://yiban.io/">壹伴</a></li>
+<li><a href="https://openwrite.cn/product-markdown/">openwrite</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="微信公众号的标签维护"><a href="#微信公众号的标签维护" class="headerlink" title="微信公众号的标签维护"></a>微信公众号的标签维护</h2><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
+<li>通过支持markdown的编辑器把素材文章同步过去</li>
+<li>手动创建微信公众号的标签<ul>
+<li>与博文的标签相同</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>个人工具</category>
+      </categories>
+      <tags>
+        <tag>微信公众号</tag>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
 </search>
