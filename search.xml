@@ -99,16 +99,22 @@
 <blockquote>
 <p>经了解，<code>其是手动一篇一篇的复制粘贴过去。</code>,既然这样，那便是找一个支持markdown格式的微信编辑器也能满足了</p>
 </blockquote>
-<h2 id="内容搬运"><a href="#内容搬运" class="headerlink" title="内容搬运"></a>内容搬运</h2><ul>
-<li>支持markdown的微信编辑器<ul>
+<h2 id="内容搬运"><a href="#内容搬运" class="headerlink" title="内容搬运"></a>内容搬运</h2><p>步骤如下：</p>
+<ul>
+<li>1、复制markdown内容，然后用doocs生成</li>
+<li>2、新榜编辑器同步文章</li>
+<li>3、在微信后台为该文章增加原始链接和标签</li>
+</ul>
+<p>常用的支持markdown的微信公众号排版工具：</p>
+<ul>
 <li><a href="https://github.com/doocs/md">doocs</a></li>
 <li><a href="https://github.com/lyricat/wechat-format">wechat-format</a></li>
 <li><a href="https://yiban.io/">壹伴</a></li>
 <li><a href="https://openwrite.cn/product-markdown/">openwrite</a></li>
 </ul>
-</li>
-</ul>
-<h2 id="微信公众号的标签维护"><a href="#微信公众号的标签维护" class="headerlink" title="微信公众号的标签维护"></a>微信公众号的标签维护</h2><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
+<h2 id="微信公众号的标签维护"><a href="#微信公众号的标签维护" class="headerlink" title="微信公众号的标签维护"></a>微信公众号的标签维护</h2><p>添加标签图示例：</p>
+<p><a href="https://imgtu.com/i/IBeLjJ"><img src="https://z3.ax1x.com/2021/11/12/IBeLjJ.png" alt="IBeLjJ.png"></a></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
 <li>通过支持markdown的编辑器把素材文章同步过去</li>
 <li>手动创建微信公众号的标签<ul>
 <li>与博文的标签相同</li>
@@ -120,8 +126,8 @@
         <category>个人工具</category>
       </categories>
       <tags>
-        <tag>微信公众号</tag>
         <tag>hexo</tag>
+        <tag>公众号</tag>
       </tags>
   </entry>
   <entry>
