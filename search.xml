@@ -4700,7 +4700,7 @@ innodb：索引和数据存储在同一文件
       </tags>
   </entry>
   <entry>
-    <title>同步hexo文章到微信公众号</title>
+    <title>通用代码零零碎碎记录</title>
     <url>/2021/11/12/personal-tool/common-code/</url>
     <content><![CDATA[<h1 id="通用代码记录"><a href="#通用代码记录" class="headerlink" title="通用代码记录"></a>通用代码记录</h1><blockquote>
 <p>以下为零零碎碎记录通用的代码，方便偷懒</p>
