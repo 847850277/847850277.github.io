@@ -4343,6 +4343,25 @@ erp修改意向校区，发赠课券后所属校区为空<br/></th>
     <a href = 'https://www.zhihu.com/question/29017171'>hexo下的分类和表签无法显示</a>
     </th>
     </tr>
+    </tr>
+    <th>25</th>
+    <th>2021-11-11</th>
+    <th>
+    增加@transactional，定时调度生成了多条记录
+    </th>
+    <th>
+    @transactional发生失败回滚的时候，默认回滚的是runtimeException，而此次发生的异常为非runtimeException
+    </th>
+    <th>
+    指定注解的rollbackFor = Exception.class
+    </th>
+    <th>
+    </th>
+    <th>
+    </th>
+    <th>
+    </th>
+    </tr>
 
 </table>
 </html>
