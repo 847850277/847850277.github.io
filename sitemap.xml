@@ -23,6 +23,13 @@
   </url>
   
   <url>
+    <loc>https://847850277.github.io/2021/11/08/db/mysql/mysql-death-lock-note/</loc>
+    
+    <lastmod>2021-11-10</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://847850277.github.io/categories/index.html</loc>
     
     <lastmod>2021-11-09</lastmod>
@@ -120,13 +127,6 @@
     
   </url>
   
-  <url>
-    <loc>https://847850277.github.io/2021/11/08/db/mysql/mysql-death-lock-note/</loc>
-    
-    <lastmod>2021-11-08</lastmod>
-    
-  </url>
-  
 
   <url>
     <loc>https://847850277.github.io/</loc>
@@ -165,14 +165,14 @@
   </url>
   
   <url>
-    <loc>https://847850277.github.io/tags/bug/</loc>
+    <loc>https://847850277.github.io/tags/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7/</loc>
     <lastmod>2021-11-12</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://847850277.github.io/tags/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7/</loc>
+    <loc>https://847850277.github.io/tags/hexo/</loc>
     <lastmod>2021-11-12</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -221,6 +221,13 @@
   </url>
   
   <url>
+    <loc>https://847850277.github.io/tags/bug/</loc>
+    <lastmod>2021-11-12</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://847850277.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
     <lastmod>2021-11-12</lastmod>
     <changefreq>daily</changefreq>
@@ -248,13 +255,6 @@
     <priority>0.6</priority>
   </url>
   
-  <url>
-    <loc>https://847850277.github.io/tags/hexo/</loc>
-    <lastmod>2021-11-12</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
 
   
   <url>
@@ -266,13 +266,6 @@
   
   <url>
     <loc>https://847850277.github.io/categories/%E5%9F%BA%E7%A1%80/</loc>
-    <lastmod>2021-11-12</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://847850277.github.io/categories/bug/</loc>
     <lastmod>2021-11-12</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -294,6 +287,13 @@
   
   <url>
     <loc>https://847850277.github.io/categories/middleware/</loc>
+    <lastmod>2021-11-12</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://847850277.github.io/categories/bug/</loc>
     <lastmod>2021-11-12</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
