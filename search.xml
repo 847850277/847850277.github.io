@@ -130,7 +130,12 @@
 <h2 id="配置外链永久可以访问"><a href="#配置外链永久可以访问" class="headerlink" title="配置外链永久可以访问"></a>配置外链永久可以访问</h2><blockquote>
 <p>利用mc命令，设置链接永久可以访问</p>
 </blockquote>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 添加</span></span><br><span class="line">mc config host add minio http://117.50.163.170:9000/ 账号 密码 S3v4</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置目录永久可以访问 ,minio/my-mp为对应文件夹</span></span><br><span class="line">mc  policy  <span class="built_in">set</span>  download  minio/my-mp</span><br><span class="line"></span><br></pre></td></tr></table></figure>]]></content>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 添加</span></span><br><span class="line">mc config host add minio http://117.50.163.170:9000/ 账号 密码 S3v4</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置目录永久可以访问 ,minio/my-mp为对应文件夹</span></span><br><span class="line">mc  policy  <span class="built_in">set</span>  download  minio/my-mp</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>附件文件<br><a href='http://117.50.163.170:9000/resource/mc'>mc附件</a></li>
+</ul>
+]]></content>
       <categories>
         <category>devops</category>
       </categories>
