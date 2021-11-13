@@ -20,21 +20,22 @@
     var CONFIG = {"hostname":"zhengpengde.gitee.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="2021年10月31日周记番外篇关于监控程序的上周交易反思 所有盈和亏损都是认知的变现，确实是这样子的，匆匆忙忙的把首都在线，红旗连锁等加入监控程序最后带来的是本金的亏损,正确的买入顺序应该是，观察，观察，观察，待其进入击区。便全力挥棒！    假设点一，未把首都在线，红旗连锁，TCL等加入仓位。基于以上的假设，那么本周的仓位会存在以下的可能性  周一，周二 安车检测的利润8%+[100%] 周三">
+  <meta name="description" content="ubuntu安装minio,用作个人的oss服务 minio是什么?可用作文件对象存储服务。   MinIO 是在 GNU Affero 通用公共许可证 v3.0 下发布的高性能对象存储。 它是与 Amazon S3 云存储服务兼容的 API。 使用 MinIO 为机器学习、分析和应用程序数据工作负载构建高性能基础架构。官网介绍  用docker-compose安装minio 本次安装使用的是do">
 <meta property="og:type" content="article">
-<meta property="og:title" content="2021年10月31日番外篇-小助手周总结">
-<meta property="og:url" content="https://zhengpengde.gitee.io/2021/10/31/stock-week-report/2021-10-31-%E7%95%AA%E5%A4%96%E7%AF%87/index.html">
+<meta property="og:title" content="ubuntu安装minio">
+<meta property="og:url" content="https://zhengpengde.gitee.io/2021/11/13/devops/ubuntu-install-monio/index.html">
 <meta property="og:site_name" content="zhengpengde.vip">
-<meta property="og:description" content="2021年10月31日周记番外篇关于监控程序的上周交易反思 所有盈和亏损都是认知的变现，确实是这样子的，匆匆忙忙的把首都在线，红旗连锁等加入监控程序最后带来的是本金的亏损,正确的买入顺序应该是，观察，观察，观察，待其进入击区。便全力挥棒！    假设点一，未把首都在线，红旗连锁，TCL等加入仓位。基于以上的假设，那么本周的仓位会存在以下的可能性  周一，周二 安车检测的利润8%+[100%] 周三">
+<meta property="og:description" content="ubuntu安装minio,用作个人的oss服务 minio是什么?可用作文件对象存储服务。   MinIO 是在 GNU Affero 通用公共许可证 v3.0 下发布的高性能对象存储。 它是与 Amazon S3 云存储服务兼容的 API。 使用 MinIO 为机器学习、分析和应用程序数据工作负载构建高性能基础架构。官网介绍  用docker-compose安装minio 本次安装使用的是do">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-10-31T15:00:00.000Z">
-<meta property="article:modified_time" content="2021-11-09T03:10:02.161Z">
+<meta property="article:published_time" content="2021-11-13T09:12:29.000Z">
+<meta property="article:modified_time" content="2021-11-13T06:15:49.758Z">
 <meta property="article:author" content="zhengpeng">
-<meta property="article:tag" content="个人工具">
-<meta property="article:tag" content="投资">
+<meta property="article:tag" content="ubuntu">
+<meta property="article:tag" content="devops">
+<meta property="article:tag" content="minio">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://zhengpengde.gitee.io/2021/10/31/stock-week-report/2021-10-31-%E7%95%AA%E5%A4%96%E7%AF%87/">
+<link rel="canonical" href="https://zhengpengde.gitee.io/2021/11/13/devops/ubuntu-install-monio/">
 
 
 <script id="page-configurations">
@@ -47,7 +48,7 @@
   };
 </script>
 
-  <title>2021年10月31日番外篇-小助手周总结 | zhengpengde.vip</title>
+  <title>ubuntu安装minio | zhengpengde.vip</title>
   
 
 
@@ -196,7 +197,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhengpengde.gitee.io/2021/10/31/stock-week-report/2021-10-31-%E7%95%AA%E5%A4%96%E7%AF%87/">
+    <link itemprop="mainEntityOfPage" href="https://zhengpengde.gitee.io/2021/11/13/devops/ubuntu-install-monio/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -209,7 +210,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          2021年10月31日番外篇-小助手周总结
+          ubuntu安装minio
         </h1>
 
         <div class="post-meta">
@@ -218,23 +219,17 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2021-10-31 23:00:00" itemprop="dateCreated datePublished" datetime="2021-10-31T23:00:00+08:00">2021-10-31</time>
+              <time title="创建时间：2021-11-13 17:12:29 / 修改时间：14:15:49" itemprop="dateCreated datePublished" datetime="2021-11-13T17:12:29+08:00">2021-11-13</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-11-09 11:10:02" itemprop="dateModified" datetime="2021-11-09T11:10:02+08:00">2021-11-09</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8A%95%E8%B5%84%E5%B0%8F%E5%8A%A9%E6%89%8B/" itemprop="url" rel="index"><span itemprop="name">投资小助手</span></a>
+                  <a href="/categories/devops/" itemprop="url" rel="index"><span itemprop="name">devops</span></a>
                 </span>
             </span>
 
@@ -244,7 +239,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>837</span>
+              <span>997</span>
             </span>
 
         </div>
@@ -256,196 +251,57 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="2021年10月31日周记番外篇"><a href="#2021年10月31日周记番外篇" class="headerlink" title="2021年10月31日周记番外篇"></a>2021年10月31日周记番外篇</h1><h2 id="关于监控程序的上周交易反思"><a href="#关于监控程序的上周交易反思" class="headerlink" title="关于监控程序的上周交易反思"></a>关于监控程序的上周交易反思</h2><blockquote>
-<p>所有盈和亏损都是认知的变现，确实是这样子的，匆匆忙忙的把首都在线，红旗连锁等加入监控程序最后带来的是本金的亏损,正确的买入顺序应该是，<code>观察，观察，观察，待其进入击区。便全力挥棒</code>！ </p>
+        <h1 id="ubuntu安装minio-用作个人的oss服务"><a href="#ubuntu安装minio-用作个人的oss服务" class="headerlink" title="ubuntu安装minio,用作个人的oss服务"></a>ubuntu安装minio,用作个人的oss服务</h1><blockquote>
+<p>minio是什么?可用作文件对象存储服务。</p>
+</blockquote>
+<blockquote>
+<p>MinIO 是在 GNU Affero 通用公共许可证 v3.0 下发布的高性能对象存储。 它是与 Amazon S3 云存储服务兼容的 API。 使用 MinIO 为机器学习、分析和应用程序数据工作负载构建高性能基础架构。<a target="_blank" rel="noopener" href="http://www.minio.org.cn/">官网介绍</a></p>
+</blockquote>
+<h2 id="用docker-compose安装minio"><a href="#用docker-compose安装minio" class="headerlink" title="用docker-compose安装minio"></a>用docker-compose安装minio</h2><blockquote>
+<p>本次安装使用的是docker-compose，省去了敲命令的烦恼，同时要是迁移服务器的话，只需要把docker-compose文件切到另一台服务器上面执行便可以。</p>
+</blockquote>
+<blockquote>
+<p>docker-compose使用步骤</p>
 </blockquote>
 <ul>
-<li><p>假设点一，未把首都在线，红旗连锁，TCL等加入仓位。基于以上的假设，那么本周的仓位会存在以下的可能性</p>
-<ul>
-<li>周一，周二 安车检测的利润8%+[100%]</li>
-<li>周三，可能买入 <ul>
-<li>南极电商</li>
-<li>生物股份</li>
-<li>荣泰健康</li>
-<li>金龙鱼</li>
-<li>格力电器</li>
-<li>分众传媒</li>
+<li>安装docker服务<ul>
+<li>apt install docker</li>
 </ul>
 </li>
-<li>周四可能买入<ul>
-<li>安车检测</li>
-<li>视觉中国</li>
-<li>金龙鱼</li>
-<li>生物股份</li>
-<li>格力电器</li>
-<li>万科A</li>
+<li>安装docker-compose服务<ul>
+<li>apt install docker-compose</li>
 </ul>
 </li>
-<li>基于以上的假设，只要不是买入的格力，或者万科。那么本周后半段的利润按5%+计算，也就能够达到周10%+的利润。</li>
-</ul>
-</li>
-<li><p>不懂不列入观察，不便宜不买</p>
-</li>
-<li><p>上周把买入后不再推送加上</p>
-<ul>
-<li>反思后还是买入后也把推送信息打开</li>
-</ul>
-</li>
-<li><p>用概率的思维去思考</p>
-<ul>
-<li>成功概率高的下重注</li>
-<li>不懂，不了解的，下小注</li>
-<li>先打磨模型，待能稳定盈利后，再提高资金池的金额</li>
+<li>常用的docker-compose命令<ul>
+<li>docker-compose up -d </li>
+<li>docker-compose down -d </li>
 </ul>
 </li>
 </ul>
-<h2 id="信息来源总结"><a href="#信息来源总结" class="headerlink" title="信息来源总结"></a>信息来源总结</h2><ul>
-<li><p>生叔大局观</p>
-<ul>
-<li>生物股份</li>
-<li>南极电商</li>
-<li>上海机场</li>
-<li>宋城演艺</li>
-<li>腾讯[交叉]</li>
-<li>浙矿股份</li>
-<li>荣泰健康</li>
-<li>视觉中国[交叉]</li>
-</ul>
-</li>
-<li><p>终身黑白</p>
-<ul>
-<li>宋城演艺[交叉]</li>
-<li>瀚蓝环境</li>
-<li>腾讯[交叉]</li>
-<li>万科A</li>
-<li>格力电器[交叉]</li>
-<li>分众传媒[交叉]</li>
-<li>中国平安[交叉]</li>
-</ul>
-</li>
-<li><p>唐书房</p>
-<ul>
-<li>腾讯[交叉]</li>
-<li>分众传媒[交叉]</li>
-</ul>
-</li>
-<li><p>星辰大海的边界</p>
-<ul>
-<li>安车检测</li>
-<li>生物股份[交叉]</li>
-</ul>
-</li>
-<li><p>皮皮的大树</p>
-<ul>
-<li>金龙鱼</li>
-</ul>
-</li>
-<li><p>60天低价（需要再二次鉴定）</p>
-</li>
-<li><p>自我分析</p>
-<ul>
-<li>万科A[交叉]</li>
-<li>新东方在线</li>
-<li>腾讯[交叉]</li>
-<li>格力电器[交叉]</li>
-<li>视觉中国[交叉]</li>
-<li>中国平安[交叉]</li>
-<li>安测检测[交叉]</li>
-<li>金龙鱼</li>
-</ul>
-</li>
-<li><p>最低估值 单价 总估值</p>
-<ul>
-<li>万科  19元</li>
-<li>新东方在线 4元 40亿</li>
-<li>瀚蓝环境 19元</li>
-<li>南极电商 7元</li>
-<li>上海机场 31元 </li>
-<li>宋城演艺 12元</li>
-<li>腾讯 400元</li>
-<li>格力电器 35元</li>
-<li>浙矿股份 38</li>
-<li>分众传媒 7元</li>
-<li>视觉中国 12元</li>
-<li>生物股份 14.8元</li>
-<li>中国平安 47.5元</li>
-<li>安车检测 17.82元</li>
-<li>荣泰健康 28.5元</li>
-<li>金龙鱼 60元</li>
-</ul>
-</li>
-</ul>
-<h2 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h2><ul>
-<li><p><code>调整格力电器的价格为35元</code></p>
-</li>
-<li><p>剔除以下</p>
-<ul>
-<li>红旗连锁</li>
-<li>TCL科技</li>
-<li>深康佳A</li>
-<li>首都在线</li>
-<li>华侨城</li>
-</ul>
-</li>
-<li><p>三季度报告</p>
-<ul>
-<li>利好</li>
-<li>利空<ul>
-<li>格力电器</li>
-<li>万科</li>
-</ul>
-</li>
-<li>中性<ul>
-<li>瀚蓝环境</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>国家新闻</p>
-<ul>
-<li>房产税<ul>
-<li>万科</li>
-<li></li>
-</ul>
-</li>
-<li>格力被罚款<ul>
-<li>下周一，按该条消息格力会有一定的低开，算一个小小的击球区。    </li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
+<blockquote>
+<p>示例的配置文件</p>
+</blockquote>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attr">version:</span> <span class="string">&#x27;2&#x27;</span></span><br><span class="line"><span class="comment"># minio server&#x27;s web interface will be accessible on the host at port</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"> <span class="attr">minio:</span></span><br><span class="line">  <span class="attr">container_name:</span> <span class="string">minio</span></span><br><span class="line">  <span class="attr">privileged:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">  <span class="attr">image:</span> <span class="string">minio/minio:RELEASE.2020-12-29T23-29-29Z</span></span><br><span class="line">  <span class="comment">#working_dir: /app/docker-doc/minio-data</span></span><br><span class="line">  <span class="attr">volumes:</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">/data/minio-resources:/data</span> </span><br><span class="line">   <span class="bullet">-</span> <span class="string">/data/minio-config/minio/config:/root/.minio</span> </span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">&quot;9000:9000&quot;</span></span><br><span class="line">  <span class="attr">environment:</span></span><br><span class="line">   <span class="attr">MINIO_ACCESS_KEY:</span>  <span class="comment">#key</span></span><br><span class="line">   <span class="attr">MINIO_SECRET_KEY:</span>  <span class="comment">#密码</span></span><br><span class="line">  <span class="attr">command:</span>  <span class="string">server</span> <span class="string">/data</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
+
+
+<h2 id="配置外链永久可以访问"><a href="#配置外链永久可以访问" class="headerlink" title="配置外链永久可以访问"></a>配置外链永久可以访问</h2><blockquote>
+<p>利用mc命令，设置链接永久可以访问</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 添加</span></span><br><span class="line">mc config host add minio http://117.50.163.170:9000/ 账号 密码 S3v4</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置目录永久可以访问 ,minio/my-mp为对应文件夹</span></span><br><span class="line">mc  policy  <span class="built_in">set</span>  download  minio/my-mp</span><br><span class="line"></span><br></pre></td></tr></table></figure>
     </div>
 
     
     
     
       
-  <div class="popular-posts-header">相关文章</div>
-  <ul class="popular-posts">
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2021/10/10/stock-week-report/2021-10-10/" rel="bookmark">2021年10月10日-小助手周总结</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2021/10/17/stock-week-report/2021-10-17/" rel="bookmark">2021年10月17日-小助手周总结</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2021/10/24/stock-week-report/2021-10-24/" rel="bookmark">2021年10月24日-小助手周总结</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2021/10/29/stock-week-report/2021-10-29/" rel="bookmark">2021年10月29日-小助手周总结</a></div>
-    </li>
-    <li class="popular-posts-item">
-      <div class="popular-posts-title"><a href="/2021/11/02/stock-week-report/2021-11-02/" rel="bookmark">2021年11月2日-小助手周总结</a></div>
-    </li>
-  </ul>
 
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E4%B8%AA%E4%BA%BA%E5%B7%A5%E5%85%B7/" rel="tag"># 个人工具</a>
-              <a href="/tags/%E6%8A%95%E8%B5%84/" rel="tag"># 投资</a>
+              <a href="/tags/ubuntu/" rel="tag"># ubuntu</a>
+              <a href="/tags/devops/" rel="tag"># devops</a>
+              <a href="/tags/minio/" rel="tag"># minio</a>
           </div>
 
         
@@ -454,13 +310,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/10/31/stock-week-report/2021-10-31/" rel="prev" title="2021年10月31日-小助手周总结">
-      <i class="fa fa-chevron-left"></i> 2021年10月31日-小助手周总结
+    <a href="/2021/11/12/personal-tool/common-code/" rel="prev" title="通用代码零零碎碎记录">
+      <i class="fa fa-chevron-left"></i> 通用代码零零碎碎记录
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/11/02/stock-week-report/2021-11-02/" rel="next" title="2021年11月2日-小助手周总结">
-      2021年11月2日-小助手周总结 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -519,7 +372,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#2021%E5%B9%B410%E6%9C%8831%E6%97%A5%E5%91%A8%E8%AE%B0%E7%95%AA%E5%A4%96%E7%AF%87"><span class="nav-number">1.</span> <span class="nav-text">2021年10月31日周记番外篇</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E7%9B%91%E6%8E%A7%E7%A8%8B%E5%BA%8F%E7%9A%84%E4%B8%8A%E5%91%A8%E4%BA%A4%E6%98%93%E5%8F%8D%E6%80%9D"><span class="nav-number">1.1.</span> <span class="nav-text">关于监控程序的上周交易反思</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E6%9D%A5%E6%BA%90%E6%80%BB%E7%BB%93"><span class="nav-number">1.2.</span> <span class="nav-text">信息来源总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6"><span class="nav-number">1.3.</span> <span class="nav-text">事件</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ubuntu%E5%AE%89%E8%A3%85minio-%E7%94%A8%E4%BD%9C%E4%B8%AA%E4%BA%BA%E7%9A%84oss%E6%9C%8D%E5%8A%A1"><span class="nav-number">1.</span> <span class="nav-text">ubuntu安装minio,用作个人的oss服务</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%A8docker-compose%E5%AE%89%E8%A3%85minio"><span class="nav-number">1.1.</span> <span class="nav-text">用docker-compose安装minio</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E5%A4%96%E9%93%BE%E6%B0%B8%E4%B9%85%E5%8F%AF%E4%BB%A5%E8%AE%BF%E9%97%AE"><span class="nav-number">1.2.</span> <span class="nav-text">配置外链永久可以访问</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
