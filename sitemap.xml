@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://zhengpengde.gitee.io/2021/11/08/book-note/tech/%E7%AE%97%E6%B3%95-%E7%AC%AC%E5%9B%9B%E7%89%88/</loc>
+    
+    <lastmod>2021-11-13</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://zhengpengde.gitee.io/2021/11/13/devops/ubuntu-install-monio/</loc>
     
     <lastmod>2021-11-13</lastmod>
@@ -304,6 +311,13 @@
     <priority>0.6</priority>
   </url>
   
+  <url>
+    <loc>https://zhengpengde.gitee.io/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0-algorithm/</loc>
+    <lastmod>2021-11-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
 
   
   <url>
@@ -357,6 +371,13 @@
   
   <url>
     <loc>https://zhengpengde.gitee.io/categories/mysql/</loc>
+    <lastmod>2021-11-13</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://zhengpengde.gitee.io/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2021-11-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>

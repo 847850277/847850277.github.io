@@ -4809,4 +4809,29 @@ innodb：索引和数据存储在同一文件
         <tag>死锁</tag>
       </tags>
   </entry>
+  <entry>
+    <title>算法第四版读书笔记</title>
+    <url>/2021/11/08/book-note/tech/%E7%AE%97%E6%B3%95-%E7%AC%AC%E5%9B%9B%E7%89%88/</url>
+    <content><![CDATA[<h1 id="算法第四版-读书笔记"><a href="#算法第四版-读书笔记" class="headerlink" title="算法第四版 读书笔记"></a>算法第四版 读书笔记</h1><h2 id="第一章《基础》"><a href="#第一章《基础》" class="headerlink" title="第一章《基础》"></a>第一章《基础》</h2><blockquote>
+<p>常用的数据结构，一般有背包，栈，队列等。<br>数组和链表，数组表示的数据为连续，链表表示的数据为非连续，连续和非连续是指在程序的内存区域，也就是程序的栈区(java)。<br>数组天生适合检索，通过下标的形式就能访问任意节点的数据，链表适合插入和修改，插入和修改只需要改变对应其节点的指针位置。</p>
+</blockquote>
+<blockquote>
+<p>链表：</p>
+</blockquote>
+<ul>
+<li>插入新节点到链表头</li>
+<li>插入数据到链表的尾部</li>
+<li>把链表的头节点指向next节点</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">链表的数据结构定义</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="meta">@Data</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ListNode</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">int</span> val;</span><br><span class="line"> <span class="keyword">public</span> ListNode next;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="title">ListNode</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="title">ListNode</span><span class="params">(<span class="keyword">int</span> val)</span> </span>&#123; <span class="keyword">this</span>.val = val; &#125;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="title">ListNode</span><span class="params">(<span class="keyword">int</span> val, ListNode next)</span> </span>&#123; <span class="keyword">this</span>.val = val; <span class="keyword">this</span>.next = next; &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">插入新节点到链表头伪代码</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line">ListNode newHead = <span class="keyword">new</span> ListNode();</span><br><span class="line">newHead.next = oldFirst;</span><br><span class="line"><span class="keyword">return</span> newHead;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">插入数据到链表的尾部</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ListNode newEnd = <span class="keyword">new</span> ListNode();</span><br><span class="line">last.next = newEnd;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">把链表的头节点指向next节点</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line">first = first.next;</span><br><span class="line"><span class="keyword">return</span> first;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+]]></content>
+      <categories>
+        <category>读书笔记</category>
+      </categories>
+      <tags>
+        <tag>读书笔记,algorithm</tag>
+      </tags>
+  </entry>
 </search>
