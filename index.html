@@ -223,7 +223,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-11-09 11:48:26" itemprop="dateModified" datetime="2021-11-09T11:48:26+08:00">2021-11-09</time>
+                <time title="修改时间：2021-11-12 10:12:44" itemprop="dateModified" datetime="2021-11-12T10:12:44+08:00">2021-11-12</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -418,7 +418,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhengpengde.gitee.io/2021/11/11/personal-tool/hexo-to-mp/">
+    <link itemprop="mainEntityOfPage" href="https://zhengpengde.gitee.io/2021/11/13/devops/ubuntu-install-monio/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -432,7 +432,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/11/11/personal-tool/hexo-to-mp/" class="post-title-link" itemprop="url">同步hexo文章到微信公众号</a>
+            <a href="/2021/11/13/devops/ubuntu-install-monio/" class="post-title-link" itemprop="url">ubuntu安装minio</a>
         </h2>
 
         <div class="post-meta">
@@ -441,23 +441,17 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2021-11-11 17:12:29" itemprop="dateCreated datePublished" datetime="2021-11-11T17:12:29+08:00">2021-11-11</time>
+              <time title="创建时间：2021-11-13 17:12:29 / 修改时间：14:48:32" itemprop="dateCreated datePublished" datetime="2021-11-13T17:12:29+08:00">2021-11-13</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-11-12 09:49:24" itemprop="dateModified" datetime="2021-11-12T09:49:24+08:00">2021-11-12</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%B8%AA%E4%BA%BA%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">个人工具</span></a>
+                  <a href="/categories/devops/" itemprop="url" rel="index"><span itemprop="name">devops</span></a>
                 </span>
             </span>
 
@@ -467,7 +461,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>376</span>
+              <span>997</span>
             </span>
 
         </div>
@@ -479,35 +473,44 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="如何hexo的博文内容同步到公众号"><a href="#如何hexo的博文内容同步到公众号" class="headerlink" title="如何hexo的博文内容同步到公众号"></a>如何hexo的博文内容同步到公众号</h1><blockquote>
-<p>背景介绍，个人的hexo博客已经搭建完成。现在需要做的事把这些博文原封不动的同步到个人运营的微信公众号中。近两天参考了公众号有 <a target="_blank" rel="noopener" href="https://crossoverjie.top/">crossoverjie</a> 和 <a target="_blank" rel="noopener" href="https://www.pefish.club/">猪吃鱼的技术播客</a>,他们的公众号都实现了同步博文到公众号的功能，最近两天一直在思考如何实现。</p>
+          <h1 id="ubuntu安装minio-用作个人的oss服务"><a href="#ubuntu安装minio-用作个人的oss服务" class="headerlink" title="ubuntu安装minio,用作个人的oss服务"></a>ubuntu安装minio,用作个人的oss服务</h1><blockquote>
+<p>minio是什么?可用作文件对象存储服务。</p>
 </blockquote>
 <blockquote>
-<p>经了解，<code>其是手动一篇一篇的复制粘贴过去。</code>,既然这样，那便是找一个支持markdown格式的微信编辑器也能满足了</p>
+<p>MinIO 是在 GNU Affero 通用公共许可证 v3.0 下发布的高性能对象存储。 它是与 Amazon S3 云存储服务兼容的 API。 使用 MinIO 为机器学习、分析和应用程序数据工作负载构建高性能基础架构。<a target="_blank" rel="noopener" href="http://www.minio.org.cn/">官网介绍</a></p>
 </blockquote>
-<h2 id="内容搬运"><a href="#内容搬运" class="headerlink" title="内容搬运"></a>内容搬运</h2><p>步骤如下：</p>
+<h2 id="用docker-compose安装minio"><a href="#用docker-compose安装minio" class="headerlink" title="用docker-compose安装minio"></a>用docker-compose安装minio</h2><blockquote>
+<p>本次安装使用的是docker-compose，省去了敲命令的烦恼，同时要是迁移服务器的话，只需要把docker-compose文件切到另一台服务器上面执行便可以。</p>
+</blockquote>
+<blockquote>
+<p>docker-compose使用步骤</p>
+</blockquote>
 <ul>
-<li>1、复制markdown内容，然后用doocs生成</li>
-<li>2、新榜编辑器同步文章</li>
-<li>3、在微信后台为该文章增加原始链接和标签</li>
+<li>安装docker服务<ul>
+<li>apt install docker</li>
 </ul>
-<p>常用的支持markdown的微信公众号排版工具：</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://github.com/doocs/md">doocs</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/lyricat/wechat-format">wechat-format</a></li>
-<li><a target="_blank" rel="noopener" href="https://yiban.io/">壹伴</a></li>
-<li><a target="_blank" rel="noopener" href="https://openwrite.cn/product-markdown/">openwrite</a></li>
+</li>
+<li>安装docker-compose服务<ul>
+<li>apt install docker-compose</li>
 </ul>
-<h2 id="微信公众号的标签维护"><a href="#微信公众号的标签维护" class="headerlink" title="微信公众号的标签维护"></a>微信公众号的标签维护</h2><p>添加标签图示例：</p>
-<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/IBeLjJ"><img src="https://z3.ax1x.com/2021/11/12/IBeLjJ.png" alt="IBeLjJ.png"></a></p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
-<li>通过支持markdown的编辑器把素材文章同步过去</li>
-<li>手动创建微信公众号的标签<ul>
-<li>与博文的标签相同</li>
+</li>
+<li>常用的docker-compose命令<ul>
+<li>docker-compose up -d </li>
+<li>docker-compose down -d </li>
 </ul>
 </li>
 </ul>
+<blockquote>
+<p>示例的配置文件</p>
+</blockquote>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attr">version:</span> <span class="string">&#x27;2&#x27;</span></span><br><span class="line"><span class="comment"># minio server&#x27;s web interface will be accessible on the host at port</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"> <span class="attr">minio:</span></span><br><span class="line">  <span class="attr">container_name:</span> <span class="string">minio</span></span><br><span class="line">  <span class="attr">privileged:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">  <span class="attr">image:</span> <span class="string">minio/minio:RELEASE.2020-12-29T23-29-29Z</span></span><br><span class="line">  <span class="comment">#working_dir: /app/docker-doc/minio-data</span></span><br><span class="line">  <span class="attr">volumes:</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">/data/minio-resources:/data</span> </span><br><span class="line">   <span class="bullet">-</span> <span class="string">/data/minio-config/minio/config:/root/.minio</span> </span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">   <span class="bullet">-</span> <span class="string">&quot;9000:9000&quot;</span></span><br><span class="line">  <span class="attr">environment:</span></span><br><span class="line">   <span class="attr">MINIO_ACCESS_KEY:</span>  <span class="comment">#key</span></span><br><span class="line">   <span class="attr">MINIO_SECRET_KEY:</span>  <span class="comment">#密码</span></span><br><span class="line">  <span class="attr">command:</span>  <span class="string">server</span> <span class="string">/data</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
+
+
+<h2 id="配置外链永久可以访问"><a href="#配置外链永久可以访问" class="headerlink" title="配置外链永久可以访问"></a>配置外链永久可以访问</h2><blockquote>
+<p>利用mc命令，设置链接永久可以访问</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 添加</span></span><br><span class="line">mc config host add minio http://117.50.163.170:9000/ 账号 密码 S3v4</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置目录永久可以访问 ,minio/my-mp为对应文件夹</span></span><br><span class="line">mc  policy  <span class="built_in">set</span>  download  minio/my-mp</span><br><span class="line"></span><br></pre></td></tr></table></figure>
       
     </div>
 
@@ -660,7 +663,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhengpengde.gitee.io/2021/10/10/stock-week-report/2021-10-10/">
+    <link itemprop="mainEntityOfPage" href="https://zhengpengde.gitee.io/2021/11/11/personal-tool/hexo-to-mp/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -674,7 +677,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/10/10/stock-week-report/2021-10-10/" class="post-title-link" itemprop="url">2021年10月10日-小助手周总结</a>
+            <a href="/2021/11/11/personal-tool/hexo-to-mp/" class="post-title-link" itemprop="url">同步hexo文章到微信公众号</a>
         </h2>
 
         <div class="post-meta">
@@ -684,14 +687,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-10-10 10:00:00" itemprop="dateCreated datePublished" datetime="2021-10-10T10:00:00+08:00">2021-10-10</time>
+              <time title="创建时间：2021-11-11 17:12:29" itemprop="dateCreated datePublished" datetime="2021-11-11T17:12:29+08:00">2021-11-11</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-11-09 10:09:11" itemprop="dateModified" datetime="2021-11-09T10:09:11+08:00">2021-11-09</time>
+                <time title="修改时间：2021-11-13 14:50:38" itemprop="dateModified" datetime="2021-11-13T14:50:38+08:00">2021-11-13</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -699,7 +702,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8A%95%E8%B5%84%E5%B0%8F%E5%8A%A9%E6%89%8B/" itemprop="url" rel="index"><span itemprop="name">投资小助手</span></a>
+                  <a href="/categories/%E4%B8%AA%E4%BA%BA%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">个人工具</span></a>
                 </span>
             </span>
 
@@ -709,7 +712,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>306</span>
+              <span>376</span>
             </span>
 
         </div>
@@ -721,334 +724,35 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="2021年10月10日周总结"><a href="#2021年10月10日周总结" class="headerlink" title="2021年10月10日周总结"></a>2021年10月10日周总结</h1><h2 id="author-stock-monitor-tool"><a href="#author-stock-monitor-tool" class="headerlink" title="author:@stock-monitor-tool"></a>author:@stock-monitor-tool</h2><html>
-<body>
-<table>
+          <h1 id="如何hexo的博文内容同步到公众号"><a href="#如何hexo的博文内容同步到公众号" class="headerlink" title="如何hexo的博文内容同步到公众号"></a>如何hexo的博文内容同步到公众号</h1><blockquote>
+<p>背景介绍，个人的hexo博客已经搭建完成。现在需要做的事把这些博文原封不动的同步到个人运营的微信公众号中。近两天参考了公众号有 <a target="_blank" rel="noopener" href="https://crossoverjie.top/">crossoverjie</a> 和 <a target="_blank" rel="noopener" href="https://www.pefish.club/">猪吃鱼的技术播客</a>,他们的公众号都实现了同步博文到公众号的功能，最近两天一直在思考如何实现。</p>
+</blockquote>
+<blockquote>
+<p>经了解，<code>其是手动一篇一篇的复制粘贴过去。</code>,既然这样，那便是找一个支持markdown格式的微信编辑器也能满足了</p>
+</blockquote>
+<h2 id="内容搬运"><a href="#内容搬运" class="headerlink" title="内容搬运"></a>内容搬运</h2><p>步骤如下：</p>
+<ul>
+<li>1、复制markdown内容，然后用doocs生成</li>
+<li>2、新榜编辑器同步文章</li>
+<li>3、在微信后台为该文章增加原始链接和标签</li>
+</ul>
+<p>常用的支持markdown的微信公众号排版工具：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/doocs/md">doocs</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/lyricat/wechat-format">wechat-format</a></li>
+<li><a target="_blank" rel="noopener" href="https://yiban.io/">壹伴</a></li>
+<li><a target="_blank" rel="noopener" href="https://openwrite.cn/product-markdown/">openwrite</a></li>
+</ul>
+<h2 id="微信公众号的标签维护"><a href="#微信公众号的标签维护" class="headerlink" title="微信公众号的标签维护"></a>微信公众号的标签维护</h2><p>添加标签图示例：</p>
+<p><img src="http://117.50.163.170:9000/my-mp/WechatIMG1071.png" alt="图例"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ul>
+<li>通过支持markdown的编辑器把素材文章同步过去</li>
+<li>手动创建微信公众号的标签<ul>
+<li>与博文的标签相同</li>
+</ul>
+</li>
+</ul>
 
-<tr>
-<th>
-<b>名称</b>
-</th>
-<th>
-<b>目标买入价格</b>
-</th>
-<th>
-<b>目标卖出价格</b>
-</th>
-<th>
-<b>止损卖出价格</b>
-</th>
-<th>
-<b>购买次数</b>
-</th>
-<th>
-<b>已买</b>
-</th>
-<th>
-<b>已买</b>
-</th>
-<th>
-<b>实际买入价格</b>
-</th>
-<th>
-<b>实际卖出价格</b>
-</th>
-<th>
-<b>实际止损卖出价格</b>
-</th>
-</tr>
-            
-<tr>
-<th>
-<b>腾讯</b>
-</th>
-<th>
-<b>400</b>
-</th>
-<th>
-<b>440</b>
-</th>
-<th>
-<b>376</b>
-</th>
-<th>
-<b>0次</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-</tr>            
-<tr>
-<th>
-<b>新东方在线</b>
-</th>
-<th>
-<b>4</b>
-</th>
-<th>
-<b>4.4</b>
-</th>
-<th>
-<b>3.76</b>
-</th>
-<th>
-<b>0次</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-</tr>            
-<tr>
-<th>
-<b>上海机场</b>
-</th>
-<th>
-<b>31</b>
-</th>
-<th>
-<b>34.1</b>
-</th>
-<th>
-<b>29.14</b>
-</th>
-<th>
-<b>0次</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-</tr>            
-<tr>
-<th>
-<b>瀚蓝环境</b>
-</th>
-<th>
-<b>19</b>
-</th>
-<th>
-<b>20.9</b>
-</th>
-<th>
-<b>17.86</b>
-</th>
-<th>
-<b>0次</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-</tr>            
-<tr>
-<th>
-<b>万科A</b>
-</th>
-<th>
-<b>19</b>
-</th>
-<th>
-<b>20.9</b>
-</th>
-<th>
-<b>17.86</b>
-</th>
-<th>
-<b>0次</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-</tr>            
-<tr>
-<th>
-<b>格力电器</b>
-</th>
-<th>
-<b>37</b>
-</th>
-<th>
-<b>40.7</b>
-</th>
-<th>
-<b>34.78</b>
-</th>
-<th>
-<b>0次</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-</tr>            
-<tr>
-<th>
-<b>南极电商</b>
-</th>
-<th>
-<b>6</b>
-</th>
-<th>
-<b>6.6</b>
-</th>
-<th>
-<b>5.64</b>
-</th>
-<th>
-<b>0次</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-</tr>            
-<tr>
-<th>
-<b>宋城演艺</b>
-</th>
-<th>
-<b>11.5</b>
-</th>
-<th>
-<b>12.65</b>
-</th>
-<th>
-<b>10.81</b>
-</th>
-<th>
-<b>0次</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-</tr>            
-<tr>
-<th>
-<b>浙矿股份</b>
-</th>
-<th>
-<b>38</b>
-</th>
-<th>
-<b>41.8</b>
-</th>
-<th>
-<b>35.72</b>
-</th>
-<th>
-<b>0次</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-</tr>
-</table>
-</body>
-</html>
       
     </div>
 
@@ -1501,6 +1205,413 @@
 <li>1、新增日期：2021年10月12日,股票名称:分众传媒,价格:7</li>
 </ul>
 
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhengpengde.gitee.io/2021/10/10/stock-week-report/2021-10-10/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="zhengpeng">
+      <meta itemprop="description" content="好记性不如烂笔头">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zhengpengde.vip">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/10/10/stock-week-report/2021-10-10/" class="post-title-link" itemprop="url">2021年10月10日-小助手周总结</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-10-10 10:00:00" itemprop="dateCreated datePublished" datetime="2021-10-10T10:00:00+08:00">2021-10-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-11-09 10:09:11" itemprop="dateModified" datetime="2021-11-09T10:09:11+08:00">2021-11-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%95%E8%B5%84%E5%B0%8F%E5%8A%A9%E6%89%8B/" itemprop="url" rel="index"><span itemprop="name">投资小助手</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>306</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="2021年10月10日周总结"><a href="#2021年10月10日周总结" class="headerlink" title="2021年10月10日周总结"></a>2021年10月10日周总结</h1><h2 id="author-stock-monitor-tool"><a href="#author-stock-monitor-tool" class="headerlink" title="author:@stock-monitor-tool"></a>author:@stock-monitor-tool</h2><html>
+<body>
+<table>
+
+<tr>
+<th>
+<b>名称</b>
+</th>
+<th>
+<b>目标买入价格</b>
+</th>
+<th>
+<b>目标卖出价格</b>
+</th>
+<th>
+<b>止损卖出价格</b>
+</th>
+<th>
+<b>购买次数</b>
+</th>
+<th>
+<b>已买</b>
+</th>
+<th>
+<b>已买</b>
+</th>
+<th>
+<b>实际买入价格</b>
+</th>
+<th>
+<b>实际卖出价格</b>
+</th>
+<th>
+<b>实际止损卖出价格</b>
+</th>
+</tr>
+            
+<tr>
+<th>
+<b>腾讯</b>
+</th>
+<th>
+<b>400</b>
+</th>
+<th>
+<b>440</b>
+</th>
+<th>
+<b>376</b>
+</th>
+<th>
+<b>0次</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+</tr>            
+<tr>
+<th>
+<b>新东方在线</b>
+</th>
+<th>
+<b>4</b>
+</th>
+<th>
+<b>4.4</b>
+</th>
+<th>
+<b>3.76</b>
+</th>
+<th>
+<b>0次</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+</tr>            
+<tr>
+<th>
+<b>上海机场</b>
+</th>
+<th>
+<b>31</b>
+</th>
+<th>
+<b>34.1</b>
+</th>
+<th>
+<b>29.14</b>
+</th>
+<th>
+<b>0次</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+</tr>            
+<tr>
+<th>
+<b>瀚蓝环境</b>
+</th>
+<th>
+<b>19</b>
+</th>
+<th>
+<b>20.9</b>
+</th>
+<th>
+<b>17.86</b>
+</th>
+<th>
+<b>0次</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+</tr>            
+<tr>
+<th>
+<b>万科A</b>
+</th>
+<th>
+<b>19</b>
+</th>
+<th>
+<b>20.9</b>
+</th>
+<th>
+<b>17.86</b>
+</th>
+<th>
+<b>0次</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+</tr>            
+<tr>
+<th>
+<b>格力电器</b>
+</th>
+<th>
+<b>37</b>
+</th>
+<th>
+<b>40.7</b>
+</th>
+<th>
+<b>34.78</b>
+</th>
+<th>
+<b>0次</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+</tr>            
+<tr>
+<th>
+<b>南极电商</b>
+</th>
+<th>
+<b>6</b>
+</th>
+<th>
+<b>6.6</b>
+</th>
+<th>
+<b>5.64</b>
+</th>
+<th>
+<b>0次</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+</tr>            
+<tr>
+<th>
+<b>宋城演艺</b>
+</th>
+<th>
+<b>11.5</b>
+</th>
+<th>
+<b>12.65</b>
+</th>
+<th>
+<b>10.81</b>
+</th>
+<th>
+<b>0次</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+</tr>            
+<tr>
+<th>
+<b>浙矿股份</b>
+</th>
+<th>
+<b>38</b>
+</th>
+<th>
+<b>41.8</b>
+</th>
+<th>
+<b>35.72</b>
+</th>
+<th>
+<b>0次</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+</tr>
+</table>
+</body>
+</html>
       
     </div>
 
@@ -3035,7 +3146,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhengpengde.gitee.io/2021/11/02/stock-week-report/2021-11-02/">
+    <link itemprop="mainEntityOfPage" href="https://zhengpengde.gitee.io/2021/10/31/stock-week-report/2021-10-31-%E7%95%AA%E5%A4%96%E7%AF%87/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -3049,7 +3160,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/11/02/stock-week-report/2021-11-02/" class="post-title-link" itemprop="url">2021年11月2日-小助手周总结</a>
+            <a href="/2021/10/31/stock-week-report/2021-10-31-%E7%95%AA%E5%A4%96%E7%AF%87/" class="post-title-link" itemprop="url">2021年10月31日番外篇-小助手周总结</a>
         </h2>
 
         <div class="post-meta">
@@ -3059,14 +3170,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-11-02 10:00:00" itemprop="dateCreated datePublished" datetime="2021-11-02T10:00:00+08:00">2021-11-02</time>
+              <time title="创建时间：2021-10-31 23:00:00" itemprop="dateCreated datePublished" datetime="2021-10-31T23:00:00+08:00">2021-10-31</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-11-09 11:11:03" itemprop="dateModified" datetime="2021-11-09T11:11:03+08:00">2021-11-09</time>
+                <time title="修改时间：2021-11-09 11:10:02" itemprop="dateModified" datetime="2021-11-09T11:10:02+08:00">2021-11-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -3084,7 +3195,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>652</span>
+              <span>837</span>
             </span>
 
         </div>
@@ -3096,714 +3207,164 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="2021-11-02半周记录"><a href="#2021-11-02半周记录" class="headerlink" title="2021-11-02半周记录"></a>2021-11-02半周记录</h1><h2 id="监控程序的变更"><a href="#监控程序的变更" class="headerlink" title="监控程序的变更"></a>监控程序的变更</h2><ul>
-<li>调整格力电器的价格为35元，由38调整为35，降低3元</li>
-<li>调整瀚蓝环境的价格为20元，由19元调整为20元</li>
-<li>调整浙矿股份的价格为40元，由39元调整为40元</li>
+          <h1 id="2021年10月31日周记番外篇"><a href="#2021年10月31日周记番外篇" class="headerlink" title="2021年10月31日周记番外篇"></a>2021年10月31日周记番外篇</h1><h2 id="关于监控程序的上周交易反思"><a href="#关于监控程序的上周交易反思" class="headerlink" title="关于监控程序的上周交易反思"></a>关于监控程序的上周交易反思</h2><blockquote>
+<p>所有盈和亏损都是认知的变现，确实是这样子的，匆匆忙忙的把首都在线，红旗连锁等加入监控程序最后带来的是本金的亏损,正确的买入顺序应该是，<code>观察，观察，观察，待其进入击区。便全力挥棒</code>！ </p>
+</blockquote>
+<ul>
+<li><p>假设点一，未把首都在线，红旗连锁，TCL等加入仓位。基于以上的假设，那么本周的仓位会存在以下的可能性</p>
+<ul>
+<li>周一，周二 安车检测的利润8%+[100%]</li>
+<li>周三，可能买入 <ul>
+<li>南极电商</li>
+<li>生物股份</li>
+<li>荣泰健康</li>
+<li>金龙鱼</li>
+<li>格力电器</li>
+<li>分众传媒</li>
 </ul>
-<h2 id="这两天的行情以及交易记录"><a href="#这两天的行情以及交易记录" class="headerlink" title="这两天的行情以及交易记录"></a>这两天的行情以及交易记录</h2><ul>
-<li>11-02日，18元买入200股万科，目前万科的成本价格为 （18 * 200） + （18.25 * 400） / 600</li>
-<li>成本为18.166 止损点价为17.07666</li>
-<li>万科周一，周二都在下降，且今日跌破了17元，到了前期的最低价格</li>
-<li>本周若万科跌过止损线，暂时不要止损了。等周末总结止损的策略</li>
-<li>金龙鱼，今日大涨6个点</li>
+</li>
+<li>周四可能买入<ul>
+<li>安车检测</li>
+<li>视觉中国</li>
+<li>金龙鱼</li>
+<li>生物股份</li>
+<li>格力电器</li>
+<li>万科A</li>
 </ul>
-<h2 id="新闻"><a href="#新闻" class="headerlink" title="新闻"></a>新闻</h2><ul>
-<li>11-02 今日军工，粮油等都由较大的涨幅，背后的原因有<ul>
-<li>商务部发布通知，说要居民屯一些生活的必需品</li>
-<li>台湾与大陆的政治局势，同时，舆论在传派了一些jundui到浙江，福建等地<ul>
-<li>基于此舆论，静观其变，万不得己就止损出来避风头</li>
+</li>
+<li>基于以上的假设，只要不是买入的格力，或者万科。那么本周后半段的利润按5%+计算，也就能够达到周10%+的利润。</li>
+</ul>
+</li>
+<li><p>不懂不列入观察，不便宜不买</p>
+</li>
+<li><p>上周把买入后不再推送加上</p>
+<ul>
+<li>反思后还是买入后也把推送信息打开</li>
+</ul>
+</li>
+<li><p>用概率的思维去思考</p>
+<ul>
+<li>成功概率高的下重注</li>
+<li>不懂，不了解的，下小注</li>
+<li>先打磨模型，待能稳定盈利后，再提高资金池的金额</li>
+</ul>
+</li>
+</ul>
+<h2 id="信息来源总结"><a href="#信息来源总结" class="headerlink" title="信息来源总结"></a>信息来源总结</h2><ul>
+<li><p>生叔大局观</p>
+<ul>
+<li>生物股份</li>
+<li>南极电商</li>
+<li>上海机场</li>
+<li>宋城演艺</li>
+<li>腾讯[交叉]</li>
+<li>浙矿股份</li>
+<li>荣泰健康</li>
+<li>视觉中国[交叉]</li>
+</ul>
+</li>
+<li><p>终身黑白</p>
+<ul>
+<li>宋城演艺[交叉]</li>
+<li>瀚蓝环境</li>
+<li>腾讯[交叉]</li>
+<li>万科A</li>
+<li>格力电器[交叉]</li>
+<li>分众传媒[交叉]</li>
+<li>中国平安[交叉]</li>
+</ul>
+</li>
+<li><p>唐书房</p>
+<ul>
+<li>腾讯[交叉]</li>
+<li>分众传媒[交叉]</li>
+</ul>
+</li>
+<li><p>星辰大海的边界</p>
+<ul>
+<li>安车检测</li>
+<li>生物股份[交叉]</li>
+</ul>
+</li>
+<li><p>皮皮的大树</p>
+<ul>
+<li>金龙鱼</li>
+</ul>
+</li>
+<li><p>60天低价（需要再二次鉴定）</p>
+</li>
+<li><p>自我分析</p>
+<ul>
+<li>万科A[交叉]</li>
+<li>新东方在线</li>
+<li>腾讯[交叉]</li>
+<li>格力电器[交叉]</li>
+<li>视觉中国[交叉]</li>
+<li>中国平安[交叉]</li>
+<li>安测检测[交叉]</li>
+<li>金龙鱼</li>
+</ul>
+</li>
+<li><p>最低估值 单价 总估值</p>
+<ul>
+<li>万科  19元</li>
+<li>新东方在线 4元 40亿</li>
+<li>瀚蓝环境 19元</li>
+<li>南极电商 7元</li>
+<li>上海机场 31元 </li>
+<li>宋城演艺 12元</li>
+<li>腾讯 400元</li>
+<li>格力电器 35元</li>
+<li>浙矿股份 38</li>
+<li>分众传媒 7元</li>
+<li>视觉中国 12元</li>
+<li>生物股份 14.8元</li>
+<li>中国平安 47.5元</li>
+<li>安车检测 17.82元</li>
+<li>荣泰健康 28.5元</li>
+<li>金龙鱼 60元</li>
+</ul>
+</li>
+</ul>
+<h2 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h2><ul>
+<li><p><code>调整格力电器的价格为35元</code></p>
+</li>
+<li><p>剔除以下</p>
+<ul>
+<li>红旗连锁</li>
+<li>TCL科技</li>
+<li>深康佳A</li>
+<li>首都在线</li>
+<li>华侨城</li>
+</ul>
+</li>
+<li><p>三季度报告</p>
+<ul>
+<li>利好</li>
+<li>利空<ul>
+<li>格力电器</li>
+<li>万科</li>
+</ul>
+</li>
+<li>中性<ul>
+<li>瀚蓝环境</li>
 </ul>
 </li>
 </ul>
 </li>
+<li><p>国家新闻</p>
+<ul>
+<li>房产税<ul>
+<li>万科</li>
+<li></li>
 </ul>
-<h2 id="记录项"><a href="#记录项" class="headerlink" title="记录项"></a>记录项</h2><blockquote>
-<p>摘抄自《星辰大海的边界》</p>
-</blockquote>
-<p><code>这周发现一个非常普遍的问题，特地拿出来跟大家聊一聊： 很多抄作业，喜欢买跌的，逻辑是捡便宜，比推荐人的成本低，不是更容易赚钱么？ 如果做长线投资，挑跌的买没有错，随着价格跌多，胜率和赔率都在提高 【但大多数人做的都是短线逻辑，堵的是一个逻辑被市场认可】 下跌，意味着市场不认可，虽然赔率下来了，但是胜率缺下来了。 做短线追求市场和基本面的共振，市场一旦不认可，回心转意就需要时间，如果耗在里面，就失去了短线高周转的优势 【做短线不要盲目的买跌，但也不是说盲目追高，要把握好中间的度，这是科学，亦是艺术】</code></p>
-<blockquote>
-<p>期望达到的目的</p>
-</blockquote>
-<p><code>波段操作，赚波段的钱，然后利用复利的叠加效果</code></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://zhengpengde.gitee.io/2021/11/07/stock-week-report/2021-11-07/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="zhengpeng">
-      <meta itemprop="description" content="好记性不如烂笔头">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="zhengpengde.vip">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/11/07/stock-week-report/2021-11-07/" class="post-title-link" itemprop="url">2021年11月7日-小助手周总结</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-11-07 10:00:00" itemprop="dateCreated datePublished" datetime="2021-11-07T10:00:00+08:00">2021-11-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-11-09 11:11:22" itemprop="dateModified" datetime="2021-11-09T11:11:22+08:00">2021-11-09</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%8A%95%E8%B5%84%E5%B0%8F%E5%8A%A9%E6%89%8B/" itemprop="url" rel="index"><span itemprop="name">投资小助手</span></a>
-                </span>
-            </span>
-
-          <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>1.3k</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="2021年11月07日周总结"><a href="#2021年11月07日周总结" class="headerlink" title="2021年11月07日周总结"></a>2021年11月07日周总结</h1><h2 id="author-stock-monitor-tool"><a href="#author-stock-monitor-tool" class="headerlink" title="author:@stock-monitor-tool"></a>author:@stock-monitor-tool</h2><h2 id="本周推送信息"><a href="#本周推送信息" class="headerlink" title="本周推送信息"></a>本周推送信息</h2><ul>
-<li>1、推送日期：2021年11月01日,推送信息:股票可买:荣泰健康,目标购买价：28.5,当前价格：28.030<br>当日最低价格：28.080,当日最高价格：28.300</li>
-<li>2、推送日期：2021年11月01日,推送信息:股票可买:金龙鱼,目标购买价：60,当前价格：58.070<br>当日最低价格：58.010,当日最高价格：59.200</li>
-<li>3、推送日期：2021年11月02日,推送信息:股票可买:金龙鱼,目标购买价：60,当前价格：60.000<br>当日最低价格：59.680,当日最高价格：60.430</li>
-<li>4、推送日期：2021年11月02日,推送信息:股票可买:荣泰健康,目标购买价：28,当前价格：27.960<br>当日最低价格：27.980,当日最高价格：28.580</li>
-<li>5、推送日期：2021年11月03日,推送信息:股票可买:荣泰健康,目标购买价：28,当前价格：27.970<br>当日最低价格：27.850,当日最高价格：28.060</li>
+</li>
+<li>格力被罚款<ul>
+<li>下周一，按该条消息格力会有一定的低开，算一个小小的击球区。    </li>
 </ul>
-<h2 id="完整监控表格"><a href="#完整监控表格" class="headerlink" title="完整监控表格"></a>完整监控表格</h2><html>
-<body>
-<table>
-
-<tr>
-<th>
-<b>名称</b>
-</th>
-<th>
-<b>目标买入价格</b>
-</th>
-<th>
-<b>目标卖出价格</b>
-</th>
-<th>
-<b>止损卖出价格</b>
-</th>
-<th>
-<b>购买次数</b>
-</th>
-<th>
-<b>已买</b>
-</th>
-<th>
-<b>已买</b>
-</th>
-<th>
-<b>实际买入价格</b>
-</th>
-<th>
-<b>实际卖出价格</b>
-</th>
-<th>
-<b>实际止损卖出价格</b>
-</th>
-</tr>
-            
-<tr>
-<th>
-<b>腾讯</b>
-</th>
-<th>
-<b>400</b>
-</th>
-<th>
-<b>434</b>
-</th>
-<th>
-<b>376</b>
-</th>
-<th>
-<b>0次</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-</tr>            
-<tr>
-<th>
-<b>新东方在线</b>
-</th>
-<th>
-<b>4</b>
-</th>
-<th>
-<b>4.34</b>
-</th>
-<th>
-<b>3.76</b>
-</th>
-<th>
-<b>0次</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-</tr>            
-<tr>
-<th>
-<b>上海机场</b>
-</th>
-<th>
-<b>31</b>
-</th>
-<th>
-<b>33.635</b>
-</th>
-<th>
-<b>29.14</b>
-</th>
-<th>
-<b>0次</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-</tr>            
-<tr>
-<th>
-<b>生物股份</b>
-</th>
-<th>
-<b>14.8</b>
-</th>
-<th>
-<b>16.058</b>
-</th>
-<th>
-<b>13.912</b>
-</th>
-<th>
-<b>0次</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-</tr>            
-<tr>
-<th>
-<b>瀚蓝环境</b>
-</th>
-<th>
-<b>20</b>
-</th>
-<th>
-<b>21.7</b>
-</th>
-<th>
-<b>18.8</b>
-</th>
-<th>
-<b>0次</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-</tr>            
-<tr>
-<th>
-<b>陕西煤业</b>
-</th>
-<th>
-<b>10</b>
-</th>
-<th>
-<b>11</b>
-</th>
-<th>
-<b>9.4</b>
-</th>
-<th>
-<b>0次</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-</tr>            
-<tr>
-<th>
-<b>中国平安</b>
-</th>
-<th>
-<b>47.5</b>
-</th>
-<th>
-<b>51.5375</b>
-</th>
-<th>
-<b>44.65</b>
-</th>
-<th>
-<b>0次</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-</tr>            
-<tr>
-<th>
-<b>荣泰健康</b>
-</th>
-<th>
-<b>28</b>
-</th>
-<th>
-<b>30.38</b>
-</th>
-<th>
-<b>26.32</b>
-</th>
-<th>
-<b>0次</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-</tr>            
-<tr>
-<th>
-<b>万科A</b>
-</th>
-<th>
-<b>19</b>
-</th>
-<th>
-<b>19.90975</b>
-</th>
-<th>
-<b>17.249</b>
-</th>
-<th>
-<b>1次</b>
-</th>
-<th>
-<b>是</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>18.35</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-</tr>            
-<tr>
-<th>
-<b>格力电器</b>
-</th>
-<th>
-<b>35</b>
-</th>
-<th>
-<b>37.975</b>
-</th>
-<th>
-<b>32.9</b>
-</th>
-<th>
-<b>0次</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-</tr>            
-<tr>
-<th>
-<b>视觉中国</b>
-</th>
-<th>
-<b>12</b>
-</th>
-<th>
-<b>13.02</b>
-</th>
-<th>
-<b>11.28</b>
-</th>
-<th>
-<b>0次</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-</tr>            
-<tr>
-<th>
-<b>分众传媒</b>
-</th>
-<th>
-<b>7</b>
-</th>
-<th>
-<b>7.595</b>
-</th>
-<th>
-<b>6.58</b>
-</th>
-<th>
-<b>0次</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-</tr>            
-<tr>
-<th>
-<b>南极电商</b>
-</th>
-<th>
-<b>7</b>
-</th>
-<th>
-<b>7.595</b>
-</th>
-<th>
-<b>6.58</b>
-</th>
-<th>
-<b>0次</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-</tr>            
-<tr>
-<th>
-<b>宋城演艺</b>
-</th>
-<th>
-<b>12.5</b>
-</th>
-<th>
-<b>13.5625</b>
-</th>
-<th>
-<b>11.75</b>
-</th>
-<th>
-<b>0次</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-</tr>            
-<tr>
-<th>
-<b>安车检测</b>
-</th>
-<th>
-<b>17.82</b>
-</th>
-<th>
-<b>19.3347</b>
-</th>
-<th>
-<b>16.7508</b>
-</th>
-<th>
-<b>1次</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-</tr>            
-<tr>
-<th>
-<b>浙矿股份</b>
-</th>
-<th>
-<b>40</b>
-</th>
-<th>
-<b>43.4</b>
-</th>
-<th>
-<b>37.6</b>
-</th>
-<th>
-<b>0次</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-</tr>            
-<tr>
-<th>
-<b>金龙鱼</b>
-</th>
-<th>
-<b>60</b>
-</th>
-<th>
-<b>65.1</b>
-</th>
-<th>
-<b>56.4</b>
-</th>
-<th>
-<b>0次</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>否</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-<th>
-<b>--</b>
-</th>
-</tr>
-</table>
-</body>
-</html>
-
-<h2 id="变动信息"><a href="#变动信息" class="headerlink" title="变动信息"></a>变动信息</h2><ul>
-<li>1、[调整卖出价格的比例,调整参考比例【卖出价格/买入价格】]日期：<code>2021年11月01日</code>,股票名称:<code>格力电器</code>,目标买入价格:<code>35</code>,目标卖出价格:<code> 37.975</code></li>
-<li>2、[调整卖出价格的比例,调整参考比例【卖出价格/买入价格】]日期：<code>2021年11月01日</code>,股票名称:<code>荣泰健康</code>,目标买入价格:<code>28</code>,目标卖出价格:<code> 30.38</code></li>
-<li>3、[新增监控]日期：<code>2021年11月01日</code>,股票名称:<code>陕西煤业</code>,目标买入价格:<code>10</code>,目标卖出价格:<code> 11</code></li>
-<li>4、[调整卖出价格的比例,调整参考比例【卖出价格/买入价格】]日期：<code>2021年11月02日</code>,股票名称:<code>瀚蓝环境</code>,目标买入价格:<code>20</code>,目标卖出价格:<code> 21.7</code></li>
-<li>5、[调整卖出价格的比例,调整参考比例【卖出价格/买入价格】]日期：<code>2021年11月02日</code>,股票名称:<code>浙矿股份</code>,目标买入价格:<code>40</code>,目标卖出价格:<code> 43.4</code></li>
+</li>
+</ul>
+</li>
 </ul>
 
       
