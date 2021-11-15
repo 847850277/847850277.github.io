@@ -5483,4 +5483,33 @@ innodb：索引和数据存储在同一文件
         <tag>投资</tag>
       </tags>
   </entry>
+  <entry>
+    <title>小玩意儿记</title>
+    <url>/2021/11/15/personal-tool/mini-tools/</url>
+    <content><![CDATA[<h1 id="小玩意儿记录"><a href="#小玩意儿记录" class="headerlink" title="小玩意儿记录"></a>小玩意儿记录</h1><html>
+<table> 
+    <tr>
+    <th>序号</th>
+    <th>时间</th>
+    <th>名称</th>
+    <th>能解决哪些问题</th>
+    <th>参考链接</th>
+    </tr>
+    <tr>
+    <th>1</th>
+    <th>2021-11-15</th>
+    <th>excel-vlookup函数</th>
+    <th>某列数据从另一列中获取</th>
+    <th><a href='http://117.50.163.170:9000/resource/vlook.xlsx'>示例excel</a></th>
+    </tr>
+</table>    
+</body>
+</html>]]></content>
+      <categories>
+        <category>个人工具</category>
+      </categories>
+      <tags>
+        <tag>个人工具</tag>
+      </tags>
+  </entry>
 </search>
