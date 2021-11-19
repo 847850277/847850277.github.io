@@ -5576,22 +5576,4 @@ innodb：索引和数据存储在同一文件
         <tag>个人工具</tag>
       </tags>
   </entry>
-  <entry>
-    <title>通用代码零零碎碎记录</title>
-    <url>/2021/11/19/personal-tool/common-es/</url>
-    <content><![CDATA[<h1 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h1><h2 id="创建索引"><a href="#创建索引" class="headerlink" title="创建索引"></a>创建索引</h2><h3 id="restful创建索引"><a href="#restful创建索引" class="headerlink" title="restful创建索引"></a>restful创建索引</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># 请求</span></span><br><span class="line"></span><br><span class="line">curl -X PUT <span class="string">&quot;localhost:9200/myindex&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 响应</span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;acknowledged&quot;</span> : <span class="literal">true</span>,</span><br><span class="line">  <span class="string">&quot;shards_acknowledged&quot;</span> : <span class="literal">true</span>,</span><br><span class="line">  <span class="string">&quot;index&quot;</span> : <span class="string">&quot;commodity&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-
-<h2 id="删除索引"><a href="#删除索引" class="headerlink" title="删除索引"></a>删除索引</h2><h2 id="获取索引信息"><a href="#获取索引信息" class="headerlink" title="获取索引信息"></a>获取索引信息</h2><h2 id="打开-关闭索引"><a href="#打开-关闭索引" class="headerlink" title="打开/关闭索引"></a>打开/关闭索引</h2>]]></content>
-      <categories>
-        <category>个人工具</category>
-      </categories>
-      <tags>
-        <tag>java</tag>
-        <tag>通用代码</tag>
-        <tag>es</tag>
-      </tags>
-  </entry>
 </search>
