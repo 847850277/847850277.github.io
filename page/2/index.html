@@ -3086,7 +3086,7 @@ innodb：索引和数据存储在同一文件
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-11-21 20:39:39" itemprop="dateModified" datetime="2021-11-21T20:39:39+08:00">2021-11-21</time>
+                <time title="修改时间：2021-11-21 20:57:06" itemprop="dateModified" datetime="2021-11-21T20:57:06+08:00">2021-11-21</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -3197,7 +3197,27 @@ innodb：索引和数据存储在同一文件
 </ul>
 </li>
 <li>给出一段代码，删除链表的尾节点，其中链表的首节点为first<ul>
-<li>以下为代码 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">   <span class="function"><span class="keyword">public</span> Item <span class="title">removeLast</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(isEmpty())</span><br><span class="line">		<span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">&quot;List is empty&quot;</span>);</span><br><span class="line">	Item item = last.item;</span><br><span class="line">	Node prev = <span class="keyword">null</span>,curr = first;</span><br><span class="line">	<span class="keyword">while</span>(curr.next != <span class="keyword">null</span>)&#123;</span><br><span class="line">		prev = curr;</span><br><span class="line">		curr = curr.next;</span><br><span class="line">	&#125;</span><br><span class="line">	prev.next = <span class="keyword">null</span>;</span><br><span class="line">	last = prev;</span><br><span class="line">	N--;</span><br><span class="line">	<span class="keyword">return</span> item;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>为删除尾结点，需要<code>找到倒数第二个结点</code>。尾节点的标志为last.next==null是否成立，<code>找到尾节点后需将倒数第二个节点SecondLast.next=null即可删除尾节点</code>。</li>
+</ul>
+</li>
+<li>编写一个delete方法，接受一个int参数k，删除链表的第k个元素。<ul>
+<li>代码如下<pre><code class="java">public void delete(int k)
+&#123;
+  Node x=first;
+  int i=1;
+  while(true)
+  &#123;
+      if(i==k-1)
+      &#123;
+              x=x.next;
+              x.next=x.next.next;
+              break;
+      &#125;
+      i++;
+  &#125;
+&#125;
+</code></pre>
+</li>
 </ul>
 </li>
 </ul>
