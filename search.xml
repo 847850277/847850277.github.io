@@ -4921,7 +4921,10 @@ innodb：索引和数据存储在同一文件
 <li>答：删除x的后续节点</li>
 </ul>
 </li>
-<li></li>
+<li>给出一段代码，删除链表的尾节点，其中链表的首节点为first<ul>
+<li>以下为代码 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line">   <span class="function"><span class="keyword">public</span> Item <span class="title">removeLast</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(isEmpty())</span><br><span class="line">		<span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">&quot;List is empty&quot;</span>);</span><br><span class="line">	Item item = last.item;</span><br><span class="line">	Node prev = <span class="keyword">null</span>,curr = first;</span><br><span class="line">	<span class="keyword">while</span>(curr.next != <span class="keyword">null</span>)&#123;</span><br><span class="line">		prev = curr;</span><br><span class="line">		curr = curr.next;</span><br><span class="line">	&#125;</span><br><span class="line">	prev.next = <span class="keyword">null</span>;</span><br><span class="line">	last = prev;</span><br><span class="line">	N--;</span><br><span class="line">	<span class="keyword">return</span> item;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
 </ul>
 ]]></content>
       <categories>
