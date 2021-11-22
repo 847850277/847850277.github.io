@@ -4916,18 +4916,41 @@ innodb：索引和数据存储在同一文件
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Iterator;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Bag</span>&lt;<span class="title">Item</span>&gt; <span class="keyword">implements</span> <span class="title">Iterable</span>&lt;<span class="title">Item</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span></span>&#123;</span><br><span class="line">        Item item;</span><br><span class="line">        Node nextNode;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">private</span> Node first;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(Item item)</span></span>&#123;</span><br><span class="line">        Node oldFirst = first;</span><br><span class="line">        first = <span class="keyword">new</span> Node();</span><br><span class="line">        first.item = item;</span><br><span class="line">        first.nextNode = oldFirst;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Iterator&lt;Item&gt; <span class="title">iterator</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> BagIterator();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">BagIterator</span> <span class="keyword">implements</span> <span class="title">Iterator</span>&lt;<span class="title">Item</span>&gt;</span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> Node current = first;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> current != <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Item <span class="title">next</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            Item item = current.item;   <span class="comment">//1、获取当前元素的item</span></span><br><span class="line">            current = current.nextNode; <span class="comment">//2、指针指向下一个</span></span><br><span class="line">            <span class="keyword">return</span> item;                <span class="comment">//3、返回这个item</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <h3 id="链表练习"><a href="#链表练习" class="headerlink" title="链表练习"></a>链表练习</h3><ul>
-<li>假设x是一条链表的某个节点且不是尾节点。下面这条语句的作用是什么？<ul>
+<li><p>假设x是一条链表的某个节点且不是尾节点。下面这条语句的作用是什么？</p>
+<ul>
 <li>x.next = x.next.next;</li>
 <li>答：删除x的后续节点</li>
 </ul>
 </li>
-<li>给出一段代码，删除链表的尾节点，其中链表的首节点为first<ul>
+<li><p>给出一段代码，删除链表的尾节点，其中链表的首节点为first</p>
+<ul>
 <li>为删除尾结点，需要<code>找到倒数第二个结点</code>。尾节点的标志为last.next==null是否成立，<code>找到尾节点后需将倒数第二个节点SecondLast.next=null即可删除尾节点</code>。</li>
 </ul>
 </li>
-<li>编写一个delete方法，接受一个int参数k，删除链表的第k个元素。<ul>
-<li>代码如下<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">        <span class="comment">//删除节点一</span></span><br><span class="line">        node1 = node1.next;</span><br><span class="line">        System.out.println(node1);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//删除节点2</span></span><br><span class="line">        node1.next = node1.next.next;</span><br><span class="line">        System.out.println(node1);</span><br><span class="line">        <span class="comment">//删除节点3</span></span><br><span class="line">        node1.next.next = node1.next.next.next;</span><br><span class="line">        System.out.println(node1);</span><br><span class="line">    ```    </span><br><span class="line">- 编写一个方法find,接受一个链表和一个字符串key，若链表中某个item的值与key相同，返回<span class="keyword">true</span>，否则返回<span class="keyword">false</span></span><br><span class="line">    - 遍历链表，匹配到就返回<span class="keyword">true</span></span><br><span class="line">    ```java</span><br><span class="line">    <span class="comment">//头节点</span></span><br><span class="line">    <span class="keyword">if</span>(node.val == key)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span>(node.next != <span class="keyword">null</span>)&#123;</span><br><span class="line">        <span class="keyword">if</span>(node.val.eqs(key))&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br></pre></td></tr></table></figure></li>
+<li><p>编写一个方法find,接受一个链表和一个字符串key，若链表中某个item的值与key相同，返回true，否则返回false</p>
+<ul>
+<li>遍历链表，匹配到就返回true</li>
+<li>代码如下：<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//头节点</span></span><br><span class="line"><span class="keyword">if</span>(node.val == key)&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">while</span>(node.next != <span class="keyword">null</span>)&#123;</span><br><span class="line">    <span class="keyword">if</span>(node.val.eqs(key))&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> <span class="keyword">false</span>;</span><br></pre></td></tr></table></figure></li>
 </ul>
+</li>
+<li><p>编写一个delete方法，接受一个int参数k，删除链表的第k个元素。</p>
+<ul>
+<li><p>代码如下：</p>
+<pre><code class="java">  //删除节点一
+  node1 = node1.next;
+  System.out.println(node1);
+
+  //删除节点2
+  node1.next = node1.next.next;
+  System.out.println(node1);
+  //删除节点3
+  node1.next.next = node1.next.next.next;
+  System.out.println(node1);
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p>1</p>
 </li>
 </ul>
 ]]></content>
