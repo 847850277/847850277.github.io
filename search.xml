@@ -6220,4 +6220,41 @@ innodb：索引和数据存储在同一文件
         <tag>其他</tag>
       </tags>
   </entry>
+  <entry>
+    <title>redis使用分布式锁记</title>
+    <url>/2021/11/27/db/redis/redis-distributed-lock-use/</url>
+    <content><![CDATA[<h1 id="redis使用分布式锁记"><a href="#redis使用分布式锁记" class="headerlink" title="redis使用分布式锁记"></a>redis使用分布式锁记</h1><h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><blockquote>
+<p>在使用项目中封装的redis锁注解中，会出现</p>
+</blockquote>
+<h2 id="大胆假设，小心求证"><a href="#大胆假设，小心求证" class="headerlink" title="大胆假设，小心求证"></a>大胆假设，小心求证</h2><ul>
+<li>观点一: 往redis写会失败<ul>
+<li>利用多线程模拟写操作<ul>
+<li>本地模拟10万个线程同时写操作，并未复现</li>
+</ul>
+</li>
+<li>业务代码中</li>
+</ul>
+</li>
+<li>观点二: key重复导致失败<ul>
+<li>利用多线程模拟</li>
+<li>短时间内重复key</li>
+<li>业务代码中有满足的条件<ul>
+<li>创建订单：key为customerId，表中存在customerId重复</li>
+<li>发放优惠券：key为activeId，活动为key，也存在重复</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="可以记录的"><a href="#可以记录的" class="headerlink" title="可以记录的"></a>可以记录的</h2>]]></content>
+      <categories>
+        <category>middleware</category>
+      </categories>
+      <tags>
+        <tag>middleware</tag>
+        <tag>数据库</tag>
+        <tag>redis</tag>
+        <tag>分布式锁</tag>
+      </tags>
+  </entry>
 </search>

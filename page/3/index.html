@@ -949,6 +949,103 @@
   
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.zhengpengde.vip/2021/11/27/db/redis/redis-distributed-lock-use/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="zhengpeng">
+      <meta itemprop="description" content="好记性不如烂笔头">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zhengpengde.vip">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/11/27/db/redis/redis-distributed-lock-use/" class="post-title-link" itemprop="url">redis使用分布式锁记</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-11-27 15:00:00 / 修改时间：17:43:09" itemprop="dateCreated datePublished" datetime="2021-11-27T15:00:00+08:00">2021-11-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/middleware/" itemprop="url" rel="index"><span itemprop="name">middleware</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>208</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="redis使用分布式锁记"><a href="#redis使用分布式锁记" class="headerlink" title="redis使用分布式锁记"></a>redis使用分布式锁记</h1><h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><blockquote>
+<p>在使用项目中封装的redis锁注解中，会出现</p>
+</blockquote>
+<h2 id="大胆假设，小心求证"><a href="#大胆假设，小心求证" class="headerlink" title="大胆假设，小心求证"></a>大胆假设，小心求证</h2><ul>
+<li>观点一: 往redis写会失败<ul>
+<li>利用多线程模拟写操作<ul>
+<li>本地模拟10万个线程同时写操作，并未复现</li>
+</ul>
+</li>
+<li>业务代码中</li>
+</ul>
+</li>
+<li>观点二: key重复导致失败<ul>
+<li>利用多线程模拟</li>
+<li>短时间内重复key</li>
+<li>业务代码中有满足的条件<ul>
+<li>创建订单：key为customerId，表中存在customerId重复</li>
+<li>发放优惠券：key为activeId，活动为key，也存在重复</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="可以记录的"><a href="#可以记录的" class="headerlink" title="可以记录的"></a>可以记录的</h2>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
 
   
   <nav class="pagination">
@@ -1018,7 +1115,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1031,7 +1128,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">23</span>
+        <span class="site-state-item-count">25</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
