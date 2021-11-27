@@ -6249,6 +6249,7 @@ innodb：索引和数据存储在同一文件
 <h2 id="可以记录的"><a href="#可以记录的" class="headerlink" title="可以记录的"></a>可以记录的</h2>]]></content>
       <categories>
         <category>middleware</category>
+        <category>redis</category>
       </categories>
       <tags>
         <tag>middleware</tag>
