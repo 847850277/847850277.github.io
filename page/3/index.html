@@ -976,10 +976,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-11-27 15:00:00 / 修改时间：17:50:01" itemprop="dateCreated datePublished" datetime="2021-11-27T15:00:00+08:00">2021-11-27</time>
+              <time title="创建时间：2021-11-27 15:00:00" itemprop="dateCreated datePublished" datetime="2021-11-27T15:00:00+08:00">2021-11-27</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-11-28 18:51:41" itemprop="dateModified" datetime="2021-11-28T18:51:41+08:00">2021-11-28</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -1000,7 +1006,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>208</span>
+              <span>2.8k</span>
             </span>
 
         </div>
@@ -1013,9 +1019,14 @@
 
       
           <h1 id="redis使用分布式锁记"><a href="#redis使用分布式锁记" class="headerlink" title="redis使用分布式锁记"></a>redis使用分布式锁记</h1><h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><blockquote>
-<p>在使用项目中封装的redis锁注解中，会出现</p>
+<p>在使用项目中封装的redis锁注解中，会出现异常信息。抛出拿分布式锁异常。</p>
 </blockquote>
-<h2 id="大胆假设，小心求证"><a href="#大胆假设，小心求证" class="headerlink" title="大胆假设，小心求证"></a>大胆假设，小心求证</h2><ul>
+<h2 id="代码分析如下"><a href="#代码分析如下" class="headerlink" title="代码分析如下"></a>代码分析如下</h2><h3 id="其中lock对象为false的情况下会抛出Get-redis-lock-failed的业务异常"><a href="#其中lock对象为false的情况下会抛出Get-redis-lock-failed的业务异常" class="headerlink" title="其中lock对象为false的情况下会抛出Get redis lock failed的业务异常"></a>其中lock对象为false的情况下会抛出Get redis lock failed的业务异常</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@Around(&quot;redisLockPoint() &amp;&amp; @annotation(redisLock)&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">around</span><span class="params">(ProceedingJoinPoint pjp, RedisLock redisLock)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">        String key = redisLock.key();</span><br><span class="line">        <span class="keyword">if</span> (StringUtils.isBlank(key)) &#123;</span><br><span class="line">            Object[] args = pjp.getArgs();</span><br><span class="line">            <span class="keyword">if</span> (redisLock.bindType().equals(RedisLock.BindType.DEFAULT)) &#123;</span><br><span class="line">                key = StringUtils.join(args);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (redisLock.bindType().equals(RedisLock.BindType.ARGS_INDEX)) &#123;</span><br><span class="line">                key = getArgsKey(redisLock, args);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (redisLock.bindType().equals(RedisLock.BindType.OBJECT_PROPERTIES)) &#123;</span><br><span class="line">                key = getObjectPropertiesKey(redisLock, args);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        Assert.hasText(key, <span class="string">&quot;key does not exist&quot;</span>);</span><br><span class="line">        String prefix = redisLock.prefix()+<span class="string">&quot;_&quot;</span>;</span><br><span class="line">        <span class="keyword">boolean</span> lock = distributedRedisLock.lock(prefix + key, redisLock.expire(), redisLock.retryTimes(), redisLock.retryInterval());</span><br><span class="line">        <span class="keyword">if</span> (!lock) &#123;</span><br><span class="line">            log.warn(<span class="string">&quot;get lock failed : &quot;</span> + key);</span><br><span class="line">            <span class="keyword">if</span> (redisLock.errorStrategy().equals(RedisLock.ErrorStrategy.THROW_EXCEPTION)) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> RedisException(<span class="string">&quot;Get redis lock failed&quot;</span>);</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        log.info(<span class="string">&quot;get lock success : &#123;&#125;&quot;</span>, key);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> pjp.proceed();</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="keyword">boolean</span> result = distributedRedisLock.unLock(prefix + key);</span><br><span class="line">            log.info(<span class="string">&quot;release lock : &#123;&#125; &#123;&#125;&quot;</span>, prefix + key, result ? <span class="string">&quot; success&quot;</span> : <span class="string">&quot; failed&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="加锁的方法-通过redisTemplate执行execute方法，然后其中的SetOption参数为SET-IF-ABSENT"><a href="#加锁的方法-通过redisTemplate执行execute方法，然后其中的SetOption参数为SET-IF-ABSENT" class="headerlink" title="加锁的方法,通过redisTemplate执行execute方法，然后其中的SetOption参数为SET_IF_ABSENT"></a>加锁的方法,通过redisTemplate执行execute方法，然后其中的SetOption参数为SET_IF_ABSENT</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * 加锁</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@param</span> key 锁key</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@param</span> expire 过期时间</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@param</span> retryTimes 重试次数</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@param</span> retryInterval 重试间隔</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@return</span> true 加锁成功， false 加锁失败</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">lock</span><span class="params">(String key, <span class="keyword">long</span> expire, <span class="keyword">int</span> retryTimes, <span class="keyword">long</span> retryInterval)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">boolean</span> result = setRedisLock(key, expire);</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">      * 如果获取锁失败，进行重试</span></span><br><span class="line"><span class="comment">      */</span></span><br><span class="line">    <span class="keyword">while</span>((!result) &amp;&amp; retryTimes-- &gt; <span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            log.info(<span class="string">&quot;lock failed, retrying...&quot;</span> + retryTimes);</span><br><span class="line">            Thread.sleep(retryInterval);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        result = setRedisLock(key, expire);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * 设置redis锁</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@param</span> key  锁key</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@param</span> expire 过期时间</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@return</span> true 设置成功，false 设置失败</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">setRedisLock</span><span class="params">(String key, <span class="keyword">long</span> expire)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        RedisCallback&lt;Boolean&gt; callback = (connection) -&gt; &#123;</span><br><span class="line">            String uuid = UUID.randomUUID().toString();</span><br><span class="line">            lockKey.set(uuid);</span><br><span class="line">            <span class="keyword">return</span> connection.set(key.getBytes(), uuid.getBytes(), Expiration.milliseconds(expire), RedisStringCommands.SetOption.SET_IF_ABSENT);</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="keyword">return</span> redisTemplate.execute(callback);</span><br><span class="line">    &#125;<span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">        log.error(<span class="string">&quot;set redis error&quot;</span>, e);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3><h2 id="大胆假设，小心求证"><a href="#大胆假设，小心求证" class="headerlink" title="大胆假设，小心求证"></a>大胆假设，小心求证</h2><ul>
 <li>观点一: 往redis写会失败<ul>
 <li>利用多线程模拟写操作<ul>
 <li>本地模拟10万个线程同时写操作，并未复现</li>
@@ -1036,6 +1047,674 @@
 </li>
 </ul>
 <h2 id="可以记录的"><a href="#可以记录的" class="headerlink" title="可以记录的"></a>可以记录的</h2>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://www.zhengpengde.vip/2021/11/28/stock-week-report/2021-11-28/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="zhengpeng">
+      <meta itemprop="description" content="好记性不如烂笔头">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zhengpengde.vip">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/11/28/stock-week-report/2021-11-28/" class="post-title-link" itemprop="url">2021年11月28日-小助手周总结</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-11-28 10:00:00 / 修改时间：20:29:07" itemprop="dateCreated datePublished" datetime="2021-11-28T10:00:00+08:00">2021-11-28</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%8A%95%E8%B5%84%E5%B0%8F%E5%8A%A9%E6%89%8B/" itemprop="url" rel="index"><span itemprop="name">投资小助手</span></a>
+                </span>
+            </span>
+
+          <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>806</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="2021年11月28日投资小助手周总结"><a href="#2021年11月28日投资小助手周总结" class="headerlink" title="2021年11月28日投资小助手周总结"></a>2021年11月28日投资小助手周总结</h1><p><img src="http://117.50.163.170:9000/my-mp/my-mp/yunyu.jpeg" alt="封面图"></p>
+<h2 id="一些想法"><a href="#一些想法" class="headerlink" title="一些想法"></a>一些想法</h2><blockquote>
+<p>若南极电商到达止损点位，卖出止损。<br>以前的一些思考，通过足够便宜的分段买入，卖出。这一两个月的实验来看，可能效果并不尽如人意。赚点生活费倒还是可以的。如果要真的全力以赴，还是买要了解的，然后足够便宜的。倒是，新东方，利空出尽后短短的一段时间，大家的关注度又上来了。看来最好的还是尽量的长时间持有，然后足够低的成本。</p>
+</blockquote>
+<h2 id="交易记录"><a href="#交易记录" class="headerlink" title="交易记录"></a>交易记录</h2><blockquote>
+<p>本周，<br>卖出了两只可转债，小赚了接近一千块吧。关于可转债的卖出时间，第一只当天忙碌并未成功卖出，第二天低开一点才卖出<br>第二支，未到开盘时间，也就是9点15左右，挂的卖出单，结果成交金额为当天的最高。</p>
+</blockquote>
+<h2 id="author-stock-monitor-tool"><a href="#author-stock-monitor-tool" class="headerlink" title="author:@stock-monitor-tool"></a>author:@stock-monitor-tool</h2><h2 id="完整监控表格"><a href="#完整监控表格" class="headerlink" title="完整监控表格"></a>完整监控表格</h2><html>
+<body>
+<table>
+
+<tr>
+<th>
+<b>名称</b>
+</th>
+<th>
+<b>目标买入价格</b>
+</th>
+<th>
+<b>目标卖出价格</b>
+</th>
+<th>
+<b>止损卖出价格</b>
+</th>
+<th>
+<b>购买次数</b>
+</th>
+<th>
+<b>已买</b>
+</th>
+<th>
+<b>已买</b>
+</th>
+<th>
+<b>实际买入价格</b>
+</th>
+<th>
+<b>实际卖出价格</b>
+</th>
+<th>
+<b>实际止损卖出价格</b>
+</th>
+</tr>
+            
+<tr>
+<th>
+<b>腾讯</b>
+</th>
+<th>
+<b>400</b>
+</th>
+<th>
+<b>434</b>
+</th>
+<th>
+<b>376</b>
+</th>
+<th>
+<b>0次</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+</tr>            
+<tr>
+<th>
+<b>新东方在线</b>
+</th>
+<th>
+<b>4</b>
+</th>
+<th>
+<b>4.34</b>
+</th>
+<th>
+<b>3.76</b>
+</th>
+<th>
+<b>0次</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+</tr>            
+<tr>
+<th>
+<b>上海机场</b>
+</th>
+<th>
+<b>31</b>
+</th>
+<th>
+<b>33.635</b>
+</th>
+<th>
+<b>29.14</b>
+</th>
+<th>
+<b>0次</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+</tr>            
+<tr>
+<th>
+<b>生物股份</b>
+</th>
+<th>
+<b>14.8</b>
+</th>
+<th>
+<b>16.058</b>
+</th>
+<th>
+<b>13.912</b>
+</th>
+<th>
+<b>0次</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+</tr>            
+<tr>
+<th>
+<b>瀚蓝环境</b>
+</th>
+<th>
+<b>20</b>
+</th>
+<th>
+<b>21.7</b>
+</th>
+<th>
+<b>18.8</b>
+</th>
+<th>
+<b>0次</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+</tr>            
+<tr>
+<th>
+<b>陕西煤业</b>
+</th>
+<th>
+<b>10</b>
+</th>
+<th>
+<b>11</b>
+</th>
+<th>
+<b>9.4</b>
+</th>
+<th>
+<b>0次</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+</tr>            
+<tr>
+<th>
+<b>中国平安</b>
+</th>
+<th>
+<b>47.5</b>
+</th>
+<th>
+<b>51.5375</b>
+</th>
+<th>
+<b>44.65</b>
+</th>
+<th>
+<b>0次</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+</tr>            
+<tr>
+<th>
+<b>荣泰健康</b>
+</th>
+<th>
+<b>28</b>
+</th>
+<th>
+<b>30.38</b>
+</th>
+<th>
+<b>26.32</b>
+</th>
+<th>
+<b>0次</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+</tr>            
+<tr>
+<th>
+<b>万科A</b>
+</th>
+<th>
+<b>18</b>
+</th>
+<th>
+<b>19.90975</b>
+</th>
+<th>
+<b>16.92</b>
+</th>
+<th>
+<b>1次</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>是</b>
+</th>
+<th>
+<b>18.35</b>
+</th>
+<th>
+<b>19.91</b>
+</th>
+<th>
+<b>--</b>
+</th>
+</tr>            
+<tr>
+<th>
+<b>格力电器</b>
+</th>
+<th>
+<b>35</b>
+</th>
+<th>
+<b>37.975</b>
+</th>
+<th>
+<b>32.9</b>
+</th>
+<th>
+<b>0次</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+</tr>            
+<tr>
+<th>
+<b>视觉中国</b>
+</th>
+<th>
+<b>12</b>
+</th>
+<th>
+<b>13.02</b>
+</th>
+<th>
+<b>11.28</b>
+</th>
+<th>
+<b>0次</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+</tr>            
+<tr>
+<th>
+<b>分众传媒</b>
+</th>
+<th>
+<b>7</b>
+</th>
+<th>
+<b>7.595</b>
+</th>
+<th>
+<b>6.58</b>
+</th>
+<th>
+<b>0次</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+</tr>            
+<tr>
+<th>
+<b>南极电商</b>
+</th>
+<th>
+<b>7</b>
+</th>
+<th>
+<b>7.595</b>
+</th>
+<th>
+<b>6.58</b>
+</th>
+<th>
+<b>1次</b>
+</th>
+<th>
+<b>是</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>7</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+</tr>            
+<tr>
+<th>
+<b>宋城演艺</b>
+</th>
+<th>
+<b>12.5</b>
+</th>
+<th>
+<b>13.5625</b>
+</th>
+<th>
+<b>11.75</b>
+</th>
+<th>
+<b>0次</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+</tr>            
+<tr>
+<th>
+<b>安车检测</b>
+</th>
+<th>
+<b>17.82</b>
+</th>
+<th>
+<b>19.3347</b>
+</th>
+<th>
+<b>16.7508</b>
+</th>
+<th>
+<b>1次</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+</tr>            
+<tr>
+<th>
+<b>浙矿股份</b>
+</th>
+<th>
+<b>40</b>
+</th>
+<th>
+<b>43.4</b>
+</th>
+<th>
+<b>37.6</b>
+</th>
+<th>
+<b>0次</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+</tr>            
+<tr>
+<th>
+<b>金龙鱼</b>
+</th>
+<th>
+<b>60</b>
+</th>
+<th>
+<b>65.1</b>
+</th>
+<th>
+<b>56.4</b>
+</th>
+<th>
+<b>0次</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>否</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+<th>
+<b>--</b>
+</th>
+</tr>
+</table>
+</body>
+</html>
+
+
+
+
       
     </div>
 
@@ -1119,7 +1798,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-count">24</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1168,7 +1847,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
-    <span title="站点总字数">228k</span>
+    <span title="站点总字数">232k</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
   </div>
