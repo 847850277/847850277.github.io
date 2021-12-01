@@ -3841,7 +3841,15 @@
   <entry>
     <title>bug</title>
     <url>/2015/07/01/bug/bug/</url>
-    <content><![CDATA[<h1 id="bug清单表格"><a href="#bug清单表格" class="headerlink" title="bug清单表格"></a>bug清单表格</h1><html>
+    <content><![CDATA[<style> 
+h2 { border-bottom: none }
+a{text-decoration:none;}
+</style>
+
+
+
+<h1 id="bug清单表格"><a href="#bug清单表格" class="headerlink" title="bug清单表格"></a>bug清单表格</h1><h2 id="springboot上传文件，报流关闭错误"><a href="#springboot上传文件，报流关闭错误" class="headerlink" title="springboot上传文件，报流关闭错误"></a><a href="#1">springboot上传文件，报流关闭错误</a></h2><h2 id="某些sql会在limit后追加一个limit，导致查询sql报错"><a href="#某些sql会在limit后追加一个limit，导致查询sql报错" class="headerlink" title="某些sql会在limit后追加一个limit，导致查询sql报错"></a><a href="#2">某些sql会在limit后追加一个limit，导致查询sql报错</a></h2><h2 id="请求接口，返回90044错误"><a href="#请求接口，返回90044错误" class="headerlink" title="请求接口，返回90044错误"></a><a href="#3">请求接口，返回90044错误</a></h2><h2 id="小程序获取手机号授权，并未生成响应的学员记录"><a href="#小程序获取手机号授权，并未生成响应的学员记录" class="headerlink" title="小程序获取手机号授权，并未生成响应的学员记录"></a><a href="#4">小程序获取手机号授权，并未生成响应的学员记录</a></h2><h2 id="crm服务导入数据、特定的获客渠道（异界交换）才能够导入"><a href="#crm服务导入数据、特定的获客渠道（异界交换）才能够导入" class="headerlink" title="crm服务导入数据、特定的获客渠道（异界交换）才能够导入"></a><a href="#5">crm服务导入数据、特定的获客渠道（异界交换）才能够导入</a></h2><h2 id="支付成功后，在crm的h5页面填入分单的数据、结果分单后的比例并没有按对应比例保存"><a href="#支付成功后，在crm的h5页面填入分单的数据、结果分单后的比例并没有按对应比例保存" class="headerlink" title="支付成功后，在crm的h5页面填入分单的数据、结果分单后的比例并没有按对应比例保存"></a><a href="#6">支付成功后，在crm的h5页面填入分单的数据、结果分单后的比例并没有按对应比例保存</a></h2><h2 id="有一个定时然后推送消息的功能，同时推送短信和微信模版消息。"><a href="#有一个定时然后推送消息的功能，同时推送短信和微信模版消息。" class="headerlink" title="有一个定时然后推送消息的功能，同时推送短信和微信模版消息。"></a><a href="#7">有一个定时然后推送消息的功能，同时推送短信和微信模版消息。</a></h2><h2 id="订单支付成功，生成了3条相同的费用明细，同时生成了三个正式学员，有预警邮件提醒"><a href="#订单支付成功，生成了3条相同的费用明细，同时生成了三个正式学员，有预警邮件提醒" class="headerlink" title="订单支付成功，生成了3条相同的费用明细，同时生成了三个正式学员，有预警邮件提醒"></a><a href="#8">订单支付成功，生成了3条相同的费用明细，同时生成了三个正式学员，有预警邮件提醒</a></h2><h2 id="在正式学员列表里面，搜索姓名姓名无法找到该学员，但是搜索学员昵称或者电话号码又可以找到该学员…"><a href="#在正式学员列表里面，搜索姓名姓名无法找到该学员，但是搜索学员昵称或者电话号码又可以找到该学员…" class="headerlink" title="在正式学员列表里面，搜索姓名姓名无法找到该学员，但是搜索学员昵称或者电话号码又可以找到该学员…"></a><a href="#9">在正式学员列表里面，搜索姓名姓名无法找到该学员，但是搜索学员昵称或者电话号码又可以找到该学员…</a></h2><h2 id="通过转介绍渠道来的新的意向客户数据，其跟进人的扫码归属人字段未写入值"><a href="#通过转介绍渠道来的新的意向客户数据，其跟进人的扫码归属人字段未写入值" class="headerlink" title="通过转介绍渠道来的新的意向客户数据，其跟进人的扫码归属人字段未写入值"></a><a href="#10">通过转介绍渠道来的新的意向客户数据，其跟进人的扫码归属人字段未写入值</a></h2><h2 id="omo转介绍小程序，提交了预约相关信息，其生成了活动记录，但是并未生成客户记录"><a href="#omo转介绍小程序，提交了预约相关信息，其生成了活动记录，但是并未生成客户记录" class="headerlink" title="omo转介绍小程序，提交了预约相关信息，其生成了活动记录，但是并未生成客户记录"></a><a href="#11">omo转介绍小程序，提交了预约相关信息，其生成了活动记录，但是并未生成客户记录</a></h2><h2 id="数据字典的校区由新校变成老校定时未生效"><a href="#数据字典的校区由新校变成老校定时未生效" class="headerlink" title="数据字典的校区由新校变成老校定时未生效"></a><a href="#12">数据字典的校区由新校变成老校定时未生效</a></h2><h2 id="启动项目提示拿不到数据库的链接"><a href="#启动项目提示拿不到数据库的链接" class="headerlink" title="启动项目提示拿不到数据库的链接"></a><a href="#13">启动项目提示拿不到数据库的链接</a></h2><h2 id="暑期三节课发起支付后，订单支付状态未变更为支付中"><a href="#暑期三节课发起支付后，订单支付状态未变更为支付中" class="headerlink" title="暑期三节课发起支付后，订单支付状态未变更为支付中"></a><a href="#14">暑期三节课发起支付后，订单支付状态未变更为支付中</a></h2><h2 id="1-客户详细存在跟进人为空的数据2-sql查询的逻辑为即查询跟进人的id，又查询冗余跟进人名称，同时冗余跟进人名称会存在为空的数据"><a href="#1-客户详细存在跟进人为空的数据2-sql查询的逻辑为即查询跟进人的id，又查询冗余跟进人名称，同时冗余跟进人名称会存在为空的数据" class="headerlink" title="1.客户详细存在跟进人为空的数据2.sql查询的逻辑为即查询跟进人的id，又查询冗余跟进人名称，同时冗余跟进人名称会存在为空的数据"></a><a href="#15">1.客户详细存在跟进人为空的数据2.sql查询的逻辑为即查询跟进人的id，又查询冗余跟进人名称，同时冗余跟进人名称会存在为空的数据</a></h2><h2 id="导出正式学员列表增加扫码归属人和收单人员两列字段"><a href="#导出正式学员列表增加扫码归属人和收单人员两列字段" class="headerlink" title="导出正式学员列表增加扫码归属人和收单人员两列字段"></a><a href="#16">导出正式学员列表增加扫码归属人和收单人员两列字段</a></h2><h2 id="优惠券退款，点击驳回或者废除。若原状态为已经回收，其状态还是变更成未使用，并没有退回为原本状态"><a href="#优惠券退款，点击驳回或者废除。若原状态为已经回收，其状态还是变更成未使用，并没有退回为原本状态" class="headerlink" title="优惠券退款，点击驳回或者废除。若原状态为已经回收，其状态还是变更成未使用，并没有退回为原本状态"></a><a href="#17">优惠券退款，点击驳回或者废除。若原状态为已经回收，其状态还是变更成未使用，并没有退回为原本状态</a></h2><h2 id="线上支付在使用支付宝付款时候提示“操作失败：网络或者服务器错误”"><a href="#线上支付在使用支付宝付款时候提示“操作失败：网络或者服务器错误”" class="headerlink" title="线上支付在使用支付宝付款时候提示“操作失败：网络或者服务器错误”"></a><a href="#18">线上支付在使用支付宝付款时候提示“操作失败：网络或者服务器错误”</a></h2><h2 id="定时同步标签，但是其值并未写入数据库"><a href="#定时同步标签，但是其值并未写入数据库" class="headerlink" title="定时同步标签，但是其值并未写入数据库"></a><a href="#19">定时同步标签，但是其值并未写入数据库</a></h2><h2 id="selenium模拟微信登陆选择封面图失败，报js的异常"><a href="#selenium模拟微信登陆选择封面图失败，报js的异常" class="headerlink" title="selenium模拟微信登陆选择封面图失败，报js的异常"></a><a href="#20">selenium模拟微信登陆选择封面图失败，报js的异常</a></h2><h2 id="活动小程序部分用户唤起支付控件失败"><a href="#活动小程序部分用户唤起支付控件失败" class="headerlink" title="活动小程序部分用户唤起支付控件失败"></a><a href="#21">活动小程序部分用户唤起支付控件失败</a></h2><h2 id="模拟代码用队列发送前置消息失败，但是走支付流程真实付款，前置流程成功。且调用发送MQ的方法为同一个，并无差异"><a href="#模拟代码用队列发送前置消息失败，但是走支付流程真实付款，前置流程成功。且调用发送MQ的方法为同一个，并无差异" class="headerlink" title="模拟代码用队列发送前置消息失败，但是走支付流程真实付款，前置流程成功。且调用发送MQ的方法为同一个，并无差异"></a><a href="#22">模拟代码用队列发送前置消息失败，但是走支付流程真实付款，前置流程成功。且调用发送MQ的方法为同一个，并无差异</a></h2><h2 id="模拟支付集成测试用例的数据驱动的开发"><a href="#模拟支付集成测试用例的数据驱动的开发" class="headerlink" title="模拟支付集成测试用例的数据驱动的开发"></a><a href="#23">模拟支付集成测试用例的数据驱动的开发</a></h2><h2 id="hexo-下的分类和表签无法显示，怎么解决？"><a href="#hexo-下的分类和表签无法显示，怎么解决？" class="headerlink" title="hexo 下的分类和表签无法显示，怎么解决？"></a><a href="#24">hexo 下的分类和表签无法显示，怎么解决？</a></h2><h2 id="增加-transactional，定时调度生成了多条记录"><a href="#增加-transactional，定时调度生成了多条记录" class="headerlink" title="增加@transactional，定时调度生成了多条记录"></a><a href="#25">增加@transactional，定时调度生成了多条记录</a></h2><h2 id="优惠券状态后置，导致执行更新优惠券状态失败，影响整个订单后置流程"><a href="#优惠券状态后置，导致执行更新优惠券状态失败，影响整个订单后置流程" class="headerlink" title="优惠券状态后置，导致执行更新优惠券状态失败，影响整个订单后置流程"></a><a href="#26">优惠券状态后置，导致执行更新优惠券状态失败，影响整个订单后置流程</a></h2><h2 id="请求接口，返回90044错误-1"><a href="#请求接口，返回90044错误-1" class="headerlink" title="请求接口，返回90044错误"></a><a href="#27">请求接口，返回90044错误</a></h2><html>
+
 <table> 
     <tr>
     <th>序号</th>
@@ -3854,7 +3862,7 @@
     <th>参考链接</th>
     </tr>
     <tr>
-    <th>1</th>
+    <th><a name ="1">1</a></th>
     <th>2021-08-21</th>
     <th>springboot上传文件，报流关闭错误</th>
     <th>项目中增加了全局的GlobalWebAppConfig，其中的配置导致流关闭失效</th>
@@ -3869,7 +3877,7 @@
     <th></th>
     </tr>
     <tr>
-    <th>2</th>
+    <th><a name ="2">2</a></th>
     <th>2021-08-21</th>
     <th>某些sql会在limit后追加一个limit，导致查询sql报错</th>
     <th>
@@ -3889,7 +3897,7 @@ ThreadLocal设置线程局部变量，tomcat线程次会缓存请求，可能导
     <th></th>
     </tr>
     <tr>
-    <th>3</th>
+    <th><a name="3">3</a></th>
     <th>2021-08-23</th>
     <th>请求接口，返回90044错误</th>
     <th>
@@ -3909,7 +3917,7 @@ ThreadLocal设置线程局部变量，tomcat线程次会缓存请求，可能导
     <th></th>
     </tr>
     <tr>
-    <th>4</th>
+    <th><a name="4">4</a></th>
     <th>2021-08-25</th>
     <th>小程序获取手机号授权，并未生成响应的学员记录</th>
     <th>
@@ -3930,7 +3938,7 @@ ThreadLocal设置线程局部变量，tomcat线程次会缓存请求，可能导
     <th></th>
     </tr>
     <tr>
-    <th>5</th>
+    <th><a name="5">5</a></th>
     <th>2021-08-25</th>
     <th>crm服务导入数据、特定的获客渠道（异界交换）才能够导入</th>
     <th>
@@ -3950,7 +3958,7 @@ crm也调用获取所有的获客渠道
     <th></th>
     </tr>
     <tr>
-    <th>6</th>
+    <th><a name="6">6</a></th>
     <th>2021-08-25</th>
     <th>支付成功后，在crm的h5页面填入分单的数据、结果分单后的比例并没有按对应比例保存</th>
     <th>
@@ -3969,7 +3977,7 @@ crm也调用获取所有的获客渠道
     <th></th>
     </tr>
     <tr>
-    <th>7</th>
+    <th><a name="7">7</a></th>
     <th>2021-08-25</th>
     <th>有一个定时然后推送消息的功能，同时推送短信和微信模版消息。<br/>
     执行定时后，短信推送了，但是模版消息并未推送。</th>
@@ -3992,7 +4000,7 @@ crm也调用获取所有的获客渠道
     <th></th>
     </tr>
     <tr>
-    <th>8</th>
+    <th><a name="8">8</a></th>
     <th>2021-08-25</th>
     <th>订单支付成功，生成了3条相同的费用明细，同时生成了三个正式学员，
 有预警邮件提醒</th>
@@ -4013,7 +4021,7 @@ crm也调用获取所有的获客渠道
     <th></th>
     </tr>
     <tr>
-    <th>9</th>
+    <th><a name="9">9</a></th>
     <th>2021-08-30</th>
     <th>在正式学员列表里面，搜索姓名姓名无法找到该学员，但是搜索学员昵称或者电话号码又可以找到该学员。<br/>
 点击进入详细页里面，发现学员的姓名又是正常显示.包括学员费用明细里面也是一样的<br/>
@@ -4036,7 +4044,7 @@ erp修改意向校区，发赠课券后所属校区为空<br/></th>
     <th></th>
     </tr>
     <tr>
-    <th>10</th>
+    <th><a name="10">10</a></th>
     <th>2021-08-30</th>
     <th>通过转介绍渠道来的新的意向客户数据，其跟进人的扫码归属人字段未写入值</th>
     <th>
@@ -4061,7 +4069,7 @@ erp修改意向校区，发赠课券后所属校区为空<br/></th>
     <th></th>
     </tr>
     <tr>
-    <th>11</th>
+    <th><a name="11">11</a></th>
     <th>2021-08-30</th>
     <th>omo转介绍小程序，提交了预约相关信息，其生成了活动记录，但是并未生成客户记录</th>
     <th>
@@ -4084,7 +4092,7 @@ erp修改意向校区，发赠课券后所属校区为空<br/></th>
     <th></th>
     </tr>
     <tr>
-    <th>12</th>
+    <th><a name="12">12</a></th>
     <th>2021-09-01</th>
     <th>数据字典的校区由新校变成老校定时未生效</th>
     <th>
@@ -4105,7 +4113,7 @@ erp修改意向校区，发赠课券后所属校区为空<br/></th>
     <th></th>
     </tr>
     <tr>
-    <th>13</th>
+    <th><a name="13">13</a></th>
     <th>2021-09-01</th>
     <th>启动项目提示拿不到数据库的链接</th>
     <th>
@@ -4130,7 +4138,7 @@ erp修改意向校区，发赠课券后所属校区为空<br/></th>
     <th></th>
     </tr>
     <tr>
-    <th>14</th>
+    <th><a name="14">14</a></th>
     <th>2021-09-02</th>
     <th>暑期三节课发起支付后，订单支付状态未变更为支付中</th>
     <th>
@@ -4151,7 +4159,7 @@ erp修改意向校区，发赠课券后所属校区为空<br/></th>
     <th></th>
     </tr>
     <tr>
-    <th>15</th>
+    <th><a name="15">15</a></th>
     <th>2021-09-02</th>
     <th>修复跟进人bug</th>
     <th>
@@ -4173,7 +4181,7 @@ erp修改意向校区，发赠课券后所属校区为空<br/></th>
     <th></th>
     </tr>
     <tr>
-    <th>16</th>
+    <th><a name="16">16</a></th>
     <th>2021-09-08</th>
     <th>导出正式学员列表增加扫码归属人和收单人员两列字段</th>
     <th>
@@ -4196,7 +4204,7 @@ erp修改意向校区，发赠课券后所属校区为空<br/></th>
     <th></th>
     </tr>
     <tr>
-    <th>17</th>
+    <th><a name="17">17</a></th>
     <th>2021-09-09</th>
     <th>优惠券退款，点击驳回或者废除。若原状态为已经回收，
 其状态还是变更成未使用，并没有退回为原本状态</th>
@@ -4225,7 +4233,7 @@ erp修改意向校区，发赠课券后所属校区为空<br/></th>
     <th></th>
     </tr>
     <tr>
-    <th>18</th>
+    <th><a name="18">18</a></th>
     <th>2021-09-22</th>
     <th>线上支付在使用支付宝付款时候提示“操作失败：网络或者服务器错误”</th>
     <th>
@@ -4249,7 +4257,7 @@ erp修改意向校区，发赠课券后所属校区为空<br/></th>
     <th></th>
     </tr>
     <tr>
-    <th>19</th>
+    <th><a name="19">19</a></th>
     <th>2021-09-24</th>
     <th>定时同步标签，但是其值并未写入数据库</th>
     <th>
@@ -4272,7 +4280,7 @@ erp修改意向校区，发赠课券后所属校区为空<br/></th>
     <th></th>
     </tr>
     <tr>
-    <th>20</th>
+    <th><a name="20">20</a></th>
     <th>2021-09-24</th>
     <th>selenium模拟微信登陆选择封面图失败，报js的异常</th>
     <th>
@@ -4294,7 +4302,7 @@ erp修改意向校区，发赠课券后所属校区为空<br/></th>
     <th></th>
     </tr>
     <tr>
-    <th>21</th>
+    <th><a name="21">21</a></th>
     <th>2021-09-29</th>
     <th>活动小程序部分用户唤起支付控件失败</th>
     <th>
@@ -4317,7 +4325,8 @@ erp修改意向校区，发赠课券后所属校区为空<br/></th>
     </th>
     <th></th>
     </tr>
-    <th>22</th>
+    <tr>
+    <th><a name="22">22</a></th>
     <th>2021-10-11</th>
     <th>模拟代码用队列发送前置消息失败，但是走支付流程真实付款，前置流程成功。
 且调用发送MQ的方法为同一个，并无差异</th>
@@ -4338,8 +4347,8 @@ erp修改意向校区，发赠课券后所属校区为空<br/></th>
     </th>
     <th></th>
     </tr>
-     </tr>
-    <th>23</th>
+     <tr>
+    <th><a name="23">23</a></th>
     <th>2021-10-11</th>
     <th>
     模拟支付集成测试用例的数据驱动的开发<br/>
@@ -4361,7 +4370,8 @@ erp修改意向校区，发赠课券后所属校区为空<br/></th>
     </th>
     <th></th>
     </tr>
-    <th>24</th>
+    <tr>
+    <th><a name="24">24</a></th>
     <th>2021-11-09</th>
     <th>
     hexo 下的分类和表签无法显示，怎么解决？
@@ -4385,7 +4395,7 @@ erp修改意向校区，发赠课券后所属校区为空<br/></th>
     </th>
     </tr>
     <tr>
-    <th>25</th>
+    <th><a name="25">25</a></th>
     <th>2021-11-11</th>
     <th>
     增加@transactional，定时调度生成了多条记录
@@ -4404,7 +4414,7 @@ erp修改意向校区，发赠课券后所属校区为空<br/></th>
     </th>
     </tr>
     <tr>
-    <th>26</th>
+    <th><a name="26">26</a></th>
     <th>2021-11-19</th>
     <th>
         优惠券状态后置，导致执行更新优惠券状态失败，影响整个订单后置流程
@@ -4429,11 +4439,11 @@ erp修改意向校区，发赠课券后所属校区为空<br/></th>
     <th>
     </th>
     </tr>
-     <tr>
-    <th>27</th>
+    <tr>
+    <th><a name="27">27</a></th>
     <th>2021-12-01</th>
     <th>
-        支付接口，记录在ES的日志用es-header时间范围查询不生效
+        优惠券过期导致支付成功的后置流程失败
     </th>
     <th>
         然后创建订单的时候，优惠券状态为使用中，执行定时任务导致使用中变成过期。从而导致整个订单后置流程失败。
@@ -4446,14 +4456,13 @@ erp修改意向校区，发赠课券后所属校区为空<br/></th>
     1、监控邮件提醒支付后置优惠券状态不对<br/>
     2、排查过期定时任务导致使用中的优惠券状态为过期
         <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="comment">-- 查询未生成的费用明细</span></span><br><span class="line"><span class="keyword">select</span></span><br><span class="line">    t_order.SERIAL,</span><br><span class="line">    t_cost_detail.SERIAL</span><br><span class="line"><span class="keyword">from</span> dyjw_aggregate_layer.t_order</span><br><span class="line"><span class="keyword">left</span> <span class="keyword">join</span> dyjw_aggregate_layer.t_cost_detail <span class="keyword">on</span> t_order.SERIAL <span class="operator">=</span> t_cost_detail.SERIAL</span><br><span class="line"><span class="keyword">where</span>  t_order.CREATEDATE <span class="operator">&gt;=</span> <span class="string">&#x27;2021-10-01&#x27;</span> <span class="keyword">and</span> t_order.STATUS <span class="operator">=</span> <span class="number">2</span> <span class="keyword">and</span> t_order.GOODTYPE <span class="operator">!=</span> <span class="string">&#x27;优惠券&#x27;</span></span><br><span class="line"><span class="keyword">and</span> t_cost_detail.SERIAL <span class="keyword">is</span> <span class="keyword">null</span></span><br><span class="line">;</span><br></pre></td></tr></table></figure>
-    3. 用接口调整用户领用优惠券的状态，同时触发后置流程<br/>
+    1. 用接口调整用户领用优惠券的状态，同时触发后置流程<br/>
     </th>
     <th>
     </th>
     <th>
     </th>
     </tr>
-
 </table>
 </html>
 
