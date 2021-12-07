@@ -1810,7 +1810,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-12-01 10:11:46" itemprop="dateModified" datetime="2021-12-01T10:11:46+08:00">2021-12-01</time>
+                <time title="修改时间：2021-12-07 15:50:36" itemprop="dateModified" datetime="2021-12-07T15:50:36+08:00">2021-12-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1828,7 +1828,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>154</span>
+              <span>230</span>
             </span>
 
         </div>
@@ -1846,7 +1846,26 @@
 <blockquote>
 <p>将数据分为若干页，InnoDB中页的大小一般为16K。以页作为磁盘与内存交互的最基本单位。也就是在一般情况下，一次最少从磁盘中读取16KB的内容到内存中，一次最少把内存中的16KB内容刷新到磁盘中。</p>
 </blockquote>
-<h3 id="InnoDB行格式"><a href="#InnoDB行格式" class="headerlink" title="InnoDB行格式"></a><code>InnoDB行格式</code></h3>
+<h3 id="InnoDB行格式"><a href="#InnoDB行格式" class="headerlink" title="InnoDB行格式"></a><code>InnoDB行格式</code></h3><ul>
+<li>常用的格式<ul>
+<li>Compact行格式</li>
+<li>Redundant</li>
+</ul>
+</li>
+</ul>
+<h4 id="COMPACT行格式"><a href="#COMPACT行格式" class="headerlink" title="COMPACT行格式"></a>COMPACT行格式</h4><ul>
+<li>COMPACT行格式<ul>
+<li>记录额外信息<ul>
+<li>变长字段长度列表</li>
+<li>NULL值列表</li>
+<li>记录头信息</li>
+</ul>
+</li>
+<li>记录真实信息</li>
+</ul>
+</li>
+</ul>
+
       
     </div>
 
