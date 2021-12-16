@@ -7601,7 +7601,12 @@ innodb：索引和数据存储在同一文件
     <title>算法之反转链表</title>
     <url>/2021/12/10/algorithm/linkedlist-reverse/</url>
     <content><![CDATA[<h2 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h2><ul>
-<li>翻转链表一</li>
+<li>翻转链表一<ul>
+<li>遍历节点</li>
+<li>依次打断每个节点的头元素</li>
+<li>把打断的当前节点，加入到要返回的节点，并设置当前打断节点为头</li>
+</ul>
+</li>
 </ul>
 <p><img src="http://117.50.163.170:9000/blog/WechatIMG1199.png" alt="封面图"></p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 翻转链表 双指针法</span></span><br><span class="line"><span class="comment">* <span class="doctag">@param</span> head</span></span><br><span class="line"><span class="comment">* <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ListNode <span class="title">reverseList</span><span class="params">(ListNode head)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    ListNode pre = <span class="keyword">null</span>;</span><br><span class="line">    ListNode fast = head;</span><br><span class="line">    <span class="keyword">while</span> (fast!= <span class="keyword">null</span>)&#123;</span><br><span class="line">        <span class="comment">//指向下一个节点</span></span><br><span class="line">        ListNode temp = fast.next;</span><br><span class="line">        <span class="comment">//打断关系，fast就是前面的节点了</span></span><br><span class="line">        fast.next = pre;</span><br><span class="line">        pre = fast;</span><br><span class="line">        fast = temp;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> pre;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
