@@ -10319,13 +10319,13 @@ innodb：索引和数据存储在同一文件
 <b>生物股份</b>
 </th>
 <th>
-<b>14.8</b>
+<b>15.1</b>
 </th>
 <th>
-<b>16.058</b>
+<b>16.61</b>
 </th>
 <th>
-<b>13.912</b>
+<b>14.194</b>
 </th>
 <th>
 <b>0次</b>
@@ -10351,13 +10351,13 @@ innodb：索引和数据存储在同一文件
 <b>瀚蓝环境</b>
 </th>
 <th>
-<b>20</b>
+<b>21</b>
 </th>
 <th>
-<b>21.7</b>
+<b>23.1</b>
 </th>
 <th>
-<b>18.8</b>
+<b>19.74</b>
 </th>
 <th>
 <b>0次</b>
@@ -10383,13 +10383,13 @@ innodb：索引和数据存储在同一文件
 <b>陕西煤业</b>
 </th>
 <th>
-<b>10</b>
-</th>
-<th>
 <b>11</b>
 </th>
 <th>
-<b>9.4</b>
+<b>12.1</b>
+</th>
+<th>
+<b>10.34</b>
 </th>
 <th>
 <b>0次</b>
@@ -10735,7 +10735,149 @@ innodb：索引和数据存储在同一文件
 </html>
 
 <h2 id="变动信息"><a href="#变动信息" class="headerlink" title="变动信息"></a>变动信息</h2><ul>
-<li>1、[卖出修改]日期：<code>2022年01月07日</code>,股票名称:<code>南极电商</code>,目标买入价格:<code>7</code>,目标卖出价格:<code> 7.595</code></li>
+<li>1、[修改监控价格]日期：<code>2022年01月09日</code>,股票名称:<code>瀚蓝环境</code>,目标买入价格:<code>21</code>,目标卖出价格:<code> 23.1</code></li>
+<li>2、[修改监控价格]日期：<code>2022年01月09日</code>,股票名称:<code>南极电商</code>,目标买入价格:<code>6.8</code>,目标卖出价格:<code> 7.48</code></li>
+<li>3、[修改监控价格]日期：<code>2022年01月09日</code>,股票名称:<code>生物股份</code>,目标买入价格:<code>15.1</code>,目标卖出价格:<code> 16.61</code></li>
+<li>4、[修改监控价格]日期：<code>2022年01月09日</code>,股票名称:<code>陕西煤业</code>,目标买入价格:<code>11</code>,目标卖出价格:<code> 12.1</code></li>
+</ul>
+]]></content>
+      <categories>
+        <category>投资小助手</category>
+      </categories>
+      <tags>
+        <tag>个人工具</tag>
+        <tag>投资</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>2022年01月16日-小助手周总结</title>
+    <url>/2022/01/16/stock-week-report/2022-01-16/</url>
+    <content><![CDATA[<h1 id="2022年01月16日投资小助手周总结"><a href="#2022年01月16日投资小助手周总结" class="headerlink" title="2022年01月16日投资小助手周总结"></a>2022年01月16日投资小助手周总结</h1><p><img src="http://117.50.163.170:9000/my-mp/timer.jpeg" alt="封面图"></p>
+<h2 id="author-stock-monitor-tool"><a href="#author-stock-monitor-tool" class="headerlink" title="author:@stock-monitor-tool"></a>author:@stock-monitor-tool</h2><h2 id="一些想法"><a href="#一些想法" class="headerlink" title="一些想法"></a>一些想法</h2><ul>
+<li>重构了监控程序<ul>
+<li>基础监控<ul>
+<li>留了三个指标<ul>
+<li>买入</li>
+<li>卖出</li>
+<li>止损</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>历史监控信息<ul>
+<li>event事件记录   </li>
+</ul>
+</li>
+<li>代码迁移部署到了ucloud</li>
+<li>TODO前端用easyui写一下，然后用页面操作</li>
+<li>监控了四个对象</li>
+</ul>
+</li>
+<li>买入分众<ul>
+<li>周四，买点不够好<ul>
+<li>要是再多看看周五买入的话，便美极了</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>老俞带货<ul>
+<li>长期看好</li>
+</ul>
+</li>
+<li>专注力素材准备<ul>
+<li>手动录制15分钟的语音计数器</li>
+</ul>
+</li>
+</ul>
+<h2 id="完整监控表格"><a href="#完整监控表格" class="headerlink" title="完整监控表格"></a>完整监控表格</h2><html>
+<body>
+<table>
+
+<tr>
+<th>
+<b>名称</b>
+</th>
+<th>
+<b>目标买入价格</b>
+</th>
+<th>
+<b>目标卖出价格</b>
+</th>
+<th>
+<b>止损卖出价格</b>
+</th>
+</tr>
+            
+<tr>
+<th>
+<b>南极电商</b>
+</th>
+<th>
+<b>6.8</b>
+</th>
+<th>
+<b>7.1</b>
+</th>
+<th>
+<b>6.6</b>
+</th>
+<th>
+</tr>            
+<tr>
+<th>
+<b>分众传媒</b>
+</th>
+<th>
+<b>8</b>
+</th>
+<th>
+<b>8.21</b>
+</th>
+<th>
+<b>6.7</b>
+</th>
+<th>
+</tr>            
+<tr>
+<th>
+<b>生物股份</b>
+</th>
+<th>
+<b>16</b>
+</th>
+<th>
+<b>17</b>
+</th>
+<th>
+<b>15.5</b>
+</th>
+<th>
+</tr>            
+<tr>
+<th>
+<b>瀚蓝环境</b>
+</th>
+<th>
+<b>21</b>
+</th>
+<th>
+<b>22</b>
+</th>
+<th>
+<b>20</b>
+</th>
+<th>
+</tr>
+</table>
+</body>
+</html>
+
+<h2 id="变动信息"><a href="#变动信息" class="headerlink" title="变动信息"></a>变动信息</h2><ul>
+<li>1、2022-01-14 17:42:47:新增监控对象信息:code:sh600323,名字:瀚蓝环境,目标买入价格:21,目标卖出价格:22,目标止损价格:20,是否买入:否,</li>
+<li>2、2022-01-14 16:40:33:新增监控对象信息:code:sh600201,名字:生物股份,目标买入价格:16,目标卖出价格:17,目标止损价格:15.5,是否买入:否,</li>
+<li>3、2022-01-14 16:39:04:修改监控对象信息:原始信息:code:sz002127,名字:南极电商,目标买入价格:6.8,目标卖出价格:8.1,目标止损价格:6.6,是否买入:否,<br>本次修改信息:修改卖出价格:7.1,修改买入为:否,</li>
+<li>4、2022-01-14 16:37:52:新增监控对象信息:code:sz002027,名字:分众传媒,目标买入价格:8,目标卖出价格:8.21,目标止损价格:6.7,是否买入:否,</li>
+<li>5、2022-01-14 16:29:52:新增监控对象信息:code:sz002127,名字:南极电商,目标买入价格:6.8,目标卖出价格:8.1,目标止损价格:6.6,是否买入:否,</li>
 </ul>
 ]]></content>
       <categories>
