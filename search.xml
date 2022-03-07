@@ -12011,4 +12011,44 @@ innodb：索引和数据存储在同一文件
         <tag>投资</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Java集合中，isEmpty()与size()==0的区别</title>
+    <url>/2022/03/04/technology-stack/collections-isEmpty-size-difference/</url>
+    <content><![CDATA[<h1 id="Java集合中，isEmpty-与size-0的区别"><a href="#Java集合中，isEmpty-与size-0的区别" class="headerlink" title="Java集合中，isEmpty()与size()==0的区别"></a>Java集合中，isEmpty()与size()==0的区别</h1><blockquote>
+<p>关于集合的处理，Java开发手册有这么一段话:</p>
+</blockquote>
+<pre><code> 【强制】判断所有集合内部的元素是否为空，使用 isEmpty()方法，而不是 size()==0 的方式。
+
+说明：在某些集合中，前者的时间复杂度为 O(1)，而且可读性更好。
+</code></pre>
+<blockquote>
+<p>下面我们通过一些源码来看看</p>
+</blockquote>
+<ul>
+<li>HashMap源码</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Returns the number of key-value mappings in this map.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> the number of key-value mappings in this map</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">size</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> size;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Returns &lt;tt&gt;true&lt;/tt&gt; if this map contains no key-value mappings.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> &lt;tt&gt;true&lt;/tt&gt; if this map contains no key-value mappings</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEmpty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> size == <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>ConcurrentHashMap源码</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@inheritDoc</span>&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">size</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">long</span> n = sumCount();</span><br><span class="line">    <span class="keyword">return</span> ((n &lt; <span class="number">0L</span>) ? <span class="number">0</span> :</span><br><span class="line">            (n &gt; (<span class="keyword">long</span>)Integer.MAX_VALUE) ? Integer.MAX_VALUE :</span><br><span class="line">            (<span class="keyword">int</span>)n);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@inheritDoc</span>&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEmpty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> sumCount() &lt;= <span class="number">0L</span>; <span class="comment">// ignore transient negative values</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>ConcurrentLinkedQueue源码 </li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Returns &#123;<span class="doctag">@code</span> true&#125; if this queue contains no elements.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> &#123;<span class="doctag">@code</span> true&#125; if this queue contains no elements</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEmpty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> first() == <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Returns the number of elements in this queue.  If this queue</span></span><br><span class="line"><span class="comment"> * contains more than &#123;<span class="doctag">@code</span> Integer.MAX_VALUE&#125; elements, returns</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@code</span> Integer.MAX_VALUE&#125;.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * &lt;p&gt;Beware that, unlike in most collections, this method is</span></span><br><span class="line"><span class="comment"> * &lt;em&gt;NOT&lt;/em&gt; a constant-time operation. Because of the</span></span><br><span class="line"><span class="comment"> * asynchronous nature of these queues, determining the current</span></span><br><span class="line"><span class="comment"> * number of elements requires an O(n) traversal.</span></span><br><span class="line"><span class="comment"> * Additionally, if elements are added or removed during execution</span></span><br><span class="line"><span class="comment"> * of this method, the returned result may be inaccurate.  Thus,</span></span><br><span class="line"><span class="comment"> * this method is typically not very useful in concurrent</span></span><br><span class="line"><span class="comment"> * applications.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> the number of elements in this queue</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">size</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (Node&lt;E&gt; p = first(); p != <span class="keyword">null</span>; p = succ(p))</span><br><span class="line">        <span class="keyword">if</span> (p.item != <span class="keyword">null</span>)</span><br><span class="line">            <span class="comment">// Collection.size() spec says to max out</span></span><br><span class="line">            <span class="keyword">if</span> (++count == Integer.MAX_VALUE)</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>总结:<br>    通过不同源码的对比，isEmpty()方法时间复杂度都是O(1)，size()方法时间复杂度不固定，最坏可能是O(N)</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>technology-stack</category>
+      </categories>
+      <tags>
+        <tag>technology-stack</tag>
+        <tag>java集合</tag>
+      </tags>
+  </entry>
 </search>
