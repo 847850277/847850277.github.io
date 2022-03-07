@@ -12013,13 +12013,13 @@ innodb：索引和数据存储在同一文件
   </entry>
   <entry>
     <title>Java集合中，isEmpty()与size()==0的区别</title>
-    <url>/2022/03/04/technology-stack/collections-isEmpty-size-difference/</url>
+    <url>/2022/03/07/technology-stack/collections-isEmpty-size-difference/</url>
     <content><![CDATA[<h1 id="Java集合中，isEmpty-与size-0的区别"><a href="#Java集合中，isEmpty-与size-0的区别" class="headerlink" title="Java集合中，isEmpty()与size()==0的区别"></a>Java集合中，isEmpty()与size()==0的区别</h1><blockquote>
 <p>关于集合的处理，Java开发手册有这么一段话:</p>
 </blockquote>
 <pre><code> 【强制】判断所有集合内部的元素是否为空，使用 isEmpty()方法，而不是 size()==0 的方式。
 
-说明：在某些集合中，前者的时间复杂度为 O(1)，而且可读性更好。
+ 说明：在某些集合中，前者的时间复杂度为 O(1)，而且可读性更好。
 </code></pre>
 <blockquote>
 <p>下面我们通过一些源码来看看</p>
@@ -12041,6 +12041,113 @@ innodb：索引和数据存储在同一文件
 
 <blockquote>
 <p>总结:<br>    通过不同源码的对比，isEmpty()方法时间复杂度都是O(1)，size()方法时间复杂度不固定，最坏可能是O(N)</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>technology-stack</category>
+      </categories>
+      <tags>
+        <tag>technology-stack</tag>
+        <tag>java集合</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java集合中，foreach循环中为什么不要进行remove/add操作</title>
+    <url>/2022/03/07/technology-stack/collections-iteration-not-allow-add-and-remove/</url>
+    <content><![CDATA[<h1 id="Java集合中，foreach循环中为什么不要进行remove-add操作"><a href="#Java集合中，foreach循环中为什么不要进行remove-add操作" class="headerlink" title="Java集合中，foreach循环中为什么不要进行remove/add操作"></a>Java集合中，foreach循环中为什么不要进行remove/add操作</h1><blockquote>
+<p>先来看一段代码，摘自阿里巴巴的java开发手册</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List&lt;String&gt; a = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line"> a.add(<span class="string">&quot;1&quot;</span>);</span><br><span class="line"> a.add(<span class="string">&quot;2&quot;</span>);</span><br><span class="line"> <span class="keyword">for</span> (String temp : a) &#123;</span><br><span class="line">     <span class="keyword">if</span>(<span class="string">&quot;1&quot;</span>.equals(temp))&#123;</span><br><span class="line">         a.remove(temp);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>此时执行代码，没有问题，但是需要注意，*<b>循环此时只执行了一次</b>*。具体过程后面去分析。再来看一段会出问题的代码：</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">List&lt;String&gt; a = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line"> a.add(<span class="string">&quot;1&quot;</span>);</span><br><span class="line"> a.add(<span class="string">&quot;2&quot;</span>);</span><br><span class="line"> <span class="keyword">for</span> (String temp : a) &#123;</span><br><span class="line">     <span class="keyword">if</span>(<span class="string">&quot;2&quot;</span>.equals(temp))&#123;</span><br><span class="line">         a.remove(temp);</span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>输出为：</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">Exception in thread <span class="string">&quot;main&quot;</span> java.util.ConcurrentModificationException</span><br><span class="line">at java.util.ArrayList$Itr.checkForComodification(ArrayList.java:<span class="number">859</span>)</span><br><span class="line">at java.util.ArrayList$Itr.next(ArrayList.java:<span class="number">831</span>)</span><br><span class="line">at luyudepackage.waitTest.main(waitTest.java:<span class="number">57</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>是不是很奇怪？接下来将class文件，反编译下，结果如下</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List a = <span class="keyword">new</span> ArrayList();</span><br><span class="line">a.add(<span class="string">&quot;1&quot;</span>);</span><br><span class="line">a.add(<span class="string">&quot;2&quot;</span>);</span><br><span class="line">Iterator i$ = a.iterator();</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(!i$.hasNext())</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    String temp = (String)i$.next();</span><br><span class="line">    <span class="keyword">if</span>(<span class="string">&quot;1&quot;</span>.equals(temp))</span><br><span class="line">        a.remove(temp);</span><br><span class="line">&#125; <span class="keyword">while</span>(<span class="keyword">true</span>);</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>几个需要注意的点：</p>
+</blockquote>
+<ul>
+<li>1.foreach遍历集合，实际上内部使用的是iterator。</li>
+<li>2.代码先判断是否hasNext，然后再去调用next，这两个函数是引起问题的关键。</li>
+<li>3.这里的remove还是list的remove方法。</li>
+</ul>
+<blockquote>
+<p>先去观察下list.remove()方法中的核心方法fastRemove()方法。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">fastRemove</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">        modCount++;</span><br><span class="line">        <span class="keyword">int</span> numMoved = size - index - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span> (numMoved &gt; <span class="number">0</span>)</span><br><span class="line">            System.arraycopy(elementData, index+<span class="number">1</span>, elementData, index,</span><br><span class="line">                             numMoved);</span><br><span class="line">        elementData[--size] = <span class="keyword">null</span>; <span class="comment">// clear to let GC do its work</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>顺路观察下list.add()方法</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">add</span><span class="params">(E e)</span> </span>&#123;</span><br><span class="line">         ensureCapacityInternal(size + <span class="number">1</span>);  <span class="comment">// Increments modCount!!</span></span><br><span class="line">         elementData[size++] = e;</span><br><span class="line">         <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>再去观察下，iterator()方法</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Iterator&lt;E&gt; <span class="title">iterator</span><span class="params">()</span> </span>&#123;</span><br><span class="line">         <span class="keyword">return</span> <span class="keyword">new</span> Itr();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">Itr</span> <span class="keyword">implements</span> <span class="title">Iterator</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> cursor;       <span class="comment">// index of next element to return</span></span><br><span class="line">        <span class="keyword">int</span> lastRet = -<span class="number">1</span>; <span class="comment">// index of last element returned; -1 if no such</span></span><br><span class="line">        <span class="keyword">int</span> expectedModCount = modCount;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> cursor != size;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> E <span class="title">next</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            checkForComodification();<span class="comment">//万恶之源</span></span><br><span class="line">            <span class="keyword">int</span> i = cursor;</span><br><span class="line">            <span class="keyword">if</span> (i &gt;= size)</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> NoSuchElementException();</span><br><span class="line">            Object[] elementData = ArrayList.<span class="keyword">this</span>.elementData;</span><br><span class="line">            <span class="keyword">if</span> (i &gt;= elementData.length)</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> ConcurrentModificationException();</span><br><span class="line">            cursor = i + <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">return</span> (E) elementData[lastRet = i];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (lastRet &lt; <span class="number">0</span>)</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException();</span><br><span class="line">            checkForComodification();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                ArrayList.<span class="keyword">this</span>.remove(lastRet);</span><br><span class="line">                cursor = lastRet;</span><br><span class="line">                lastRet = -<span class="number">1</span>;</span><br><span class="line">                expectedModCount = modCount;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (IndexOutOfBoundsException ex) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> ConcurrentModificationException();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">checkForComodification</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (modCount != expectedModCount)</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> ConcurrentModificationException();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>几个需要注意的点：</p>
+</blockquote>
+<ul>
+<li>1.在iterator初始化的时候（也就是for循环开始处），expectedModCount = modCount，猜测是和当时list内部的元素数量有关系(已证实)。</li>
+<li>2.当cursor != size的时候，hasNext返回true</li>
+<li>3.next()函数的第一行，checkForComodification()这个函数就是报错的原因 这个函数就是万恶之源</li>
+<li>4.第39行，mod != expectedModCount 就会抛出ConcurrentModificationException()</li>
+</ul>
+<blockquote>
+<p> 接下来分析文章开头的第一个例子，为啥不会报错？</p>
+</blockquote>
+<pre><code> 第一个例子执行完第一次循环后，mod = 3 expectedModCount =2 cursor = 1 size = 1  所以程序在执行hasNext()的时候会返回false，所以程序不会报错。
+
+ 第二个例子执行完第二次循环后,mod = 3 expectdModCount = 2 cursor = 2 size = 1 此时cursor != size 程序认定还有元素，继续执行循环，调用next方法但是此时mod != expectedModCount 所以此时会报错。
+</code></pre>
+<blockquote>
+<p>道理我们都懂了，再看一个例子</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        List&lt;String&gt; a = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">        a.add(<span class="string">&quot;1&quot;</span>);</span><br><span class="line">        a.add(<span class="string">&quot;2&quot;</span>);</span><br><span class="line">        <span class="keyword">for</span> (String temp : a) &#123;</span><br><span class="line">            System.out.println(temp);</span><br><span class="line">            <span class="keyword">if</span>(<span class="string">&quot;2&quot;</span>.equals(temp))&#123;</span><br><span class="line">                a.add(<span class="string">&quot;3&quot;</span>);</span><br><span class="line">                a.remove(<span class="string">&quot;2&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>此时输出为：</p>
+</blockquote>
+<pre><code>    1
+
+    2
+</code></pre>
+<blockquote>
+<p>显然，程序并没有执行第三次循环，第二次循环结束，cursor再一次等于size，程序退出循环。</p>
+</blockquote>
+<pre><code>与remove类似，将文章开头的代码中remove替换为add，我们会发现无论是第一个例子还是第二个例子，都会抛出ConcurrentModificationException错误。
+</code></pre>
+<blockquote>
+<p>手册上推荐的代码如下</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Iterator&lt;String&gt; it = a.iterator(); <span class="keyword">while</span>(it.hasNext())&#123;</span><br><span class="line">String temp = it.next(); <span class="keyword">if</span>(删除元素的条件)&#123;</span><br><span class="line">        it.remove();</span><br><span class="line">       &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>此时remove是iterator的remove，我们看一下它的源码：</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (lastRet &lt; <span class="number">0</span>)</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException();</span><br><span class="line">            checkForComodification();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                ArrayList.<span class="keyword">this</span>.remove(lastRet);</span><br><span class="line">                cursor = lastRet;   <span class="comment">//index of last element returned;-1 if no such</span></span><br><span class="line">                lastRet = -<span class="number">1</span>;</span><br><span class="line">                expectedModCount = modCount;</span><br><span class="line">            &#125; <span class="keyword">catch</span> (IndexOutOfBoundsException ex) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> ConcurrentModificationException();</span><br><span class="line">            &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意第10行，第8行，所以此时程序不会有之前的问题。</p>
+</blockquote>
+<pre><code>但是手册上推荐的方法，在多线程环境还是有可能出现问题，一个线程执行上面的代码，一个线程遍历迭代器中的元素，同样会抛出CocurrentModificationException。
+
+如果要并发操作，需要对iterator对象加锁。
+</code></pre>
+<blockquote>
+<p>平时遍历list，然后删除某个元素的时候，如果仅仅删除第一个且删除之后调用break  //代表着此时不会再去执行iterator.next方法 也就不会触发万恶之源<br>而如果要删除所有的某元素，则会报错，谨记！</p>
 </blockquote>
 ]]></content>
       <categories>
