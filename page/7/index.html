@@ -23,7 +23,7 @@
   <meta name="description" content="好记性不如烂笔头">
 <meta property="og:type" content="website">
 <meta property="og:title" content="zhengpengde.vip">
-<meta property="og:url" content="http://www.zhengpengde.vip/index.html">
+<meta property="og:url" content="http://www.zhengpengde.vip/page/7/index.html">
 <meta property="og:site_name" content="zhengpengde.vip">
 <meta property="og:description" content="好记性不如烂笔头">
 <meta property="og:locale" content="zh_CN">
@@ -31,7 +31,7 @@
 <meta property="article:tag" content="zhengpengde.vip">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://www.zhengpengde.vip/">
+<link rel="canonical" href="http://www.zhengpengde.vip/page/7/">
 
 
 <script id="page-configurations">
@@ -201,7 +201,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://www.zhengpengde.vip/2022/03/07/technology-stack/collections-isEmpty-size-difference/">
+    <link itemprop="mainEntityOfPage" href="http://www.zhengpengde.vip/2021/12/10/algorithm/linkedlist-reverse/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -215,7 +215,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2022/03/07/technology-stack/collections-isEmpty-size-difference/" class="post-title-link" itemprop="url">Java集合中，isEmpty()与size()==0的区别</a>
+            <a href="/2021/12/10/algorithm/linkedlist-reverse/" class="post-title-link" itemprop="url">算法之反转链表</a>
         </h2>
 
         <div class="post-meta">
@@ -224,17 +224,23 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2022-03-07 00:00:00 / 修改时间：14:27:09" itemprop="dateCreated datePublished" datetime="2022-03-07T00:00:00+08:00">2022-03-07</time>
+              <time title="创建时间：2021-12-10 16:00:00" itemprop="dateCreated datePublished" datetime="2021-12-10T16:00:00+08:00">2021-12-10</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-12-16 18:02:25" itemprop="dateModified" datetime="2021-12-16T18:02:25+08:00">2021-12-16</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/technology-stack/" itemprop="url" rel="index"><span itemprop="name">technology-stack</span></a>
+                  <a href="/categories/%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">基础</span></a>
                 </span>
             </span>
 
@@ -244,7 +250,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.9k</span>
+              <span>777</span>
             </span>
 
         </div>
@@ -256,34 +262,28 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="Java集合中，isEmpty-与size-0的区别"><a href="#Java集合中，isEmpty-与size-0的区别" class="headerlink" title="Java集合中，isEmpty()与size()==0的区别"></a>Java集合中，isEmpty()与size()==0的区别</h1><blockquote>
-<p>关于集合的处理，Java开发手册有这么一段话:</p>
-</blockquote>
-<pre><code> 【强制】判断所有集合内部的元素是否为空，使用 isEmpty()方法，而不是 size()==0 的方式。
-
- 说明：在某些集合中，前者的时间复杂度为 O(1)，而且可读性更好。
-</code></pre>
-<blockquote>
-<p>下面我们通过一些源码来看看</p>
-</blockquote>
-<ul>
-<li>HashMap源码</li>
+          <h1 id="算法之反转链表"><a href="#算法之反转链表" class="headerlink" title="算法之反转链表"></a>算法之反转链表</h1><ul>
+<li>翻转链表一<ul>
+<li>遍历节点</li>
+<li>依次打断每个节点的头元素</li>
+<li>把打断的当前节点，加入到要返回的节点，并设置当前打断节点为头</li>
 </ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Returns the number of key-value mappings in this map.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> the number of key-value mappings in this map</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">size</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> size;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Returns &lt;tt&gt;true&lt;/tt&gt; if this map contains no key-value mappings.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> &lt;tt&gt;true&lt;/tt&gt; if this map contains no key-value mappings</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEmpty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> size == <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>ConcurrentHashMap源码</li>
+</li>
 </ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@inheritDoc</span>&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">size</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">long</span> n = sumCount();</span><br><span class="line">    <span class="keyword">return</span> ((n &lt; <span class="number">0L</span>) ? <span class="number">0</span> :</span><br><span class="line">            (n &gt; (<span class="keyword">long</span>)Integer.MAX_VALUE) ? Integer.MAX_VALUE :</span><br><span class="line">            (<span class="keyword">int</span>)n);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@inheritDoc</span>&#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEmpty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> sumCount() &lt;= <span class="number">0L</span>; <span class="comment">// ignore transient negative values</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<p><img src="http://117.50.163.170:9000/blog/WechatIMG1199.png" alt="封面图"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* 翻转链表 双指针法</span></span><br><span class="line"><span class="comment">* <span class="doctag">@param</span> head</span></span><br><span class="line"><span class="comment">* <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ListNode <span class="title">reverseList</span><span class="params">(ListNode head)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    ListNode pre = <span class="keyword">null</span>;</span><br><span class="line">    ListNode fast = head;</span><br><span class="line">    <span class="keyword">while</span> (fast!= <span class="keyword">null</span>)&#123;</span><br><span class="line">        <span class="comment">//指向下一个节点</span></span><br><span class="line">        ListNode temp = fast.next;</span><br><span class="line">        <span class="comment">//打断关系，fast就是前面的节点了</span></span><br><span class="line">        fast.next = pre;</span><br><span class="line">        pre = fast;</span><br><span class="line">        fast = temp;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> pre;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <ul>
-<li>ConcurrentLinkedQueue源码 </li>
+<li>翻转链表二<ul>
+<li>虚拟节点操作</li>
+<li>循环left，不反转</li>
+<li>循环right，翻转   </li>
 </ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Returns &#123;<span class="doctag">@code</span> true&#125; if this queue contains no elements.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> &#123;<span class="doctag">@code</span> true&#125; if this queue contains no elements</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEmpty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> first() == <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Returns the number of elements in this queue.  If this queue</span></span><br><span class="line"><span class="comment"> * contains more than &#123;<span class="doctag">@code</span> Integer.MAX_VALUE&#125; elements, returns</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@code</span> Integer.MAX_VALUE&#125;.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * &lt;p&gt;Beware that, unlike in most collections, this method is</span></span><br><span class="line"><span class="comment"> * &lt;em&gt;NOT&lt;/em&gt; a constant-time operation. Because of the</span></span><br><span class="line"><span class="comment"> * asynchronous nature of these queues, determining the current</span></span><br><span class="line"><span class="comment"> * number of elements requires an O(n) traversal.</span></span><br><span class="line"><span class="comment"> * Additionally, if elements are added or removed during execution</span></span><br><span class="line"><span class="comment"> * of this method, the returned result may be inaccurate.  Thus,</span></span><br><span class="line"><span class="comment"> * this method is typically not very useful in concurrent</span></span><br><span class="line"><span class="comment"> * applications.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> the number of elements in this queue</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">size</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (Node&lt;E&gt; p = first(); p != <span class="keyword">null</span>; p = succ(p))</span><br><span class="line">        <span class="keyword">if</span> (p.item != <span class="keyword">null</span>)</span><br><span class="line">            <span class="comment">// Collection.size() spec says to max out</span></span><br><span class="line">            <span class="keyword">if</span> (++count == Integer.MAX_VALUE)</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">    <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="http://117.50.163.170:9000/blog/WechatIMG1201.png" alt="封面图"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"> <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * 翻转链表2 双指针法</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@param</span> head</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ListNode <span class="title">reverseList2</span><span class="params">(ListNode head,<span class="keyword">int</span> left,<span class="keyword">int</span> right)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    ListNode dummy = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">    dummy.next = head;</span><br><span class="line">    ListNode pre = dummy;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; left; i++)&#123;</span><br><span class="line">        pre = pre.next;</span><br><span class="line">    &#125;</span><br><span class="line">    head = pre.next;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = left; i &lt; right; i++)&#123;</span><br><span class="line">        ListNode nex = head.next;</span><br><span class="line">        head.next = nex.next;</span><br><span class="line">        nex.next = pre.next;</span><br><span class="line">        pre.next = nex;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dummy.next;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<blockquote>
-<p>总结:<br>    通过不同源码的对比，isEmpty()方法时间复杂度都是O(1)，size()方法时间复杂度不固定，最坏可能是O(N)</p>
-</blockquote>
+
 
       
     </div>
@@ -302,7 +302,7 @@
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
