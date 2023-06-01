@@ -1,31 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>ZhengPengDe Blog</title>
-    <link>https://847850277.github.io/</link>
-    <description>Recent content on ZhengPengDe Blog</description>
+    <title>bug on ZhengPengDe Blog</title>
+    <link>https://847850277.github.io/tags/bug/</link>
+    <description>Recent content in bug on ZhengPengDe Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 01 Jun 2023 00:00:00 +0000</lastBuildDate>
-    <atom:link href="https://847850277.github.io/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>我的第一篇博客</title>
-      <link>https://847850277.github.io/posts/my-first/</link>
-      <pubDate>Thu, 01 Jun 2023 00:00:00 +0000</pubDate>
-      <guid>https://847850277.github.io/posts/my-first/</guid>
-      <description>&lt;h2 id=&#34;这里是markdown-正文&#34;&gt;这里是Markdown 正文&lt;/h2&gt;
-&lt;p&gt;hello world&lt;/p&gt;
-</description>
-    </item>
-    <item>
-      <title>非正规集成&#43;压力测试</title>
-      <link>https://847850277.github.io/posts/2023/renewal_integration_testing/</link>
-      <pubDate>Thu, 01 Jun 2023 00:00:00 +0000</pubDate>
-      <guid>https://847850277.github.io/posts/2023/renewal_integration_testing/</guid>
-      <description>&lt;h2 id=&#34;非正规集成压力测试&#34;&gt;非正规集成压力测试&lt;/h2&gt;
-&lt;p&gt;非正规集成压力测试&lt;/p&gt;
-</description>
-    </item>
+    <lastBuildDate>Wed, 01 Jul 2015 09:00:00 +0000</lastBuildDate>
+    <atom:link href="https://847850277.github.io/tags/bug/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>bug 记录</title>
       <link>https://847850277.github.io/posts/bug/bug/</link>
