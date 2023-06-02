@@ -14,6 +14,110 @@
       <pubDate>Wed, 01 Jul 2015 09:00:00 +0000</pubDate>
       <guid>https://847850277.github.io/posts/bug/bug/</guid>
       <description>&lt;h1 id=&#34;bug清单表格&#34;&gt;bug清单表格&lt;/h1&gt;
+&lt;h2 id=&#34;1springboot上传文件报流关闭错误&#34;&gt;1、springboot上传文件，报流关闭错误&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;现象 : &lt;code&gt;springboot上传文件，报流关闭错误&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;原因 : 项目中增加了全局的GlobalWebAppConfig，其中的配置导致流关闭失效&lt;/li&gt;
+&lt;li&gt;解决方式 : 移除@EnableWebMvc注解&lt;/li&gt;
+&lt;li&gt;过程总结 :
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;本地复现&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;定位问题点 （移除pom），注释依赖&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;确定问题点确实是新增配置&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;网上搜索解决方式&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;记录时间 : 2021-08-21&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;2某些sql会在limit后追加一个limit导致查询sql报错&#34;&gt;2、某些sql会在limit后追加一个limit，导致查询sql报错&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;现象 : &lt;code&gt;某些sql会在limit后追加一个limit，导致查询sql报错&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;原因 : &lt;code&gt;PageHelper 非安全调用方式，项目中使用方式为PageHelper.startPage,此种方式背后实现原理为： ThreadLocal设置线程局部变量，tomcat线程次会缓存请求，可能导致threadlocal中的线程变量被其他线程访问到&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;解决方式 : &lt;code&gt;springmvc层增加全局的拦截器， 然后手动移除一下pageHelper的变量&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;过程总结 :
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;定位问题&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;网上搜索确实发现limit可能会是pagehelper导致&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;再次定位threadlocal设置变量，设置tomcat工作线程设置为1个&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;本地手写分页复现场景，分页参数设置，未查询数据库，手动触发报错&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;增加全局分页拦截器解决&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;记录时间 : 2021-08-21&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;3请求接口返回90044错误&#34;&gt;3、请求接口，返回90044错误&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;现象 : &lt;code&gt;请求接口，返回90044错误&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;原因 : &lt;code&gt;2.0网关配置中，只建立了bi的服务，在角色那一栏并未配置bi相关的服务&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;解决方式 : &lt;code&gt;2.0网关配置erp-api的相关权限&lt;/code&gt;
+&lt;ul&gt;
+&lt;li&gt;1、定位问题9004&lt;/li&gt;
+&lt;li&gt;2、查询9004为请求接口超出授权范围&lt;/li&gt;
+&lt;li&gt;3、访问灰度复现出改问题&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;过程总结 :
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;定位问题9004&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;查询9004为请求接口超出授权范围&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;访问灰度复现出改问题&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;找运维老师确认2.0网关的配置问题&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;确认配置问题、增加配置&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;记录时间 : 2021-08-23&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;4小程序获取手机号授权并未生成响应的学员记录&#34;&gt;4、小程序获取手机号授权，并未生成响应的学员记录&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;现象 : &lt;code&gt;小程序获取手机号授权，并未生成响应的学员记录&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;原因 : &lt;code&gt;营销服务调用crm服务，crm服务新增授权类型客户的时候没有写入电话字段&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;解决方式 : &lt;code&gt;入口出增加电话字段&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;过程总结 :
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;httplog寻找入参数， ```sql select * from &lt;/code&gt;alc-http-log&lt;code&gt;.http_log where &lt;/code&gt;system&lt;code&gt; = &#39;marketing-center&#39; and url = &#39;/recruitMini/mobile&#39; and request_time &amp;gt;= &#39;20201-08-23 18:40:00&#39;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;入参拿着本地调试&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;定位问题为crm写入处&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;crm处写入值&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;记录时间 : 2021-08-25&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;5crm服务导入数据特定的获客渠道异界交换才能够导入&#34;&gt;5、crm服务导入数据、特定的获客渠道（异界交换）才能够导入&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;现象 : &lt;code&gt;crm服务导入数据、特定的获客渠道（异界交换）才能够导入&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;原因 : &lt;code&gt;crm调用基础字典服务获取获取渠道字典只能获取parentId不为空的获取渠道、 实际的数据有很多条&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;解决方式 : &lt;code&gt;获取字典处调整为获取所有的获客渠道， crm也调用获取所有的获客渠道&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;过程总结 :
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;下载导入模版&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;启动对应环境参数的项目、复现问题&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;定位问题为获取字典处，未获取到完全的获客渠道&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;记录时间 : 2021-08-25&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;6支付成功后在crm的h5页面填入分单的数据结果分单后的比例并没有按对应比例保存&#34;&gt;6、支付成功后，在crm的h5页面填入分单的数据、结果分单后的比例并没有按对应比例保存&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;现象 : &lt;code&gt;支付成功后，在crm的h5页面填入分单的数据、结果分单后的比例并没有按对应比例保存&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;原因 : &lt;code&gt;历史设计如此、在填写分单业绩处逻辑为判断是否有无生成业绩， 若是业绩未生成，其对应填写的比例也不会保存&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;解决方式 : &lt;code&gt;无&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;过程总结 :
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;本地启动程序&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;复现该问题&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;读历史的代码，发现历史代码也是要生成业绩后才会记录分单的比例&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;记录时间 : 2021-08-25&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    <item>
+      <title>bug 记录</title>
+      <link>https://847850277.github.io/posts/bug/bug_bak/</link>
+      <pubDate>Wed, 01 Jul 2015 09:00:00 +0000</pubDate>
+      <guid>https://847850277.github.io/posts/bug/bug_bak/</guid>
+      <description>&lt;h1 id=&#34;bug清单表格&#34;&gt;bug清单表格&lt;/h1&gt;
 &lt;h2 id=&#34;a-href1springboot上传文件报流关闭错误a&#34;&gt;&lt;!-- raw HTML omitted --&gt;springboot上传文件，报流关闭错误&lt;!-- raw HTML omitted --&gt;&lt;/h2&gt;
 &lt;h2 id=&#34;a-href2某些sql会在limit后追加一个limit导致查询sql报错a&#34;&gt;&lt;!-- raw HTML omitted --&gt;某些sql会在limit后追加一个limit，导致查询sql报错&lt;!-- raw HTML omitted --&gt;&lt;/h2&gt;
 &lt;h2 id=&#34;a-href3请求接口返回90044错误a&#34;&gt;&lt;!-- raw HTML omitted --&gt;请求接口，返回90044错误&lt;!-- raw HTML omitted --&gt;&lt;/h2&gt;
