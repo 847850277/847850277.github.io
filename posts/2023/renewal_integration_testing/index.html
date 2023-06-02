@@ -90,8 +90,188 @@ Tags:
 </div>
 </header>
 <div class="content">
-<h2 id="非正规集成压力测试">非正规集成压力测试</h2>
-<p>非正规集成压力测试</p>
+<h2 id="非正规集成测试和性能测试">非正规集成测试和性能测试</h2>
+<blockquote>
+<p>6月份公司最重要的续费活动就要开始了,期间功能方面的改动不是特别大。但需要做性能测试和全部数据方面的验证。
+基于以上(全部数据的验证、性能测试)目的，于是需要对接口进行压力测试。</p>
+</blockquote>
+<h3 id="1工具调研">1、工具调研</h3>
+<blockquote>
+<p>在工具调研方面，市面上常见的性能测试工具有以下。</p>
+</blockquote>
+<ul>
+<li>JMeter</li>
+<li>Apache Bench</li>
+<li>TestNG</li>
+<li>LoadRunner</li>
+</ul>
+<blockquote>
+<p>基于熟悉上手和对公司业务数据的了解程度，最后选择了TestNG。原因有:</p>
+</blockquote>
+<ul>
+<li>编码方便，灵活</li>
+<li>数据驱动方式还不错</li>
+<li>灵活的设置线程数</li>
+<li>基于TestNG可以很灵活的设计一样宽表来保存结果集。</li>
+<li>最后设计的表结构如下</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">create</span> <span style="color:#66d9ef">table</span> renewalintegrationtesting.t_2023_renewal_list
+</span></span><span style="display:flex;"><span>(
+</span></span><span style="display:flex;"><span>    id              bigint auto_increment
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">primary</span> <span style="color:#66d9ef">key</span>,
+</span></span><span style="display:flex;"><span>    student_num     varchar(<span style="color:#ae81ff">128</span>)      <span style="color:#66d9ef">null</span>,
+</span></span><span style="display:flex;"><span>    student_id      varchar(<span style="color:#ae81ff">36</span>)       <span style="color:#66d9ef">null</span>,
+</span></span><span style="display:flex;"><span>    phone           varchar(<span style="color:#ae81ff">255</span>)      <span style="color:#66d9ef">null</span>,
+</span></span><span style="display:flex;"><span>    customer_id     varchar(<span style="color:#ae81ff">500</span>)      <span style="color:#66d9ef">null</span>,
+</span></span><span style="display:flex;"><span>    app_token       varchar(<span style="color:#ae81ff">255</span>)      <span style="color:#66d9ef">null</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">authorization</span>   varchar(<span style="color:#ae81ff">255</span>)      <span style="color:#66d9ef">null</span>,
+</span></span><span style="display:flex;"><span>    step1_url       varchar(<span style="color:#ae81ff">500</span>)      <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">comment</span> <span style="color:#e6db74">&#39;步骤一的接口地址&#39;</span>,
+</span></span><span style="display:flex;"><span>    step1_request   text              <span style="color:#66d9ef">null</span>,
+</span></span><span style="display:flex;"><span>    step1_response  text              <span style="color:#66d9ef">null</span>,
+</span></span><span style="display:flex;"><span>    step1_success   tinyint <span style="color:#66d9ef">default</span> <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">not</span> <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">comment</span> <span style="color:#e6db74">&#39;步骤一执行结果0-不成功1-成功&#39;</span>,
+</span></span><span style="display:flex;"><span>    step2_url       varchar(<span style="color:#ae81ff">500</span>)      <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">comment</span> <span style="color:#e6db74">&#39;步骤二的接口地址&#39;</span>,
+</span></span><span style="display:flex;"><span>    step2_request   text              <span style="color:#66d9ef">null</span>,
+</span></span><span style="display:flex;"><span>    step2_response  text              <span style="color:#66d9ef">null</span>,
+</span></span><span style="display:flex;"><span>    step2_success   tinyint <span style="color:#66d9ef">default</span> <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">not</span> <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">comment</span> <span style="color:#e6db74">&#39;步骤二执行结果0-不成功1-成功&#39;</span>,
+</span></span><span style="display:flex;"><span>    step3_url       varchar(<span style="color:#ae81ff">500</span>)      <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">comment</span> <span style="color:#e6db74">&#39;步骤3的接口地址&#39;</span>,
+</span></span><span style="display:flex;"><span>    step3_request   text              <span style="color:#66d9ef">null</span>,
+</span></span><span style="display:flex;"><span>    step3_response  text              <span style="color:#66d9ef">null</span>,
+</span></span><span style="display:flex;"><span>    step3_success   tinyint <span style="color:#66d9ef">default</span> <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">not</span> <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">comment</span> <span style="color:#e6db74">&#39;步骤3执行结果0-不成功1-成功&#39;</span>,
+</span></span><span style="display:flex;"><span>    step4_url       varchar(<span style="color:#ae81ff">500</span>)      <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">comment</span> <span style="color:#e6db74">&#39;步骤4的接口地址&#39;</span>,
+</span></span><span style="display:flex;"><span>    step4_request   text              <span style="color:#66d9ef">null</span>,
+</span></span><span style="display:flex;"><span>    step4_response  text              <span style="color:#66d9ef">null</span>,
+</span></span><span style="display:flex;"><span>    step4_success   tinyint <span style="color:#66d9ef">default</span> <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">not</span> <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">comment</span> <span style="color:#e6db74">&#39;步骤4执行结果0-不成功1-成功&#39;</span>,
+</span></span><span style="display:flex;"><span>    step5_url       varchar(<span style="color:#ae81ff">500</span>)      <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">comment</span> <span style="color:#e6db74">&#39;步骤5的接口地址&#39;</span>,
+</span></span><span style="display:flex;"><span>    step5_request   text              <span style="color:#66d9ef">null</span>,
+</span></span><span style="display:flex;"><span>    step5_response  text              <span style="color:#66d9ef">null</span>,
+</span></span><span style="display:flex;"><span>    step5_success   tinyint <span style="color:#66d9ef">default</span> <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">not</span> <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">comment</span> <span style="color:#e6db74">&#39;步骤5执行结果0-不成功1-成功&#39;</span>,
+</span></span><span style="display:flex;"><span>    step6_url       varchar(<span style="color:#ae81ff">500</span>)      <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">comment</span> <span style="color:#e6db74">&#39;步骤6的接口地址&#39;</span>,
+</span></span><span style="display:flex;"><span>    step6_request   text              <span style="color:#66d9ef">null</span>,
+</span></span><span style="display:flex;"><span>    step6_response  text              <span style="color:#66d9ef">null</span>,
+</span></span><span style="display:flex;"><span>    step6_success   tinyint <span style="color:#66d9ef">default</span> <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">not</span> <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">comment</span> <span style="color:#e6db74">&#39;步骤6执行结果0-不成功1-成功&#39;</span>,
+</span></span><span style="display:flex;"><span>    step7_url       varchar(<span style="color:#ae81ff">500</span>)      <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">comment</span> <span style="color:#e6db74">&#39;步骤7的接口地址&#39;</span>,
+</span></span><span style="display:flex;"><span>    step7_request   text              <span style="color:#66d9ef">null</span>,
+</span></span><span style="display:flex;"><span>    step7_response  text              <span style="color:#66d9ef">null</span>,
+</span></span><span style="display:flex;"><span>    step7_success   tinyint <span style="color:#66d9ef">default</span> <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">not</span> <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">comment</span> <span style="color:#e6db74">&#39;步骤7执行结果0-不成功1-成功&#39;</span>,
+</span></span><span style="display:flex;"><span>    step8_url       varchar(<span style="color:#ae81ff">500</span>)      <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">comment</span> <span style="color:#e6db74">&#39;步骤8的接口地址&#39;</span>,
+</span></span><span style="display:flex;"><span>    step8_request   text              <span style="color:#66d9ef">null</span>,
+</span></span><span style="display:flex;"><span>    step8_response  text              <span style="color:#66d9ef">null</span>,
+</span></span><span style="display:flex;"><span>    step8_success   tinyint <span style="color:#66d9ef">default</span> <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">not</span> <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">comment</span> <span style="color:#e6db74">&#39;步骤8执行结果0-不成功1-成功&#39;</span>,
+</span></span><span style="display:flex;"><span>    step9_url       varchar(<span style="color:#ae81ff">500</span>)      <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">comment</span> <span style="color:#e6db74">&#39;步骤9的接口地址&#39;</span>,
+</span></span><span style="display:flex;"><span>    step9_request   text              <span style="color:#66d9ef">null</span>,
+</span></span><span style="display:flex;"><span>    step9_response  text              <span style="color:#66d9ef">null</span>,
+</span></span><span style="display:flex;"><span>    step9_success   tinyint <span style="color:#66d9ef">default</span> <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">not</span> <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">comment</span> <span style="color:#e6db74">&#39;步骤9执行结果0-不成功1-成功&#39;</span>,
+</span></span><span style="display:flex;"><span>    step10_url      varchar(<span style="color:#ae81ff">500</span>)      <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">comment</span> <span style="color:#e6db74">&#39;步骤10的接口地址&#39;</span>,
+</span></span><span style="display:flex;"><span>    step10_request  text              <span style="color:#66d9ef">null</span>,
+</span></span><span style="display:flex;"><span>    step10_response text              <span style="color:#66d9ef">null</span>,
+</span></span><span style="display:flex;"><span>    step10_success  tinyint <span style="color:#66d9ef">default</span> <span style="color:#ae81ff">0</span> <span style="color:#66d9ef">not</span> <span style="color:#66d9ef">null</span> <span style="color:#66d9ef">comment</span> <span style="color:#e6db74">&#39;步骤10执行结果0-不成功1-成功&#39;</span>
+</span></span><span style="display:flex;"><span>);
+</span></span></code></pre></div><h3 id="2测试用例的编写">2、测试用例的编写</h3>
+<blockquote>
+<p>示例测试用例代码如查看订单列表</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@DataProvider</span><span style="color:#f92672">(</span>name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;orderList&#34;</span><span style="color:#f92672">,</span> parallel <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> Object<span style="color:#f92672">[][]</span> <span style="color:#a6e22e">orderList</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    List<span style="color:#f92672">&lt;</span>Entity<span style="color:#f92672">&gt;</span> result <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;();</span>
+</span></span><span style="display:flex;"><span>    result <span style="color:#f92672">=</span> Db
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">.</span><span style="color:#a6e22e">use</span><span style="color:#f92672">(</span>RENEWAL_INTEGRATION_TESTING<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">.</span><span style="color:#a6e22e">query</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;select * from &#34;</span> <span style="color:#f92672">+</span> TABLE_RENEWAL_LIST <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;  where step6_success  = 1 and step7_success = 0&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    Object<span style="color:#f92672">[][]</span> files <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Object<span style="color:#f92672">[</span>result<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">()][];</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> result<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">();</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        files<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Object<span style="color:#f92672">[]{</span>result<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>i<span style="color:#f92672">)};</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> files<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Test</span><span style="color:#f92672">(</span>priority <span style="color:#f92672">=</span> <span style="color:#ae81ff">7</span><span style="color:#f92672">,</span> dataProvider <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;orderList&#34;</span><span style="color:#f92672">,,</span>invocationCount <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">,</span>threadPoolSize <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">step_7_orderList</span><span style="color:#f92672">(</span>Entity entity<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    String authorization <span style="color:#f92672">=</span> entity<span style="color:#f92672">.</span><span style="color:#a6e22e">getStr</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;authorization&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    String appToken <span style="color:#f92672">=</span> entity<span style="color:#f92672">.</span><span style="color:#a6e22e">getStr</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;app_token&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    String url1 <span style="color:#f92672">=</span> RENEWAL_ONE <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/mp/order/list&#34;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    String customerId <span style="color:#f92672">=</span> entity<span style="color:#f92672">.</span><span style="color:#a6e22e">getStr</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;customer_id&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    JSONObject requestObj <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> JSONObject<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    requestObj<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;customerId&#34;</span><span style="color:#f92672">,</span>customerId<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    requestObj<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;pageNum&#34;</span><span style="color:#f92672">,</span><span style="color:#ae81ff">1</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    requestObj<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;pageSize&#34;</span><span style="color:#f92672">,</span><span style="color:#ae81ff">100</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    requestObj<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;status&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    HttpResponse<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> response <span style="color:#f92672">=</span> Unirest<span style="color:#f92672">.</span><span style="color:#a6e22e">post</span><span style="color:#f92672">(</span>url1<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">.</span><span style="color:#a6e22e">body</span><span style="color:#f92672">(</span>JSON<span style="color:#f92672">.</span><span style="color:#a6e22e">toJSONString</span><span style="color:#f92672">(</span>requestObj<span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">.</span><span style="color:#a6e22e">header</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;apptoken&#34;</span><span style="color:#f92672">,</span> appToken<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">.</span><span style="color:#a6e22e">header</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;authorization&#34;</span><span style="color:#f92672">,</span>authorization<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">.</span><span style="color:#a6e22e">header</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;cache-control&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;no-cache&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">.</span><span style="color:#a6e22e">contentType</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;application/json&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">.</span><span style="color:#a6e22e">asString</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Entity where <span style="color:#f92672">=</span> Entity<span style="color:#f92672">.</span><span style="color:#a6e22e">create</span><span style="color:#f92672">(</span>TABLE_RENEWAL_LIST<span style="color:#f92672">).</span><span style="color:#a6e22e">set</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;id&#34;</span><span style="color:#f92672">,</span> entity<span style="color:#f92672">.</span><span style="color:#a6e22e">getInt</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;id&#34;</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>    String body <span style="color:#f92672">=</span> response<span style="color:#f92672">.</span><span style="color:#a6e22e">getBody</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>response<span style="color:#f92672">.</span><span style="color:#a6e22e">getStatus</span><span style="color:#f92672">()</span> <span style="color:#f92672">!=</span> <span style="color:#ae81ff">200</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        entity<span style="color:#f92672">.</span><span style="color:#a6e22e">set</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;step7_success&#34;</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        entity<span style="color:#f92672">.</span><span style="color:#a6e22e">set</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;step7_success&#34;</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    entity<span style="color:#f92672">.</span><span style="color:#a6e22e">set</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;step7_url&#34;</span><span style="color:#f92672">,</span>url1<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    entity<span style="color:#f92672">.</span><span style="color:#a6e22e">set</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;step7_response&#34;</span><span style="color:#f92672">,</span>body<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    entity<span style="color:#f92672">.</span><span style="color:#a6e22e">set</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;step7_request&#34;</span><span style="color:#f92672">,</span>JSON<span style="color:#f92672">.</span><span style="color:#a6e22e">toJSONString</span><span style="color:#f92672">(</span>requestObj<span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> update <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        update <span style="color:#f92672">=</span> Db
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">use</span><span style="color:#f92672">(</span>RENEWAL_INTEGRATION_TESTING<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">update</span><span style="color:#f92672">(</span>entity<span style="color:#f92672">,</span> where<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>SQLException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><h3 id="3小黑屋会议室集体做性能">3、小黑屋（会议室）集体做性能</h3>
+<blockquote>
+<p>花了接近2天的时间一起集中测试把用例跑完了，其过程中发现的问题有:</p>
+</blockquote>
+<ul>
+<li>环境准备的问题
+<ul>
+<li>内部链接灰度的配置，4台机器启动</li>
+<li>3台机器同时，每台机器40个线程同时进行</li>
+</ul>
+</li>
+<li>程序优化问题
+<ul>
+<li>配置优化
+<ul>
+<li>feign <code>超时重试次数</code>配置,有<code>1</code>次调整为<code>0</code>次</li>
+</ul>
+</li>
+<li>数据库配置优化
+<ul>
+<li>运维去处理</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>数据问题
+<ul>
+<li>学员资格数据不对
+<ul>
+<li>品牌</li>
+<li>校区</li>
+</ul>
+</li>
+<li>预存数据不对
+<ul>
+<li>一分钱导致</li>
+</ul>
+</li>
+<li>合同配置问题</li>
+</ul>
+</li>
+</ul>
+<h3 id="4总结">4、总结</h3>
+<blockquote>
+<p>性能测试是一个系统工程，由于自身也不是专业的测试。只能从研发的角度去从全量数据的层面去覆盖，同时也模拟以下并发的情况。若是想要全链路的去做性能测试。需要准备更多的准备，
+最好是专人转岗去做，或者是专门请教专业的团队，然后再基于现在的业务，做主相对合理的技术方案。</p>
+</blockquote>
 
 </div>
 
