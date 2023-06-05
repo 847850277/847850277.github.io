@@ -86,16 +86,6 @@
 </div>
 </article>
 
-<article class="list-view list-view--posts">
-<header>
-<h2 class="title "><a href="/posts/bug/bug_bak/">bug 记录</a></h2>
-
-</header>
-<div class="content">
-<p>bug清单表格 springboot上传文件，报流关闭错误 某些sql会在limit后追加一个limit，导致查询sql报错 请求接口，返回90044错误 小程序获取手机号授权，并未生成响应的学员记录 crm服务导入数据、特定的获客渠道（异界交换）才能够导入 支付成功后，在crm的h5页面填入分单的数据、结果分单后的比例并没有按对应比例保存 有一个定时然后推送消息的功能，同时推送短信和微信模版消息。 订单支付成功，生成了3条相同的费用明细，同时生成了三个正式学员，有预警邮件提醒 在正式学员列表里面，搜索姓名姓名无法找到该学员，但是搜索学员昵称或者电话号码又可以找到该学员&hellip; 通过转介绍渠道来的新的意向客户数据，其跟进人的扫码归属人字段未写入值 omo转介绍小程序，提交了预约相关信息，其生成了活动记录，但是并未生成客户记录 数据字典的校区由新校变成老校定时未生效 启动项目提示拿不到数据库的链接 暑期三节课发起支付后，订单支付状态未变更为支付中 1.客户详细存在跟进人为空的数据2.sql查询的逻辑为即查询跟进人的id，又查询冗余跟进人名称，同时冗余跟进人名称会存在为空的数据 导出正式学员列表增加扫码归属人和收单人员两列字段 优惠券退款，点击驳回或者废除。若原状态为已经回收，其状态还是变更成未使用，并没有退回为原本状态 线上支付在使用支付宝付款时候提示“操作失败：网络或者服务器错误” 定时同步标签，但是其值并未写入数据库 selenium模拟微信登陆选择封面图失败，报js的异常 活动小程序部分用户唤起支付控件失败 模拟代码用队列发送前置消息失败，但是走支付流程真实付款，前置流程成功。且调用发送MQ的方法为同一个，并无差异 模拟支付集成测试用例的数据驱动的开发 hexo 下的分类和表签无法显示，怎么解决？ 增加@transactional，定时调度生成了多条记录 优惠券状态后置，导致执行更新优惠券状态失败，影响整个订单后置流程 请求接口，返回90044错误 datagrip导出文件自动加双引号 排查order服务中一分钟GC次数大于30次 支付高并发场景下数据库间隙锁导致的数据库死锁 Mockito given willReturn 没有正确返回 }, &quot;mappings&quot;:{ &quot;_doc&quot;:{ &quot;properties&quot;:{ &quot;id&quot;:{ &quot;type&quot;:&quot;text&quot;, &quot;fields&quot;:{ &quot;keyword&quot;:{ &quot;type&quot;:&quot;keyword&quot;, &quot;ignore_above&quot;:256 } } }, &quot;request_time&quot;:{ &quot;type&quot;:&quot;text&quot;, &quot;fields&quot;:{ &quot;keyword&quot;:{ &quot;type&quot;:&quot;keyword&quot;, &quot;ignore_above&quot;:256 } } } } } }, &quot;settings&quot;:{ &quot;index&quot;:{ &quot;creation_date&quot;:&quot;1637288113508&quot;, &quot;number_of_shards&quot;:&quot;5&quot;, &quot;number_of_replicas&quot;:&quot;1&quot;, &quot;uuid&quot;:&quot;x-dn1nyfTlShjKD8n-HUGQ&quot;, &quot;version&quot;:{ &quot;created&quot;:&quot;6080099&quot; }, &quot;provided_name&quot;:&quot;index_pay_center_request_dev&quot; } } } } 4、扩展增加long类型的请求时间和long类型的响应时间 &lt;/th&gt; &lt;th&gt; &lt;/th&gt; &lt;th&gt; &lt;/th&gt; &lt;/tr&gt; &lt;tr&gt; &lt;th&gt;&lt;a name=&quot;27&quot;&gt;27&lt;/a&gt;&lt;/th&gt; &lt;th&gt;2021-12-01&lt;/th&gt; &lt;th&gt; 优惠券过期导致支付成功的后置流程失败 &lt;/th&gt; &lt;th&gt; 然后创建订单的时候，优惠券状态为使用中，执行定时任务导致使用中变成过期。从而导致整个订单后置流程失败。 &lt;/th&gt; &lt;th&gt; 1.</p>
-</div>
-</article>
-
 
 </main>
 

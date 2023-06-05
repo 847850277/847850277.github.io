@@ -308,130 +308,170 @@
 &lt;/li&gt;
 &lt;li&gt;记录时间 : 2021-08-25&lt;/li&gt;
 &lt;/ul&gt;
-</description>
-    </item>
-    <item>
-      <title>bug 记录</title>
-      <link>https://847850277.github.io/posts/bug/bug_bak/</link>
-      <pubDate>Wed, 01 Jul 2015 09:00:00 +0000</pubDate>
-      <guid>https://847850277.github.io/posts/bug/bug_bak/</guid>
-      <description>&lt;h1 id=&#34;bug清单表格&#34;&gt;bug清单表格&lt;/h1&gt;
-&lt;h2 id=&#34;a-href1springboot上传文件报流关闭错误a&#34;&gt;&lt;!-- raw HTML omitted --&gt;springboot上传文件，报流关闭错误&lt;!-- raw HTML omitted --&gt;&lt;/h2&gt;
-&lt;h2 id=&#34;a-href2某些sql会在limit后追加一个limit导致查询sql报错a&#34;&gt;&lt;!-- raw HTML omitted --&gt;某些sql会在limit后追加一个limit，导致查询sql报错&lt;!-- raw HTML omitted --&gt;&lt;/h2&gt;
-&lt;h2 id=&#34;a-href3请求接口返回90044错误a&#34;&gt;&lt;!-- raw HTML omitted --&gt;请求接口，返回90044错误&lt;!-- raw HTML omitted --&gt;&lt;/h2&gt;
-&lt;h2 id=&#34;a-href4小程序获取手机号授权并未生成响应的学员记录a&#34;&gt;&lt;!-- raw HTML omitted --&gt;小程序获取手机号授权，并未生成响应的学员记录&lt;!-- raw HTML omitted --&gt;&lt;/h2&gt;
-&lt;h2 id=&#34;a-href5crm服务导入数据特定的获客渠道异界交换才能够导入a&#34;&gt;&lt;!-- raw HTML omitted --&gt;crm服务导入数据、特定的获客渠道（异界交换）才能够导入&lt;!-- raw HTML omitted --&gt;&lt;/h2&gt;
-&lt;h2 id=&#34;a-href6支付成功后在crm的h5页面填入分单的数据结果分单后的比例并没有按对应比例保存a&#34;&gt;&lt;!-- raw HTML omitted --&gt;支付成功后，在crm的h5页面填入分单的数据、结果分单后的比例并没有按对应比例保存&lt;!-- raw HTML omitted --&gt;&lt;/h2&gt;
-&lt;h2 id=&#34;a-href7有一个定时然后推送消息的功能同时推送短信和微信模版消息a&#34;&gt;&lt;!-- raw HTML omitted --&gt;有一个定时然后推送消息的功能，同时推送短信和微信模版消息。&lt;!-- raw HTML omitted --&gt;&lt;/h2&gt;
-&lt;h2 id=&#34;a-href8订单支付成功生成了3条相同的费用明细同时生成了三个正式学员有预警邮件提醒a&#34;&gt;&lt;!-- raw HTML omitted --&gt;订单支付成功，生成了3条相同的费用明细，同时生成了三个正式学员，有预警邮件提醒&lt;!-- raw HTML omitted --&gt;&lt;/h2&gt;
-&lt;h2 id=&#34;a-href9在正式学员列表里面搜索姓名姓名无法找到该学员但是搜索学员昵称或者电话号码又可以找到该学员a&#34;&gt;&lt;!-- raw HTML omitted --&gt;在正式学员列表里面，搜索姓名姓名无法找到该学员，但是搜索学员昵称或者电话号码又可以找到该学员&amp;hellip;&lt;!-- raw HTML omitted --&gt;&lt;/h2&gt;
-&lt;h2 id=&#34;a-href10通过转介绍渠道来的新的意向客户数据其跟进人的扫码归属人字段未写入值a&#34;&gt;&lt;!-- raw HTML omitted --&gt;通过转介绍渠道来的新的意向客户数据，其跟进人的扫码归属人字段未写入值&lt;!-- raw HTML omitted --&gt;&lt;/h2&gt;
-&lt;h2 id=&#34;a-href11omo转介绍小程序提交了预约相关信息其生成了活动记录但是并未生成客户记录a&#34;&gt;&lt;!-- raw HTML omitted --&gt;omo转介绍小程序，提交了预约相关信息，其生成了活动记录，但是并未生成客户记录&lt;!-- raw HTML omitted --&gt;&lt;/h2&gt;
-&lt;h2 id=&#34;a-href12数据字典的校区由新校变成老校定时未生效a&#34;&gt;&lt;!-- raw HTML omitted --&gt;数据字典的校区由新校变成老校定时未生效&lt;!-- raw HTML omitted --&gt;&lt;/h2&gt;
-&lt;h2 id=&#34;a-href13启动项目提示拿不到数据库的链接a&#34;&gt;&lt;!-- raw HTML omitted --&gt;启动项目提示拿不到数据库的链接&lt;!-- raw HTML omitted --&gt;&lt;/h2&gt;
-&lt;h2 id=&#34;a-href14暑期三节课发起支付后订单支付状态未变更为支付中a&#34;&gt;&lt;!-- raw HTML omitted --&gt;暑期三节课发起支付后，订单支付状态未变更为支付中&lt;!-- raw HTML omitted --&gt;&lt;/h2&gt;
-&lt;h2 id=&#34;a-href151客户详细存在跟进人为空的数据2sql查询的逻辑为即查询跟进人的id又查询冗余跟进人名称同时冗余跟进人名称会存在为空的数据a&#34;&gt;&lt;!-- raw HTML omitted --&gt;1.客户详细存在跟进人为空的数据2.sql查询的逻辑为即查询跟进人的id，又查询冗余跟进人名称，同时冗余跟进人名称会存在为空的数据&lt;!-- raw HTML omitted --&gt;&lt;/h2&gt;
-&lt;h2 id=&#34;a-href16导出正式学员列表增加扫码归属人和收单人员两列字段a&#34;&gt;&lt;!-- raw HTML omitted --&gt;导出正式学员列表增加扫码归属人和收单人员两列字段&lt;!-- raw HTML omitted --&gt;&lt;/h2&gt;
-&lt;h2 id=&#34;a-href17优惠券退款点击驳回或者废除若原状态为已经回收其状态还是变更成未使用并没有退回为原本状态a&#34;&gt;&lt;!-- raw HTML omitted --&gt;优惠券退款，点击驳回或者废除。若原状态为已经回收，其状态还是变更成未使用，并没有退回为原本状态&lt;!-- raw HTML omitted --&gt;&lt;/h2&gt;
-&lt;h2 id=&#34;a-href18线上支付在使用支付宝付款时候提示操作失败网络或者服务器错误a&#34;&gt;&lt;!-- raw HTML omitted --&gt;线上支付在使用支付宝付款时候提示“操作失败：网络或者服务器错误”&lt;!-- raw HTML omitted --&gt;&lt;/h2&gt;
-&lt;h2 id=&#34;a-href19定时同步标签但是其值并未写入数据库a&#34;&gt;&lt;!-- raw HTML omitted --&gt;定时同步标签，但是其值并未写入数据库&lt;!-- raw HTML omitted --&gt;&lt;/h2&gt;
-&lt;h2 id=&#34;a-href20selenium模拟微信登陆选择封面图失败报js的异常a&#34;&gt;&lt;!-- raw HTML omitted --&gt;selenium模拟微信登陆选择封面图失败，报js的异常&lt;!-- raw HTML omitted --&gt;&lt;/h2&gt;
-&lt;h2 id=&#34;a-href21活动小程序部分用户唤起支付控件失败a&#34;&gt;&lt;!-- raw HTML omitted --&gt;活动小程序部分用户唤起支付控件失败&lt;!-- raw HTML omitted --&gt;&lt;/h2&gt;
-&lt;h2 id=&#34;a-href22模拟代码用队列发送前置消息失败但是走支付流程真实付款前置流程成功且调用发送mq的方法为同一个并无差异a&#34;&gt;&lt;!-- raw HTML omitted --&gt;模拟代码用队列发送前置消息失败，但是走支付流程真实付款，前置流程成功。且调用发送MQ的方法为同一个，并无差异&lt;!-- raw HTML omitted --&gt;&lt;/h2&gt;
-&lt;h2 id=&#34;a-href23模拟支付集成测试用例的数据驱动的开发a&#34;&gt;&lt;!-- raw HTML omitted --&gt;模拟支付集成测试用例的数据驱动的开发&lt;!-- raw HTML omitted --&gt;&lt;/h2&gt;
-&lt;h2 id=&#34;a-href24hexo-下的分类和表签无法显示怎么解决a&#34;&gt;&lt;!-- raw HTML omitted --&gt;hexo 下的分类和表签无法显示，怎么解决？&lt;!-- raw HTML omitted --&gt;&lt;/h2&gt;
-&lt;h2 id=&#34;a-href25增加transactional定时调度生成了多条记录a&#34;&gt;&lt;!-- raw HTML omitted --&gt;增加@transactional，定时调度生成了多条记录&lt;!-- raw HTML omitted --&gt;&lt;/h2&gt;
-&lt;h2 id=&#34;a-href26优惠券状态后置导致执行更新优惠券状态失败影响整个订单后置流程a&#34;&gt;&lt;!-- raw HTML omitted --&gt;优惠券状态后置，导致执行更新优惠券状态失败，影响整个订单后置流程&lt;!-- raw HTML omitted --&gt;&lt;/h2&gt;
-&lt;h2 id=&#34;a-href27请求接口返回90044错误a&#34;&gt;&lt;!-- raw HTML omitted --&gt;请求接口，返回90044错误&lt;!-- raw HTML omitted --&gt;&lt;/h2&gt;
-&lt;h2 id=&#34;a-href28datagrip导出文件自动加双引号a&#34;&gt;&lt;!-- raw HTML omitted --&gt;datagrip导出文件自动加双引号&lt;!-- raw HTML omitted --&gt;&lt;/h2&gt;
-&lt;h2 id=&#34;a-href29排查order服务中一分钟gc次数大于30次a&#34;&gt;&lt;!-- raw HTML omitted --&gt;排查order服务中一分钟GC次数大于30次&lt;!-- raw HTML omitted --&gt;&lt;/h2&gt;
-&lt;h2 id=&#34;a-href30支付高并发场景下数据库间隙锁导致的数据库死锁a&#34;&gt;&lt;!-- raw HTML omitted --&gt;支付高并发场景下数据库间隙锁导致的数据库死锁&lt;!-- raw HTML omitted --&gt;&lt;/h2&gt;
-&lt;h2 id=&#34;a-href31mockito-given-willreturn-没有正确返回a&#34;&gt;&lt;!-- raw HTML omitted --&gt;Mockito given willReturn 没有正确返回&lt;!-- raw HTML omitted --&gt;&lt;/h2&gt;
-&lt;!-- raw HTML omitted --&gt;
-&lt;pre&gt;&lt;code&gt;    },
-    &amp;quot;mappings&amp;quot;:{
-        &amp;quot;_doc&amp;quot;:{
-            &amp;quot;properties&amp;quot;:{
-                &amp;quot;id&amp;quot;:{
-                    &amp;quot;type&amp;quot;:&amp;quot;text&amp;quot;,
-                    &amp;quot;fields&amp;quot;:{
-                        &amp;quot;keyword&amp;quot;:{
-                            &amp;quot;type&amp;quot;:&amp;quot;keyword&amp;quot;,
-                            &amp;quot;ignore_above&amp;quot;:256
-                        }
-                    }
-                },
-                &amp;quot;request_time&amp;quot;:{
-                    &amp;quot;type&amp;quot;:&amp;quot;text&amp;quot;,
-                    &amp;quot;fields&amp;quot;:{
-                        &amp;quot;keyword&amp;quot;:{
-                            &amp;quot;type&amp;quot;:&amp;quot;keyword&amp;quot;,
-                            &amp;quot;ignore_above&amp;quot;:256
-                        }
-                    }
-                }
-            }
-        }
-    },
-    &amp;quot;settings&amp;quot;:{
-        &amp;quot;index&amp;quot;:{
-            &amp;quot;creation_date&amp;quot;:&amp;quot;1637288113508&amp;quot;,
-            &amp;quot;number_of_shards&amp;quot;:&amp;quot;5&amp;quot;,
-            &amp;quot;number_of_replicas&amp;quot;:&amp;quot;1&amp;quot;,
-            &amp;quot;uuid&amp;quot;:&amp;quot;x-dn1nyfTlShjKD8n-HUGQ&amp;quot;,
-            &amp;quot;version&amp;quot;:{
-                &amp;quot;created&amp;quot;:&amp;quot;6080099&amp;quot;
-            },
-            &amp;quot;provided_name&amp;quot;:&amp;quot;index_pay_center_request_dev&amp;quot;
-        }
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;}
-&lt;code&gt;4、扩展增加long类型的请求时间和long类型的响应时间     &amp;lt;/th&amp;gt; &amp;lt;th&amp;gt; &amp;lt;/th&amp;gt; &amp;lt;th&amp;gt; &amp;lt;/th&amp;gt; &amp;lt;/tr&amp;gt; &amp;lt;tr&amp;gt; &amp;lt;th&amp;gt;&amp;lt;a name=&amp;quot;27&amp;quot;&amp;gt;27&amp;lt;/a&amp;gt;&amp;lt;/th&amp;gt; &amp;lt;th&amp;gt;2021-12-01&amp;lt;/th&amp;gt; &amp;lt;th&amp;gt; 优惠券过期导致支付成功的后置流程失败 &amp;lt;/th&amp;gt; &amp;lt;th&amp;gt; 然后创建订单的时候，优惠券状态为使用中，执行定时任务导致使用中变成过期。从而导致整个订单后置流程失败。 &amp;lt;/th&amp;gt; &amp;lt;th&amp;gt; 1.利用接口把优惠券的状态前置， 2.再手动触发后置流程状态 &amp;lt;/th&amp;gt; &amp;lt;th&amp;gt; 1、监控邮件提醒支付后置优惠券状态不对&amp;lt;br/&amp;gt; 2、排查过期定时任务导致使用中的优惠券状态为过期&lt;/code&gt; sql
-&amp;ndash; 查询未生成的费用明细
-select
-t_order.SERIAL,
-t_cost_detail.SERIAL
-from dyjw_aggregate_layer.t_order
-left join dyjw_aggregate_layer.t_cost_detail on t_order.SERIAL = t_cost_detail.SERIAL
-where  t_order.CREATEDATE &amp;gt;= &amp;lsquo;2021-10-01&amp;rsquo; and t_order.STATUS = 2 and t_order.GOODTYPE != &amp;lsquo;优惠券&amp;rsquo;
-and t_cost_detail.SERIAL is null
-;
-&lt;code&gt;1. 用接口调整用户领用优惠券的状态，同时触发后置流程&amp;lt;br/&amp;gt; &amp;lt;/th&amp;gt; &amp;lt;th&amp;gt; &amp;lt;/th&amp;gt; &amp;lt;th&amp;gt; &amp;lt;/th&amp;gt; &amp;lt;/tr&amp;gt; &amp;lt;tr&amp;gt; &amp;lt;th&amp;gt;&amp;lt;a name=&amp;quot;28&amp;quot;&amp;gt;28&amp;lt;/a&amp;gt;&amp;lt;/th&amp;gt; &amp;lt;th&amp;gt;2022-01-07&amp;lt;/th&amp;gt; &amp;lt;th&amp;gt; datagrip导出查询结果自动加双引号 &amp;lt;/th&amp;gt; &amp;lt;th&amp;gt; 1、idea配置问题，默认导出配置加上了引号 2、在database的csv formarts格式话选项中 &amp;lt;/th&amp;gt; &amp;lt;th&amp;gt; 见下图配置，可解决该问题 &amp;lt;img src=&#39;http://117.50.163.170:9000/resource/WechatIMG1214.png&#39;&amp;gt; &amp;lt;/th&amp;gt; &amp;lt;th&amp;gt; &amp;lt;/th&amp;gt; &amp;lt;th&amp;gt; &amp;lt;/th&amp;gt; &amp;lt;th&amp;gt; &amp;lt;/th&amp;gt; &amp;lt;/tr&amp;gt; &amp;lt;tr&amp;gt; &amp;lt;th&amp;gt;&amp;lt;a name=&amp;quot;29&amp;quot;&amp;gt;29&amp;lt;/a&amp;gt;&amp;lt;/th&amp;gt; &amp;lt;th&amp;gt;2022-03-31&amp;lt;/th&amp;gt; &amp;lt;th&amp;gt; 服务监控群中，在03-30日下午5点的时候，报警出现一小时内GC次数超过30次 &amp;lt;img src=&#39;http://117.50.163.170:9000/blog/WechatIMG1304.png&#39;&amp;gt; &amp;lt;/th&amp;gt; &amp;lt;th&amp;gt; 1、排查http-log的日志，未发现频繁请求，在4点50到5点10分之间，服务的接口请求命中条数为100多条 2、继续查看http-log的日志，发现有两个接口请求的返回json字段值超级长，而且接口的耗时为6S。 3、排查代码，发现有一个sql查询会查询数据库的记录条数超过2万条 &amp;lt;/th&amp;gt; &amp;lt;th&amp;gt; 1、调整查询的逻辑，没有必要去查询快照信息的几万条记录 2、快照逻辑也不太合理 &amp;lt;/th&amp;gt; &amp;lt;th&amp;gt; &amp;lt;/th&amp;gt; &amp;lt;th&amp;gt; 1、大对象使用导致频繁的GC 2、代码中字符串的拼接使用的是String，而没有使用字符串对象去拼接，会导致创建很多的字符串对象 &amp;lt;/th&amp;gt; &amp;lt;th&amp;gt; &amp;lt;/th&amp;gt; &amp;lt;/tr&amp;gt; &amp;lt;tr&amp;gt; &amp;lt;th&amp;gt;&amp;lt;a name=&amp;quot;30&amp;quot;&amp;gt;30&amp;lt;/a&amp;gt;&amp;lt;/th&amp;gt; &amp;lt;th&amp;gt;2022-06-20&amp;lt;/th&amp;gt; &amp;lt;th&amp;gt; 6月18日做续报活动是，在支付服务请求量大的情况下，发生了数据库死锁的现象 &amp;lt;/th&amp;gt; &amp;lt;th&amp;gt; 1、让运维把死锁当时的数据库状态日志给导出来了 2、具体的内容见该附件&amp;lt;a href=&amp;quot;http://117.50.163.170:9000/blog/5050CDFF-6CC7-460a-86F3-B6530FB53D3D.txt&amp;quot; target=&amp;quot;blank&amp;quot;&amp;gt;点击下载附件&amp;lt;/a&amp;gt; &amp;lt;/th&amp;gt; &amp;lt;th&amp;gt; 1、高并发下，更新条件为索引字段，且又插入数据。由于数据库的间隙锁导致数据库死锁 &amp;lt;/th&amp;gt; &amp;lt;th&amp;gt; 1、修改更新条件为数据库主键更新 &amp;lt;/th&amp;gt; &amp;lt;th&amp;gt; &amp;lt;/th&amp;gt; &amp;lt;th&amp;gt; &amp;lt;a href=&amp;quot;https://www.cnblogs.com/wanglifeng717/archive/2022/03/11/15993400.html&amp;quot; target=&amp;quot;blank&amp;quot;&amp;gt;参考解决文章&amp;lt;/a&amp;gt; &amp;lt;/th&amp;gt; &amp;lt;/tr&amp;gt; &amp;lt;tr&amp;gt; &amp;lt;th&amp;gt;&amp;lt;a name=&amp;quot;31&amp;quot;&amp;gt;31&amp;lt;/a&amp;gt;&amp;lt;/th&amp;gt; &amp;lt;th&amp;gt;2022-11-01&amp;lt;/th&amp;gt; &amp;lt;th&amp;gt; 使用Mockito given and willReturn的时候，设置了willReturn的值,但是在mockMvc的调用情况下返回为空 &amp;lt;/th&amp;gt; &amp;lt;th&amp;gt; 1、参数对象并未覆盖hashCode方法,导致每次调用方法的hashCode值不一致，也就是导致Mockito没有代理成功 &amp;lt;/th&amp;gt; &amp;lt;th&amp;gt; 1、针对参数类型的对象，覆盖一下hashCode方法 &amp;lt;/th&amp;gt; &amp;lt;th&amp;gt; 1、代码如下，ApiQuery对象覆盖一下hashCode方法就可以解决&lt;/code&gt;java
-//调用方法
-final ApiQuery apiQuery = new ApiQuery(&amp;ldquo;string&amp;rdquo;, 0, &amp;ldquo;&amp;rdquo;, pageParameter);
-given(this.apiService.listByPage(apiQuery)).willReturn(commonPager);
-this.mockMvc.perform(MockMvcRequestBuilders.get(&amp;quot;/api&amp;quot;)
-.param(&amp;ldquo;apiPath&amp;rdquo;, &amp;ldquo;string&amp;rdquo;)
-.param(&amp;ldquo;state&amp;rdquo;, &amp;ldquo;0&amp;rdquo;)
-.param(&amp;ldquo;tagId&amp;rdquo;, &amp;ldquo;&amp;rdquo;)
-.param(&amp;ldquo;currentPage&amp;rdquo;, pageParameter.getCurrentPage() + &amp;ldquo;&amp;rdquo;)
-.param(&amp;ldquo;pageSize&amp;rdquo;, pageParameter.getPageSize() + &amp;ldquo;&amp;rdquo;))
-.andExpect(status().isOk())
-.andExpect(jsonPath(&amp;quot;$.message&amp;quot;, is(ShenyuResultMessage.QUERY_SUCCESS)))
-.andExpect(jsonPath(&amp;quot;$.data.dataList[0].contextPath&amp;quot;, is(apiVO.getContextPath())))
-.andReturn();
-//重写hashCode
-public boolean equals(final Object o) {
-if (this == o) {
-return true;
-}
-if (!(o instanceof ApiQuery)) {
-return false;
-}
-ApiQuery apiQuery = (ApiQuery) o;
-return apiPath.equals(apiQuery.apiPath) &amp;amp;&amp;amp; state.equals(apiQuery.state) &amp;amp;&amp;amp; tagId.equals(apiQuery.tagId) &amp;amp;&amp;amp; pageParameter.equals(apiQuery.pageParameter);
-}
-```
-2、Mockito底层用的ByteBuddy去做代理，动态生成字节码，通过判断参数的值，也就是参数对应的hashCode是不是匹配的值，如果是就走代理方法，不是就走原来的方法，来实现参数的returnValue拦截
-&lt;!-- raw HTML omitted --&gt;
-&lt;!-- raw HTML omitted --&gt;
-&lt;!-- raw HTML omitted --&gt;
-&lt;!-- raw HTML omitted --&gt;
-&lt;!-- raw HTML omitted --&gt;
-&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
-&lt;!-- raw HTML omitted --&gt;
+&lt;h2 id=&#34;7有一个定时然后推送消息的功能同时推送短信和微信模版消息&#34;&gt;7、有一个定时然后推送消息的功能，同时推送短信和微信模版消息。&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;现象 : &lt;code&gt;有一个定时然后推送消息的功能，同时推送短信和微信模版消息。 执行定时后，短信推送了，但是模版消息并未推送。&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;原因 : &lt;code&gt;服务调用链路为：教务服务 -》营销服务 -》推送消息服务 其中营销服务调用推送消息服务的请求地址被改成空了，然后调用服务出问题。&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;解决方式 : &lt;code&gt;还原为正确的调用地址	&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;过程总结 :
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;定位问题&lt;/code&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;查看推送服务的日志&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;查看推送服务的http日志&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;查看营销调用推送服务的代码&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;把调用地址修改为正确的地址&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;记录时间 : 2021-08-25&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;8订单支付成功生成了3条相同的费用明细同时生成了三个正式学员-有预警邮件提醒&#34;&gt;8、订单支付成功，生成了3条相同的费用明细，同时生成了三个正式学员， 有预警邮件提醒&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;现象 : &lt;code&gt;订单支付成功，生成了3条相同的费用明细，同时生成了三个正式学员， 有预警邮件提醒&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;原因 : &lt;code&gt;支付回调后置处理策略未添加事物注解，导致部分流程成功，部分流程失败	&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;解决方式 : &lt;code&gt;回调后置策略增加事物注解&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;过程总结 :
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;观察现象，确定费用明细生成，同时排查到正式学员生成多条，初步定位回调后置处理策略未在同一个事物里面&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;定位问题，确认代码中为增加事物注解&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;后置处理策略增加事物注解，解决改问题&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;扩展点 : 事物注解是如何生效的？同时默认回滚策略是RuntimeExcetipn类&lt;/li&gt;
+&lt;li&gt;记录时间 : 2021-08-25&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;9在正式学员列表里面搜索姓名姓名无法找到该学员但是搜索学员昵称或者电话号码又可以找到该学员&#34;&gt;9、在正式学员列表里面，搜索姓名姓名无法找到该学员，但是搜索学员昵称或者电话号码又可以找到该学员。&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;现象 : &lt;code&gt;在正式学员列表里面，搜索姓名姓名无法找到该学员，但是搜索学员昵称或者电话号码又可以找到该学员。 点击进入详细页里面，发现学员的姓名又是正常显示.包括学员费用明细里面也是一样的 初步现象就是意向学员的名字和正式学员的名字不一致 erp修改意向校区，发赠课券后所属校区为空&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;原因 : &lt;code&gt;正式学员表的名字和意向学员表的名字不一致，编辑crm信息处有bug， 导致信息未保持一致性&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;解决方式 : &lt;code&gt;修复crm编辑处的bug，使两处编辑保持一致&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;过程总结 :
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;观察现象，拿着贾舒涵的名称搜索确实会出现改问题&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;定位问题点，正式学员状态的变更入口，编辑客户信息导致&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;修复问题&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;记录时间 : 2021-08-30&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;10通过转介绍渠道来的新的意向客户数据其跟进人的扫码归属人字段未写入值&#34;&gt;10、通过转介绍渠道来的新的意向客户数据，其跟进人的扫码归属人字段未写入值&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;现象 : &lt;code&gt;通过转介绍渠道来的新的意向客户数据，其跟进人的扫码归属人字段未写入值&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;原因 : &lt;code&gt;营销服务调用crm服务编辑客户的跟进人信息时候，未传递跟进人参数 迁移代码导致代码丢失&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;解决方式 : &lt;code&gt;营销服务调crm服务时候，传跟进人参数&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;过程总结 :
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;复现（耗时长），不同分支的程序，已经接口参数，接口要做什么事情不清晰，很久之前的代码。 接口做的事情用注释标注清楚&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;httplog 辅助，抓入参数&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;读代码逻辑，标注代码做了那些事情&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;拿入参调试，找现场的快照情况&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;DEBUG断点调试&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;定位问题（耗时长），对比代码&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;增加跟进人传参数，解决问题&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;记录时间 : 2021-08-30&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;11omo转介绍小程序提交了预约相关信息其生成了活动记录但是并未生成客户记录&#34;&gt;11、omo转介绍小程序，提交了预约相关信息，其生成了活动记录，但是并未生成客户记录&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;现象 : &lt;code&gt;omo转介绍小程序，提交了预约相关信息，其生成了活动记录，但是并未生成客户记录&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;原因 : &lt;code&gt;crm代码迁移，新增客户逻辑的代码丢失，导致不会生成意向客户记录&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;解决方式 : &lt;code&gt;对比以前的customer分支，找回丢失的代码逻辑&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;过程总结 :
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;复现（耗时长）&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;拿参数&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;读代码逻辑&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;断点调试&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;找到出问题的点&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;排查原因&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;定位问题，代码丢失，相应分支和逻辑比较&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;记录时间 : 2021-08-30&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;12启动项目提示拿不到数据库的链接&#34;&gt;12、启动项目提示拿不到数据库的链接&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;现象 : &lt;code&gt;启动项目提示拿不到数据库的链接&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;原因 : &lt;code&gt;apollo配置问题 1.配置的格式问题 2.有特殊符号，然后认不到 3.app.id和apollo配置的不一致&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;解决方式 : &lt;code&gt;调整apollo的配置为正确的项目&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;过程总结 :
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;观察现象&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;启动项目拿不到正确的数据库url&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;初步定位问题为apollo配置问题&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;肉眼对比配置&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;肉眼对比app.id&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;重启检测是否生效&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;记录时间 : 2021-09-01&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;13暑期三节课发起支付后订单支付状态未变更为支付中&#34;&gt;13、暑期三节课发起支付后，订单支付状态未变更为支付中&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;现象 : &lt;code&gt;暑期三节课发起支付后，订单支付状态未变更为支付中&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;原因 : &lt;code&gt;1.支付中心拆分后，更改订单状态为支付中逻辑上提到业务处理层 2.营销三节课未添加更改支付中的逻辑&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;解决方式 : &lt;code&gt;添加更改订单状态为支付中的代码逻辑&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;过程总结 :
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;观察现象&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;定位问题&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;提交代码修复问题&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;扩展点 : 状态的判断处理都抽枚举类来统一处理&lt;/li&gt;
+&lt;li&gt;记录时间 : 2021-09-02&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;14修复跟进人bug&#34;&gt;14、修复跟进人bug&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;现象 : &lt;code&gt;修复跟进人bug	&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;原因 : &lt;code&gt;1.客户详细存在跟进人为空的数据 2.sql查询的逻辑为即查询跟进人的id，又查询冗余跟进人名称， 同时冗余跟进人名称会存在为空的数据&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;解决方式 : &lt;code&gt;若名称为空，跟进id查询一遍名称&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;过程总结 :
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;定位问题&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;本地复现&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;修改bug，未完全本地验证查询逻辑就让测试打包验证&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;优化，本地验证数据正确性能后&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;记录时间 : 2021-09-02&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;15优惠券退款点击驳回或者废除若原状态为已经回收-其状态还是变更成未使用并没有退回为原本状态&#34;&gt;15、优惠券退款，点击驳回或者废除。若原状态为已经回收， 其状态还是变更成未使用，并没有退回为原本状态&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;现象 : &lt;code&gt;优惠券退款，点击驳回或者废除。若原状态为已经回收， 其状态还是变更成未使用，并没有退回为原本状态	&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;原因 : &lt;code&gt;1.用户领取优惠券状态字段只有一个。若点击退款后，其状态变更为退款中， 并没有历史状态的记录&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;解决方式 : &lt;code&gt;领取记录表扩展增加字段“回收状态”，若已经回收，把回收状态设置为已经回收 然后，审核的时候， 1.联合判断一下回收状态，若此时已经回收，则回退成回收 2.若已经过期，过期标志 + 过期时间联合判断 3.其他置为未使用&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;过程总结 :
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;定位问题。状态值并没有快照记录&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;解决问题。增加退款状态字段&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;回收时写入已经退款，其他后置操作把回收状态还原&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;回收完成后，同时过期状态没有生效&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;找当时的参数记录。打日志重要性。&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;定位问题点，用http的参数请求接口发现但是并未走到对应的代码分支，导致设置过期状态未执行&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;逻辑分支判断用布尔值去判断&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;记录时间 : 2021-09-09&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;16线上支付在使用支付宝付款时候提示操作失败网络或者服务器错误&#34;&gt;16、线上支付在使用支付宝付款时候提示“操作失败：网络或者服务器错误”&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;现象 : &lt;code&gt;线上支付在使用支付宝付款时候提示“操作失败：网络或者服务器错误”&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;原因 : &lt;code&gt;1.网络问题导致？ 2.后台接口报错？&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;解决方式 :&lt;/li&gt;
+&lt;li&gt;过程总结 :
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;定位问题，排查httplog的请求接口情况&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;观察并未发送请求到后台&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;同时源头并未接入httplog服务&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;再仔细观察报错信息 正确流程： 1.观察报错信息为“操作失败：网络或者服务器错误” 2.什么情况下后段会报该异常 3.初步定位问题为网络情况&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;记录时间 : 2021-09-09&lt;/li&gt;
+&lt;/ul&gt;
 </description>
     </item>
     </channel>
