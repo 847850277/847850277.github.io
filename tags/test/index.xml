@@ -6,17 +6,17 @@
     <description>Recent content in test on ZhengPengDe Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 01 Jun 2023 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 01 Jun 2023 09:00:00 +0000</lastBuildDate>
     <atom:link href="https://847850277.github.io/tags/test/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>非正规集成&#43;压力测试</title>
       <link>https://847850277.github.io/posts/2023/renewal_integration_testing/</link>
-      <pubDate>Thu, 01 Jun 2023 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 01 Jun 2023 09:00:00 +0000</pubDate>
       <guid>https://847850277.github.io/posts/2023/renewal_integration_testing/</guid>
       <description>&lt;h2 id=&#34;非正规集成测试和性能测试&#34;&gt;非正规集成测试和性能测试&lt;/h2&gt;
 &lt;blockquote&gt;
 &lt;p&gt;6月份公司最重要的续费活动就要开始了,期间功能方面的改动不是特别大。但需要做性能测试和全部数据方面的验证。
-基于以上(全部数据的验证、性能测试)目的，于是需要对接口进行压力测试。&lt;/p&gt;
+基于以上(全部数据的验证、性能测试)目的，于是需要对接口进行性能测试。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h3 id=&#34;1工具调研&#34;&gt;1、工具调研&lt;/h3&gt;
 &lt;blockquote&gt;
@@ -193,7 +193,7 @@
 &lt;h3 id=&#34;4总结&#34;&gt;4、总结&lt;/h3&gt;
 &lt;blockquote&gt;
 &lt;p&gt;性能测试是一个系统工程，由于自身也不是专业的测试。只能从研发的角度去从全量数据的层面去覆盖，同时也模拟以下并发的情况。若是想要全链路的去做性能测试。需要准备更多的准备，
-最好是专人转岗去做，或者是专门请教专业的团队，然后再基于现在的业务，做主相对合理的技术方案。&lt;/p&gt;
+最好是专人专岗去做，或者是专门请教专业的团队，然后再基于现在的业务，做主相对合理的技术方案。&lt;/p&gt;
 &lt;/blockquote&gt;
 </description>
     </item>

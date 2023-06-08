@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html class="nojs" lang="zh-cn" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>redis使用分布式锁记 – ZhengPengDe Blog</title>
+<meta name="description" content="redis使用分布式锁记">
+<meta name="created" content="2021-11-27T15:00:00+0000">
+<meta name="modified" content="2021-11-27T15:00:00+0000">
+<meta name="author" content="zhengpengde">
+
+<meta property="og:site_name" content="ZhengPengDe Blog">
+<meta property="og:title" content="redis使用分布式锁记">
+<meta property="og:url" content="https://847850277.github.io/posts/redis/redis-distributed-lock-use/">
+<meta property="og:type" content="article">
+
+<meta name="generator" content="Hugo 0.112.5">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="theme-color" content="#ffffff">
+
+
+<link rel="canonical" href="https://847850277.github.io/posts/redis/redis-distributed-lock-use/">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+<link rel="stylesheet" href="/css/styles.f5f42549a2ff6655f6895613fdad4142b37562f0565fa9def394a039f13e54fa.css">
+<link rel="stylesheet" href="/css/print.31e2819287afc91406f2fd43d21a8ba4a0cdfc272e439c90db0c6e47efc7c346.css" media="print">
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "headline": "redis使用分布式锁记",
+    "datePublished": "2021-11-27T15:00:00Z",
+    "dateModified": "2021-11-27T15:00:00Z",
+    "url" : "https://847850277.github.io/posts/redis/redis-distributed-lock-use/",
+    "description": "redis使用分布式锁记",
+    "keywords": ["redis","distributed-lock"],
+    "author": {
+      "@type": "Person",
+      "name": "zhengpengde"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://847850277.github.io/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "ZhengPengDe Blog",
+      "url": "https://847850277.github.io/"
+    }
+  }
+</script>
+
+<script src="/js/script-early.min.21220209af63c496c7531316922ef9a4548661be9388bbcd1f9899bb0b842b21.js"></script>
+
+<script defer src="/js/script.min.f8f04035e9a9424ebc267c1a5fdb513d79b611a04b85cab2ac414d091ac9e94c.js"></script>
+
+
+
+</head>
+
+<body class="single-page">
+<div class="page layout__page">
+<header class="header layout__header mb--m">
+<a href="/" title="Home" rel="home" class="header__logo">
+<img src="/images/logo.png" alt="Home" class="header__logo-image">
+</a>
+<h1 class="header__site-name">
+<a href="/" title="Home" class="header__site-link" rel="home"><span>ZhengPengDe Blog</span></a>
+</h1>
+<div class="region header__region">
+</div>
+</header>
+
+<nav class="main-menu layout__navigation" aria-label="Main menu">
+<ul class="navbar">
+<li><a href="/">Home</a></li>
+<li><a href="/posts/" aria-current="page">Posts</a></li>
+</ul>
+</nav>
+<main class="main layout__main">
+<article class="single-view single-view--posts">
+<header>
+<h1 class="title ">redis使用分布式锁记</h1>
+<div class="tags meta">
+Tags:
+<ul>
+<li><a href="https://847850277.github.io/tags/redis/">redis</a></li>
+<li><a href="https://847850277.github.io/tags/distributed-lock/">distributed-lock</a></li>
+</ul>
+</div>
+</header>
+<div class="content">
+<h1 id="redis使用分布式锁记">redis使用分布式锁记</h1>
+<h2 id="背景介绍">背景介绍</h2>
+<blockquote>
+<p>在使用项目中封装的redis锁注解中，会出现异常信息。抛出拿分布式锁异常。</p>
+</blockquote>
+<h2 id="跟源码">跟源码</h2>
+<ul>
+<li>其中lock对象为false的情况下会抛出Get redis lock failed的业务异常</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Around</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;redisLockPoint() &amp;&amp; @annotation(redisLock)&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">around</span><span style="color:#f92672">(</span>ProceedingJoinPoint pjp<span style="color:#f92672">,</span> RedisLock redisLock<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Throwable <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        String key <span style="color:#f92672">=</span> redisLock<span style="color:#f92672">.</span><span style="color:#a6e22e">key</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>StringUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">isBlank</span><span style="color:#f92672">(</span>key<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            Object<span style="color:#f92672">[]</span> args <span style="color:#f92672">=</span> pjp<span style="color:#f92672">.</span><span style="color:#a6e22e">getArgs</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>redisLock<span style="color:#f92672">.</span><span style="color:#a6e22e">bindType</span><span style="color:#f92672">().</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>RedisLock<span style="color:#f92672">.</span><span style="color:#a6e22e">BindType</span><span style="color:#f92672">.</span><span style="color:#a6e22e">DEFAULT</span><span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                key <span style="color:#f92672">=</span> StringUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">join</span><span style="color:#f92672">(</span>args<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>redisLock<span style="color:#f92672">.</span><span style="color:#a6e22e">bindType</span><span style="color:#f92672">().</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>RedisLock<span style="color:#f92672">.</span><span style="color:#a6e22e">BindType</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ARGS_INDEX</span><span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                key <span style="color:#f92672">=</span> getArgsKey<span style="color:#f92672">(</span>redisLock<span style="color:#f92672">,</span> args<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>redisLock<span style="color:#f92672">.</span><span style="color:#a6e22e">bindType</span><span style="color:#f92672">().</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>RedisLock<span style="color:#f92672">.</span><span style="color:#a6e22e">BindType</span><span style="color:#f92672">.</span><span style="color:#a6e22e">OBJECT_PROPERTIES</span><span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                key <span style="color:#f92672">=</span> getObjectPropertiesKey<span style="color:#f92672">(</span>redisLock<span style="color:#f92672">,</span> args<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        Assert<span style="color:#f92672">.</span><span style="color:#a6e22e">hasText</span><span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;key does not exist&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        String prefix <span style="color:#f92672">=</span> redisLock<span style="color:#f92672">.</span><span style="color:#a6e22e">prefix</span><span style="color:#f92672">()+</span><span style="color:#e6db74">&#34;_&#34;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">boolean</span> lock <span style="color:#f92672">=</span> distributedRedisLock<span style="color:#f92672">.</span><span style="color:#a6e22e">lock</span><span style="color:#f92672">(</span>prefix <span style="color:#f92672">+</span> key<span style="color:#f92672">,</span> redisLock<span style="color:#f92672">.</span><span style="color:#a6e22e">expire</span><span style="color:#f92672">(),</span> redisLock<span style="color:#f92672">.</span><span style="color:#a6e22e">retryTimes</span><span style="color:#f92672">(),</span> redisLock<span style="color:#f92672">.</span><span style="color:#a6e22e">retryInterval</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>lock<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            log<span style="color:#f92672">.</span><span style="color:#a6e22e">warn</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;get lock failed : &#34;</span> <span style="color:#f92672">+</span> key<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>redisLock<span style="color:#f92672">.</span><span style="color:#a6e22e">errorStrategy</span><span style="color:#f92672">().</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>RedisLock<span style="color:#f92672">.</span><span style="color:#a6e22e">ErrorStrategy</span><span style="color:#f92672">.</span><span style="color:#a6e22e">THROW_EXCEPTION</span><span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> RedisException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Get redis lock failed&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        log<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;get lock success : {}&#34;</span><span style="color:#f92672">,</span> key<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> pjp<span style="color:#f92672">.</span><span style="color:#a6e22e">proceed</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">boolean</span> result <span style="color:#f92672">=</span> distributedRedisLock<span style="color:#f92672">.</span><span style="color:#a6e22e">unLock</span><span style="color:#f92672">(</span>prefix <span style="color:#f92672">+</span> key<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            log<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;release lock : {} {}&#34;</span><span style="color:#f92672">,</span> prefix <span style="color:#f92672">+</span> key<span style="color:#f92672">,</span> result <span style="color:#f92672">?</span> <span style="color:#e6db74">&#34; success&#34;</span> <span style="color:#f92672">:</span> <span style="color:#e6db74">&#34; failed&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span></code></pre></div><ul>
+<li>加锁的方法,通过redisTemplate执行execute方法，然后其中的SetOption参数为SET_IF_ABSENT</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * 加锁
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * @param key 锁key
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * @param expire 过期时间
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * @param retryTimes 重试次数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * @param retryInterval 重试间隔
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * @return true 加锁成功， false 加锁失败
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  */</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">lock</span><span style="color:#f92672">(</span>String key<span style="color:#f92672">,</span> <span style="color:#66d9ef">long</span> expire<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> retryTimes<span style="color:#f92672">,</span> <span style="color:#66d9ef">long</span> retryInterval<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">boolean</span> result <span style="color:#f92672">=</span> setRedisLock<span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> expire<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">      * 如果获取锁失败，进行重试
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">      */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span><span style="color:#f92672">((!</span>result<span style="color:#f92672">)</span> <span style="color:#f92672">&amp;&amp;</span> retryTimes<span style="color:#f92672">--</span> <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">){</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            log<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;lock failed, retrying...&#34;</span> <span style="color:#f92672">+</span> retryTimes<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">sleep</span><span style="color:#f92672">(</span>retryInterval<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>InterruptedException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        result <span style="color:#f92672">=</span> setRedisLock<span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> expire<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> result<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * 设置redis锁
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * @param key  锁key
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * @param expire 过期时间
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  * @return true 设置成功，false 设置失败
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">  */</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">setRedisLock</span><span style="color:#f92672">(</span>String key<span style="color:#f92672">,</span> <span style="color:#66d9ef">long</span> expire<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        RedisCallback<span style="color:#f92672">&lt;</span>Boolean<span style="color:#f92672">&gt;</span> callback <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>connection<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            String uuid <span style="color:#f92672">=</span> UUID<span style="color:#f92672">.</span><span style="color:#a6e22e">randomUUID</span><span style="color:#f92672">().</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            lockKey<span style="color:#f92672">.</span><span style="color:#a6e22e">set</span><span style="color:#f92672">(</span>uuid<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> connection<span style="color:#f92672">.</span><span style="color:#a6e22e">set</span><span style="color:#f92672">(</span>key<span style="color:#f92672">.</span><span style="color:#a6e22e">getBytes</span><span style="color:#f92672">(),</span> uuid<span style="color:#f92672">.</span><span style="color:#a6e22e">getBytes</span><span style="color:#f92672">(),</span> Expiration<span style="color:#f92672">.</span><span style="color:#a6e22e">milliseconds</span><span style="color:#f92672">(</span>expire<span style="color:#f92672">),</span> RedisStringCommands<span style="color:#f92672">.</span><span style="color:#a6e22e">SetOption</span><span style="color:#f92672">.</span><span style="color:#a6e22e">SET_IF_ABSENT</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">};</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> redisTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span>callback<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span><span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">){</span>
+</span></span><span style="display:flex;"><span>        log<span style="color:#f92672">.</span><span style="color:#a6e22e">error</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;set redis error&#34;</span><span style="color:#f92672">,</span> e<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><ul>
+<li>其中connection.set方法的释意如下,参数为 key，value，过期时间，和option</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    * Set {@code value} for {@code key} applying timeouts from {@code expiration} if set and inserting/updating values
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    * depending on {@code option}.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    *
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    * @param key must not be {@literal null}.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    * @param value must not be {@literal null}.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    * @param expiration must not be {@literal null}. Use {@link Expiration#persistent()} to not set any ttl.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    * @param option must not be {@literal null}. Use {@link SetOption#upsert()} to add non existing.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    * @return {@literal null} when used in pipeline / transaction.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    * @since 1.7
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    * @see &lt;a href=&#34;https://redis.io/commands/set&#34;&gt;Redis Documentation: SET&lt;/a&gt;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    */</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Nullable</span>
+</span></span><span style="display:flex;"><span>Boolean <span style="color:#a6e22e">set</span><span style="color:#f92672">(</span><span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> key<span style="color:#f92672">,</span> <span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> value<span style="color:#f92672">,</span> Expiration expiration<span style="color:#f92672">,</span> SetOption option<span style="color:#f92672">);</span>
+</span></span></code></pre></div><ul>
+<li>其中option的值如下所示例</li>
+<li>当前程序使用的是SET_IF_ABSENT</li>
+<li>等同于redis的<code>SETNX</code>命令</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    * {@code SET} command arguments for {@code NX}, {@code XX}.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    *
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    * @author Christoph Strobl
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    * @since 1.7
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    */</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">enum</span> SetOption <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        * Do not set any additional command argument.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        *
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        * @return
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        */</span>
+</span></span><span style="display:flex;"><span>    UPSERT<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        * {@code NX}
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        *
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        * @return
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        */</span>
+</span></span><span style="display:flex;"><span>    SET_IF_ABSENT<span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        * {@code XX}
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        *
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        * @return
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        */</span>
+</span></span><span style="display:flex;"><span>    SET_IF_PRESENT<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        * Do not set any additional command argument.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        *
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        * @return
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> SetOption <span style="color:#a6e22e">upsert</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> UPSERT<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        * {@code XX}
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        *
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        * @return
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> SetOption <span style="color:#a6e22e">ifPresent</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> SET_IF_PRESENT<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        * {@code NX}
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        *
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        * @return
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">        */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> SetOption <span style="color:#a6e22e">ifAbsent</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> SET_IF_ABSENT<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><h2 id="大胆假设小心求证">大胆假设，小心求证</h2>
+<ul>
+<li>观点一: <code>redis写会失败</code>
+<ul>
+<li>利用多线程模拟写操作
+<ul>
+<li>本地模拟10万个线程同时写操作，并未复现</li>
+</ul>
+</li>
+<li>写操作不包含重复的key</li>
+<li>业务代码中</li>
+</ul>
+</li>
+<li>观点二: <code>写重复key导致失败</code>
+<ul>
+<li>利用多线程模拟写操作</li>
+<li>短时间内重复key</li>
+<li>业务代码中有满足的条件
+<ul>
+<li>创建订单：key为customerId，表中存在customerId重复</li>
+<li>发放优惠券：key为activeId，活动为key，也存在重复</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="观点一代码多次模拟未出现拿锁异常的情况">观点一代码,多次模拟，未出现拿锁异常的情况</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@PostMapping</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/testRedisLock&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> Result <span style="color:#a6e22e">testRedisLock</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@RequestParam</span> Integer param<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">boolean</span><span style="color:#f92672">[]</span> flag <span style="color:#f92672">=</span> <span style="color:#f92672">{</span><span style="color:#66d9ef">false</span><span style="color:#f92672">};</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">;</span>i<span style="color:#f92672">&lt;</span>param<span style="color:#f92672">;</span>i<span style="color:#f92672">++){</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//方式1：相当于继承了Thread类，作为子类重写run()实现
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">int</span> finalI <span style="color:#f92672">=</span> i<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">new</span> Thread<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">try</span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                    payV2Service<span style="color:#f92672">.</span><span style="color:#a6e22e">testRedisLock</span><span style="color:#f92672">(</span>finalI<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span><span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">){</span>
+</span></span><span style="display:flex;"><span>                    e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                    flag<span style="color:#f92672">[</span><span style="color:#ae81ff">0</span><span style="color:#f92672">]</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> RuntimeException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;失败：&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">};</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> Result<span style="color:#f92672">.</span><span style="color:#a6e22e">succeed</span><span style="color:#f92672">(</span>flag<span style="color:#f92672">[</span><span style="color:#ae81ff">0</span><span style="color:#f92672">],</span><span style="color:#e6db74">&#34;成功&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@RedisLock</span><span style="color:#f92672">(</span>prefix <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;CREATORDER:TEST&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">testRedisLock</span><span style="color:#f92672">(</span>Integer param<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    log<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;加锁成功：&#34;</span> <span style="color:#f92672">+</span> param<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><h3 id="观点二代码次次都会复线出拿锁失败的情况">观点二代码，次次都会复线出拿锁失败的情况</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@PostMapping</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/testRedisLock&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> Result <span style="color:#a6e22e">testRedisLock</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@RequestParam</span> Integer param<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">boolean</span><span style="color:#f92672">[]</span> flag <span style="color:#f92672">=</span> <span style="color:#f92672">{</span><span style="color:#66d9ef">false</span><span style="color:#f92672">};</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">;</span>i<span style="color:#f92672">&lt;</span>param<span style="color:#f92672">;</span>i<span style="color:#f92672">++){</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//方式1：相当于继承了Thread类，作为子类重写run()实现
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">int</span> finalI <span style="color:#f92672">=</span> i<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">new</span> Thread<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">try</span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                    payV2Service<span style="color:#f92672">.</span><span style="color:#a6e22e">testRedisLock</span><span style="color:#f92672">(</span>finalI<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span><span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">){</span>
+</span></span><span style="display:flex;"><span>                    e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                    flag<span style="color:#f92672">[</span><span style="color:#ae81ff">0</span><span style="color:#f92672">]</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> RuntimeException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;失败：&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">//System.out.println(&#34;匿名内部类创建线程方式1...&#34;);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#f92672">};</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span> <span style="color:#f92672">;</span>i<span style="color:#f92672">&lt;</span>param<span style="color:#f92672">;</span>i<span style="color:#f92672">++){</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//方式1：相当于继承了Thread类，作为子类重写run()实现
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">int</span> finalI <span style="color:#f92672">=</span> i<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">new</span> Thread<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">try</span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                    payV2Service<span style="color:#f92672">.</span><span style="color:#a6e22e">testRedisLock</span><span style="color:#f92672">(</span>finalI<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span><span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">){</span>
+</span></span><span style="display:flex;"><span>                    e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                    flag<span style="color:#f92672">[</span><span style="color:#ae81ff">0</span><span style="color:#f92672">]</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> RuntimeException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;失败：&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">//System.out.println(&#34;匿名内部类创建线程方式1...&#34;);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#f92672">};</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> Result<span style="color:#f92672">.</span><span style="color:#a6e22e">succeed</span><span style="color:#f92672">(</span>flag<span style="color:#f92672">[</span><span style="color:#ae81ff">0</span><span style="color:#f92672">],</span><span style="color:#e6db74">&#34;成功&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@RedisLock</span><span style="color:#f92672">(</span>prefix <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;CREATORDER:TEST&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">testRedisLock</span><span style="color:#f92672">(</span>Integer param<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    log<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;加锁成功：&#34;</span> <span style="color:#f92672">+</span> param<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><h2 id="假设后可近似求证的结果">假设后，可近似求证的结果</h2>
+<blockquote>
+<p>基于以上两种假设，更可能出现的结论是<code>写重复key导致失败</code>,假设带着改结论去论证业务代码中由于数据问题，导致key重复的可能。<code>于是针对加锁的key，去验证数据是否有相同</code>。</p>
+</blockquote>
+<h3 id="可验证拿锁失败的情况业务代码中数据key都会有重复">可验证，<code>拿锁失败的情况，业务代码中数据key都会有重复</code>。</h3>
+<h4 id="业务代码片段一">业务代码片段一</h4>
+<blockquote>
+<p>客户id在数据中有重复</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    * 自主续报下单
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    * 1. 获取缓存数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    * 2. 校验数据
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    * 优惠券
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    * 预存款
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    * 3. 创建商品
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    * 4. 生成订单
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">    */</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@RedisLock</span><span style="color:#f92672">(</span>prefix <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;CREATORDER&#34;</span><span style="color:#f92672">,</span> bindType <span style="color:#f92672">=</span> RedisLock<span style="color:#f92672">.</span><span style="color:#a6e22e">BindType</span><span style="color:#f92672">.</span><span style="color:#a6e22e">OBJECT_PROPERTIES</span><span style="color:#f92672">,</span> properties <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;OrderIn.customerId&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> MergeOrderVO <span style="color:#a6e22e">saveRenewOrder</span><span style="color:#f92672">(</span>OrderIn orderIn<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">--</span> <span style="color:#960050;background-color:#1e0010">验证</span>sql
+</span></span><span style="display:flex;"><span>select <span style="color:#f92672">*</span> from dyjw_aggregate_layer<span style="color:#f92672">.</span><span style="color:#a6e22e">t_student</span> group by CUSTOMERID having <span style="color:#a6e22e">count</span><span style="color:#f92672">(</span>CUSTOMERID<span style="color:#f92672">)</span> <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">;</span>
+</span></span></code></pre></div><h4 id="业务代码片段二">业务代码片段二</h4>
+<blockquote>
+<p>活动id，针对相同活动会出现重复。</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@RedisLock</span><span style="color:#f92672">(</span>prefix<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;SEND_COUPON&#34;</span><span style="color:#f92672">,</span>bindType<span style="color:#f92672">=</span>RedisLock<span style="color:#f92672">.</span><span style="color:#a6e22e">BindType</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ARGS_INDEX</span><span style="color:#f92672">,</span>bindArgsIndex <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">sendCouponToCustomer</span><span style="color:#f92672">(</span>String activityId<span style="color:#f92672">,</span> String customerId<span style="color:#f92672">,</span>String followupId<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><blockquote>
+<p>上面场景中，观点一反复执行都不会报错，然后都是写重复key导致失败。基本可以确定是<code>写重复key导致失败</code>。</p>
+</blockquote>
+
+</div>
+
+<div class="content content--bottom">
+</div>
+</article>
+</main>
+
+
+<footer class="footer layout__footer mt--l">
+<p><span>© ZhengPengDe Blog</span></p>
+
+
+</footer>
+
+</div>
+</body>
+</html>

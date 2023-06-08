@@ -6,12 +6,12 @@
     <description>Recent content in apache shenyu on ZhengPengDe Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 06 Jun 2023 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 06 Jun 2023 16:00:00 +0000</lastBuildDate>
     <atom:link href="https://847850277.github.io/tags/apache-shenyu/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>apache shenyu 打包命令集</title>
       <link>https://847850277.github.io/posts/apache-shenyu/maven-package/</link>
-      <pubDate>Tue, 06 Jun 2023 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 06 Jun 2023 16:00:00 +0000</pubDate>
       <guid>https://847850277.github.io/posts/apache-shenyu/maven-package/</guid>
       <description>&lt;h2 id=&#34;打包常用的命令&#34;&gt;打包常用的命令&lt;/h2&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
