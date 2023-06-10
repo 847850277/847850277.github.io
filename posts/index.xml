@@ -268,10 +268,10 @@
       <link>https://847850277.github.io/posts/redis/redis-distributed-lock-use/</link>
       <pubDate>Sat, 27 Nov 2021 15:00:00 +0000</pubDate>
       <guid>https://847850277.github.io/posts/redis/redis-distributed-lock-use/</guid>
-      <description>&lt;h1 id=&#34;redis使用分布式锁记&#34;&gt;redis使用分布式锁记&lt;/h1&gt;
+      <description>&lt;h1 id=&#34;使用redis分布式锁记&#34;&gt;使用redis分布式锁记&lt;/h1&gt;
 &lt;h2 id=&#34;背景介绍&#34;&gt;背景介绍&lt;/h2&gt;
 &lt;blockquote&gt;
-&lt;p&gt;在使用项目中封装的redis锁注解中，会出现异常信息。抛出拿分布式锁异常。&lt;/p&gt;
+&lt;p&gt;在项目中使用封装的redis锁注解中，会出现异常信息。抛出拿分布式锁异常。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&#34;跟源码&#34;&gt;跟源码&lt;/h2&gt;
 &lt;ul&gt;

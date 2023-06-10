@@ -115,7 +115,7 @@ JMeter Apache Bench TestNG LoadRunner 基于熟悉上手和对公司业务数据
 
 </header>
 <div class="content">
-<p>redis使用分布式锁记 背景介绍 在使用项目中封装的redis锁注解中，会出现异常信息。抛出拿分布式锁异常。
+<p>使用redis分布式锁记 背景介绍 在项目中使用封装的redis锁注解中，会出现异常信息。抛出拿分布式锁异常。
 跟源码 其中lock对象为false的情况下会抛出Get redis lock failed的业务异常 @Around(&#34;redisLockPoint() &amp;&amp; @annotation(redisLock)&#34;) public Object around(ProceedingJoinPoint pjp, RedisLock redisLock) throws Throwable { String key = redisLock.key(); if (StringUtils.isBlank(key)) { Object[] args = pjp.getArgs(); if (redisLock.bindType().equals(RedisLock.BindType.DEFAULT)) { key = StringUtils.join(args); } else if (redisLock.bindType().equals(RedisLock.BindType.ARGS_INDEX)) { key = getArgsKey(redisLock, args); } else if (redisLock.bindType().equals(RedisLock.BindType.OBJECT_PROPERTIES)) { key = getObjectPropertiesKey(redisLock, args); } } Assert.hasText(key, &#34;key does not exist&#34;); String prefix = redisLock.prefix()+&#34;_&#34;; boolean lock = distributedRedisLock.lock(prefix + key, redisLock.</p>
 </div>
 </article>
