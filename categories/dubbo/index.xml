@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>dubbo on ZhengPengDe Blog</title>
+    <link>https://847850277.github.io/categories/dubbo/</link>
+    <description>Recent content in dubbo on ZhengPengDe Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 10 Jun 2023 16:00:00 +0000</lastBuildDate>
+    <atom:link href="https://847850277.github.io/categories/dubbo/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>dubbo是否有对文件上传下载导入导出的支持</title>
+      <link>https://847850277.github.io/posts/dubbo/dubbo-upload/</link>
+      <pubDate>Sat, 10 Jun 2023 16:00:00 +0000</pubDate>
+      <guid>https://847850277.github.io/posts/dubbo/dubbo-upload/</guid>
+      <description>&lt;h1 id=&#34;dubbo是否有对文件上传下载导入导出的支持&#34;&gt;dubbo是否有对文件上传下载导入导出的支持&lt;/h1&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;项目当前架构：
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;HTTP请求 -&amp;gt; 网关SpringCloudGateway -&amp;gt; 网关路由匹配 -&amp;gt; 网关dubbo泛化调用 -&amp;gt; dubbo服务
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;但与文件相关的操作，还是需要以Controller的形式暴露服务，因为涉及HttpServletResponse、ModelAndView、MultipartFile这些对象，如：
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;@PostMapping&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/upload&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;public Result uploadFile&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;@RequestParam&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;file&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; MultipartFile file&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;......
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;**问题：**请问dubbo可支持文件类型的操作，向外暴露服务，从而去除掉controller ？
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;对于大文件类型的操作，我们建议在首次接收到 MultipartFile 请求之后将文件存储到 HDFS 或者 OSS 等存储介质上，然后在后端传递的时候直接通过一个标识符传递。对于小文件，将 file 转换成 byte 数组传递就行。
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;这个想的有点大，dubbo专注于分布式式RPC框架，如果把MVC功能，或者消息堆积之类的功能都实现了，就不太好专注于RPC，想的大一些其实可以考虑一些子项目Dubbo-MVC, Dubbo-MQ ，Dubbo-Framework 😄
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;a href=&#34;https://github.com/apache/dubbo/issues/11515&#34;&gt;dubbo是否有对文件上传下载导入导出的支持&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    </channel>
+</rss>

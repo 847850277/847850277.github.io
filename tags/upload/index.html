@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
-<title>Tags – ZhengPengDe Blog</title>
-<link rel="alternate" type="application/rss+xml" title="rss" href="https://847850277.github.io/tags/index.xml">
+<title>upload – ZhengPengDe Blog</title>
+<link rel="alternate" type="application/rss+xml" title="rss" href="https://847850277.github.io/tags/upload/index.xml">
 <meta name="description" content="">
 <meta name="created" content="2023-06-10T16:00:00+0000">
 <meta name="modified" content="2023-06-10T16:00:00+0000">
 
 
 <meta property="og:site_name" content="ZhengPengDe Blog">
-<meta property="og:title" content="Tags">
-<meta property="og:url" content="https://847850277.github.io/tags/">
+<meta property="og:title" content="upload">
+<meta property="og:url" content="https://847850277.github.io/tags/upload/">
 <meta property="og:type" content="website">
 
 <meta name="generator" content="Hugo 0.112.5">
@@ -20,7 +20,7 @@
 <meta name="theme-color" content="#ffffff">
 
 
-<link rel="canonical" href="https://847850277.github.io/tags/">
+<link rel="canonical" href="https://847850277.github.io/tags/upload/">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
 <link rel="stylesheet" href="/css/styles.f5f42549a2ff6655f6895613fdad4142b37562f0565fa9def394a039f13e54fa.css">
@@ -30,8 +30,8 @@
 {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    "url" : "https://847850277.github.io/tags/",
-    "name": "Tags",
+    "url" : "https://847850277.github.io/tags/upload/",
+    "name": "upload",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https://847850277.github.io/"
@@ -73,69 +73,16 @@
 </nav>
 <main class="main layout__main">
 <header>
-<h1 class="title">Tags</h1>
+<h1 class="title">upload</h1>
 </header>
 
-<article class="list-view list-view--tags">
-<h2 class="title"><a href="/tags/dubbo/">dubbo</a> <span class="meta">(1)</span></h2>
-<div class="content">
-<p></p>
-</div>
-</article>
+<article class="list-view list-view--posts">
+<header>
+<h2 class="title "><a href="/posts/dubbo/dubbo-upload/">dubbo是否有对文件上传下载导入导出的支持</a></h2>
 
-<article class="list-view list-view--tags">
-<h2 class="title"><a href="/tags/upload/">upload</a> <span class="meta">(1)</span></h2>
+</header>
 <div class="content">
-<p></p>
-</div>
-</article>
-
-<article class="list-view list-view--tags">
-<h2 class="title"><a href="/tags/apache-shenyu/">apache shenyu</a> <span class="meta">(1)</span></h2>
-<div class="content">
-<p></p>
-</div>
-</article>
-
-<article class="list-view list-view--tags">
-<h2 class="title"><a href="/tags/package/">package</a> <span class="meta">(1)</span></h2>
-<div class="content">
-<p></p>
-</div>
-</article>
-
-<article class="list-view list-view--tags">
-<h2 class="title"><a href="/tags/test/">test</a> <span class="meta">(1)</span></h2>
-<div class="content">
-<p></p>
-</div>
-</article>
-
-<article class="list-view list-view--tags">
-<h2 class="title"><a href="/tags/%E6%A0%87%E7%AD%BE/">标签</a> <span class="meta">(1)</span></h2>
-<div class="content">
-<p></p>
-</div>
-</article>
-
-<article class="list-view list-view--tags">
-<h2 class="title"><a href="/tags/distributed-lock/">distributed-lock</a> <span class="meta">(1)</span></h2>
-<div class="content">
-<p></p>
-</div>
-</article>
-
-<article class="list-view list-view--tags">
-<h2 class="title"><a href="/tags/redis/">redis</a> <span class="meta">(1)</span></h2>
-<div class="content">
-<p></p>
-</div>
-</article>
-
-<article class="list-view list-view--tags">
-<h2 class="title"><a href="/tags/bug/">bug</a> <span class="meta">(1)</span></h2>
-<div class="content">
-<p></p>
+<p>dubbo是否有对文件上传下载导入导出的支持 项目当前架构： HTTP请求 -&gt; 网关SpringCloudGateway -&gt; 网关路由匹配 -&gt; 网关dubbo泛化调用 -&gt; dubbo服务 但与文件相关的操作，还是需要以Controller的形式暴露服务，因为涉及HttpServletResponse、ModelAndView、MultipartFile这些对象，如： @PostMapping(&#34;/upload&#34;) public Result uploadFile(@RequestParam(&#34;file&#34;) MultipartFile file) { ...... } **问题：**请问dubbo可支持文件类型的操作，向外暴露服务，从而去除掉controller ？ 对于大文件类型的操作，我们建议在首次接收到 MultipartFile 请求之后将文件存储到 HDFS 或者 OSS 等存储介质上，然后在后端传递的时候直接通过一个标识符传递。对于小文件，将 file 转换成 byte 数组传递就行。 这个想的有点大，dubbo专注于分布式式RPC框架，如果把MVC功能，或者消息堆积之类的功能都实现了，就不太好专注于RPC，想的大一些其实可以考虑一些子项目Dubbo-MVC, Dubbo-MQ ，Dubbo-Framework 😄 dubbo是否有对文件上传下载导入导出的支持</p>
 </div>
 </article>
 

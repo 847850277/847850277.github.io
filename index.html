@@ -6,8 +6,8 @@
 <title>ZhengPengDe Blog</title>
 <link rel="alternate" type="application/rss+xml" title="rss" href="https://847850277.github.io/index.xml">
 <meta name="description" content="">
-<meta name="created" content="2023-06-06T16:00:00+0000">
-<meta name="modified" content="2023-06-06T16:00:00+0000">
+<meta name="created" content="2023-06-10T16:00:00+0000">
+<meta name="modified" content="2023-06-10T16:00:00+0000">
 
 
 <meta property="og:site_name" content="ZhengPengDe Blog">
@@ -72,6 +72,16 @@
 </ul>
 </nav>
 <main class="main layout__main">
+<article class="list-view list-view--posts">
+<header>
+<h2 class="title "><a href="/posts/dubbo/dubbo-upload/">dubbo是否有对文件上传下载导入导出的支持</a></h2>
+
+</header>
+<div class="content">
+<p>dubbo是否有对文件上传下载导入导出的支持 项目当前架构： HTTP请求 -&gt; 网关SpringCloudGateway -&gt; 网关路由匹配 -&gt; 网关dubbo泛化调用 -&gt; dubbo服务 但与文件相关的操作，还是需要以Controller的形式暴露服务，因为涉及HttpServletResponse、ModelAndView、MultipartFile这些对象，如： @PostMapping(&#34;/upload&#34;) public Result uploadFile(@RequestParam(&#34;file&#34;) MultipartFile file) { ...... } **问题：**请问dubbo可支持文件类型的操作，向外暴露服务，从而去除掉controller ？ 对于大文件类型的操作，我们建议在首次接收到 MultipartFile 请求之后将文件存储到 HDFS 或者 OSS 等存储介质上，然后在后端传递的时候直接通过一个标识符传递。对于小文件，将 file 转换成 byte 数组传递就行。 这个想的有点大，dubbo专注于分布式式RPC框架，如果把MVC功能，或者消息堆积之类的功能都实现了，就不太好专注于RPC，想的大一些其实可以考虑一些子项目Dubbo-MVC, Dubbo-MQ ，Dubbo-Framework 😄 dubbo是否有对文件上传下载导入导出的支持</p>
+</div>
+</article>
+
 <article class="list-view list-view--posts">
 <header>
 <h2 class="title "><a href="/posts/apache-shenyu/maven-package/">apache shenyu 打包命令集</a></h2>
