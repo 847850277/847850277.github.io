@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>web on ZhengPengDe Blog</title>
+    <link>https://847850277.github.io/tags/web/</link>
+    <description>Recent content in web on ZhengPengDe Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 19 Jun 2023 09:00:00 +0000</lastBuildDate>
+    <atom:link href="https://847850277.github.io/tags/web/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>常用web记录</title>
+      <link>https://847850277.github.io/posts/2023/web/</link>
+      <pubDate>Mon, 19 Jun 2023 09:00:00 +0000</pubDate>
+      <guid>https://847850277.github.io/posts/2023/web/</guid>
+      <description>&lt;h1 id=&#34;常用的网站记录&#34;&gt;常用的网站记录&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&#34;https://coolaf.com/&#34;&gt;在线markdown&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://dockerproxy.com/&#34;&gt;docker国内镜像加速&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.mvncenter.com/&#34;&gt;另一个maven仓库&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.pdai.tech/&#34;&gt;java全栈知识体系&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.injdk.cn/&#34;&gt;jdk版本-爪哇我话你知&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://programmercarl.com/&#34;&gt;代码随想录-算法&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://labuladong.gitee.io/algo/&#34;&gt;labuladong 的算法小抄&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.cs.usfca.edu/~galles/visualization/Algorithms.html&#34;&gt;Data Structure Visualizations&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://gupiaozhushou.net/&#34;&gt;股票自动交易助手&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://excalidraw.com/&#34;&gt;excalidraw&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.v2ex.com/&#34;&gt;v2ex&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    </channel>
+</rss>
