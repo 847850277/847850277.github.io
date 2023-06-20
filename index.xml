@@ -6,8 +6,16 @@
     <description>Recent content on ZhengPengDe Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 10 Jun 2023 16:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 16 Jun 2023 09:00:00 +0000</lastBuildDate>
     <atom:link href="https://847850277.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Java的spi机制</title>
+      <link>https://847850277.github.io/posts/2023/spi/</link>
+      <pubDate>Fri, 16 Jun 2023 09:00:00 +0000</pubDate>
+      <guid>https://847850277.github.io/posts/2023/spi/</guid>
+      <description>&lt;h1 id=&#34;java的spi机制&#34;&gt;Java的spi机制&lt;/h1&gt;
+</description>
+    </item>
     <item>
       <title>dubbo是否有对文件上传下载导入导出的支持</title>
       <link>https://847850277.github.io/posts/dubbo/dubbo-upload/</link>
