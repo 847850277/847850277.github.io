@@ -6,8 +6,131 @@
     <description>Recent content on ZhengPengDe Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 19 Jun 2023 09:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 01 Jul 2023 09:00:00 +0000</lastBuildDate>
     <atom:link href="https://847850277.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>什么是metadata</title>
+      <link>https://847850277.github.io/posts/2023/metadata/</link>
+      <pubDate>Sat, 01 Jul 2023 09:00:00 +0000</pubDate>
+      <guid>https://847850277.github.io/posts/2023/metadata/</guid>
+      <description>&lt;h1 id=&#34;什么是metadata带例子&#34;&gt;什么是metadata,带例子&lt;/h1&gt;
+&lt;p&gt;&lt;code&gt;metadata is simply data about data&lt;/code&gt;,It means it is a description and context of the data. It helps to organize, find and understand data. Here are a few real world examples of metadata.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;元数据是数据的数据&lt;/code&gt;,这意味着他是数据的描述和上下文。它帮助我们了解和认识数据。下面有一些真是的关于元数据的例子。&lt;/p&gt;
+&lt;h2 id=&#34;typical-metadata&#34;&gt;Typical metadata&lt;/h2&gt;
+&lt;p&gt;Those are some typical metadata elements:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Title and description,&lt;/li&gt;
+&lt;li&gt;Tags and categories,&lt;/li&gt;
+&lt;li&gt;Who created and when,&lt;/li&gt;
+&lt;li&gt;Who last modified and when,&lt;/li&gt;
+&lt;li&gt;Who can access or update.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;a-photo&#34;&gt;A photo&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata_photo.png&#34; alt=&#34;meta_data_photo&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Every time you take a photo with today&amp;rsquo;s cameras a bunch of metadata is gathered and saved with it&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;date and time,&lt;/li&gt;
+&lt;li&gt;filename,&lt;/li&gt;
+&lt;li&gt;camera settings,&lt;/li&gt;
+&lt;li&gt;geolocation.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;a-book&#34;&gt;A book&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata_book.png&#34; alt=&#34;meta_data_book&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Each book has a number of standard metadata on the covers and inside. This includes:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;a title,&lt;/li&gt;
+&lt;li&gt;author name,&lt;/li&gt;
+&lt;li&gt;publisher and copyright details,&lt;/li&gt;
+&lt;li&gt;description on a back,&lt;/li&gt;
+&lt;li&gt;table of contents,&lt;/li&gt;
+&lt;li&gt;index,&lt;/li&gt;
+&lt;li&gt;page numbers.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;a-blog-post&#34;&gt;A blog post&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata_blog_post.png&#34; alt=&#34;metadata_blog_post&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Every blog post has standard metadata fields that are usually at before first paragraph. This includes:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;title,&lt;/li&gt;
+&lt;li&gt;author,&lt;/li&gt;
+&lt;li&gt;published time,&lt;/li&gt;
+&lt;li&gt;category,&lt;/li&gt;
+&lt;li&gt;tags.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;email&#34;&gt;Email&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata_email.png&#34; alt=&#34;metadata_email&#34;&gt;&lt;/p&gt;
+&lt;p&gt;每封邮件都由以下的元数据构成&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;主题&lt;/li&gt;
+&lt;li&gt;由谁发送&lt;/li&gt;
+&lt;li&gt;发送给谁&lt;/li&gt;
+&lt;li&gt;发送时间&lt;/li&gt;
+&lt;li&gt;发送的ip&lt;/li&gt;
+&lt;li&gt;格式&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;word-document&#34;&gt;Word document&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata_word_document.png&#34; alt=&#34;metadata_word_document&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Every word processing software collects some standard metadata and enables you to add your own fields for each document. Typical fields are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;title,&lt;/li&gt;
+&lt;li&gt;subject,&lt;/li&gt;
+&lt;li&gt;author,&lt;/li&gt;
+&lt;li&gt;company,&lt;/li&gt;
+&lt;li&gt;status,&lt;/li&gt;
+&lt;li&gt;creation date and time,&lt;/li&gt;
+&lt;li&gt;last modification date and time,&lt;/li&gt;
+&lt;li&gt;number of pages.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;a-spreadsheet&#34;&gt;A spreadsheet&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata_spreadsheet.png&#34; alt=&#34;metadata_spreadsheet&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Spreadsheets contain a few metadata fields:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;tab names,&lt;/li&gt;
+&lt;li&gt;table names,&lt;/li&gt;
+&lt;li&gt;column names,&lt;/li&gt;
+&lt;li&gt;user comments.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;relational-database&#34;&gt;Relational database&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata_database.png&#34; alt=&#34;metadata_database&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Relational databases (most common type of database) store and provide access not only data but also metadata in a structure called data dictionary or system catalog. It holds information about:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;tables,&lt;/li&gt;
+&lt;li&gt;columns,&lt;/li&gt;
+&lt;li&gt;data types,&lt;/li&gt;
+&lt;li&gt;table relationships,&lt;/li&gt;
+&lt;li&gt;and many more&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;computer-files&#34;&gt;Computer files&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata_files.png&#34; alt=&#34;metadata_files&#34;&gt;&lt;/p&gt;
+&lt;p&gt;All the fields you see by each file in file explorer is actually metadata. The actual data is inside those files. Metadata includes:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;file name,&lt;/li&gt;
+&lt;li&gt;type,&lt;/li&gt;
+&lt;li&gt;size,&lt;/li&gt;
+&lt;li&gt;creation date and time,&lt;/li&gt;
+&lt;li&gt;last modification date and time.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;web-page&#34;&gt;Web page&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata_webpage.png&#34; alt=&#34;metadata_webpage&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Every web page has a number of metadata fields:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;page title,&lt;/li&gt;
+&lt;li&gt;page description,&lt;/li&gt;
+&lt;li&gt;icon.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;paper-files&#34;&gt;Paper files&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata_secret_files.png&#34; alt=&#34;metadata_secret_files&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Paper document files have often administrative metadata that help manage documents. This might include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;letter for files organized alphabetically,&lt;/li&gt;
+&lt;li&gt;access control information (&amp;ldquo;classified&amp;rdquo; for instance),&lt;/li&gt;
+&lt;li&gt;logos.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id=&#34;总结&#34;&gt;总结&lt;/h1&gt;
+&lt;p&gt;&lt;code&gt;metadata is data about the data&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;元数据是数据的数据&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://dataedo.com/kb/data-glossary/what-is-metadata&#34;&gt;what is metadata&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>常用web记录</title>
       <link>https://847850277.github.io/posts/2023/web/</link>
@@ -71,7 +194,16 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;./mvnw -B clean install -Pexample -DskipTests -f ./shenyu-examples/shenyu-examples-dubbo/pom.xml
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;./mvnw -B clean install -Pexample -DskipTests -f ./shenyu-examples/shenyu-examples-http/pom.xml
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;./mvnw -B clean install  -DskipTests -f ./shenyu-client/pom.xml
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;./mvnw -B clean install -Pexample -DskipTests -f ./shenyu-examples/pom.xml
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;./mvnw -B clean install -Prelease  -DskipTests -f ./shenyu-dist/pom.xml
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;./mvnw -B clean install -Pdocker  -DskipTests -f ./shenyu-dist/pom.xml
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 集成测试打包&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;./mvnw -B clean install -Pit -DskipTests -f ./shenyu-integrated-test/shenyu-integrated-test-spring-cloud/pom.xml
@@ -88,17 +220,33 @@
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# docker-compose启动&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;docker-compose -f ./shenyu-integrated-test/shenyu-integrated-test-spring-cloud/docker-compose.yml up -d
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;docker-compose -f ./shenyu-integrated-test/shenyu-integrated-test-alibaba-dubbo/docker-compose.yml up -d
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;docker-compose -f ./shenyu-integrated-test/shenyu-integrated-test-spring-cloud/docker-compose.yml up -d
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;docker-compose -f ./shenyu-integrated-test/shenyu-integrated-test-http/docker-compose.yml up -d
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 执行测试&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;./mvnw test -Pit -f ./shenyu-integrated-test/shenyu-integrated-test-spring-cloud/pom.xml
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;./mvnw test -Pit -f ./shenyu-integrated-test/shenyu-integrated-test-alibaba-dubbo/pom.xml
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;./mvnw test -Pit -f ./shenyu-integrated-test/shenyu-integrated-test-http/pom.xml
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;./mvnw test -Pit -f ./shenyu-integrated-test/shenyu-integrated-test-http/pom.xml
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# docker-compose停止&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;docker-compose -f ./shenyu-integrated-test/shenyu-integrated-test-spring-cloud/docker-compose.yml down
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;docker-compose -f ./shenyu-integrated-test/shenyu-integrated-test-alibaba-dubbo/docker-compose.yml down
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;docker-compose -f ./shenyu-integrated-test/shenyu-integrated-test-alibaba-dubbo/docker-compose.yml down 
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;docker-compose -f ./shenyu-integrated-test/shenyu-integrated-test-http/docker-compose.yml down
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;registry.cn-hangzhou.aliyuncs.com/apache/shenyu-admin:latest
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;docker-compose -f ./shenyu-integrated-test/shenyu-integrated-test-http/docker-compose.yml logs --tail&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;all&amp;#34;&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;本地编译报错&#34;&gt;本地编译报错&lt;/h2&gt;
 &lt;blockquote&gt;
 &lt;p&gt;&lt;code&gt;./mvnw clean install -Dmaven.javadoc.skip=true&lt;/code&gt; 执行以上命令，本地编译报错。&lt;/p&gt;
