@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html class="nojs" lang="zh-cn" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>apache shenyu的spi机制 – ZhengPengDe Blog</title>
+<meta name="description" content="apache shenyu的spi机制">
+<meta name="created" content="2023-06-16T09:00:00+0000">
+<meta name="modified" content="2023-07-14T10:00:00+0000">
+<meta name="author" content="zhengpengde">
+
+<meta property="og:site_name" content="ZhengPengDe Blog">
+<meta property="og:title" content="apache shenyu的spi机制">
+<meta property="og:url" content="https://847850277.github.io/posts/apache-shenyu/shenyu-spi/">
+<meta property="og:type" content="article">
+
+<meta name="generator" content="Hugo 0.112.5">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="theme-color" content="#ffffff">
+
+
+<link rel="canonical" href="https://847850277.github.io/posts/apache-shenyu/shenyu-spi/">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+<link rel="stylesheet" href="/css/styles.f5f42549a2ff6655f6895613fdad4142b37562f0565fa9def394a039f13e54fa.css">
+<link rel="stylesheet" href="/css/print.31e2819287afc91406f2fd43d21a8ba4a0cdfc272e439c90db0c6e47efc7c346.css" media="print">
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "headline": "apache shenyu的spi机制",
+    "datePublished": "2023-06-16T09:00:00Z",
+    "dateModified": "2023-07-14T10:00:00Z",
+    "url" : "https://847850277.github.io/posts/apache-shenyu/shenyu-spi/",
+    "description": "apache shenyu的spi机制",
+    "keywords": ["spi"],
+    "author": {
+      "@type": "Person",
+      "name": "zhengpengde"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://847850277.github.io/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "ZhengPengDe Blog",
+      "url": "https://847850277.github.io/"
+    }
+  }
+</script>
+
+<script src="/js/script-early.min.21220209af63c496c7531316922ef9a4548661be9388bbcd1f9899bb0b842b21.js"></script>
+
+<script defer src="/js/script.min.f8f04035e9a9424ebc267c1a5fdb513d79b611a04b85cab2ac414d091ac9e94c.js"></script>
+
+
+
+</head>
+
+<body class="single-page">
+<div class="page layout__page">
+<header class="header layout__header mb--m">
+<a href="/" title="Home" rel="home" class="header__logo">
+<img src="/images/logo.png" alt="Home" class="header__logo-image">
+</a>
+<h1 class="header__site-name">
+<a href="/" title="Home" class="header__site-link" rel="home"><span>ZhengPengDe Blog</span></a>
+</h1>
+<div class="region header__region">
+</div>
+</header>
+
+<nav class="main-menu layout__navigation" aria-label="Main menu">
+<ul class="navbar">
+<li><a href="/">Home</a></li>
+<li><a href="/posts/" aria-current="page">Posts</a></li>
+</ul>
+</nav>
+<main class="main layout__main">
+<article class="single-view single-view--posts">
+<header>
+<h1 class="title ">apache shenyu的spi机制</h1>
+<div class="tags meta">
+Tags:
+<ul>
+<li><a href="https://847850277.github.io/tags/spi/">spi</a></li>
+</ul>
+</div>
+</header>
+<div class="content">
+<h2 id="什么是spi">什么是spi</h2>
+<p><code>SPI</code>就是<code>Service Provider Interface</code>,是一种动态的服务发现机制。
+可以基于运行时动态的加载接口的实现类。通过(接口编程 + 策略模式 + 配置文件) 实现<code>解耦</code>和<code>扩展</code>。</p>
+<p><img src="/img/source/spi/spi.png" alt="spi"></p>
+<p>常见的<code>SPI</code>的应用就是<code>JDK</code>内置的<code>java.sql.Driver</code>接口。基于该接口的实现有<code>MySQL</code>,<code>PostgreSQL</code>,<code>SqlServer</code>等。</p>
+<p>市面上常见的SPI的实现方式有：</p>
+<ul>
+<li><code>JDK</code>的<code>SPI</code>实现</li>
+<li><code>Dubbo</code>的<code>SPI</code>实现</li>
+<li><code>Spring</code>的<code>SPI</code>实现</li>
+</ul>
+<p><code>JDK</code>的<code>SPI</code>实现流程为</p>
+<ul>
+<li>在类路径的<code>META-INF/services</code>目录创建一个以接口全限定名称命名的文件（本质是一个properties）文件，例如命名为java.sql.Driver</li>
+<li>该文件中可以指定具体的实现类，也就是每个实现类的全类型限定名为单独一行
+<ul>
+<li>例如 <code>META-INF/services/java.sql.Driver</code></li>
+<li>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yml" data-lang="yml"><span style="display:flex;"><span>  <span style="color:#75715e"># META-INF/services/java.sql.Driver文件内容</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">com.mysql.jdbc.Driver</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">org.postgresql.Driver</span>
+</span></span></code></pre></div></li>
+</ul>
+</li>
+<li>最后通过<code>java.util.ServiceLoader</code>对该文件进行加载，实例化接口的对应实现类（这里隐含了一个约定，所有实现类必须提供无参构造函数,用来反射调用）</li>
+</ul>
+<h2 id="作用">作用</h2>
+<h2 id="实现方式">实现方式</h2>
+
+</div>
+
+<div class="content content--bottom">
+<div class="content-dates meta">
+Updated: 14 July, 2023<br>
+Created: 16 June, 2023
+</div>
+</div>
+</article>
+</main>
+
+
+<footer class="footer layout__footer mt--l">
+<p><span>© ZhengPengDe Blog</span></p>
+
+
+</footer>
+
+</div>
+</body>
+</html>

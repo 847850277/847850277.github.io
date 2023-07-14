@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html class="nojs" lang="zh-cn" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>apache shenyu 打包命令集 – ZhengPengDe Blog</title>
+<meta name="description" content="打包命令集">
+<meta name="created" content="2023-06-06T16:00:00+0000">
+<meta name="modified" content="2023-06-06T16:00:00+0000">
+<meta name="author" content="zhengpengde">
+
+<meta property="og:site_name" content="ZhengPengDe Blog">
+<meta property="og:title" content="apache shenyu 打包命令集">
+<meta property="og:url" content="https://847850277.github.io/posts/apache-shenyu/shenyu-maven-package/">
+<meta property="og:type" content="article">
+
+<meta name="generator" content="Hugo 0.112.5">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="theme-color" content="#ffffff">
+
+
+<link rel="canonical" href="https://847850277.github.io/posts/apache-shenyu/shenyu-maven-package/">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+<link rel="stylesheet" href="/css/styles.f5f42549a2ff6655f6895613fdad4142b37562f0565fa9def394a039f13e54fa.css">
+<link rel="stylesheet" href="/css/print.31e2819287afc91406f2fd43d21a8ba4a0cdfc272e439c90db0c6e47efc7c346.css" media="print">
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "headline": "apache shenyu 打包命令集",
+    "datePublished": "2023-06-06T16:00:00Z",
+    "dateModified": "2023-06-06T16:00:00Z",
+    "url" : "https://847850277.github.io/posts/apache-shenyu/shenyu-maven-package/",
+    "description": "打包命令集",
+    "keywords": ["apache shenyu","package"],
+    "author": {
+      "@type": "Person",
+      "name": "zhengpengde"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://847850277.github.io/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "ZhengPengDe Blog",
+      "url": "https://847850277.github.io/"
+    }
+  }
+</script>
+
+<script src="/js/script-early.min.21220209af63c496c7531316922ef9a4548661be9388bbcd1f9899bb0b842b21.js"></script>
+
+<script defer src="/js/script.min.f8f04035e9a9424ebc267c1a5fdb513d79b611a04b85cab2ac414d091ac9e94c.js"></script>
+
+
+
+</head>
+
+<body class="single-page">
+<div class="page layout__page">
+<header class="header layout__header mb--m">
+<a href="/" title="Home" rel="home" class="header__logo">
+<img src="/images/logo.png" alt="Home" class="header__logo-image">
+</a>
+<h1 class="header__site-name">
+<a href="/" title="Home" class="header__site-link" rel="home"><span>ZhengPengDe Blog</span></a>
+</h1>
+<div class="region header__region">
+</div>
+</header>
+
+<nav class="main-menu layout__navigation" aria-label="Main menu">
+<ul class="navbar">
+<li><a href="/">Home</a></li>
+<li><a href="/posts/" aria-current="page">Posts</a></li>
+</ul>
+</nav>
+<main class="main layout__main">
+<article class="single-view single-view--posts">
+<header>
+<h1 class="title ">apache shenyu 打包命令集</h1>
+<div class="tags meta">
+Tags:
+<ul>
+<li><a href="https://847850277.github.io/tags/apache-shenyu/">apache shenyu</a></li>
+<li><a href="https://847850277.github.io/tags/package/">package</a></li>
+</ul>
+</div>
+</header>
+<div class="content">
+<h2 id="打包常用的命令">打包常用的命令</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># example打包</span>
+</span></span><span style="display:flex;"><span>./mvnw -B clean install -Pexample -DskipTests -f ./shenyu-examples/shenyu-examples-springcloud/pom.xml
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>./mvnw -B clean install -Pexample -DskipTests -f ./shenyu-examples/shenyu-examples-dubbo/pom.xml
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>./mvnw -B clean install -Pexample -DskipTests -f ./shenyu-examples/shenyu-examples-http/pom.xml
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>./mvnw -B clean install  -DskipTests -f ./shenyu-client/pom.xml
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>./mvnw -B clean install -Pexample -DskipTests -f ./shenyu-examples/pom.xml
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>./mvnw -B clean install -Prelease  -DskipTests -f ./shenyu-dist/pom.xml
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>./mvnw -B clean install -Pdocker  -DskipTests -f ./shenyu-dist/pom.xml
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 集成测试打包</span>
+</span></span><span style="display:flex;"><span>./mvnw -B clean install -Pit -DskipTests -f ./shenyu-integrated-test/shenyu-integrated-test-spring-cloud/pom.xml
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>./mvnw -B clean install -Pit -DskipTests -f ./shenyu-integrated-test/shenyu-integrated-test-alibaba-dubbo/pom.xml
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>./mvnw -B clean install -Pit -DskipTests -f ./shenyu-integrated-test/shenyu-integrated-test-common/pom.xml
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>./mvnw -B clean install -Pit -DskipTests -f ./shenyu-integrated-test/pom.xml
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># docker-compose启动</span>
+</span></span><span style="display:flex;"><span>docker-compose -f ./shenyu-integrated-test/shenyu-integrated-test-spring-cloud/docker-compose.yml up -d
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>docker-compose -f ./shenyu-integrated-test/shenyu-integrated-test-spring-cloud/docker-compose.yml up -d
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>docker-compose -f ./shenyu-integrated-test/shenyu-integrated-test-http/docker-compose.yml up -d
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 执行测试</span>
+</span></span><span style="display:flex;"><span>./mvnw test -Pit -f ./shenyu-integrated-test/shenyu-integrated-test-spring-cloud/pom.xml
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>./mvnw test -Pit -f ./shenyu-integrated-test/shenyu-integrated-test-alibaba-dubbo/pom.xml
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>./mvnw test -Pit -f ./shenyu-integrated-test/shenyu-integrated-test-http/pom.xml
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>./mvnw test -Pit -f ./shenyu-integrated-test/shenyu-integrated-test-http/pom.xml
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># docker-compose停止</span>
+</span></span><span style="display:flex;"><span>docker-compose -f ./shenyu-integrated-test/shenyu-integrated-test-spring-cloud/docker-compose.yml down
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>docker-compose -f ./shenyu-integrated-test/shenyu-integrated-test-alibaba-dubbo/docker-compose.yml down 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>docker-compose -f ./shenyu-integrated-test/shenyu-integrated-test-http/docker-compose.yml down
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>registry.cn-hangzhou.aliyuncs.com/apache/shenyu-admin:latest
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>docker-compose -f ./shenyu-integrated-test/shenyu-integrated-test-http/docker-compose.yml logs --tail<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;all&#34;</span>
+</span></span></code></pre></div><h2 id="本地编译报错">本地编译报错</h2>
+<blockquote>
+<p><code>./mvnw clean install -Dmaven.javadoc.skip=true</code> 执行以上命令，本地编译报错。</p>
+<p>原因: 没有配置<code>JAVA_HOME</code>环境变量</p>
+</blockquote>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">10045</span>  source ~/.bash_profile
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">10046</span>  echo $JAVA_HOME
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">10047</span>  cat ~/.bash_profile
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">10048</span>  source ~/.bash_profile
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">10049</span>  echo $JAVA_HOME
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">10050</span>  source ~/.bash_profile
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">10051</span>  echo $JAVA_HOME
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">10052</span>  vim  ~/.bash_profile
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">10053</span>  source ~/.bash_profile
+</span></span></code></pre></div>
+</div>
+
+<div class="content content--bottom">
+</div>
+</article>
+</main>
+
+
+<footer class="footer layout__footer mt--l">
+<p><span>© ZhengPengDe Blog</span></p>
+
+
+</footer>
+
+</div>
+</body>
+</html>

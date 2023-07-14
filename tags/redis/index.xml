@@ -6,12 +6,12 @@
     <description>Recent content in redis on ZhengPengDe Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 27 Nov 2021 15:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 27 Nov 2021 09:00:00 +0000</lastBuildDate>
     <atom:link href="https://847850277.github.io/tags/redis/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>redis使用分布式锁记</title>
       <link>https://847850277.github.io/posts/redis/redis-distributed-lock-use/</link>
-      <pubDate>Sat, 27 Nov 2021 15:00:00 +0000</pubDate>
+      <pubDate>Sat, 27 Nov 2021 09:00:00 +0000</pubDate>
       <guid>https://847850277.github.io/posts/redis/redis-distributed-lock-use/</guid>
       <description>&lt;h1 id=&#34;使用redis分布式锁记&#34;&gt;使用redis分布式锁记&lt;/h1&gt;
 &lt;h2 id=&#34;背景介绍&#34;&gt;背景介绍&lt;/h2&gt;

@@ -7,7 +7,7 @@
 <link rel="alternate" type="application/rss+xml" title="rss" href="https://847850277.github.io/categories/spi/index.xml">
 <meta name="description" content="">
 <meta name="created" content="2023-06-16T09:00:00+0000">
-<meta name="modified" content="2023-06-16T09:00:00+0000">
+<meta name="modified" content="2023-07-14T10:00:00+0000">
 
 
 <meta property="og:site_name" content="ZhengPengDe Blog">
@@ -78,11 +78,15 @@
 
 <article class="list-view list-view--posts">
 <header>
-<h2 class="title "><a href="/posts/2023/spi/">Java的spi机制</a></h2>
+<h2 class="title "><a href="/posts/apache-shenyu/shenyu-spi/">apache shenyu的spi机制</a></h2>
 
 </header>
 <div class="content">
-<p>Java的spi机制 </p>
+<p>什么是spi SPI就是Service Provider Interface,是一种动态的服务发现机制。 可以基于运行时动态的加载接口的实现类。通过(接口编程 + 策略模式 + 配置文件) 实现解耦和扩展。
+常见的SPI的应用就是JDK内置的java.sql.Driver接口。基于该接口的实现有MySQL,PostgreSQL,SqlServer等。
+市面上常见的SPI的实现方式有：
+JDK的SPI实现 Dubbo的SPI实现 Spring的SPI实现 JDK的SPI实现流程为
+在类路径的META-INF/services目录创建一个以接口全限定名称命名的文件（本质是一个properties）文件，例如命名为java.sql.Driver 该文件中可以指定具体的实现类，也就是每个实现类的全类型限定名为单独一行 例如 META-INF/services/java.sql.Driver # META-INF/services/java.sql.Driver文件内容 com.mysql.jdbc.Driver org.postgresql.Driver 最后通过java.util.ServiceLoader对该文件进行加载，实例化接口的对应实现类（这里隐含了一个约定，所有实现类必须提供无参构造函数,用来反射调用） 作用 实现方式 </p>
 </div>
 </article>
 

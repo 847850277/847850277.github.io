@@ -9,11 +9,38 @@
     <lastBuildDate>Fri, 16 Jun 2023 09:00:00 +0000</lastBuildDate>
     <atom:link href="https://847850277.github.io/tags/spi/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Java的spi机制</title>
-      <link>https://847850277.github.io/posts/2023/spi/</link>
+      <title>apache shenyu的spi机制</title>
+      <link>https://847850277.github.io/posts/apache-shenyu/shenyu-spi/</link>
       <pubDate>Fri, 16 Jun 2023 09:00:00 +0000</pubDate>
-      <guid>https://847850277.github.io/posts/2023/spi/</guid>
-      <description>&lt;h1 id=&#34;java的spi机制&#34;&gt;Java的spi机制&lt;/h1&gt;
+      <guid>https://847850277.github.io/posts/apache-shenyu/shenyu-spi/</guid>
+      <description>&lt;h2 id=&#34;什么是spi&#34;&gt;什么是spi&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;SPI&lt;/code&gt;就是&lt;code&gt;Service Provider Interface&lt;/code&gt;,是一种动态的服务发现机制。
+可以基于运行时动态的加载接口的实现类。通过(接口编程 + 策略模式 + 配置文件) 实现&lt;code&gt;解耦&lt;/code&gt;和&lt;code&gt;扩展&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/spi/spi.png&#34; alt=&#34;spi&#34;&gt;&lt;/p&gt;
+&lt;p&gt;常见的&lt;code&gt;SPI&lt;/code&gt;的应用就是&lt;code&gt;JDK&lt;/code&gt;内置的&lt;code&gt;java.sql.Driver&lt;/code&gt;接口。基于该接口的实现有&lt;code&gt;MySQL&lt;/code&gt;,&lt;code&gt;PostgreSQL&lt;/code&gt;,&lt;code&gt;SqlServer&lt;/code&gt;等。&lt;/p&gt;
+&lt;p&gt;市面上常见的SPI的实现方式有：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;JDK&lt;/code&gt;的&lt;code&gt;SPI&lt;/code&gt;实现&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Dubbo&lt;/code&gt;的&lt;code&gt;SPI&lt;/code&gt;实现&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Spring&lt;/code&gt;的&lt;code&gt;SPI&lt;/code&gt;实现&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;code&gt;JDK&lt;/code&gt;的&lt;code&gt;SPI&lt;/code&gt;实现流程为&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在类路径的&lt;code&gt;META-INF/services&lt;/code&gt;目录创建一个以接口全限定名称命名的文件（本质是一个properties）文件，例如命名为java.sql.Driver&lt;/li&gt;
+&lt;li&gt;该文件中可以指定具体的实现类，也就是每个实现类的全类型限定名为单独一行
+&lt;ul&gt;
+&lt;li&gt;例如 &lt;code&gt;META-INF/services/java.sql.Driver&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-yml&#34; data-lang=&#34;yml&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;# META-INF/services/java.sql.Driver文件内容&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#ae81ff&#34;&gt;com.mysql.jdbc.Driver&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#ae81ff&#34;&gt;org.postgresql.Driver&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;最后通过&lt;code&gt;java.util.ServiceLoader&lt;/code&gt;对该文件进行加载，实例化接口的对应实现类（这里隐含了一个约定，所有实现类必须提供无参构造函数,用来反射调用）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;作用&#34;&gt;作用&lt;/h2&gt;
+&lt;h2 id=&#34;实现方式&#34;&gt;实现方式&lt;/h2&gt;
 </description>
     </item>
     </channel>

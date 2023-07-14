@@ -6,8 +6,15 @@
     <description>Recent content in Posts on ZhengPengDe Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 01 Jul 2023 09:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 06 Jul 2023 09:00:00 +0000</lastBuildDate>
     <atom:link href="https://847850277.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>apache shenyu 设计模式之模版方法</title>
+      <link>https://847850277.github.io/posts/apache-shenyu/shenyu-design-model-template-method/</link>
+      <pubDate>Thu, 06 Jul 2023 09:00:00 +0000</pubDate>
+      <guid>https://847850277.github.io/posts/apache-shenyu/shenyu-design-model-template-method/</guid>
+      <description></description>
+    </item>
     <item>
       <title>什么是metadata</title>
       <link>https://847850277.github.io/posts/2023/metadata/</link>
@@ -26,7 +33,7 @@
 &lt;li&gt;Who can access or update.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;a-photo&#34;&gt;A photo&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata_photo.png&#34; alt=&#34;meta_data_photo&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata/metadata_photo.png&#34; alt=&#34;meta_data_photo&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Every time you take a photo with today&amp;rsquo;s cameras a bunch of metadata is gathered and saved with it&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;date and time,&lt;/li&gt;
@@ -35,7 +42,7 @@
 &lt;li&gt;geolocation.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;a-book&#34;&gt;A book&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata_book.png&#34; alt=&#34;meta_data_book&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata/metadata_book.png&#34; alt=&#34;meta_data_book&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Each book has a number of standard metadata on the covers and inside. This includes:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;a title,&lt;/li&gt;
@@ -47,7 +54,7 @@
 &lt;li&gt;page numbers.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;a-blog-post&#34;&gt;A blog post&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata_blog_post.png&#34; alt=&#34;metadata_blog_post&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata/metadata_blog_post.png&#34; alt=&#34;metadata_blog_post&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Every blog post has standard metadata fields that are usually at before first paragraph. This includes:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;title,&lt;/li&gt;
@@ -57,7 +64,7 @@
 &lt;li&gt;tags.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;email&#34;&gt;Email&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata_email.png&#34; alt=&#34;metadata_email&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata/metadata_email.png&#34; alt=&#34;metadata_email&#34;&gt;&lt;/p&gt;
 &lt;p&gt;每封邮件都由以下的元数据构成&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;主题&lt;/li&gt;
@@ -68,7 +75,7 @@
 &lt;li&gt;格式&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;word-document&#34;&gt;Word document&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata_word_document.png&#34; alt=&#34;metadata_word_document&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata/metadata_word_document.png&#34; alt=&#34;metadata_word_document&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Every word processing software collects some standard metadata and enables you to add your own fields for each document. Typical fields are:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;title,&lt;/li&gt;
@@ -81,7 +88,7 @@
 &lt;li&gt;number of pages.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;a-spreadsheet&#34;&gt;A spreadsheet&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata_spreadsheet.png&#34; alt=&#34;metadata_spreadsheet&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata/metadata_spreadsheet.png&#34; alt=&#34;metadata_spreadsheet&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Spreadsheets contain a few metadata fields:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;tab names,&lt;/li&gt;
@@ -90,7 +97,7 @@
 &lt;li&gt;user comments.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;relational-database&#34;&gt;Relational database&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata_database.png&#34; alt=&#34;metadata_database&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata/metadata_database.png&#34; alt=&#34;metadata_database&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Relational databases (most common type of database) store and provide access not only data but also metadata in a structure called data dictionary or system catalog. It holds information about:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;tables,&lt;/li&gt;
@@ -100,7 +107,7 @@
 &lt;li&gt;and many more&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;computer-files&#34;&gt;Computer files&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata_files.png&#34; alt=&#34;metadata_files&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata/metadata_files.png&#34; alt=&#34;metadata_files&#34;&gt;&lt;/p&gt;
 &lt;p&gt;All the fields you see by each file in file explorer is actually metadata. The actual data is inside those files. Metadata includes:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;file name,&lt;/li&gt;
@@ -110,7 +117,7 @@
 &lt;li&gt;last modification date and time.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;web-page&#34;&gt;Web page&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata_webpage.png&#34; alt=&#34;metadata_webpage&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata/metadata_webpage.png&#34; alt=&#34;metadata_webpage&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Every web page has a number of metadata fields:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;page title,&lt;/li&gt;
@@ -118,7 +125,7 @@
 &lt;li&gt;icon.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;paper-files&#34;&gt;Paper files&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata_secret_files.png&#34; alt=&#34;metadata_secret_files&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata/metadata_secret_files.png&#34; alt=&#34;metadata_secret_files&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Paper document files have often administrative metadata that help manage documents. This might include:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;letter for files organized alphabetically,&lt;/li&gt;
@@ -148,20 +155,49 @@
 &lt;p&gt;&lt;a href=&#34;https://gupiaozhushou.net/&#34;&gt;股票自动交易助手&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;https://excalidraw.com/&#34;&gt;excalidraw&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&#34;https://www.v2ex.com/&#34;&gt;v2ex&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.imgurl.org&#34;&gt;免费图床&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;http://redisdoc.com/&#34;&gt;Redis命令集&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     <item>
-      <title>Java的spi机制</title>
-      <link>https://847850277.github.io/posts/2023/spi/</link>
+      <title>apache shenyu的spi机制</title>
+      <link>https://847850277.github.io/posts/apache-shenyu/shenyu-spi/</link>
       <pubDate>Fri, 16 Jun 2023 09:00:00 +0000</pubDate>
-      <guid>https://847850277.github.io/posts/2023/spi/</guid>
-      <description>&lt;h1 id=&#34;java的spi机制&#34;&gt;Java的spi机制&lt;/h1&gt;
+      <guid>https://847850277.github.io/posts/apache-shenyu/shenyu-spi/</guid>
+      <description>&lt;h2 id=&#34;什么是spi&#34;&gt;什么是spi&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;SPI&lt;/code&gt;就是&lt;code&gt;Service Provider Interface&lt;/code&gt;,是一种动态的服务发现机制。
+可以基于运行时动态的加载接口的实现类。通过(接口编程 + 策略模式 + 配置文件) 实现&lt;code&gt;解耦&lt;/code&gt;和&lt;code&gt;扩展&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/spi/spi.png&#34; alt=&#34;spi&#34;&gt;&lt;/p&gt;
+&lt;p&gt;常见的&lt;code&gt;SPI&lt;/code&gt;的应用就是&lt;code&gt;JDK&lt;/code&gt;内置的&lt;code&gt;java.sql.Driver&lt;/code&gt;接口。基于该接口的实现有&lt;code&gt;MySQL&lt;/code&gt;,&lt;code&gt;PostgreSQL&lt;/code&gt;,&lt;code&gt;SqlServer&lt;/code&gt;等。&lt;/p&gt;
+&lt;p&gt;市面上常见的SPI的实现方式有：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;JDK&lt;/code&gt;的&lt;code&gt;SPI&lt;/code&gt;实现&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Dubbo&lt;/code&gt;的&lt;code&gt;SPI&lt;/code&gt;实现&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Spring&lt;/code&gt;的&lt;code&gt;SPI&lt;/code&gt;实现&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;code&gt;JDK&lt;/code&gt;的&lt;code&gt;SPI&lt;/code&gt;实现流程为&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在类路径的&lt;code&gt;META-INF/services&lt;/code&gt;目录创建一个以接口全限定名称命名的文件（本质是一个properties）文件，例如命名为java.sql.Driver&lt;/li&gt;
+&lt;li&gt;该文件中可以指定具体的实现类，也就是每个实现类的全类型限定名为单独一行
+&lt;ul&gt;
+&lt;li&gt;例如 &lt;code&gt;META-INF/services/java.sql.Driver&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-yml&#34; data-lang=&#34;yml&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#75715e&#34;&gt;# META-INF/services/java.sql.Driver文件内容&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#ae81ff&#34;&gt;com.mysql.jdbc.Driver&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#ae81ff&#34;&gt;org.postgresql.Driver&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;最后通过&lt;code&gt;java.util.ServiceLoader&lt;/code&gt;对该文件进行加载，实例化接口的对应实现类（这里隐含了一个约定，所有实现类必须提供无参构造函数,用来反射调用）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;作用&#34;&gt;作用&lt;/h2&gt;
+&lt;h2 id=&#34;实现方式&#34;&gt;实现方式&lt;/h2&gt;
 </description>
     </item>
     <item>
       <title>dubbo是否有对文件上传下载导入导出的支持</title>
       <link>https://847850277.github.io/posts/dubbo/dubbo-upload/</link>
-      <pubDate>Sat, 10 Jun 2023 16:00:00 +0000</pubDate>
+      <pubDate>Sat, 10 Jun 2023 09:00:00 +0000</pubDate>
       <guid>https://847850277.github.io/posts/dubbo/dubbo-upload/</guid>
       <description>&lt;h1 id=&#34;dubbo是否有对文件上传下载导入导出的支持&#34;&gt;dubbo是否有对文件上传下载导入导出的支持&lt;/h1&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;项目当前架构：
@@ -184,9 +220,9 @@
     </item>
     <item>
       <title>apache shenyu 打包命令集</title>
-      <link>https://847850277.github.io/posts/apache-shenyu/maven-package/</link>
+      <link>https://847850277.github.io/posts/apache-shenyu/shenyu-maven-package/</link>
       <pubDate>Tue, 06 Jun 2023 16:00:00 +0000</pubDate>
-      <guid>https://847850277.github.io/posts/apache-shenyu/maven-package/</guid>
+      <guid>https://847850277.github.io/posts/apache-shenyu/shenyu-maven-package/</guid>
       <description>&lt;h2 id=&#34;打包常用的命令&#34;&gt;打包常用的命令&lt;/h2&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# example打包&lt;/span&gt;
@@ -465,7 +501,7 @@
     <item>
       <title>redis使用分布式锁记</title>
       <link>https://847850277.github.io/posts/redis/redis-distributed-lock-use/</link>
-      <pubDate>Sat, 27 Nov 2021 15:00:00 +0000</pubDate>
+      <pubDate>Sat, 27 Nov 2021 09:00:00 +0000</pubDate>
       <guid>https://847850277.github.io/posts/redis/redis-distributed-lock-use/</guid>
       <description>&lt;h1 id=&#34;使用redis分布式锁记&#34;&gt;使用redis分布式锁记&lt;/h1&gt;
 &lt;h2 id=&#34;背景介绍&#34;&gt;背景介绍&lt;/h2&gt;

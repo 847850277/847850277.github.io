@@ -26,7 +26,7 @@
 &lt;li&gt;Who can access or update.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;a-photo&#34;&gt;A photo&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata_photo.png&#34; alt=&#34;meta_data_photo&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata/metadata_photo.png&#34; alt=&#34;meta_data_photo&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Every time you take a photo with today&amp;rsquo;s cameras a bunch of metadata is gathered and saved with it&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;date and time,&lt;/li&gt;
@@ -35,7 +35,7 @@
 &lt;li&gt;geolocation.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;a-book&#34;&gt;A book&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata_book.png&#34; alt=&#34;meta_data_book&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata/metadata_book.png&#34; alt=&#34;meta_data_book&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Each book has a number of standard metadata on the covers and inside. This includes:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;a title,&lt;/li&gt;
@@ -47,7 +47,7 @@
 &lt;li&gt;page numbers.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;a-blog-post&#34;&gt;A blog post&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata_blog_post.png&#34; alt=&#34;metadata_blog_post&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata/metadata_blog_post.png&#34; alt=&#34;metadata_blog_post&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Every blog post has standard metadata fields that are usually at before first paragraph. This includes:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;title,&lt;/li&gt;
@@ -57,7 +57,7 @@
 &lt;li&gt;tags.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;email&#34;&gt;Email&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata_email.png&#34; alt=&#34;metadata_email&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata/metadata_email.png&#34; alt=&#34;metadata_email&#34;&gt;&lt;/p&gt;
 &lt;p&gt;每封邮件都由以下的元数据构成&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;主题&lt;/li&gt;
@@ -68,7 +68,7 @@
 &lt;li&gt;格式&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;word-document&#34;&gt;Word document&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata_word_document.png&#34; alt=&#34;metadata_word_document&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata/metadata_word_document.png&#34; alt=&#34;metadata_word_document&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Every word processing software collects some standard metadata and enables you to add your own fields for each document. Typical fields are:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;title,&lt;/li&gt;
@@ -81,7 +81,7 @@
 &lt;li&gt;number of pages.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;a-spreadsheet&#34;&gt;A spreadsheet&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata_spreadsheet.png&#34; alt=&#34;metadata_spreadsheet&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata/metadata_spreadsheet.png&#34; alt=&#34;metadata_spreadsheet&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Spreadsheets contain a few metadata fields:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;tab names,&lt;/li&gt;
@@ -90,7 +90,7 @@
 &lt;li&gt;user comments.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;relational-database&#34;&gt;Relational database&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata_database.png&#34; alt=&#34;metadata_database&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata/metadata_database.png&#34; alt=&#34;metadata_database&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Relational databases (most common type of database) store and provide access not only data but also metadata in a structure called data dictionary or system catalog. It holds information about:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;tables,&lt;/li&gt;
@@ -100,7 +100,7 @@
 &lt;li&gt;and many more&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;computer-files&#34;&gt;Computer files&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata_files.png&#34; alt=&#34;metadata_files&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata/metadata_files.png&#34; alt=&#34;metadata_files&#34;&gt;&lt;/p&gt;
 &lt;p&gt;All the fields you see by each file in file explorer is actually metadata. The actual data is inside those files. Metadata includes:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;file name,&lt;/li&gt;
@@ -110,7 +110,7 @@
 &lt;li&gt;last modification date and time.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;web-page&#34;&gt;Web page&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata_webpage.png&#34; alt=&#34;metadata_webpage&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata/metadata_webpage.png&#34; alt=&#34;metadata_webpage&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Every web page has a number of metadata fields:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;page title,&lt;/li&gt;
@@ -118,7 +118,7 @@
 &lt;li&gt;icon.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id=&#34;paper-files&#34;&gt;Paper files&lt;/h2&gt;
-&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata_secret_files.png&#34; alt=&#34;metadata_secret_files&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://847850277.github.io/img/source/metadata/metadata_secret_files.png&#34; alt=&#34;metadata_secret_files&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Paper document files have often administrative metadata that help manage documents. This might include:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;letter for files organized alphabetically,&lt;/li&gt;
