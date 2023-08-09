@@ -7,7 +7,7 @@
 <link rel="alternate" type="application/rss+xml" title="rss" href="https://847850277.github.io/categories/spi/index.xml">
 <meta name="description" content="">
 <meta name="created" content="2023-06-16T09:00:00+0000">
-<meta name="modified" content="2023-07-14T10:00:00+0000">
+<meta name="modified" content="2023-07-31T10:00:00+0000">
 
 
 <meta property="og:site_name" content="ZhengPengDe Blog">
@@ -83,10 +83,10 @@
 </header>
 <div class="content">
 <p>什么是spi SPI就是Service Provider Interface,是一种动态的服务发现机制。 可以基于运行时动态的加载接口的实现类。通过(接口编程 + 策略模式 + 配置文件) 实现解耦和扩展。
-常见的SPI的应用就是JDK内置的java.sql.Driver接口。基于该接口的实现有MySQL,PostgreSQL,SqlServer等。
-市面上常见的SPI的实现方式有：
-JDK的SPI实现 Dubbo的SPI实现 Spring的SPI实现 JDK的SPI实现流程为
-在类路径的META-INF/services目录创建一个以接口全限定名称命名的文件（本质是一个properties）文件，例如命名为java.sql.Driver 该文件中可以指定具体的实现类，也就是每个实现类的全类型限定名为单独一行 例如 META-INF/services/java.sql.Driver # META-INF/services/java.sql.Driver文件内容 com.mysql.jdbc.Driver org.postgresql.Driver 最后通过java.util.ServiceLoader对该文件进行加载，实例化接口的对应实现类（这里隐含了一个约定，所有实现类必须提供无参构造函数,用来反射调用） 作用 实现方式 </p>
+应用 数据库驱动 基于该接口的实现有MySQL,PostgreSQL,SqlServer等。 SLF4J日志框架 Dubbo的SPI扩展 dubbo apache shenyu spring boot starter jdbc的应用 日志的应用 apache shenyu的spi应用 dubbo的spi应用 实现方式 市面上常见的SPI的实现方式有：
+JDK的SPI实现 Dubbo的SPI实现、ShenYu的 SPI Spring的SPI实现 JDK的SPI实现流程为
+在类路径的META-INF/services目录创建一个以接口全限定名称命名的文件（本质是一个properties）文件，例如命名为java.sql.Driver 该文件中可以指定具体的实现类，也就是每个实现类的全类型限定名为单独一行 例如 META-INF/services/java.sql.Driver # META-INF/services/java.sql.Driver文件内容 com.mysql.jdbc.Driver org.postgresql.Driver 最后通过java.util.ServiceLoader对该文件进行加载，实例化接口的对应实现类（这里隐含了一个约定，所有实现类必须提供无参构造函数,用来反射调用） 底层的实现涉及到类加载、双亲委派等内容，这里不展开。基于这种设计思路，很多主流框架实现了一套SPI扩展，例如Dubbo的SPI扩展模块，就是读取类路径 下META-INF/services/dubbo目录的文件内容进行类加载。ShenYu-SPI模块也是沿用类似的设计思路。
+JDK SPI 的代码示例 接口定义 public interface Search { public List&lt;String&gt; searchDoc(String keyword); } 实现类 public class FileSearch implements Search{ @Override public List&lt;String&gt; searchDoc(String keyword) { System.out.println(&#34;文件搜索 &#34;+keyword); return null; } } public class DatabaseSearch implements Search{ @Override public List&lt;String&gt; searchDoc(String keyword) { System.</p>
 </div>
 </article>
 

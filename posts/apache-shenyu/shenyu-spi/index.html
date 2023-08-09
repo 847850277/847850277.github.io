@@ -6,7 +6,7 @@
 <title>apache shenyu的spi机制 – ZhengPengDe Blog</title>
 <meta name="description" content="apache shenyu的spi机制">
 <meta name="created" content="2023-06-16T09:00:00+0000">
-<meta name="modified" content="2023-07-14T10:00:00+0000">
+<meta name="modified" content="2023-07-31T10:00:00+0000">
 <meta name="author" content="zhengpengde">
 
 <meta property="og:site_name" content="ZhengPengDe Blog">
@@ -31,7 +31,7 @@
     "@type": "WebPage",
     "headline": "apache shenyu的spi机制",
     "datePublished": "2023-06-16T09:00:00Z",
-    "dateModified": "2023-07-14T10:00:00Z",
+    "dateModified": "2023-07-31T10:00:00Z",
     "url" : "https://847850277.github.io/posts/apache-shenyu/shenyu-spi/",
     "description": "apache shenyu的spi机制",
     "keywords": ["spi"],
@@ -94,11 +94,35 @@ Tags:
 <p><code>SPI</code>就是<code>Service Provider Interface</code>,是一种动态的服务发现机制。
 可以基于运行时动态的加载接口的实现类。通过(接口编程 + 策略模式 + 配置文件) 实现<code>解耦</code>和<code>扩展</code>。</p>
 <p><img src="/img/source/spi/spi.png" alt="spi"></p>
-<p>常见的<code>SPI</code>的应用就是<code>JDK</code>内置的<code>java.sql.Driver</code>接口。基于该接口的实现有<code>MySQL</code>,<code>PostgreSQL</code>,<code>SqlServer</code>等。</p>
+<h2 id="应用">应用</h2>
+<ul>
+<li>数据库驱动
+<ul>
+<li>基于该接口的实现有<code>MySQL</code>,<code>PostgreSQL</code>,<code>SqlServer</code>等。</li>
+</ul>
+</li>
+<li>SLF4J日志框架</li>
+<li><code>Dubbo</code>的<code>SPI</code>扩展
+<ul>
+<li>dubbo</li>
+<li>apache shenyu</li>
+</ul>
+</li>
+<li><code>spring boot starter</code></li>
+</ul>
+<p>jdbc的应用
+<img src="/img/source/spi/spi_jdbc.png" alt="spi"></p>
+<p>日志的应用
+<img src="/img/source/spi/spi_log.png" alt="spi"></p>
+<p>apache shenyu的spi应用
+<img src="/img/source/spi/spi_shenyu.png" alt="spi"></p>
+<p>dubbo的spi应用
+<img src="/img/source/spi/spi_dubbo_extention.png" alt="spi"></p>
+<h2 id="实现方式">实现方式</h2>
 <p>市面上常见的SPI的实现方式有：</p>
 <ul>
 <li><code>JDK</code>的<code>SPI</code>实现</li>
-<li><code>Dubbo</code>的<code>SPI</code>实现</li>
+<li><code>Dubbo</code>的<code>SPI</code>实现、<code>ShenYu</code>的 <code>SPI</code></li>
 <li><code>Spring</code>的<code>SPI</code>实现</li>
 </ul>
 <p><code>JDK</code>的<code>SPI</code>实现流程为</p>
@@ -116,14 +140,85 @@ Tags:
 </li>
 <li>最后通过<code>java.util.ServiceLoader</code>对该文件进行加载，实例化接口的对应实现类（这里隐含了一个约定，所有实现类必须提供无参构造函数,用来反射调用）</li>
 </ul>
-<h2 id="作用">作用</h2>
-<h2 id="实现方式">实现方式</h2>
+<p>底层的实现涉及到类加载、双亲委派等内容，这里不展开。基于这种设计思路，很多主流框架实现了一套<code>SPI</code>扩展，例如<code>Dubbo</code>的<code>SPI</code>扩展模块，就是读取类路径
+下<code>META-INF/services/dubbo</code>目录的文件内容进行类加载。<code>ShenYu-SPI</code>模块也是沿用类似的设计思路。</p>
+<h3 id="jdk-spi-的代码示例">JDK SPI 的代码示例</h3>
+<ul>
+<li>接口定义</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Search</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">searchDoc</span><span style="color:#f92672">(</span>String keyword<span style="color:#f92672">);</span>   
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><ul>
+<li>实现类</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">FileSearch</span> <span style="color:#66d9ef">implements</span> Search<span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">searchDoc</span><span style="color:#f92672">(</span>String keyword<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;文件搜索 &#34;</span><span style="color:#f92672">+</span>keyword<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DatabaseSearch</span> <span style="color:#66d9ef">implements</span> Search<span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> List<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">searchDoc</span><span style="color:#f92672">(</span>String keyword<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;数据搜索 &#34;</span><span style="color:#f92672">+</span>keyword<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><ul>
+<li>resources 接下来可以在resources下新建META-INF/services/目录，然后新建接口全限定名的文件：<code>com.xxx.Search</code>，里面加上我们需要用到的实现类</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>com<span style="color:#f92672">.</span><span style="color:#a6e22e">xxx</span><span style="color:#f92672">.</span><span style="color:#a6e22e">FileSearch</span>
+</span></span></code></pre></div><ul>
+<li>测试方法</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TestCase</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        ServiceLoader<span style="color:#f92672">&lt;</span>Search<span style="color:#f92672">&gt;</span> s <span style="color:#f92672">=</span> ServiceLoader<span style="color:#f92672">.</span><span style="color:#a6e22e">load</span><span style="color:#f92672">(</span>Search<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        Iterator<span style="color:#f92672">&lt;</span>Search<span style="color:#f92672">&gt;</span> iterator <span style="color:#f92672">=</span> s<span style="color:#f92672">.</span><span style="color:#a6e22e">iterator</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>iterator<span style="color:#f92672">.</span><span style="color:#a6e22e">hasNext</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>           Search search <span style="color:#f92672">=</span>  iterator<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>           search<span style="color:#f92672">.</span><span style="color:#a6e22e">searchDoc</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hello world&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><ul>
+<li>总结</li>
+</ul>
+<p>可以看到输出结果：文件搜索 hello world如果在com.xxx.Search文件里写上两个实现类，那最后的输出结果就是两行了。
+这就是因为<code>ServiceLoader.load(Search.class)</code>在加载某接口时，会去<code>META-INF/services</code>下找接口的全限定名文件，
+再根据里面的内容加载相应的实现类。这就是spi的思想，接口的实现由provider实现，provider只用在提交的jar包里的<code>META-INF/services</code>下根据平台定义的接口新建文件，并添加进相应的实现类内容就好。</p>
+<h3 id="shenyu-spi">ShenYu SPI</h3>
+<h4 id="源码分析">源码分析</h4>
+<p><code>ShenYu-SPI</code>模块十分精炼,代码结构如下</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">-</span> shenyu<span style="color:#f92672">-</span>spi<span style="color:#f92672">[</span>module<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">-</span> org<span style="color:#f92672">.</span><span style="color:#a6e22e">apache</span><span style="color:#f92672">.</span><span style="color:#a6e22e">shenyu</span><span style="color:#f92672">.</span><span style="color:#a6e22e">spi</span><span style="color:#f92672">[</span>package<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">--</span> ExtensionFactory
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">--</span> ExtensionLoader
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">--</span> Join
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">--</span> SPI
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">--</span> SpiExtensionFactory
+</span></span></code></pre></div><p>这些类的功能如下</p>
+<ul>
+<li><code>ExtensionFactory</code>: <code>SPI</code>加载工厂，本身也是一个<code>SPI</code>，用于基于<code>SPI</code>机制加载<code>ExtensionLoader</code>实例同时基于<code>ExtensionLoader</code>实例获取默认标记<code>SPI</code>标识接口的实现</li>
+<li><code>SpiExtensionFactory</code>: <code>ExtensionFactory</code>的一个实现类</li>
+<li><code>SPI</code>: 标识注解，用于标识<code>SPI</code>，用于接口上</li>
+<li><code>Join</code>: 标识注解，用于实现类上，用来给<code>SPI</code>的实现进行排序。</li>
+<li><code>ExtensionLoader</code>: <code>SPI</code>加载器，类比<code>java.util.ServiceLoader</code>，用于加载SPI中接口的实现类</li>
+</ul>
 
 </div>
 
 <div class="content content--bottom">
 <div class="content-dates meta">
-Updated: 14 July, 2023<br>
+Updated: 31 July, 2023<br>
 Created: 16 June, 2023
 </div>
 </div>
