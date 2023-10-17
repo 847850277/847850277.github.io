@@ -1,102 +1,192 @@
 <!DOCTYPE html>
-<html class="nojs" lang="zh-cn" dir="ltr">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width">
-<title>redis使用分布式锁记 – ZhengPengDe Blog</title>
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>redis使用分布式锁记 | ZhengPengDe Blog</title>
+<meta name="keywords" content="redis, distributed-lock">
 <meta name="description" content="使用redis分布式锁记">
-<meta name="created" content="2021-11-27T09:00:00+0000">
-<meta name="modified" content="2021-11-28T10:00:00+0000">
 <meta name="author" content="zhengpengde">
-
-<meta property="og:site_name" content="ZhengPengDe Blog">
-<meta property="og:title" content="redis使用分布式锁记">
-<meta property="og:url" content="https://847850277.github.io/posts/redis/redis-distributed-lock-use/">
-<meta property="og:type" content="article">
-
-<meta name="generator" content="Hugo 0.112.5">
-<meta name="msapplication-TileColor" content="#ffffff">
-<meta name="theme-color" content="#ffffff">
-
-
 <link rel="canonical" href="https://847850277.github.io/posts/redis/redis-distributed-lock-use/">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.5cfc680b1eeaeef9efbced92d46c2a9e876b72ee14fba85846afc4cff9e6e6f8.css" integrity="sha256-XPxoCx7q7vnvvO2S1Gwqnodrcu4U&#43;6hYRq/Ez/nm5vg=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="https://847850277.github.io/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://847850277.github.io/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://847850277.github.io/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://847850277.github.io/apple-touch-icon.png">
+<link rel="mask-icon" href="https://847850277.github.io/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
 
-<link rel="stylesheet" href="/css/styles.f5f42549a2ff6655f6895613fdad4142b37562f0565fa9def394a039f13e54fa.css">
-<link rel="stylesheet" href="/css/print.31e2819287afc91406f2fd43d21a8ba4a0cdfc272e439c90db0c6e47efc7c346.css" media="print">
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --hljs-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript><meta property="og:title" content="redis使用分布式锁记" />
+<meta property="og:description" content="使用redis分布式锁记" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://847850277.github.io/posts/redis/redis-distributed-lock-use/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-11-27T09:00:00+00:00" />
+<meta property="article:modified_time" content="2021-11-28T10:00:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="redis使用分布式锁记"/>
+<meta name="twitter:description" content="使用redis分布式锁记"/>
+
 
 <script type="application/ld+json">
 {
-    "@context": "https://schema.org",
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://847850277.github.io/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "redis使用分布式锁记",
+      "item": "https://847850277.github.io/posts/redis/redis-distributed-lock-use/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "redis使用分布式锁记",
+  "name": "redis使用分布式锁记",
+  "description": "使用redis分布式锁记",
+  "keywords": [
+    "redis", "distributed-lock"
+  ],
+  "articleBody": "使用redis分布式锁记 背景介绍 在项目中使用封装的redis锁注解中，会出现异常信息。抛出拿分布式锁异常。\n跟源码 其中lock对象为false的情况下会抛出Get redis lock failed的业务异常 @Around(\"redisLockPoint() \u0026\u0026 @annotation(redisLock)\") public Object around(ProceedingJoinPoint pjp, RedisLock redisLock) throws Throwable { String key = redisLock.key(); if (StringUtils.isBlank(key)) { Object[] args = pjp.getArgs(); if (redisLock.bindType().equals(RedisLock.BindType.DEFAULT)) { key = StringUtils.join(args); } else if (redisLock.bindType().equals(RedisLock.BindType.ARGS_INDEX)) { key = getArgsKey(redisLock, args); } else if (redisLock.bindType().equals(RedisLock.BindType.OBJECT_PROPERTIES)) { key = getObjectPropertiesKey(redisLock, args); } } Assert.hasText(key, \"key does not exist\"); String prefix = redisLock.prefix()+\"_\"; boolean lock = distributedRedisLock.lock(prefix + key, redisLock.expire(), redisLock.retryTimes(), redisLock.retryInterval()); if (!lock) { log.warn(\"get lock failed : \" + key); if (redisLock.errorStrategy().equals(RedisLock.ErrorStrategy.THROW_EXCEPTION)) { throw new RedisException(\"Get redis lock failed\"); } return null; } log.info(\"get lock success : {}\", key); try { return pjp.proceed(); } finally { boolean result = distributedRedisLock.unLock(prefix + key); log.info(\"release lock : {} {}\", prefix + key, result ? \" success\" : \" failed\"); } } 加锁的方法,通过redisTemplate执行execute方法，然后其中的SetOption参数为SET_IF_ABSENT /** * 加锁 * @param key 锁key * @param expire 过期时间 * @param retryTimes 重试次数 * @param retryInterval 重试间隔 * @return true 加锁成功， false 加锁失败 */ public boolean lock(String key, long expire, int retryTimes, long retryInterval) { boolean result = setRedisLock(key, expire); /** * 如果获取锁失败，进行重试 */ while((!result) \u0026\u0026 retryTimes-- \u003e 0){ try { log.info(\"lock failed, retrying...\" + retryTimes); Thread.sleep(retryInterval); } catch (InterruptedException e) { return false; } result = setRedisLock(key, expire); } return result; } /** * 设置redis锁 * @param key 锁key * @param expire 过期时间 * @return true 设置成功，false 设置失败 */ private boolean setRedisLock(String key, long expire) { try { RedisCallback\u003cBoolean\u003e callback = (connection) -\u003e { String uuid = UUID.randomUUID().toString(); lockKey.set(uuid); return connection.set(key.getBytes(), uuid.getBytes(), Expiration.milliseconds(expire), RedisStringCommands.SetOption.SET_IF_ABSENT); }; return redisTemplate.execute(callback); }catch (Exception e){ log.error(\"set redis error\", e); } return false; } 其中connection.set方法的释意如下,参数为 key，value，过期时间，和option /** * Set {@code value} for {@code key} applying timeouts from {@code expiration} if set and inserting/updating values * depending on {@code option}. * * @param key must not be {@literal null}. * @param value must not be {@literal null}. * @param expiration must not be {@literal null}. Use {@link Expiration#persistent()} to not set any ttl. * @param option must not be {@literal null}. Use {@link SetOption#upsert()} to add non existing. * @return {@literal null} when used in pipeline / transaction. * @since 1.7 * @see Redis Documentation: SET */ @Nullable Boolean set(byte[] key, byte[] value, Expiration expiration, SetOption option); 其中option的值如下所示例 当前程序使用的是SET_IF_ABSENT 等同于redis的SETNX命令 /** * {@code SET} command arguments for {@code NX}, {@code XX}. * * @author Christoph Strobl * @since 1.7 */ enum SetOption { /** * Do not set any additional command argument. * * @return */ UPSERT, /** * {@code NX} * * @return */ SET_IF_ABSENT, /** * {@code XX} * * @return */ SET_IF_PRESENT; /** * Do not set any additional command argument. * * @return */ public static SetOption upsert() { return UPSERT; } /** * {@code XX} * * @return */ public static SetOption ifPresent() { return SET_IF_PRESENT; } /** * {@code NX} * * @return */ public static SetOption ifAbsent() { return SET_IF_ABSENT; } } 大胆假设，小心求证 观点一: redis写会失败 利用多线程模拟写操作 本地模拟10万个线程同时写操作，并未复现 写操作不包含重复的key 业务代码中 观点二: 写重复key导致失败 利用多线程模拟写操作 短时间内重复key 业务代码中有满足的条件 创建订单：key为customerId，表中存在customerId重复 发放优惠券：key为activeId，活动为key，也存在重复 观点一代码,多次模拟，未出现拿锁异常的情况 @PostMapping(\"/testRedisLock\") public Result testRedisLock(@RequestParam Integer param) { final boolean[] flag = {false}; for(int i = 0 ;i\u003cparam;i++){ //方式1：相当于继承了Thread类，作为子类重写run()实现 int finalI = i; new Thread() { @Override public void run() { try{ payV2Service.testRedisLock(finalI); }catch (Exception e){ e.printStackTrace(); flag[0] = true; throw new RuntimeException(\"失败：\"); } }; }.start(); } return Result.succeed(flag[0],\"成功\"); } @Override @RedisLock(prefix = \"CREATORDER:TEST\") public Object testRedisLock(Integer param) { log.info(\"加锁成功：\" + param); return true; } 观点二代码，次次都会复线出拿锁失败的情况 @PostMapping(\"/testRedisLock\") public Result testRedisLock(@RequestParam Integer param) { final boolean[] flag = {false}; for(int i = 0 ;i\u003cparam;i++){ //方式1：相当于继承了Thread类，作为子类重写run()实现 int finalI = i; new Thread() { @Override public void run() { try{ payV2Service.testRedisLock(finalI); }catch (Exception e){ e.printStackTrace(); flag[0] = true; throw new RuntimeException(\"失败：\"); } //System.out.println(\"匿名内部类创建线程方式1...\"); }; }.start(); } for(int i = 0 ;i\u003cparam;i++){ //方式1：相当于继承了Thread类，作为子类重写run()实现 int finalI = i; new Thread() { @Override public void run() { try{ payV2Service.testRedisLock(finalI); }catch (Exception e){ e.printStackTrace(); flag[0] = true; throw new RuntimeException(\"失败：\"); } //System.out.println(\"匿名内部类创建线程方式1...\"); }; }.start(); } return Result.succeed(flag[0],\"成功\"); } @Override @RedisLock(prefix = \"CREATORDER:TEST\") public Object testRedisLock(Integer param) { log.info(\"加锁成功：\" + param); return true; } 假设后，可近似求证的结果 基于以上两种假设，更可能出现的结论是写重复key导致失败,假设带着改结论去论证业务代码中由于数据问题，导致key重复的可能。于是针对加锁的key，去验证数据是否有相同。\n可验证，拿锁失败的情况，业务代码中数据key都会有重复。 业务代码片段一 客户id在数据中有重复\n/** * 自主续报下单 * 1. 获取缓存数据 * 2. 校验数据 * 优惠券 * 预存款 * 3. 创建商品 * 4. 生成订单 */ @Override @RedisLock(prefix = \"CREATORDER\", bindType = RedisLock.BindType.OBJECT_PROPERTIES, properties = \"OrderIn.customerId\") public MergeOrderVO saveRenewOrder(OrderIn orderIn) { } -- 验证sql select * from dyjw_aggregate_layer.t_student group by CUSTOMERID having count(CUSTOMERID) \u003e 1; 业务代码片段二 活动id，针对相同活动会出现重复。\n@RedisLock(prefix=\"SEND_COUPON\",bindType=RedisLock.BindType.ARGS_INDEX,bindArgsIndex = 0) @Override public String sendCouponToCustomer(String activityId, String customerId,String followupId) { } 上面场景中，观点一反复执行都不会报错，然后都是写重复key导致失败。基本可以确定是写重复key导致失败。\n",
+  "wordCount" : "731",
+  "inLanguage": "en",
+  "datePublished": "2021-11-27T09:00:00Z",
+  "dateModified": "2021-11-28T10:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "zhengpengde"
+  },
+  "mainEntityOfPage": {
     "@type": "WebPage",
-    "headline": "redis使用分布式锁记",
-    "datePublished": "2021-11-27T09:00:00Z",
-    "dateModified": "2021-11-28T10:00:00Z",
-    "url" : "https://847850277.github.io/posts/redis/redis-distributed-lock-use/",
-    "description": "使用redis分布式锁记",
-    "keywords": ["redis","distributed-lock"],
-    "author": {
-      "@type": "Person",
-      "name": "zhengpengde"
-    },
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": "https://847850277.github.io/"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "ZhengPengDe Blog",
-      "url": "https://847850277.github.io/"
+    "@id": "https://847850277.github.io/posts/redis/redis-distributed-lock-use/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "ZhengPengDe Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://847850277.github.io/favicon.ico"
     }
   }
+}
 </script>
-
-<script src="/js/script-early.min.21220209af63c496c7531316922ef9a4548661be9388bbcd1f9899bb0b842b21.js"></script>
-
-<script defer src="/js/script.min.f8f04035e9a9424ebc267c1a5fdb513d79b611a04b85cab2ac414d091ac9e94c.js"></script>
-
-
-
 </head>
 
-<body class="single-page">
-<div class="page layout__page">
-<header class="header layout__header mb--m">
-<a href="/" title="Home" rel="home" class="header__logo">
-<img src="/images/logo.png" alt="Home" class="header__logo-image">
-</a>
-<h1 class="header__site-name">
-<a href="/" title="Home" class="header__site-link" rel="home"><span>ZhengPengDe Blog</span></a>
-</h1>
-<div class="region header__region">
-</div>
-</header>
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
 
-<nav class="main-menu layout__navigation" aria-label="Main menu">
-<ul class="navbar">
-<li><a href="/">Home</a></li>
-<li><a href="/posts/" aria-current="page">Posts</a></li>
-</ul>
-</nav>
-<main class="main layout__main">
-<article class="single-view single-view--posts">
-<header>
-<h1 class="title ">redis使用分布式锁记</h1>
-<div class="tags meta">
-Tags:
-<ul>
-<li><a href="https://847850277.github.io/tags/redis/">redis</a></li>
-<li><a href="https://847850277.github.io/tags/distributed-lock/">distributed-lock</a></li>
-</ul>
-</div>
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://847850277.github.io/" accesskey="h" title="ZhengPengDe Blog (Alt + H)">ZhengPengDe Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+        </ul>
+    </nav>
 </header>
-<div class="content">
-<h1 id="使用redis分布式锁记">使用redis分布式锁记</h1>
-<h2 id="背景介绍">背景介绍</h2>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title">
+      redis使用分布式锁记
+    </h1>
+    <div class="post-description">
+      使用redis分布式锁记
+    </div>
+    <div class="post-meta"><span title='2021-11-27 09:00:00 +0000 UTC'>November 27, 2021</span>&nbsp;·&nbsp;zhengpengde
+
+</div>
+  </header> 
+  <div class="post-content"><h1 id="使用redis分布式锁记">使用redis分布式锁记<a hidden class="anchor" aria-hidden="true" href="#使用redis分布式锁记">#</a></h1>
+<h2 id="背景介绍">背景介绍<a hidden class="anchor" aria-hidden="true" href="#背景介绍">#</a></h2>
 <blockquote>
 <p>在项目中使用封装的redis锁注解中，会出现异常信息。抛出拿分布式锁异常。</p>
 </blockquote>
-<h2 id="跟源码">跟源码</h2>
+<h2 id="跟源码">跟源码<a hidden class="anchor" aria-hidden="true" href="#跟源码">#</a></h2>
 <ul>
 <li>其中lock对象为false的情况下会抛出Get redis lock failed的业务异常</li>
 </ul>
@@ -261,7 +351,7 @@ Tags:
 </span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> SET_IF_ABSENT<span style="color:#f92672">;</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span></code></pre></div><h2 id="大胆假设小心求证">大胆假设，小心求证</h2>
+</span></span></code></pre></div><h2 id="大胆假设小心求证">大胆假设，小心求证<a hidden class="anchor" aria-hidden="true" href="#大胆假设小心求证">#</a></h2>
 <ul>
 <li>观点一: <code>redis写会失败</code>
 <ul>
@@ -287,7 +377,7 @@ Tags:
 </ul>
 </li>
 </ul>
-<h3 id="观点一代码多次模拟未出现拿锁异常的情况">观点一代码,多次模拟，未出现拿锁异常的情况</h3>
+<h3 id="观点一代码多次模拟未出现拿锁异常的情况">观点一代码,多次模拟，未出现拿锁异常的情况<a hidden class="anchor" aria-hidden="true" href="#观点一代码多次模拟未出现拿锁异常的情况">#</a></h3>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">@PostMapping</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/testRedisLock&#34;</span><span style="color:#f92672">)</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> Result <span style="color:#a6e22e">testRedisLock</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@RequestParam</span> Integer param<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
@@ -320,7 +410,7 @@ Tags:
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span></code></pre></div><h3 id="观点二代码次次都会复线出拿锁失败的情况">观点二代码，次次都会复线出拿锁失败的情况</h3>
+</span></span></code></pre></div><h3 id="观点二代码次次都会复线出拿锁失败的情况">观点二代码，次次都会复线出拿锁失败的情况<a hidden class="anchor" aria-hidden="true" href="#观点二代码次次都会复线出拿锁失败的情况">#</a></h3>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#a6e22e">@PostMapping</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/testRedisLock&#34;</span><span style="color:#f92672">)</span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> Result <span style="color:#a6e22e">testRedisLock</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@RequestParam</span> Integer param<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
@@ -377,12 +467,12 @@ Tags:
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span></code></pre></div><h2 id="假设后可近似求证的结果">假设后，可近似求证的结果</h2>
+</span></span></code></pre></div><h2 id="假设后可近似求证的结果">假设后，可近似求证的结果<a hidden class="anchor" aria-hidden="true" href="#假设后可近似求证的结果">#</a></h2>
 <blockquote>
 <p>基于以上两种假设，更可能出现的结论是<code>写重复key导致失败</code>,假设带着改结论去论证业务代码中由于数据问题，导致key重复的可能。<code>于是针对加锁的key，去验证数据是否有相同</code>。</p>
 </blockquote>
-<h3 id="可验证拿锁失败的情况业务代码中数据key都会有重复">可验证，<code>拿锁失败的情况，业务代码中数据key都会有重复</code>。</h3>
-<h4 id="业务代码片段一">业务代码片段一</h4>
+<h3 id="可验证拿锁失败的情况业务代码中数据key都会有重复">可验证，<code>拿锁失败的情况，业务代码中数据key都会有重复</code>。<a hidden class="anchor" aria-hidden="true" href="#可验证拿锁失败的情况业务代码中数据key都会有重复">#</a></h3>
+<h4 id="业务代码片段一">业务代码片段一<a hidden class="anchor" aria-hidden="true" href="#业务代码片段一">#</a></h4>
 <blockquote>
 <p>客户id在数据中有重复</p>
 </blockquote>
@@ -404,7 +494,7 @@ Tags:
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">--</span> <span style="color:#960050;background-color:#1e0010">验证</span>sql
 </span></span><span style="display:flex;"><span>select <span style="color:#f92672">*</span> from dyjw_aggregate_layer<span style="color:#f92672">.</span><span style="color:#a6e22e">t_student</span> group by CUSTOMERID having <span style="color:#a6e22e">count</span><span style="color:#f92672">(</span>CUSTOMERID<span style="color:#f92672">)</span> <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">;</span>
-</span></span></code></pre></div><h4 id="业务代码片段二">业务代码片段二</h4>
+</span></span></code></pre></div><h4 id="业务代码片段二">业务代码片段二<a hidden class="anchor" aria-hidden="true" href="#业务代码片段二">#</a></h4>
 <blockquote>
 <p>活动id，针对相同活动会出现重复。</p>
 </blockquote>
@@ -418,24 +508,86 @@ Tags:
 <p>上面场景中，观点一反复执行都不会报错，然后都是写重复key导致失败。基本可以确定是<code>写重复key导致失败</code>。</p>
 </blockquote>
 
-</div>
 
-<div class="content content--bottom">
-<div class="content-dates meta">
-Updated: 28 November, 2021<br>
-Created: 27 November, 2021
-</div>
-</div>
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://847850277.github.io/tags/redis/">redis</a></li>
+      <li><a href="https://847850277.github.io/tags/distributed-lock/">distributed-lock</a></li>
+    </ul>
+  </footer>
 </article>
-</main>
-
-
-<footer class="footer layout__footer mt--l">
-<p><span>© ZhengPengDe Blog</span></p>
-
-
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2023 <a href="https://847850277.github.io/">ZhengPengDe Blog</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
 </footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
 
-</div>
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
 </body>
+
 </html>

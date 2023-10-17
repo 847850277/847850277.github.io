@@ -1,12 +1,101 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>Categories on ZhengPengDe Blog</title>
     <link>https://847850277.github.io/categories/</link>
     <description>Recent content in Categories on ZhengPengDe Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 01 Jul 2023 09:00:00 +0000</lastBuildDate>
-    <atom:link href="https://847850277.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
-    </channel>
+    <lastBuildDate>Sat, 01 Jul 2023 09:00:00 +0000</lastBuildDate><atom:link href="https://847850277.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>metadata</title>
+      <link>https://847850277.github.io/categories/metadata/</link>
+      <pubDate>Sat, 01 Jul 2023 09:00:00 +0000</pubDate>
+      
+      <guid>https://847850277.github.io/categories/metadata/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>web</title>
+      <link>https://847850277.github.io/categories/web/</link>
+      <pubDate>Mon, 19 Jun 2023 09:00:00 +0000</pubDate>
+      
+      <guid>https://847850277.github.io/categories/web/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>spi</title>
+      <link>https://847850277.github.io/categories/spi/</link>
+      <pubDate>Fri, 16 Jun 2023 09:00:00 +0000</pubDate>
+      
+      <guid>https://847850277.github.io/categories/spi/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>dubbo</title>
+      <link>https://847850277.github.io/categories/dubbo/</link>
+      <pubDate>Sat, 10 Jun 2023 09:00:00 +0000</pubDate>
+      
+      <guid>https://847850277.github.io/categories/dubbo/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>upload</title>
+      <link>https://847850277.github.io/categories/upload/</link>
+      <pubDate>Sat, 10 Jun 2023 09:00:00 +0000</pubDate>
+      
+      <guid>https://847850277.github.io/categories/upload/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>apache shenyu</title>
+      <link>https://847850277.github.io/categories/apache-shenyu/</link>
+      <pubDate>Tue, 06 Jun 2023 16:00:00 +0000</pubDate>
+      
+      <guid>https://847850277.github.io/categories/apache-shenyu/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>hello-world</title>
+      <link>https://847850277.github.io/categories/hello-world/</link>
+      <pubDate>Thu, 01 Jun 2023 09:00:00 +0000</pubDate>
+      
+      <guid>https://847850277.github.io/categories/hello-world/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>test</title>
+      <link>https://847850277.github.io/categories/test/</link>
+      <pubDate>Thu, 01 Jun 2023 09:00:00 +0000</pubDate>
+      
+      <guid>https://847850277.github.io/categories/test/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>redis</title>
+      <link>https://847850277.github.io/categories/redis/</link>
+      <pubDate>Sat, 27 Nov 2021 09:00:00 +0000</pubDate>
+      
+      <guid>https://847850277.github.io/categories/redis/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>bug</title>
+      <link>https://847850277.github.io/categories/bug/</link>
+      <pubDate>Wed, 01 Jul 2015 09:00:00 +0000</pubDate>
+      
+      <guid>https://847850277.github.io/categories/bug/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
 </rss>
