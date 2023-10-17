@@ -1,184 +1,97 @@
 <!DOCTYPE html>
-<html lang="en" dir="auto">
-
-<head><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>Scalable in java 翻译 | ZhengPengDe Blog</title>
-<meta name="keywords" content="">
-<meta name="description" content="目录 Scalable network services 可扩展的网络服务 Event-driven processing 事件驱动处理 Reactor pattern Reactor 模式 Basic version 基本版本 Multithreaded versions 多线程版本 Other variants 其他变体 Walkthrough of java.nio nonblocking IO APIs 预编排java.nio nonblocking IO APIs Network Services 网络服务 Web services, Distributed Objects, etc 网络服务,分布式对象，等等。 Most have same basic structure: 大多数都有以下的基本结构 Read request 读请求 Decode request 解码请求 Process service 处理服务 Encode reply 编码响应 Send reply 发送响应 But differ in nature and cost of each step 当然在实际应用中每一步的运行效率都是不同的，例如其中可能涉及到xml解析、文件传输、web页面的加载、计算服务等不同功能 XML parsing, File transfer, Web page generation, computational services, &hellip; Classic Service Designs 传统的服务设计 Each handler may be started in its own thread 在一般的网络服务当中都会为每一个连接的处理开启一个新的线程，我们可以看下大致的示意图： public class Test { private static Integer PORT = 8080; public static void main(String[] args) { Server server = new Server(); server.">
-<meta name="author" content="zhengpengde">
-<link rel="canonical" href="https://847850277.github.io/posts/2023/scalable_in_java_translate/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.5cfc680b1eeaeef9efbced92d46c2a9e876b72ee14fba85846afc4cff9e6e6f8.css" integrity="sha256-XPxoCx7q7vnvvO2S1Gwqnodrcu4U&#43;6hYRq/Ez/nm5vg=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
-    onload="hljs.initHighlightingOnLoad();"></script>
-<link rel="icon" href="https://847850277.github.io/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://847850277.github.io/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://847850277.github.io/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://847850277.github.io/apple-touch-icon.png">
-<link rel="mask-icon" href="https://847850277.github.io/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --hljs-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript><meta property="og:title" content="Scalable in java 翻译" />
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>Scalable in java 翻译 - ZhengPengDe Blog</title><meta name="Description" content="This is my cool site"><meta property="og:title" content="Scalable in java 翻译" />
 <meta property="og:description" content="目录 Scalable network services 可扩展的网络服务 Event-driven processing 事件驱动处理 Reactor pattern Reactor 模式 Basic version 基本版本 Multithreaded versions 多线程版本 Other variants 其他变体 Walkthrough of java.nio nonblocking IO APIs 预编排java.nio nonblocking IO APIs Network Services 网络服务 Web services, Distributed Objects, etc 网络服务,分布式对象，等等。 Most have same basic structure: 大多数都有以下的基本结构 Read request 读请求 Decode request 解码请求 Process service 处理服务 Encode reply 编码响应 Send reply 发送响应 But differ in nature and cost of each step 当然在实际应用中每一步的运行效率都是不同的，例如其中可能涉及到xml解析、文件传输、web页面的加载、计算服务等不同功能 XML parsing, File transfer, Web page generation, computational services, &hellip; Classic Service Designs 传统的服务设计 Each handler may be started in its own thread 在一般的网络服务当中都会为每一个连接的处理开启一个新的线程，我们可以看下大致的示意图： public class Test { private static Integer PORT = 8080; public static void main(String[] args) { Server server = new Server(); server." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://847850277.github.io/posts/2023/scalable_in_java_translate/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2023-08-16T09:27:36+08:00" />
-<meta property="article:modified_time" content="2023-08-16T09:27:36+08:00" />
-
+<meta property="article:modified_time" content="2023-08-16T09:27:36+08:00" /><meta property="og:site_name" content="My cool site" />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Scalable in java 翻译"/>
 <meta name="twitter:description" content="目录 Scalable network services 可扩展的网络服务 Event-driven processing 事件驱动处理 Reactor pattern Reactor 模式 Basic version 基本版本 Multithreaded versions 多线程版本 Other variants 其他变体 Walkthrough of java.nio nonblocking IO APIs 预编排java.nio nonblocking IO APIs Network Services 网络服务 Web services, Distributed Objects, etc 网络服务,分布式对象，等等。 Most have same basic structure: 大多数都有以下的基本结构 Read request 读请求 Decode request 解码请求 Process service 处理服务 Encode reply 编码响应 Send reply 发送响应 But differ in nature and cost of each step 当然在实际应用中每一步的运行效率都是不同的，例如其中可能涉及到xml解析、文件传输、web页面的加载、计算服务等不同功能 XML parsing, File transfer, Web page generation, computational services, &hellip; Classic Service Designs 传统的服务设计 Each handler may be started in its own thread 在一般的网络服务当中都会为每一个连接的处理开启一个新的线程，我们可以看下大致的示意图： public class Test { private static Integer PORT = 8080; public static void main(String[] args) { Server server = new Server(); server."/>
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
+<meta name="application-name" content="My cool site">
+<meta name="apple-mobile-web-app-title" content="My cool site"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://847850277.github.io/posts/2023/scalable_in_java_translate/" /><link rel="prev" href="https://847850277.github.io/posts/2023/metadata/" /><link rel="next" href="https://847850277.github.io/posts/pattern/reactor/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
     {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "Posts",
-      "item": "https://847850277.github.io/posts/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "Scalable in java 翻译",
-      "item": "https://847850277.github.io/posts/2023/scalable_in_java_translate/"
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Scalable in java 翻译",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/847850277.github.io\/posts\/2023\/scalable_in_java_translate\/"
+        },"genre": "posts","wordcount":  2304 ,
+        "url": "https:\/\/847850277.github.io\/posts\/2023\/scalable_in_java_translate\/","datePublished": "2023-08-16T09:27:36+08:00","dateModified": "2023-08-16T09:27:36+08:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "zhengpengde"
+            },"description": ""
     }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "Scalable in java 翻译",
-  "name": "Scalable in java 翻译",
-  "description": "目录 Scalable network services 可扩展的网络服务 Event-driven processing 事件驱动处理 Reactor pattern Reactor 模式 Basic version 基本版本 Multithreaded versions 多线程版本 Other variants 其他变体 Walkthrough of java.nio nonblocking IO APIs 预编排java.nio nonblocking IO APIs Network Services 网络服务 Web services, Distributed Objects, etc 网络服务,分布式对象，等等。 Most have same basic structure: 大多数都有以下的基本结构 Read request 读请求 Decode request 解码请求 Process service 处理服务 Encode reply 编码响应 Send reply 发送响应 But differ in nature and cost of each step 当然在实际应用中每一步的运行效率都是不同的，例如其中可能涉及到xml解析、文件传输、web页面的加载、计算服务等不同功能 XML parsing, File transfer, Web page generation, computational services, \u0026hellip; Classic Service Designs 传统的服务设计 Each handler may be started in its own thread 在一般的网络服务当中都会为每一个连接的处理开启一个新的线程，我们可以看下大致的示意图： public class Test { private static Integer PORT = 8080; public static void main(String[] args) { Server server = new Server(); server.",
-  "keywords": [
-    
-  ],
-  "articleBody": "目录 Scalable network services 可扩展的网络服务 Event-driven processing 事件驱动处理 Reactor pattern Reactor 模式 Basic version 基本版本 Multithreaded versions 多线程版本 Other variants 其他变体 Walkthrough of java.nio nonblocking IO APIs 预编排java.nio nonblocking IO APIs Network Services 网络服务 Web services, Distributed Objects, etc 网络服务,分布式对象，等等。 Most have same basic structure: 大多数都有以下的基本结构 Read request 读请求 Decode request 解码请求 Process service 处理服务 Encode reply 编码响应 Send reply 发送响应 But differ in nature and cost of each step 当然在实际应用中每一步的运行效率都是不同的，例如其中可能涉及到xml解析、文件传输、web页面的加载、计算服务等不同功能 XML parsing, File transfer, Web page generation, computational services, … Classic Service Designs 传统的服务设计 Each handler may be started in its own thread 在一般的网络服务当中都会为每一个连接的处理开启一个新的线程，我们可以看下大致的示意图： public class Test { private static Integer PORT = 8080; public static void main(String[] args) { Server server = new Server(); server.run(); } public static class Server implements Runnable { @Override public void run() { try { ServerSocket ss = new ServerSocket(PORT); while (!Thread.interrupted()) { new Thread(new Handler(ss.accept())).start(); } } catch (IOException ex) { } } } public static class Handler implements Runnable { final Socket socket; public Integer MAX_INPUT = 1024; Handler(Socket s) { socket = s; } @Override public void run() { try { byte[] input = new byte[MAX_INPUT]; socket.getInputStream().read(input); byte[] output = process(input); socket.getOutputStream().write(output); } catch (IOException ex) { /* ... */ } } private byte[] process(byte[] cmd) { System.out.println(cmd); return cmd; } } } Classic ServerSocket Loop 构建高性能可伸缩的IO服务 Scalability Goals 在构建高性能可伸缩的IO服务过程中，我们希望达到以下的目标 Graceful degradation under increasing load (more clients) 在海量的负载连接情况下优雅降级 Continuous improvement with increasing resources (CPU, memory, disk, bandwidth) 能随着硬件资源的增加，性能持续改进 Also meet availability and performance goals 还要满足可用性和性能目标 Short latencies 低延时 Meeting peak demand 高吞吐量 Tunable quality of service 可调节服务质量 Divide and Conquer 分治法 Divide-and-conquer is usually the best approach for achieving any scalability goal 分而治之通常是实现任何可伸缩性目标的最佳方法 Divide processing into small tasks 将处理过程分成小任务 Each task performs an action without blocking 每个任务执行一个操作而不阻塞 Execute each task when it is enabled 在启用时执行每个任务 Here, an IO event usually serves as trigger 在这里IO通常用作触发器 Basic mechanisms supported in java.nio java.nio包就很好的实现了上述的机制 Non-blocking reads and writes 非阻塞读和写 Dispatch tasks associated with sensed IO events 调度与感知到的IO事件相关的任务 Endless variation possible 无限变化的可能 A family of event-driven designs 所以结合一系列基于事件驱动模式的设计，给高性能IO服务的架构与设计带来丰富的可扩展性 Event-driven Designs 基于事件驱动模式的设计 Usually more efficient than alternatives 基于事件驱动的架构设计通常比其他架构模型更加有效\nFewer resources 更节约资源 Don’t usually need a thread per client 通常不需要针对每个客户端去启动一个线程 Less overhead 减少线程开销 Less context switching, often less locking 更少的上下文切换和更少的互斥锁 But dispatching can be slower 但是调度可能会更慢 Must manually bind actions to events 必须手动将动作绑定到事件 Usually harder to program 编码的难度更高\nMust break up into simple non-blocking actions 相关功能必须分解成简单的非阻塞操作 Similar to GUI event-driven actions 类似与GUI的事件驱动机制 Cannot eliminate all blocking: GC, page faults, etc 当然也不可能把所有阻塞都消除掉，特别是GC， page faults(内存缺页中断)等 Must keep track of logical state of service 由于是基于事件驱动的，所以需要跟踪服务的相关状态（因为你需要知道什么时候事件会发生） Background: Events in AWT 背景：AWT中事件驱动设计 Event-driven IO uses similar ideas but in different designs 下图是AWT中事件驱动设计的一个简单示意图，可以看到，在不同的架构设计中的基于事件驱动的IO操作使用的基本思路是一致的； Reactor Pattern Reactor模式 Reactor responds to IO events by dispatching the appropriate handler Reactor模式中会通过分配适当的handler(处理程序)来响应IO事件\nSimilar to AWT thread 类似与AWT 事件处理线程 Handlers perform non-blocking actions 每个handler执行非阻塞的操作\nSimilar to AWT ActionListeners 类似于AWT ActionListeners 事件监听 Manage by binding handlers to events 通过将handler绑定到事件进行管理\nSimilar to AWT addActionListener 类似与AWT addActionListener 添加事件监听 See Schmidt et al, Pattern-Oriented Software Architecture, Volume 2 (POSA2) 参见Schmidt et al，面向模式的软件体系结构，第2卷(POSA2)\nAlso Richard Stevens’s networking books, Matt Welsh’s SEDA framework, etc 还有Richard Stevens的网络书籍，Matt Welsh的SEDA框架，等等 Basic Reactor Design 单线程模式 java.nio Support java.nio的一些概念 Channels Connections to files, sockets etc that support non-blocking reads 支持非阻塞读写的socket连接 Buffers Array-like objects that can be directly read or written by Channels 用于被Channels读写的字节数组对象 Selectors Tell which of a set of Channels have IO events 用于判断channle发生IO事件的选择器 SelectionKeys Maintain IO event status and bindings 负责IO事件的状态与绑定 接下来我们一步步看下基于Reactor模式的服务端设计代码示例\nReactor 1: Setup 第一步 Rector线程的初始化\nReactor 2: Dispatch Loop 第二步 分发调度\nReactor 3: Acceptor 第二步 分发调度 接收器\nReactor 4: Handler setup 第四步 Handler初始化\nReactor 5: Request handling 第五步 请求处理\nPer-State Handlers 基于GoF状态对象模式对Handler类的一个优化实现，不需要再进行状态的判断\nimport java.io.IOException; import java.net.InetSocketAddress; import java.nio.channels.SelectionKey; import java.nio.channels.Selector; import java.nio.channels.ServerSocketChannel; import java.nio.channels.SocketChannel; import java.util.Iterator; import java.util.Set; public class Reactor implements Runnable{ public static void main(String[] args) { try { new Reactor(8080).run(); } catch (IOException e) { throw new RuntimeException(e); } } final Selector selector; final ServerSocketChannel serverSocket; Reactor(int port) throws IOException { selector = Selector.open(); serverSocket = ServerSocketChannel.open(); serverSocket.socket().bind(new InetSocketAddress(port)); serverSocket.configureBlocking(false); SelectionKey sk = serverSocket.register(selector, SelectionKey.OP_ACCEPT); //注册accept事件 sk.attach(new Acceptor()); //调用Acceptor()为回调方法 } public void run() { try { while (!Thread.interrupted()) {//循环 selector.select(); Set selected = selector.selectedKeys(); Iterator it = selected.iterator(); while (it.hasNext()){ //dispatch分发事件 dispatch((SelectionKey)it.next()); } selected.clear(); } } catch (IOException ex) { /* ... */ } } void dispatch(SelectionKey k) { Runnable r = (Runnable)(k.attachment()); //调用SelectionKey绑定的调用对象 if (r != null) r.run(); } // Acceptor 连接处理类 class Acceptor implements Runnable { // inner public void run() { try { SocketChannel c = serverSocket.accept(); if (c != null) new Handler(selector, c); } catch(IOException ex) { /* ... */ } } } } import java.io.IOException; import java.nio.ByteBuffer; import java.nio.channels.SelectionKey; import java.nio.channels.Selector; import java.nio.channels.SocketChannel; public class Handler implements Runnable{ final SocketChannel socket; final SelectionKey sk; ByteBuffer input = ByteBuffer.allocate(1024); ByteBuffer output = ByteBuffer.allocate(1024); static final int READING = 0, SENDING = 1; int state = READING; Handler(Selector sel, SocketChannel c) throws IOException { socket = c; c.configureBlocking(false); // Optionally try first read now sk = socket.register(sel, 0); sk.attach(this); //将Handler绑定到SelectionKey上 sk.interestOps(SelectionKey.OP_READ); sel.wakeup(); } boolean inputIsComplete() { /* ... */ return false; } boolean outputIsComplete() { /* ... */ return false; } void process() { /* ... */ } /** * 这是Handler处理类 */ /**/ @Override public void run() { try { if (state == READING) read(); else if (state == SENDING) send(); } catch (IOException ex) { } } void read() throws IOException { socket.read(input); if (inputIsComplete()) { process(); state = SENDING; // Normally also do first write now sk.interestOps(SelectionKey.OP_WRITE); } } void send() throws IOException { socket.write(output); if (outputIsComplete()) sk.cancel(); } /** * 下面是基于GoF状态对象模式对Handler类的一个优化实现，不需要再进行状态的判断。 */ /* @Override public void run() { // initial state is reader try { socket.read(input); } catch (IOException e) { throw new RuntimeException(e); } if (inputIsComplete()) { process(); sk.attach(new Sender()); sk.interestOps(SelectionKey.OP_WRITE); sk.selector().wakeup(); } } class Sender implements Runnable { public void run(){ // ... try { socket.write(output); } catch (IOException e) { throw new RuntimeException(e); } if (outputIsComplete()) sk.cancel(); } } */ } Multithreaded Designs 多线程设计 Strategically add threads for scalability 策略性地添加线程以提高可伸缩性 Mainly applicable to multiprocessors 主要适用于多处理器 Worker Threads 增加工作线程 专门处理非IO操作 Reactors should quickly trigger handlers 反应器线程需要迅速触发处理流程 Handler processing slows down Reactor 如果处理过程也就是process()方法产生阻塞会拖慢反应器线程的性能 Offload non-IO processing to other threads 我们需要把一些非IO操作交给Woker线程来做 Multiple Reactor Threads 拆分并增加反应器Reactor线程 Reactor threads can saturate doing IO 在压力较大时可以饱和处理IO操作，提高处理能力 Distribute load to other reactors 维持多个Reactor线程也可以做负载均衡使用 Load-balance to match CPU and IO rates 线程的数量可以根据程序本身是CPU密集型还是IO密集型操作来进行合理的分配 Worker Threads 工作线程 Offload non-IO processing to speed up Reactor thread 通过卸载非IO操作来提升Reactor 线程的处理性能 Similar to POSA2 Proactor designs 类似与POSA2 中Proactor的设计 Simpler than reworking compute-bound processing into event-driven form 比将非IO操作重新设计为事件驱动的方式更简单 Should still be pure nonblocking computation 仍然应该是纯粹的非阻塞计算 Enough processing to outweigh overhead 足够的处理超过开销 But harder to overlap processing with IO 但是很难将处理与IO重叠 Best when can first read all input into a buffer 最好能在第一时间将所有输入读入缓冲区 （这里我理解的是最好一次性读取缓冲区数据，方便异步非IO操作处理数据） Use thread pool so can tune and control 可以通过线程池的方式对线程进行调优与控制 Normally need many fewer threads than clients 通常需要比客户端少得多的线程 Handler with Thread Pool 带有线程池的处理器 import java.io.IOException; import java.nio.ByteBuffer; import java.nio.channels.SelectionKey; import java.nio.channels.Selector; import java.nio.channels.SocketChannel; import java.util.concurrent.ArrayBlockingQueue; import java.util.concurrent.ThreadPoolExecutor; import java.util.concurrent.TimeUnit; public class Handler implements Runnable{ private static final int CORE_POOL_SIZE = 5; private static final int MAX_POOL_SIZE = 10; private static final int QUEUE_CAPACITY = 100; private static final Long KEEP_ALIVE_TIME = 1L; // uses util.concurrent thread pool static ThreadPoolExecutor pool = new ThreadPoolExecutor( CORE_POOL_SIZE, MAX_POOL_SIZE, KEEP_ALIVE_TIME, TimeUnit.SECONDS, new ArrayBlockingQueue\u003c\u003e(QUEUE_CAPACITY), new ThreadPoolExecutor.CallerRunsPolicy()); static final int PROCESSING = 3; final SocketChannel socket; final SelectionKey sk; ByteBuffer input = ByteBuffer.allocate(1024); ByteBuffer output = ByteBuffer.allocate(1024); static final int READING = 0, SENDING = 1; int state = READING; Handler(Selector sel, SocketChannel c) throws IOException { socket = c; c.configureBlocking(false); // Optionally try first read now sk = socket.register(sel, 0); sk.attach(this); //将Handler绑定到SelectionKey上 sk.interestOps(SelectionKey.OP_READ); sel.wakeup(); } boolean inputIsComplete() { /* ... */ return false; } boolean outputIsComplete() { /* ... */ return false; } void process() { /* ... */ } /** * 这是Handler处理类 */ /**/ @Override public void run() { try { if (state == READING) read(); else if (state == SENDING) send(); } catch (IOException ex) { } } synchronized void read() throws IOException { socket.read(input); if (inputIsComplete()) { // process(); // state = SENDING; // // Normally also do first write now // sk.interestOps(SelectionKey.OP_WRITE); state = PROCESSING; pool.execute(new Processer()); } } void send() throws IOException { socket.write(output); if (outputIsComplete()) sk.cancel(); } synchronized void processAndHandOff() { process(); state = SENDING; // or rebind attachment sk.interestOps(SelectionKey.OP_WRITE); } class Processer implements Runnable { public void run() { processAndHandOff(); } } } Coordinating Tasks 协调任务 当你把非IO操作放到线程池中运行时，你需要注意以下几点问题\nHandoffs 交接 Each task enables, triggers, or calls next one Usually fastest but can be brittle 任务之间的协调与控制，每个任务的启动、执行、传递的速度是很快的，不容易协调与控制 Callbacks to per-handler dispatcher 每个hander中dispatch的回调与状态控制 Sets state, attachment, etc A variant of GoF Mediator pattern 设置状态、附件等。GoF中介模式的一种变体 Queues 不同线程之间缓冲区的线程安全问题 For example, passing buffers across stages 例如，跨阶段传递缓冲区 Futures When each task produces a result Coordination layered on top of join or wait/notify 需要任务返回结果时，任务线程等待和唤醒状态间的切换 Using PooledExecutor 可以使用PooledExecutor线程池框架解决上面的问题 A tunable worker thread pool 这是一个可控的任务线程池 Main method execute(Runnable r) 主函数采用execute(Runnable r) Controls for: 它具备以下功能，可以很好的对池中的线程与任务进行控制与管理 The kind of task queue (any Channel) 任务队列的类型(任何通道) Maximum number of threads 最大线程数 Minimum number of threads 最小线程数 “Warm” versus on-demand threads “预热\"以应对随机应变的线程 按需要判断线程的活动状态，及时处理空闲线程 Keep-alive interval until idle threads die 保持活动间隔，直到空闲线程死亡 to be later replaced by new ones if necessary 如有必要，以后再用新的代替 Saturation policy 饱和策略 当执行任务数量超过线程池中线程数量时，有一系列的阻塞、限流的策略 block, drop, producer-runs, etc 阻塞,抛弃,producer-runs等 Multiple Reactor Threads 基于多个反应器的多线程模式 Using Reactor Pools 使用反应器线程池 Use to match CPU and IO rates 一方面根据实际情况用于匹配调节CPU处理与IO读写的效率，提高系统资源的利用率 Static or dynamic construction 另一方面在静态或动态构造中 Each with own Selector, Thread, dispatch loop 每个反应器线程都包含对应的Selector,Thread,dispatchloop Main acceptor distributes to other reactors 下面是一个简单的代码示例与示意图（Netty就是基于这个模式设计的，一个处理Accpet连接的mainReactor线程，多个处理IO事件的subReactor线程） Selector[] selectors; // Selector集合，每一个Selector 对应一个subReactor线程 //mainReactor线程 class Acceptor { // ... public synchronized void run() { //... Socket connection = serverSocket.accept(); if (connection != null) new Handler(selectors[next], connection); if (++next == selectors.length) next = 0; } } Using other java.nio features 在服务的设计当中，我们还需要注意与java.nio包特性的结合 Multiple Selectors per Reactor 每个反应器有多个选择器 To bind different handlers to different IO events May need careful synchronization to coordinate 要将不同的处理程序绑定到不同的IO事件可能需要细致的同步协调编码 File transfer 文件传输 Automated file-to-net or net-to-file copying 自动文件到网络或网络到文件复制 Memory-mapped files 内存映射文件的方式 Access files via buffers 通过缓存区访问文件 Direct buffers 直接缓冲区的方式 Can sometimes achieve zero-copy transfer But have setup and finalization overhead Best for applications with long-lived connections 在合适的情况下可以使用零拷贝传输，但同时这会带来初始化与内存释放的问题（需要池化与主动释放） Connection-Based Extensions 基于连接的扩展 Instead of a single service request 并不是单个服务请求 Client connects 客户端连接 Client sends a series of messages/requests 客户端发送一系列的消息/请求 Client disconnects 客户端断开连接 Examples 样例 Databases and Transaction monitors 数据库和事务监视器 Multi-participant games, chat, etc 多人游戏、聊天等 Can extend basic network service patterns 可以扩展基本的网络服务模式 Handle many relatively long-lived clients 处理许多寿命相对较长的客户机 Track client and session state (including drops) 跟踪客户端和会话状态(包括丢弃) Distribute services across multiple hosts 跨多个主机分发服务 API Walkthrough Buffer ByteBuffer (CharBuffer, LongBuffer, etc not shown.) Channel SelectableChannel SocketChannel ServerSocketChannel FileChannel Selector SelectionKey Buffer\nabstract class Buffer { int capacity(); int position(); Buffer position(int newPosition); int limit(); Buffer limit(int newLimit); Buffer mark(); Buffer reset(); Buffer clear(); Buffer flip(); Buffer rewind(); int remaining(); boolean hasRemaining(); boolean isReadOnly(); } ByteBuffer\nabstract class ByteBuffer extends Buffer { static ByteBuffer allocateDirect(int capacity); static ByteBuffer allocate(int capacity); static ByteBuffer wrap(byte[] src, int offset, int len); static ByteBuffer wrap(byte[] src); boolean isDirect(); ByteOrder order(); ByteBuffer order(ByteOrder bo); ByteBuffer slice(); ByteBuffer duplicate(); ByteBuffer compact(); ByteBuffer asReadOnlyBuffer(); byte get(); byte get(int index); ByteBuffer get(byte[] dst, int offset, int length); ByteBuffer get(byte[] dst); ByteBuffer put(byte b); ByteBuffer put(int index, byte b); ByteBuffer put(byte[] src, int offset, int length); ByteBuffer put(ByteBuffer src); ByteBuffer put(byte[] src); char getChar(); char getChar(int index); ByteBuffer putChar(char value); ByteBuffer putChar(int index, char value); CharBuffer asCharBuffer(); short getShort(); short getShort(int index); ByteBuffer putShort(short value); ByteBuffer putShort(int index, short value); ShortBuffer asShortBuffer(); int getInt(); int getInt(int index); ByteBuffer putInt(int value); ByteBuffer putInt(int index, int value); IntBuffer asIntBuffer(); long getLong(); long getLong(int index); ByteBuffer putLong(long value); ByteBuffer putLong(int index, long value); LongBuffer asLongBuffer(); float getFloat(); float getFloat(int index); ByteBuffer putFloat(float value); ByteBuffer putFloat(int index, float value); FloatBuffer asFloatBuffer(); double getDouble(); double getDouble(int index); ByteBuffer putDouble(double value); ByteBuffer putDouble(int index, double value); DoubleBuffer asDoubleBuffer(); } Channel\ninterface Channel { boolean isOpen(); void close() throws IOException; } interface ReadableByteChannel extends Channel { int read(ByteBuffer dst) throws IOException; } interface WritableByteChannel extends Channel { int write(ByteBuffer src) throws IOException; } interface ScatteringByteChannel extends ReadableByteChannel { int read(ByteBuffer[] dsts, int offset, int length) throws IOException; int read(ByteBuffer[] dsts) throws IOException; } interface GatheringByteChannel extends WritableByteChannel { int write(ByteBuffer[] srcs, int offset, int length) throws IOException; int write(ByteBuffer[] srcs) throws IOException; } SelectableChannel\nabstract class SelectableChannel implements Channel { int validOps(); boolean isRegistered(); SelectionKey keyFor(Selector sel); SelectionKey register(Selector sel, int ops) throws ClosedChannelException; void configureBlocking(boolean block) throws IOException; boolean isBlocking(); Object blockingLock(); } SocketChannel\nabstract class SocketChannel implements ByteChannel{ static SocketChannel open() throws IOException; Socket socket(); int validOps(); boolean isConnected(); boolean isConnectionPending(); boolean isInputOpen(); boolean isOutputOpen(); boolean connect(SocketAddress remote) throws IOException; boolean finishConnect() throws IOException; void shutdownInput() throws IOException; void shutdownOutput() throws IOException; int read(ByteBuffer dst) throws IOException; int read(ByteBuffer[] dsts, int offset, int length) throws IOException; int read(ByteBuffer[] dsts) throws IOException; int write(ByteBuffer src) throws IOException; int write(ByteBuffer[] srcs, int offset, int length) throws IOException; int write(ByteBuffer[] srcs) throws IOException; } ServerSocketChannel\nabstract class ServerSocketChannel extends SocketChannel { static ServerSocketChannel open() throws IOException; int validOps(); ServerSocket socket(); SocketChannel accept() throws IOException; } FileChannel\nabstract class FileChannel implements ... { int read(ByteBuffer dst); int read(ByteBuffer dst, long position); int read(ByteBuffer[] dsts, int offset, int length); int read(ByteBuffer[] dsts); int write(ByteBuffer src); int write(ByteBuffer src, long position); int write(ByteBuffer[] srcs, int offset, int length); int write(ByteBuffer[] srcs); long position(); void position(long newPosition); long size(); void truncate(long size); void force(boolean flushMetaDataToo); int transferTo(long position, int count, WritableByteChannel dst); int transferFrom(ReadableByteChannel src, long position, int count); FileLock lock(long position, long size, boolean shared); FileLock lock(); FileLock tryLock(long pos, long size, boolean shared); FileLock tryLock(); static final int MAP_RO, MAP_RW, MAP_COW; MappedByteBuffer map(int mode, long position, int size); } Selector\nabstract class Selector { static Selector open() throws IOException; Set keys(); Set selectedKeys(); int selectNow() throws IOException; int select(long timeout) throws IOException; int select() throws IOException; void wakeup(); void close() throws IOException; } SelectionKey\nabstract class SelectionKey { static final int OP_READ, OP_WRITE, OP_CONNECT, OP_ACCEPT; SelectableChannel channel(); Selector selector(); boolean isValid(); void cancel(); int interestOps(); void interestOps(int ops); int readyOps(); boolean isReadable(); boolean isWritable(); boolean isConnectable(); boolean isAcceptable(); Object attach(Object ob); Object attachment(); } Doug Lea - Scalable IO in Java 《Scalable IO in Java》译文 ",
-  "wordCount" : "2304",
-  "inLanguage": "en",
-  "datePublished": "2023-08-16T09:27:36+08:00",
-  "dateModified": "2023-08-16T09:27:36+08:00",
-  "author":{
-    "@type": "Person",
-    "name": "zhengpengde"
-  },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://847850277.github.io/posts/2023/scalable_in_java_translate/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "ZhengPengDe Blog",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://847850277.github.io/favicon.ico"
-    }
-  }
-}
-</script>
-</head>
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
 
-<body class="" id="top">
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
-    }
-
-</script>
-
-<header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="https://847850277.github.io/" accesskey="h" title="ZhengPengDe Blog (Alt + H)">ZhengPengDe Blog</a>
-            <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="ZhengPengDe Blog">My cool site</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="ZhengPengDe Blog">My cool site</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
             </div>
         </div>
-        <ul id="menu">
-        </ul>
-    </nav>
-</header>
-<main class="main">
-
-<article class="post-single">
-  <header class="post-header">
-    
-    <h1 class="post-title">
-      Scalable in java 翻译
-    </h1>
-    <div class="post-meta"><span title='2023-08-16 09:27:36 +0800 CST'>August 16, 2023</span>&nbsp;·&nbsp;zhengpengde
-
-</div>
-  </header> 
-  <div class="post-content"><h2 id="目录">目录<a hidden class="anchor" aria-hidden="true" href="#目录">#</a></h2>
+        <div class="menu" id="menu-mobile"><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Scalable in java 翻译</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>zhengpengde</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-08-16">2023-08-16</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;2304 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;11 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#目录">目录</a></li>
+    <li><a href="#network-services-网络服务">Network Services 网络服务</a>
+      <ul>
+        <li><a href="#classic-service-designs-传统的服务设计">Classic Service Designs 传统的服务设计</a></li>
+        <li><a href="#classic-serversocket-loop-构建高性能可伸缩的io服务">Classic ServerSocket Loop 构建高性能可伸缩的IO服务</a></li>
+        <li><a href="#divide-and-conquer-分治法">Divide and Conquer 分治法</a></li>
+        <li><a href="#event-driven-designs-基于事件驱动模式的设计">Event-driven Designs 基于事件驱动模式的设计</a></li>
+        <li><a href="#reactor-pattern-reactor模式">Reactor Pattern Reactor模式</a></li>
+      </ul>
+    </li>
+    <li><a href="#api-walkthrough">API Walkthrough</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h2 id="目录">目录</h2>
 <ul>
 <li><code>Scalable network services</code> 可扩展的网络服务</li>
 <li><code>Event-driven processing</code> 事件驱动处理</li>
@@ -191,7 +104,7 @@
 </li>
 <li><code>Walkthrough of java.nio nonblocking IO APIs</code> 预编排<code>java.nio nonblocking IO APIs</code></li>
 </ul>
-<h2 id="network-services-网络服务">Network Services 网络服务<a hidden class="anchor" aria-hidden="true" href="#network-services-网络服务">#</a></h2>
+<h2 id="network-services-网络服务">Network Services 网络服务</h2>
 <ul>
 <li>Web services, Distributed Objects, etc 网络服务,分布式对象，等等。</li>
 <li>Most have same basic structure: 大多数都有以下的基本结构
@@ -209,12 +122,18 @@
 </ul>
 </li>
 </ul>
-<h3 id="classic-service-designs-传统的服务设计">Classic Service Designs 传统的服务设计<a hidden class="anchor" aria-hidden="true" href="#classic-service-designs-传统的服务设计">#</a></h3>
+<h3 id="classic-service-designs-传统的服务设计">Classic Service Designs 传统的服务设计</h3>
 <ul>
 <li>Each handler may be started in its own thread  在一般的网络服务当中都会为每一个连接的处理开启一个新的线程，我们可以看下大致的示意图：</li>
 </ul>
-<p><img loading="lazy" src="/img/source/scalable_in_java/%e5%9b%be%e7%89%87_20230816094711.png" alt="classic"  />
-</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/img/source/scalable_in_java/%e5%9b%be%e7%89%87_20230816094711.png"
+        data-srcset="/img/source/scalable_in_java/%e5%9b%be%e7%89%87_20230816094711.png, /img/source/scalable_in_java/%e5%9b%be%e7%89%87_20230816094711.png 1.5x, /img/source/scalable_in_java/%e5%9b%be%e7%89%87_20230816094711.png 2x"
+        data-sizes="auto"
+        alt="/img/source/scalable_in_java/图片_20230816094711.png"
+        title="classic" /></p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Test</span> <span style="color:#f92672">{</span>
 </span></span><span style="display:flex;"><span>
@@ -265,7 +184,7 @@
 </span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span></code></pre></div><h3 id="classic-serversocket-loop-构建高性能可伸缩的io服务">Classic ServerSocket Loop 构建高性能可伸缩的IO服务<a hidden class="anchor" aria-hidden="true" href="#classic-serversocket-loop-构建高性能可伸缩的io服务">#</a></h3>
+</span></span></code></pre></div><h3 id="classic-serversocket-loop-构建高性能可伸缩的io服务">Classic ServerSocket Loop 构建高性能可伸缩的IO服务</h3>
 <ul>
 <li>Scalability Goals 在构建高性能可伸缩的IO服务过程中，我们希望达到以下的目标
 <ul>
@@ -281,7 +200,7 @@
 </ul>
 </li>
 </ul>
-<h3 id="divide-and-conquer-分治法">Divide and Conquer 分治法<a hidden class="anchor" aria-hidden="true" href="#divide-and-conquer-分治法">#</a></h3>
+<h3 id="divide-and-conquer-分治法">Divide and Conquer 分治法</h3>
 <ul>
 <li>Divide-and-conquer is usually the best approach for achieving any scalability goal 分而治之通常是实现任何可伸缩性目标的最佳方法
 <ul>
@@ -292,8 +211,14 @@
 </li>
 <li>Execute each task when it is enabled 在启用时执行每个任务
 <ul>
-<li>Here, an IO event usually serves as trigger 在这里IO通常用作触发器 <img loading="lazy" src="/img/source/scalable_in_java/%e5%9b%be%e7%89%87_20230816105320.png" alt="demo"  />
-</li>
+<li>Here, an IO event usually serves as trigger 在这里IO通常用作触发器 <img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/img/source/scalable_in_java/%e5%9b%be%e7%89%87_20230816105320.png"
+        data-srcset="/img/source/scalable_in_java/%e5%9b%be%e7%89%87_20230816105320.png, /img/source/scalable_in_java/%e5%9b%be%e7%89%87_20230816105320.png 1.5x, /img/source/scalable_in_java/%e5%9b%be%e7%89%87_20230816105320.png 2x"
+        data-sizes="auto"
+        alt="/img/source/scalable_in_java/图片_20230816105320.png"
+        title="demo" /></li>
 </ul>
 </li>
 <li>Basic mechanisms supported in java.nio java.nio包就很好的实现了上述的机制
@@ -310,7 +235,7 @@
 </ul>
 </li>
 </ul>
-<h3 id="event-driven-designs-基于事件驱动模式的设计">Event-driven Designs 基于事件驱动模式的设计<a hidden class="anchor" aria-hidden="true" href="#event-driven-designs-基于事件驱动模式的设计">#</a></h3>
+<h3 id="event-driven-designs-基于事件驱动模式的设计">Event-driven Designs 基于事件驱动模式的设计</h3>
 <ul>
 <li>
 <p>Usually more efficient than alternatives 基于事件驱动的架构设计通常比其他架构模型更加有效</p>
@@ -345,13 +270,19 @@
 </ul>
 </li>
 </ul>
-<h4 id="background-events-in-awt-背景awt中事件驱动设计">Background: Events in AWT 背景：AWT中事件驱动设计<a hidden class="anchor" aria-hidden="true" href="#background-events-in-awt-背景awt中事件驱动设计">#</a></h4>
+<h4 id="background-events-in-awt-背景awt中事件驱动设计">Background: Events in AWT 背景：AWT中事件驱动设计</h4>
 <ul>
 <li>Event-driven IO uses similar ideas but in different designs 下图是AWT中事件驱动设计的一个简单示意图，可以看到，在不同的架构设计中的基于事件驱动的IO操作使用的基本思路是一致的；</li>
 </ul>
-<p><img loading="lazy" src="/img/source/scalable_in_java/%e5%9b%be%e7%89%87_20230816113003.png" alt="图片_20230816113003"  />
-</p>
-<h3 id="reactor-pattern-reactor模式">Reactor Pattern Reactor模式<a hidden class="anchor" aria-hidden="true" href="#reactor-pattern-reactor模式">#</a></h3>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/img/source/scalable_in_java/%e5%9b%be%e7%89%87_20230816113003.png"
+        data-srcset="/img/source/scalable_in_java/%e5%9b%be%e7%89%87_20230816113003.png, /img/source/scalable_in_java/%e5%9b%be%e7%89%87_20230816113003.png 1.5x, /img/source/scalable_in_java/%e5%9b%be%e7%89%87_20230816113003.png 2x"
+        data-sizes="auto"
+        alt="/img/source/scalable_in_java/图片_20230816113003.png"
+        title="图片_20230816113003" /></p>
+<h3 id="reactor-pattern-reactor模式">Reactor Pattern Reactor模式</h3>
 <ul>
 <li>
 <p><code>Reactor</code> responds to IO events by dispatching the appropriate handler <code>Reactor</code>模式中会通过分配适当的handler(处理程序)来响应IO事件</p>
@@ -378,9 +309,15 @@
 </ul>
 </li>
 </ul>
-<h4 id="basic-reactor-design-单线程模式">Basic Reactor Design 单线程模式<a hidden class="anchor" aria-hidden="true" href="#basic-reactor-design-单线程模式">#</a></h4>
-<p><img loading="lazy" src="/img/source/scalable_in_java/%e5%9b%be%e7%89%87_20230816141616.png" alt="图片_20230816141616"  />
-</p>
+<h4 id="basic-reactor-design-单线程模式">Basic Reactor Design 单线程模式</h4>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/img/source/scalable_in_java/%e5%9b%be%e7%89%87_20230816141616.png"
+        data-srcset="/img/source/scalable_in_java/%e5%9b%be%e7%89%87_20230816141616.png, /img/source/scalable_in_java/%e5%9b%be%e7%89%87_20230816141616.png 1.5x, /img/source/scalable_in_java/%e5%9b%be%e7%89%87_20230816141616.png 2x"
+        data-sizes="auto"
+        alt="/img/source/scalable_in_java/图片_20230816141616.png"
+        title="图片_20230816141616" /></p>
 <ul>
 <li>java.nio Support <code>java.nio</code>的一些概念</li>
 <li>Channels
@@ -582,7 +519,7 @@
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span></code></pre></div><h4 id="multithreaded-designs-多线程设计">Multithreaded Designs 多线程设计<a hidden class="anchor" aria-hidden="true" href="#multithreaded-designs-多线程设计">#</a></h4>
+</span></span></code></pre></div><h4 id="multithreaded-designs-多线程设计">Multithreaded Designs 多线程设计</h4>
 <ul>
 <li>Strategically add threads for scalability 策略性地添加线程以提高可伸缩性
 <ul>
@@ -610,7 +547,7 @@
 </ul>
 </li>
 </ul>
-<h4 id="worker-threads-工作线程">Worker Threads 工作线程<a hidden class="anchor" aria-hidden="true" href="#worker-threads-工作线程">#</a></h4>
+<h4 id="worker-threads-工作线程">Worker Threads 工作线程</h4>
 <ul>
 <li>Offload non-IO processing to speed up Reactor thread 通过卸载非IO操作来提升Reactor 线程的处理性能
 <ul>
@@ -637,9 +574,15 @@
 </ul>
 </li>
 </ul>
-<p><img loading="lazy" src="/img/source/scalable_in_java/%e5%9b%be%e7%89%87_20230817160645.png" alt="图片_20230817160645"  />
-</p>
-<h4 id="handler-with-thread-pool-带有线程池的处理器">Handler with Thread Pool 带有线程池的处理器<a hidden class="anchor" aria-hidden="true" href="#handler-with-thread-pool-带有线程池的处理器">#</a></h4>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/img/source/scalable_in_java/%e5%9b%be%e7%89%87_20230817160645.png"
+        data-srcset="/img/source/scalable_in_java/%e5%9b%be%e7%89%87_20230817160645.png, /img/source/scalable_in_java/%e5%9b%be%e7%89%87_20230817160645.png 1.5x, /img/source/scalable_in_java/%e5%9b%be%e7%89%87_20230817160645.png 2x"
+        data-sizes="auto"
+        alt="/img/source/scalable_in_java/图片_20230817160645.png"
+        title="图片_20230817160645" /></p>
+<h4 id="handler-with-thread-pool-带有线程池的处理器">Handler with Thread Pool 带有线程池的处理器</h4>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.IOException<span style="color:#f92672">;</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.nio.ByteBuffer<span style="color:#f92672">;</span>
@@ -734,7 +677,7 @@
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span></code></pre></div><h4 id="coordinating-tasks-协调任务">Coordinating Tasks 协调任务<a hidden class="anchor" aria-hidden="true" href="#coordinating-tasks-协调任务">#</a></h4>
+</span></span></code></pre></div><h4 id="coordinating-tasks-协调任务">Coordinating Tasks 协调任务</h4>
 <p>当你把非IO操作放到线程池中运行时，你需要注意以下几点问题</p>
 <ul>
 <li>Handoffs 交接
@@ -758,7 +701,7 @@
 </ul>
 </li>
 </ul>
-<h4 id="using-pooledexecutor-可以使用pooledexecutor线程池框架解决上面的问题">Using PooledExecutor 可以使用PooledExecutor线程池框架解决上面的问题<a hidden class="anchor" aria-hidden="true" href="#using-pooledexecutor-可以使用pooledexecutor线程池框架解决上面的问题">#</a></h4>
+<h4 id="using-pooledexecutor-可以使用pooledexecutor线程池框架解决上面的问题">Using PooledExecutor 可以使用PooledExecutor线程池框架解决上面的问题</h4>
 <ul>
 <li>A tunable worker thread pool 这是一个可控的任务线程池</li>
 <li>Main method execute(Runnable r) 主函数采用execute(Runnable r)</li>
@@ -781,7 +724,7 @@
 </ul>
 </li>
 </ul>
-<h4 id="multiple-reactor-threads-基于多个反应器的多线程模式">Multiple Reactor Threads 基于多个反应器的多线程模式<a hidden class="anchor" aria-hidden="true" href="#multiple-reactor-threads-基于多个反应器的多线程模式">#</a></h4>
+<h4 id="multiple-reactor-threads-基于多个反应器的多线程模式">Multiple Reactor Threads 基于多个反应器的多线程模式</h4>
 <ul>
 <li>Using Reactor Pools 使用反应器线程池
 <ul>
@@ -808,9 +751,15 @@
 </span></span><span style="display:flex;"><span>            next <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">;</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span></code></pre></div><p><img loading="lazy" src="/img/source/scalable_in_java/%e5%9b%be%e7%89%87_20230818095843.png" alt="图片_20230818095843"  />
-</p>
-<h4 id="using-other-javanio-features-在服务的设计当中我们还需要注意与javanio包特性的结合">Using other java.nio features 在服务的设计当中，我们还需要注意与java.nio包特性的结合<a hidden class="anchor" aria-hidden="true" href="#using-other-javanio-features-在服务的设计当中我们还需要注意与javanio包特性的结合">#</a></h4>
+</span></span></code></pre></div><p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/img/source/scalable_in_java/%e5%9b%be%e7%89%87_20230818095843.png"
+        data-srcset="/img/source/scalable_in_java/%e5%9b%be%e7%89%87_20230818095843.png, /img/source/scalable_in_java/%e5%9b%be%e7%89%87_20230818095843.png 1.5x, /img/source/scalable_in_java/%e5%9b%be%e7%89%87_20230818095843.png 2x"
+        data-sizes="auto"
+        alt="/img/source/scalable_in_java/图片_20230818095843.png"
+        title="图片_20230818095843" /></p>
+<h4 id="using-other-javanio-features-在服务的设计当中我们还需要注意与javanio包特性的结合">Using other java.nio features 在服务的设计当中，我们还需要注意与java.nio包特性的结合</h4>
 <ul>
 <li>Multiple Selectors per Reactor 每个反应器有多个选择器
 <ul>
@@ -836,7 +785,7 @@ Best for applications with long-lived connections 在合适的情况下可以使
 </ul>
 </li>
 </ul>
-<h4 id="connection-based-extensions-基于连接的扩展">Connection-Based Extensions 基于连接的扩展<a hidden class="anchor" aria-hidden="true" href="#connection-based-extensions-基于连接的扩展">#</a></h4>
+<h4 id="connection-based-extensions-基于连接的扩展">Connection-Based Extensions 基于连接的扩展</h4>
 <ul>
 <li>Instead of a single service request 并不是单个服务请求
 <ul>
@@ -859,7 +808,7 @@ Best for applications with long-lived connections 在合适的情况下可以使
 </ul>
 </li>
 </ul>
-<h2 id="api-walkthrough">API Walkthrough<a hidden class="anchor" aria-hidden="true" href="#api-walkthrough">#</a></h2>
+<h2 id="api-walkthrough">API Walkthrough</h2>
 <ul>
 <li>Buffer</li>
 <li>ByteBuffer
@@ -892,8 +841,14 @@ Best for applications with long-lived connections 在合适的情况下可以使
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">hasRemaining</span><span style="color:#f92672">();</span>
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isReadOnly</span><span style="color:#f92672">();</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span></code></pre></div><p><img loading="lazy" src="/img/source/scalable_in_java/%e5%9b%be%e7%89%87_20230818103012.png" alt="图片_20230818103012"  />
-</p>
+</span></span></code></pre></div><p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/img/source/scalable_in_java/%e5%9b%be%e7%89%87_20230818103012.png"
+        data-srcset="/img/source/scalable_in_java/%e5%9b%be%e7%89%87_20230818103012.png, /img/source/scalable_in_java/%e5%9b%be%e7%89%87_20230818103012.png 1.5x, /img/source/scalable_in_java/%e5%9b%be%e7%89%87_20230818103012.png 2x"
+        data-sizes="auto"
+        alt="/img/source/scalable_in_java/图片_20230818103012.png"
+        title="图片_20230818103012" /></p>
 <p>ByteBuffer</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ByteBuffer</span> <span style="color:#66d9ef">extends</span> Buffer <span style="color:#f92672">{</span>
@@ -1122,88 +1077,44 @@ Best for applications with long-lived connections 在合适的情况下可以使
 </span></span><span style="display:flex;"><span> Object <span style="color:#a6e22e">attachment</span><span style="color:#f92672">();</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
 </span></span></code></pre></div><ul>
-<li><a href="http://gee.cs.oswego.edu/dl/cpjslides/nio.pdf">Doug Lea - Scalable IO in Java</a></li>
-<li><a href="https://www.cnblogs.com/dafanjoy/p/11217708.html">《Scalable IO in Java》译文 </a></li>
+<li><a href="http://gee.cs.oswego.edu/dl/cpjslides/nio.pdf" target="_blank" rel="noopener noreffer ">Doug Lea - Scalable IO in Java</a></li>
+<li><a href="https://www.cnblogs.com/dafanjoy/p/11217708.html" target="_blank" rel="noopener noreffer ">《Scalable IO in Java》译文 </a></li>
 </ul>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2023-08-16</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://847850277.github.io/posts/2023/scalable_in_java_translate/" data-title="Scalable in java 翻译"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://847850277.github.io/posts/2023/scalable_in_java_translate/"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://847850277.github.io/posts/2023/scalable_in_java_translate/" data-title="Scalable in java 翻译"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://847850277.github.io/posts/2023/scalable_in_java_translate/" data-title="Scalable in java 翻译"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.3.0/icons/line.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://847850277.github.io/posts/2023/scalable_in_java_translate/" data-title="Scalable in java 翻译"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
 
+    <div class="post-info-more">
+        <section class="post-tags"></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
 
-  </div>
+    <div class="post-nav"><a href="/posts/2023/metadata/" class="prev" rel="prev" title="什么是metadata"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>什么是metadata</a>
+            <a href="/posts/pattern/reactor/" class="next" rel="next" title="Reactor Pattern">Reactor Pattern<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.112.5">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.11"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank"></a></span></div>
+        </div>
+    </footer></div>
 
-  <footer class="post-footer">
-    <ul class="post-tags">
-    </ul>
-  </footer>
-</article>
-    </main>
-    
-<footer class="footer">
-    <span>&copy; 2023 <a href="https://847850277.github.io/">ZhengPengDe Blog</a></span>
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
-
-<script>
-    let menu = document.getElementById('menu')
-    if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
-
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-</body>
-
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
 </html>

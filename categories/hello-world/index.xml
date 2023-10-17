@@ -1,20 +1,15 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
-  <channel>
-    <title>hello-world on ZhengPengDe Blog</title>
-    <link>https://847850277.github.io/categories/hello-world/</link>
-    <description>Recent content in hello-world on ZhengPengDe Blog</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>zh-cn</language>
-    <lastBuildDate>Thu, 01 Jun 2023 09:00:00 +0000</lastBuildDate><atom:link href="https://847850277.github.io/categories/hello-world/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>我的第一篇博客</title>
-      <link>https://847850277.github.io/posts/my-first/</link>
-      <pubDate>Thu, 01 Jun 2023 09:00:00 +0000</pubDate>
-      
-      <guid>https://847850277.github.io/posts/my-first/</guid>
-      <description>这是描述信息</description>
-    </item>
-    
-  </channel>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>hello-world - Category - ZhengPengDe Blog</title>
+        <link>https://847850277.github.io/categories/hello-world/</link>
+        <description>hello-world - Category - ZhengPengDe Blog</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 01 Jun 2023 09:00:00 &#43;0000</lastBuildDate><atom:link href="https://847850277.github.io/categories/hello-world/" rel="self" type="application/rss+xml" /><item>
+    <title>我的第一篇博客</title>
+    <link>https://847850277.github.io/posts/my-first/</link>
+    <pubDate>Thu, 01 Jun 2023 09:00:00 &#43;0000</pubDate>
+    <author>zhengpengde</author>
+    <guid>https://847850277.github.io/posts/my-first/</guid>
+    <description><![CDATA[这里是Markdown 正文 hello world]]></description>
+</item>
+</channel>
 </rss>

@@ -1,192 +1,105 @@
 <!DOCTYPE html>
-<html lang="en" dir="auto">
-
-<head><meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>apache shenyu的spi机制 | ZhengPengDe Blog</title>
-<meta name="keywords" content="spi">
-<meta name="description" content="apache shenyu的spi机制">
-<meta name="author" content="zhengpengde">
-<link rel="canonical" href="https://847850277.github.io/posts/apache-shenyu/shenyu-spi/">
-<link crossorigin="anonymous" href="/assets/css/stylesheet.5cfc680b1eeaeef9efbced92d46c2a9e876b72ee14fba85846afc4cff9e6e6f8.css" integrity="sha256-XPxoCx7q7vnvvO2S1Gwqnodrcu4U&#43;6hYRq/Ez/nm5vg=" rel="preload stylesheet" as="style">
-<script defer crossorigin="anonymous" src="/assets/js/highlight.f413e19d0714851f6474e7ee9632408e58ac146fbdbe62747134bea2fa3415e0.js" integrity="sha256-9BPhnQcUhR9kdOfuljJAjlisFG&#43;9vmJ0cTS&#43;ovo0FeA="
-    onload="hljs.initHighlightingOnLoad();"></script>
-<link rel="icon" href="https://847850277.github.io/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://847850277.github.io/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://847850277.github.io/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://847850277.github.io/apple-touch-icon.png">
-<link rel="mask-icon" href="https://847850277.github.io/safari-pinned-tab.svg">
-<meta name="theme-color" content="#2e2e33">
-<meta name="msapplication-TileColor" content="#2e2e33">
-<noscript>
-    <style>
-        #theme-toggle,
-        .top-link {
-            display: none;
-        }
-
-    </style>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --theme: rgb(29, 30, 32);
-                --entry: rgb(46, 46, 51);
-                --primary: rgb(218, 218, 219);
-                --secondary: rgb(155, 156, 157);
-                --tertiary: rgb(65, 66, 68);
-                --content: rgb(196, 196, 197);
-                --hljs-bg: rgb(46, 46, 51);
-                --code-bg: rgb(55, 56, 62);
-                --border: rgb(51, 51, 51);
-            }
-
-            .list {
-                background: var(--theme);
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-track {
-                background: 0 0;
-            }
-
-            .list:not(.dark)::-webkit-scrollbar-thumb {
-                border-color: var(--theme);
-            }
-        }
-
-    </style>
-</noscript><meta property="og:title" content="apache shenyu的spi机制" />
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>apache shenyu的spi机制 - ZhengPengDe Blog</title><meta name="Description" content="apache shenyu的spi机制"><meta property="og:title" content="apache shenyu的spi机制" />
 <meta property="og:description" content="apache shenyu的spi机制" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://847850277.github.io/posts/apache-shenyu/shenyu-spi/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2023-06-16T09:00:00+00:00" />
-<meta property="article:modified_time" content="2023-07-31T10:00:00+00:00" />
-
+<meta property="article:modified_time" content="2023-07-31T10:00:00+00:00" /><meta property="og:site_name" content="My cool site" />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="apache shenyu的spi机制"/>
 <meta name="twitter:description" content="apache shenyu的spi机制"/>
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
+<meta name="application-name" content="My cool site">
+<meta name="apple-mobile-web-app-title" content="My cool site"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://847850277.github.io/posts/apache-shenyu/shenyu-spi/" /><link rel="prev" href="https://847850277.github.io/posts/dubbo/dubbo-upload/" /><link rel="next" href="https://847850277.github.io/posts/2023/web/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
     {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "Posts",
-      "item": "https://847850277.github.io/posts/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "apache shenyu的spi机制",
-      "item": "https://847850277.github.io/posts/apache-shenyu/shenyu-spi/"
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "apache shenyu的spi机制",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/847850277.github.io\/posts\/apache-shenyu\/shenyu-spi\/"
+        },"genre": "posts","keywords": "spi","wordcount":  161 ,
+        "url": "https:\/\/847850277.github.io\/posts\/apache-shenyu\/shenyu-spi\/","datePublished": "2023-06-16T09:00:00+00:00","dateModified": "2023-07-31T10:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "zhengpengde"
+            },"description": "apache shenyu的spi机制"
     }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "apache shenyu的spi机制",
-  "name": "apache shenyu的spi机制",
-  "description": "apache shenyu的spi机制",
-  "keywords": [
-    "spi"
-  ],
-  "articleBody": "什么是spi SPI就是Service Provider Interface,是一种动态的服务发现机制。 可以基于运行时动态的加载接口的实现类。通过(接口编程 + 策略模式 + 配置文件) 实现解耦和扩展。\n应用 数据库驱动 基于该接口的实现有MySQL,PostgreSQL,SqlServer等。 SLF4J日志框架 Dubbo的SPI扩展 dubbo apache shenyu spring boot starter jdbc的应用 日志的应用 apache shenyu的spi应用 dubbo的spi应用 实现方式 市面上常见的SPI的实现方式有：\nJDK的SPI实现 Dubbo的SPI实现、ShenYu的 SPI Spring的SPI实现 JDK的SPI实现流程为\n在类路径的META-INF/services目录创建一个以接口全限定名称命名的文件（本质是一个properties）文件，例如命名为java.sql.Driver 该文件中可以指定具体的实现类，也就是每个实现类的全类型限定名为单独一行 例如 META-INF/services/java.sql.Driver # META-INF/services/java.sql.Driver文件内容 com.mysql.jdbc.Driver org.postgresql.Driver 最后通过java.util.ServiceLoader对该文件进行加载，实例化接口的对应实现类（这里隐含了一个约定，所有实现类必须提供无参构造函数,用来反射调用） 底层的实现涉及到类加载、双亲委派等内容，这里不展开。基于这种设计思路，很多主流框架实现了一套SPI扩展，例如Dubbo的SPI扩展模块，就是读取类路径 下META-INF/services/dubbo目录的文件内容进行类加载。ShenYu-SPI模块也是沿用类似的设计思路。\nJDK SPI 的代码示例 接口定义 public interface Search { public List\u003cString\u003e searchDoc(String keyword); } 实现类 public class FileSearch implements Search{ @Override public List\u003cString\u003e searchDoc(String keyword) { System.out.println(\"文件搜索 \"+keyword); return null; } } public class DatabaseSearch implements Search{ @Override public List\u003cString\u003e searchDoc(String keyword) { System.out.println(\"数据搜索 \"+keyword); return null; } } resources 接下来可以在resources下新建META-INF/services/目录，然后新建接口全限定名的文件：com.xxx.Search，里面加上我们需要用到的实现类 com.xxx.FileSearch 测试方法 public class TestCase { public static void main(String[] args) { ServiceLoader\u003cSearch\u003e s = ServiceLoader.load(Search.class); Iterator\u003cSearch\u003e iterator = s.iterator(); while (iterator.hasNext()) { Search search = iterator.next(); search.searchDoc(\"hello world\"); } } } 总结 可以看到输出结果：文件搜索 hello world如果在com.xxx.Search文件里写上两个实现类，那最后的输出结果就是两行了。 这就是因为ServiceLoader.load(Search.class)在加载某接口时，会去META-INF/services下找接口的全限定名文件， 再根据里面的内容加载相应的实现类。这就是spi的思想，接口的实现由provider实现，provider只用在提交的jar包里的META-INF/services下根据平台定义的接口新建文件，并添加进相应的实现类内容就好。\nShenYu SPI 源码分析 ShenYu-SPI模块十分精炼,代码结构如下\n- shenyu-spi[module] - org.apache.shenyu.spi[package] -- ExtensionFactory -- ExtensionLoader -- Join -- SPI -- SpiExtensionFactory 这些类的功能如下\nExtensionFactory: SPI加载工厂，本身也是一个SPI，用于基于SPI机制加载ExtensionLoader实例同时基于ExtensionLoader实例获取默认标记SPI标识接口的实现 SpiExtensionFactory: ExtensionFactory的一个实现类 SPI: 标识注解，用于标识SPI，用于接口上 Join: 标识注解，用于实现类上，用来给SPI的实现进行排序。 ExtensionLoader: SPI加载器，类比java.util.ServiceLoader，用于加载SPI中接口的实现类 ",
-  "wordCount" : "161",
-  "inLanguage": "en",
-  "datePublished": "2023-06-16T09:00:00Z",
-  "dateModified": "2023-07-31T10:00:00Z",
-  "author":{
-    "@type": "Person",
-    "name": "zhengpengde"
-  },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://847850277.github.io/posts/apache-shenyu/shenyu-spi/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "ZhengPengDe Blog",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://847850277.github.io/favicon.ico"
-    }
-  }
-}
-</script>
-</head>
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
 
-<body class="" id="top">
-<script>
-    if (localStorage.getItem("pref-theme") === "dark") {
-        document.body.classList.add('dark');
-    } else if (localStorage.getItem("pref-theme") === "light") {
-        document.body.classList.remove('dark')
-    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.body.classList.add('dark');
-    }
-
-</script>
-
-<header class="header">
-    <nav class="nav">
-        <div class="logo">
-            <a href="https://847850277.github.io/" accesskey="h" title="ZhengPengDe Blog (Alt + H)">ZhengPengDe Blog</a>
-            <div class="logo-switches">
-                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
-                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                    </svg>
-                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
-                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
-                </button>
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="ZhengPengDe Blog">My cool site</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="ZhengPengDe Blog">My cool site</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
             </div>
         </div>
-        <ul id="menu">
-        </ul>
-    </nav>
-</header>
-<main class="main">
-
-<article class="post-single">
-  <header class="post-header">
-    
-    <h1 class="post-title">
-      apache shenyu的spi机制
-    </h1>
-    <div class="post-description">
-      apache shenyu的spi机制
+        <div class="menu" id="menu-mobile"><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
     </div>
-    <div class="post-meta"><span title='2023-06-16 09:00:00 +0000 UTC'>June 16, 2023</span>&nbsp;·&nbsp;zhengpengde
-
-</div>
-  </header> 
-  <div class="post-content"><h2 id="什么是spi">什么是spi<a hidden class="anchor" aria-hidden="true" href="#什么是spi">#</a></h2>
+</header><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">apache shenyu的spi机制</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>zhengpengde</a></span>&nbsp;<span class="post-category">included in <a href="/categories/spi/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>spi</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-06-16">2023-06-16</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;161 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;One minute&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#什么是spi">什么是spi</a></li>
+    <li><a href="#应用">应用</a></li>
+    <li><a href="#实现方式">实现方式</a>
+      <ul>
+        <li><a href="#jdk-spi-的代码示例">JDK SPI 的代码示例</a></li>
+        <li><a href="#shenyu-spi">ShenYu SPI</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h2 id="什么是spi">什么是spi</h2>
 <p><code>SPI</code>就是<code>Service Provider Interface</code>,是一种动态的服务发现机制。
 可以基于运行时动态的加载接口的实现类。通过(接口编程 + 策略模式 + 配置文件) 实现<code>解耦</code>和<code>扩展</code>。</p>
-<p><img loading="lazy" src="/img/source/spi/spi.png" alt="spi"  />
-</p>
-<h2 id="应用">应用<a hidden class="anchor" aria-hidden="true" href="#应用">#</a></h2>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/img/source/spi/spi.png"
+        data-srcset="/img/source/spi/spi.png, /img/source/spi/spi.png 1.5x, /img/source/spi/spi.png 2x"
+        data-sizes="auto"
+        alt="/img/source/spi/spi.png"
+        title="spi" /></p>
+<h2 id="应用">应用</h2>
 <ul>
 <li>数据库驱动
 <ul>
@@ -203,18 +116,42 @@
 <li><code>spring boot starter</code></li>
 </ul>
 <p>jdbc的应用
-<img loading="lazy" src="/img/source/spi/spi_jdbc.png" alt="spi"  />
-</p>
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/img/source/spi/spi_jdbc.png"
+        data-srcset="/img/source/spi/spi_jdbc.png, /img/source/spi/spi_jdbc.png 1.5x, /img/source/spi/spi_jdbc.png 2x"
+        data-sizes="auto"
+        alt="/img/source/spi/spi_jdbc.png"
+        title="spi" /></p>
 <p>日志的应用
-<img loading="lazy" src="/img/source/spi/spi_log.png" alt="spi"  />
-</p>
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/img/source/spi/spi_log.png"
+        data-srcset="/img/source/spi/spi_log.png, /img/source/spi/spi_log.png 1.5x, /img/source/spi/spi_log.png 2x"
+        data-sizes="auto"
+        alt="/img/source/spi/spi_log.png"
+        title="spi" /></p>
 <p>apache shenyu的spi应用
-<img loading="lazy" src="/img/source/spi/spi_shenyu.png" alt="spi"  />
-</p>
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/img/source/spi/spi_shenyu.png"
+        data-srcset="/img/source/spi/spi_shenyu.png, /img/source/spi/spi_shenyu.png 1.5x, /img/source/spi/spi_shenyu.png 2x"
+        data-sizes="auto"
+        alt="/img/source/spi/spi_shenyu.png"
+        title="spi" /></p>
 <p>dubbo的spi应用
-<img loading="lazy" src="/img/source/spi/spi_dubbo_extention.png" alt="spi"  />
-</p>
-<h2 id="实现方式">实现方式<a hidden class="anchor" aria-hidden="true" href="#实现方式">#</a></h2>
+<img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/img/source/spi/spi_dubbo_extention.png"
+        data-srcset="/img/source/spi/spi_dubbo_extention.png, /img/source/spi/spi_dubbo_extention.png 1.5x, /img/source/spi/spi_dubbo_extention.png 2x"
+        data-sizes="auto"
+        alt="/img/source/spi/spi_dubbo_extention.png"
+        title="spi" /></p>
+<h2 id="实现方式">实现方式</h2>
 <p>市面上常见的SPI的实现方式有：</p>
 <ul>
 <li><code>JDK</code>的<code>SPI</code>实现</li>
@@ -238,7 +175,7 @@
 </ul>
 <p>底层的实现涉及到类加载、双亲委派等内容，这里不展开。基于这种设计思路，很多主流框架实现了一套<code>SPI</code>扩展，例如<code>Dubbo</code>的<code>SPI</code>扩展模块，就是读取类路径
 下<code>META-INF/services/dubbo</code>目录的文件内容进行类加载。<code>ShenYu-SPI</code>模块也是沿用类似的设计思路。</p>
-<h3 id="jdk-spi-的代码示例">JDK SPI 的代码示例<a hidden class="anchor" aria-hidden="true" href="#jdk-spi-的代码示例">#</a></h3>
+<h3 id="jdk-spi-的代码示例">JDK SPI 的代码示例</h3>
 <ul>
 <li>接口定义</li>
 </ul>
@@ -290,8 +227,8 @@
 <p>可以看到输出结果：文件搜索 hello world如果在com.xxx.Search文件里写上两个实现类，那最后的输出结果就是两行了。
 这就是因为<code>ServiceLoader.load(Search.class)</code>在加载某接口时，会去<code>META-INF/services</code>下找接口的全限定名文件，
 再根据里面的内容加载相应的实现类。这就是spi的思想，接口的实现由provider实现，provider只用在提交的jar包里的<code>META-INF/services</code>下根据平台定义的接口新建文件，并添加进相应的实现类内容就好。</p>
-<h3 id="shenyu-spi">ShenYu SPI<a hidden class="anchor" aria-hidden="true" href="#shenyu-spi">#</a></h3>
-<h4 id="源码分析">源码分析<a hidden class="anchor" aria-hidden="true" href="#源码分析">#</a></h4>
+<h3 id="shenyu-spi">ShenYu SPI</h3>
+<h4 id="源码分析">源码分析</h4>
 <p><code>ShenYu-SPI</code>模块十分精炼,代码结构如下</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">-</span> shenyu<span style="color:#f92672">-</span>spi<span style="color:#f92672">[</span>module<span style="color:#f92672">]</span>
@@ -309,86 +246,41 @@
 <li><code>Join</code>: 标识注解，用于实现类上，用来给<code>SPI</code>的实现进行排序。</li>
 <li><code>ExtensionLoader</code>: <code>SPI</code>加载器，类比<code>java.util.ServiceLoader</code>，用于加载SPI中接口的实现类</li>
 </ul>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2023-07-31</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://847850277.github.io/posts/apache-shenyu/shenyu-spi/" data-title="apache shenyu的spi机制" data-hashtags="spi"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://847850277.github.io/posts/apache-shenyu/shenyu-spi/" data-hashtag="spi"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://847850277.github.io/posts/apache-shenyu/shenyu-spi/" data-title="apache shenyu的spi机制"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://847850277.github.io/posts/apache-shenyu/shenyu-spi/" data-title="apache shenyu的spi机制"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.3.0/icons/line.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://847850277.github.io/posts/apache-shenyu/shenyu-spi/" data-title="apache shenyu的spi机制"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
 
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/spi/">spi</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
 
-  </div>
+    <div class="post-nav"><a href="/posts/dubbo/dubbo-upload/" class="prev" rel="prev" title="dubbo是否有对文件上传下载导入导出的支持"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>dubbo是否有对文件上传下载导入导出的支持</a>
+            <a href="/posts/2023/web/" class="next" rel="next" title="常用web记录">常用web记录<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.112.5">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.11"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2022 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank"></a></span></div>
+        </div>
+    </footer></div>
 
-  <footer class="post-footer">
-    <ul class="post-tags">
-      <li><a href="https://847850277.github.io/tags/spi/">spi</a></li>
-    </ul>
-  </footer>
-</article>
-    </main>
-    
-<footer class="footer">
-    <span>&copy; 2023 <a href="https://847850277.github.io/">ZhengPengDe Blog</a></span>
-    <span>
-        Powered by
-        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
-        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
-    </span>
-</footer>
-<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
-        <path d="M12 6H0l6-6z" />
-    </svg>
-</a>
-
-<script>
-    let menu = document.getElementById('menu')
-    if (menu) {
-        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
-        menu.onscroll = function () {
-            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
-        }
-    }
-
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener("click", function (e) {
-            e.preventDefault();
-            var id = this.getAttribute("href").substr(1);
-            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
-                    behavior: "smooth"
-                });
-            } else {
-                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
-            }
-            if (id === "top") {
-                history.replaceState(null, null, " ");
-            } else {
-                history.pushState(null, null, `#${id}`);
-            }
-        });
-    });
-
-</script>
-<script>
-    var mybutton = document.getElementById("top-link");
-    window.onscroll = function () {
-        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
-            mybutton.style.visibility = "visible";
-            mybutton.style.opacity = "1";
-        } else {
-            mybutton.style.visibility = "hidden";
-            mybutton.style.opacity = "0";
-        }
-    };
-
-</script>
-<script>
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-        if (document.body.className.includes("dark")) {
-            document.body.classList.remove('dark');
-            localStorage.setItem("pref-theme", 'light');
-        } else {
-            document.body.classList.add('dark');
-            localStorage.setItem("pref-theme", 'dark');
-        }
-    })
-
-</script>
-</body>
-
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
 </html>

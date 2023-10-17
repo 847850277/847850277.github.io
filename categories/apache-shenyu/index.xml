@@ -1,20 +1,15 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
-  <channel>
-    <title>apache shenyu on ZhengPengDe Blog</title>
-    <link>https://847850277.github.io/categories/apache-shenyu/</link>
-    <description>Recent content in apache shenyu on ZhengPengDe Blog</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>zh-cn</language>
-    <lastBuildDate>Tue, 06 Jun 2023 16:00:00 +0000</lastBuildDate><atom:link href="https://847850277.github.io/categories/apache-shenyu/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>apache shenyu 打包命令集</title>
-      <link>https://847850277.github.io/posts/apache-shenyu/shenyu-maven-package/</link>
-      <pubDate>Tue, 06 Jun 2023 16:00:00 +0000</pubDate>
-      
-      <guid>https://847850277.github.io/posts/apache-shenyu/shenyu-maven-package/</guid>
-      <description>打包命令集</description>
-    </item>
-    
-  </channel>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>apache shenyu - Category - ZhengPengDe Blog</title>
+        <link>https://847850277.github.io/categories/apache-shenyu/</link>
+        <description>apache shenyu - Category - ZhengPengDe Blog</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 06 Jun 2023 16:00:00 &#43;0000</lastBuildDate><atom:link href="https://847850277.github.io/categories/apache-shenyu/" rel="self" type="application/rss+xml" /><item>
+    <title>apache shenyu 打包命令集</title>
+    <link>https://847850277.github.io/posts/apache-shenyu/shenyu-maven-package/</link>
+    <pubDate>Tue, 06 Jun 2023 16:00:00 &#43;0000</pubDate>
+    <author>zhengpengde</author>
+    <guid>https://847850277.github.io/posts/apache-shenyu/shenyu-maven-package/</guid>
+    <description><![CDATA[打包常用的命令 # example打包 ./mvnw -B clean install -Pexample -DskipTests -f ./shenyu-examples/shenyu-examples-springcloud/pom.xml ./mvnw -B clean install -Pexample -DskipTests -f ./shenyu-examples/shenyu-examples-dubbo/pom.xml ./mvnw -B clean install -Pexample -DskipTests -f ./shenyu-examples/shenyu-examples-http/pom.xml ./mvnw -B clean install -DskipTests -f ./shenyu-client/pom.xml ./mvnw -B clean install -Pexample -DskipTests -f ./shenyu-examples/pom.xml ./mvnw -B clean install -Prelease -DskipTests -f ./shenyu-dist/pom.xml ./mvnw -B clean install -Pdocker -DskipTests -f ./shenyu-dist/pom.xml # 集成测试打包 ./mvnw -B clean install -Pit -DskipTests -f ./shenyu-integrated-test/shenyu-integrated-test-spring-cloud/pom.xml ./mvnw -B clean install -Pit -DskipTests -f .]]></description>
+</item>
+</channel>
 </rss>

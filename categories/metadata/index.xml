@@ -1,20 +1,18 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
-  <channel>
-    <title>metadata on ZhengPengDe Blog</title>
-    <link>https://847850277.github.io/categories/metadata/</link>
-    <description>Recent content in metadata on ZhengPengDe Blog</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>zh-cn</language>
-    <lastBuildDate>Sat, 01 Jul 2023 09:00:00 +0000</lastBuildDate><atom:link href="https://847850277.github.io/categories/metadata/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>什么是metadata</title>
-      <link>https://847850277.github.io/posts/2023/metadata/</link>
-      <pubDate>Sat, 01 Jul 2023 09:00:00 +0000</pubDate>
-      
-      <guid>https://847850277.github.io/posts/2023/metadata/</guid>
-      <description>什么是metadata</description>
-    </item>
-    
-  </channel>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>metadata - Category - ZhengPengDe Blog</title>
+        <link>https://847850277.github.io/categories/metadata/</link>
+        <description>metadata - Category - ZhengPengDe Blog</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sat, 01 Jul 2023 09:00:00 &#43;0000</lastBuildDate><atom:link href="https://847850277.github.io/categories/metadata/" rel="self" type="application/rss+xml" /><item>
+    <title>什么是metadata</title>
+    <link>https://847850277.github.io/posts/2023/metadata/</link>
+    <pubDate>Sat, 01 Jul 2023 09:00:00 &#43;0000</pubDate>
+    <author>zhengpengde</author>
+    <guid>https://847850277.github.io/posts/2023/metadata/</guid>
+    <description><![CDATA[什么是metadata,带例子 metadata is simply data about data,It means it is a description and context of the data. It helps to organize, find and understand data. Here are a few real world examples of metadata.
+元数据是数据的数据,这意味着他是数据的描述和上下文。它帮助我们了解和认识数据。下面有一些真是的关于元数据的例子。
+Typical metadata Those are some typical metadata elements:
+Title and description, Tags and categories, Who created and when, Who last modified and when, Who can access or update. A photo Every time you take a photo with today&rsquo;s cameras a bunch of metadata is gathered and saved with it]]></description>
+</item>
+</channel>
 </rss>
