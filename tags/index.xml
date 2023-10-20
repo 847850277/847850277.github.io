@@ -3,7 +3,31 @@
         <title>Tags - Tag - ZhengPengDe Blog</title>
         <link>https://847850277.github.io/tags/</link>
         <description>Tags - Tag - ZhengPengDe Blog</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sat, 01 Jul 2023 09:00:00 &#43;0000</lastBuildDate><atom:link href="https://847850277.github.io/tags/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 19 Oct 2023 09:00:00 &#43;0000</lastBuildDate><atom:link href="https://847850277.github.io/tags/" rel="self" type="application/rss+xml" /><item>
+    <title>event-log</title>
+    <link>https://847850277.github.io/tags/event-log/</link>
+    <pubDate>Thu, 19 Oct 2023 09:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://847850277.github.io/tags/event-log/</guid>
+    <description><![CDATA[]]></description>
+</item>
+<item>
+    <title>gateway</title>
+    <link>https://847850277.github.io/tags/gateway/</link>
+    <pubDate>Tue, 10 Oct 2023 09:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://847850277.github.io/tags/gateway/</guid>
+    <description><![CDATA[]]></description>
+</item>
+<item>
+    <title>网关</title>
+    <link>https://847850277.github.io/tags/%E7%BD%91%E5%85%B3/</link>
+    <pubDate>Tue, 10 Oct 2023 09:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://847850277.github.io/tags/%E7%BD%91%E5%85%B3/</guid>
+    <description><![CDATA[]]></description>
+</item>
+<item>
     <title>metadata</title>
     <link>https://847850277.github.io/tags/metadata/</link>
     <pubDate>Sat, 01 Jul 2023 09:00:00 &#43;0000</pubDate>
@@ -57,30 +81,6 @@
     <pubDate>Tue, 06 Jun 2023 16:00:00 &#43;0000</pubDate>
     <author>Author</author>
     <guid>https://847850277.github.io/tags/package/</guid>
-    <description><![CDATA[]]></description>
-</item>
-<item>
-    <title>test</title>
-    <link>https://847850277.github.io/tags/test/</link>
-    <pubDate>Thu, 01 Jun 2023 09:00:00 &#43;0000</pubDate>
-    <author>Author</author>
-    <guid>https://847850277.github.io/tags/test/</guid>
-    <description><![CDATA[]]></description>
-</item>
-<item>
-    <title>标签</title>
-    <link>https://847850277.github.io/tags/%E6%A0%87%E7%AD%BE/</link>
-    <pubDate>Thu, 01 Jun 2023 09:00:00 &#43;0000</pubDate>
-    <author>Author</author>
-    <guid>https://847850277.github.io/tags/%E6%A0%87%E7%AD%BE/</guid>
-    <description><![CDATA[]]></description>
-</item>
-<item>
-    <title>distributed-lock</title>
-    <link>https://847850277.github.io/tags/distributed-lock/</link>
-    <pubDate>Sat, 27 Nov 2021 09:00:00 &#43;0000</pubDate>
-    <author>Author</author>
-    <guid>https://847850277.github.io/tags/distributed-lock/</guid>
     <description><![CDATA[]]></description>
 </item>
 </channel>
