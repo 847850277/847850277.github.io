@@ -5,10 +5,10 @@
         <description>event-log - Category - ZhengPengDe Blog</description>
         <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 19 Oct 2023 09:00:00 &#43;0000</lastBuildDate><atom:link href="https://847850277.github.io/categories/event-log/" rel="self" type="application/rss+xml" /><item>
     <title>事件日志埋点</title>
-    <link>https://847850277.github.io/posts/2023/web/</link>
+    <link>https://847850277.github.io/posts/2023/event-log/</link>
     <pubDate>Thu, 19 Oct 2023 09:00:00 &#43;0000</pubDate>
     <author>zhengpengde</author>
-    <guid>https://847850277.github.io/posts/2023/web/</guid>
+    <guid>https://847850277.github.io/posts/2023/event-log/</guid>
     <description><![CDATA[通过自定义注解和AOP实现自定义事件日志埋点 注解和aop类 注解 @Target(ElementType.METHOD) @Retention(RetentionPolicy.RUNTIME) public @interface EventLog { Action action() default Action.DEFAULT; boolean recordUserId() default true; boolean recordUserName() default true; boolean recordUserPhone() default true; boolean recordTime() default true; } aop @Slf4j @Aspect @Order(1) public class EventLogAspect { public EventLogAspect() { } @Pointcut(&#34;@annotation(com.xxxx.EventLog)&#34;) private void eventLogPoint() { } @Around(&#34;eventLogPoint() &amp;&amp; @annotation(eventLog)&#34;) public Object around(ProceedingJoinPoint pjp, EventLog eventLog) throws Throwable { Object[] args = pjp.getArgs(); if (args[0] instanceof Action.Param){ Action.Param param = (Action.]]></description>
 </item>
 </channel>

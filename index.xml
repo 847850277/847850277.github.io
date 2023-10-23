@@ -3,23 +3,31 @@
         <title>ZhengPengDe Blog</title>
         <link>https://847850277.github.io/</link>
         <description>This is ZhengPengDe Blog</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 19 Oct 2023 09:00:00 &#43;0000</lastBuildDate>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 22 Oct 2023 09:00:00 &#43;0000</lastBuildDate>
             <atom:link href="https://847850277.github.io/index.xml" rel="self" type="application/rss+xml" />
         <item>
+    <title>长时间不操作自动登出</title>
+    <link>https://847850277.github.io/posts/2023/long-time-logout/</link>
+    <pubDate>Sun, 22 Oct 2023 09:00:00 &#43;0000</pubDate>
+    <author>zhengpengde</author>
+    <guid>https://847850277.github.io/posts/2023/long-time-logout/</guid>
+    <description><![CDATA[长时间不操作自动登出 前端监听鼠标事件和键盘按键事件，若超过规定时间阈值未操作，增加遮罩层来达到锁屏的效果。]]></description>
+</item>
+<item>
     <title>事件日志埋点</title>
-    <link>https://847850277.github.io/posts/2023/web/</link>
+    <link>https://847850277.github.io/posts/2023/event-log/</link>
     <pubDate>Thu, 19 Oct 2023 09:00:00 &#43;0000</pubDate>
     <author>zhengpengde</author>
-    <guid>https://847850277.github.io/posts/2023/web/</guid>
+    <guid>https://847850277.github.io/posts/2023/event-log/</guid>
     <description><![CDATA[通过自定义注解和AOP实现自定义事件日志埋点 注解和aop类 注解 @Target(ElementType.METHOD) @Retention(RetentionPolicy.RUNTIME) public @interface EventLog { Action action() default Action.DEFAULT; boolean recordUserId() default true; boolean recordUserName() default true; boolean recordUserPhone() default true; boolean recordTime() default true; } aop @Slf4j @Aspect @Order(1) public class EventLogAspect { public EventLogAspect() { } @Pointcut(&#34;@annotation(com.xxxx.EventLog)&#34;) private void eventLogPoint() { } @Around(&#34;eventLogPoint() &amp;&amp; @annotation(eventLog)&#34;) public Object around(ProceedingJoinPoint pjp, EventLog eventLog) throws Throwable { Object[] args = pjp.getArgs(); if (args[0] instanceof Action.Param){ Action.Param param = (Action.]]></description>
 </item>
 <item>
-    <title>网关系列-介绍</title>
+    <title>WEB网关系列-什么是WEB网关</title>
     <link>https://847850277.github.io/posts/gateway/gateway-01/</link>
     <pubDate>Tue, 10 Oct 2023 09:00:00 &#43;0000</pubDate>
     <author>zhengpengde</author>
     <guid>https://847850277.github.io/posts/gateway/gateway-01/</guid>
-    <description><![CDATA[网关系列-介绍 01 hello world 01]]></description>
+    <description><![CDATA[WEB网关系列-什么是WEB网关 hello world 01]]></description>
 </item>
 <item>
     <title>Reactor Pattern</title>
@@ -50,10 +58,10 @@ Title and description, Tags and categories, Who created and when, Who last modif
 </item>
 <item>
     <title>常用web记录</title>
-    <link>https://847850277.github.io/posts/2023/event-log/</link>
+    <link>https://847850277.github.io/posts/2023/web/</link>
     <pubDate>Mon, 19 Jun 2023 09:00:00 &#43;0000</pubDate>
     <author>zhengpengde</author>
-    <guid>https://847850277.github.io/posts/2023/event-log/</guid>
+    <guid>https://847850277.github.io/posts/2023/web/</guid>
     <description><![CDATA[常用的网站记录 在线markdown
 docker国内镜像加速
 另一个maven仓库
@@ -99,14 +107,6 @@ JDK SPI 的代码示例 接口定义 public interface Search { public List&lt;St
     <author>zhengpengde</author>
     <guid>https://847850277.github.io/posts/apache-shenyu/shenyu-maven-package/</guid>
     <description><![CDATA[打包常用的命令 # example打包 ./mvnw -B clean install -Pexample -DskipTests -f ./shenyu-examples/shenyu-examples-springcloud/pom.xml ./mvnw -B clean install -Pexample -DskipTests -f ./shenyu-examples/shenyu-examples-dubbo/pom.xml ./mvnw -B clean install -Pexample -DskipTests -f ./shenyu-examples/shenyu-examples-http/pom.xml ./mvnw -B clean install -DskipTests -f ./shenyu-client/pom.xml ./mvnw -B clean install -Pexample -DskipTests -f ./shenyu-examples/pom.xml ./mvnw -B clean install -Prelease -DskipTests -f ./shenyu-dist/pom.xml ./mvnw -B clean install -Pdocker -DskipTests -f ./shenyu-dist/pom.xml # 集成测试打包 ./mvnw -B clean install -Pit -DskipTests -f ./shenyu-integrated-test/shenyu-integrated-test-spring-cloud/pom.xml ./mvnw -B clean install -Pit -DskipTests -f .]]></description>
-</item>
-<item>
-    <title>我的第一篇博客</title>
-    <link>https://847850277.github.io/posts/my-first/</link>
-    <pubDate>Thu, 01 Jun 2023 09:00:00 &#43;0000</pubDate>
-    <author>zhengpengde</author>
-    <guid>https://847850277.github.io/posts/my-first/</guid>
-    <description><![CDATA[这里是Markdown 正文 hello world]]></description>
 </item>
 </channel>
 </rss>

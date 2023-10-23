@@ -4,36 +4,36 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="robots" content="noodp" />
-        <title>事件日志埋点 - ZhengPengDe Blog</title><meta name="Description" content="事件日志埋点"><meta property="og:title" content="事件日志埋点" />
-<meta property="og:description" content="事件日志埋点" />
+        <title>常用web记录 - ZhengPengDe Blog</title><meta name="Description" content="常用web记录"><meta property="og:title" content="常用web记录" />
+<meta property="og:description" content="常用web记录" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://847850277.github.io/posts/2023/web/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2023-10-19T09:00:00+00:00" />
-<meta property="article:modified_time" content="2023-10-20T09:00:00+00:00" /><meta property="og:site_name" content="ZhengPengDe Blog" />
+<meta property="article:published_time" content="2023-06-19T09:00:00+00:00" />
+<meta property="article:modified_time" content="2023-06-20T10:00:00+00:00" /><meta property="og:site_name" content="ZhengPengDe Blog" />
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="事件日志埋点"/>
-<meta name="twitter:description" content="事件日志埋点"/>
+<meta name="twitter:title" content="常用web记录"/>
+<meta name="twitter:description" content="常用web记录"/>
 <meta name="application-name" content="ZhengPengDe Blog">
 <meta name="apple-mobile-web-app-title" content="ZhengPengDe Blog"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://847850277.github.io/posts/2023/web/" /><link rel="prev" href="https://847850277.github.io/posts/gateway/gateway-01/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://847850277.github.io/posts/2023/web/" /><link rel="prev" href="https://847850277.github.io/posts/apache-shenyu/shenyu-spi/" /><link rel="next" href="https://847850277.github.io/posts/2023/metadata/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
     {
         "@context": "http://schema.org",
         "@type": "BlogPosting",
-        "headline": "事件日志埋点",
+        "headline": "常用web记录",
         "inLanguage": "zh-cn",
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/847850277.github.io\/posts\/2023\/web\/"
-        },"genre": "posts","keywords": "event-log","wordcount":  366 ,
-        "url": "https:\/\/847850277.github.io\/posts\/2023\/web\/","datePublished": "2023-10-19T09:00:00+00:00","dateModified": "2023-10-20T09:00:00+00:00","publisher": {
+        },"genre": "posts","keywords": "web","wordcount":  24 ,
+        "url": "https:\/\/847850277.github.io\/posts\/2023\/web\/","datePublished": "2023-06-19T09:00:00+00:00","dateModified": "2023-06-20T10:00:00+00:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
                 "@type": "Person",
                 "name": "zhengpengde"
-            },"description": "事件日志埋点"
+            },"description": "常用web记录"
     }
     </script></head>
     <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
@@ -67,266 +67,57 @@
                 <div class="container"><div class="toc" id="toc-auto">
             <h2 class="toc-title">Contents</h2>
             <div class="toc-content" id="toc-content-auto"></div>
-        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">事件日志埋点</h1><div class="post-meta">
-            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>zhengpengde</a></span>&nbsp;<span class="post-category">included in <a href="/categories/event-log/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>event-log</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-10-19">2023-10-19</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;366 words&nbsp;
-                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;2 minutes&nbsp;</div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">常用web记录</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>zhengpengde</a></span>&nbsp;<span class="post-category">included in <a href="/categories/web/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>web</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-06-19">2023-06-19</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;24 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;One minute&nbsp;</div>
         </div><div class="details toc" id="toc-static"  data-kept="">
                 <div class="details-summary toc-title">
                     <span>Contents</span>
                     <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
                 </div>
-                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
-  <ul>
-    <li><a href="#注解和aop类">注解和aop类</a></li>
-    <li><a href="#公共和事件枚举类">公共和事件枚举类</a></li>
-    <li><a href="#spring-starter类">spring starter类</a></li>
-  </ul>
-</nav></div>
-            </div><div class="content" id="content"><h1 id="通过自定义注解和aop实现自定义事件日志埋点">通过自定义注解和AOP实现自定义事件日志埋点</h1>
-<h2 id="注解和aop类">注解和aop类</h2>
-<ul>
-<li>注解</li>
-</ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Target</span><span style="color:#f92672">(</span>ElementType<span style="color:#f92672">.</span><span style="color:#a6e22e">METHOD</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Retention</span><span style="color:#f92672">(</span>RetentionPolicy<span style="color:#f92672">.</span><span style="color:#a6e22e">RUNTIME</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#a6e22e">@interface</span> EventLog <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    Action <span style="color:#a6e22e">action</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">default</span> Action<span style="color:#f92672">.</span><span style="color:#a6e22e">DEFAULT</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">recordUserId</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">recordUserName</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">recordUserPhone</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">recordTime</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span></code></pre></div><ul>
-<li>aop</li>
-</ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Slf4j</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Aspect</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Order</span><span style="color:#f92672">(</span><span style="color:#ae81ff">1</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EventLogAspect</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">EventLogAspect</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Pointcut</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;@annotation(com.xxxx.EventLog)&#34;</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">eventLogPoint</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Around</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;eventLogPoint() &amp;&amp; @annotation(eventLog)&#34;</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">around</span><span style="color:#f92672">(</span>ProceedingJoinPoint pjp<span style="color:#f92672">,</span> EventLog eventLog<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Throwable <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        Object<span style="color:#f92672">[]</span> args <span style="color:#f92672">=</span> pjp<span style="color:#f92672">.</span><span style="color:#a6e22e">getArgs</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>args<span style="color:#f92672">[</span><span style="color:#ae81ff">0</span><span style="color:#f92672">]</span> <span style="color:#66d9ef">instanceof</span> Action<span style="color:#f92672">.</span><span style="color:#a6e22e">Param</span><span style="color:#f92672">){</span>
-</span></span><span style="display:flex;"><span>            Action<span style="color:#f92672">.</span><span style="color:#a6e22e">Param</span> param <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Action<span style="color:#f92672">.</span><span style="color:#a6e22e">Param</span><span style="color:#f92672">)</span> args<span style="color:#f92672">[</span><span style="color:#ae81ff">0</span><span style="color:#f92672">];</span>
-</span></span><span style="display:flex;"><span>            Action action <span style="color:#f92672">=</span> Action<span style="color:#f92672">.</span><span style="color:#a6e22e">of</span><span style="color:#f92672">(</span>param<span style="color:#f92672">.</span><span style="color:#a6e22e">getType</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>            RabbitTemplate bean <span style="color:#f92672">=</span> SpringUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">getBean</span><span style="color:#f92672">(</span>RabbitTemplate<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>            EventLogBO bo <span style="color:#f92672">=</span> buildEventBO<span style="color:#f92672">(</span>action<span style="color:#f92672">,</span>param<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>            Message message <span style="color:#f92672">=</span> MessageBuilder<span style="color:#f92672">.</span><span style="color:#a6e22e">withBody</span><span style="color:#f92672">(</span>JSON<span style="color:#f92672">.</span><span style="color:#a6e22e">toJSONString</span><span style="color:#f92672">(</span>bo<span style="color:#f92672">).</span><span style="color:#a6e22e">getBytes</span><span style="color:#f92672">())</span>
-</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">.</span><span style="color:#a6e22e">setContentType</span><span style="color:#f92672">(</span>MessageProperties<span style="color:#f92672">.</span><span style="color:#a6e22e">CONTENT_TYPE_JSON</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">.</span><span style="color:#a6e22e">setContentEncoding</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;utf-8&#34;</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">.</span><span style="color:#a6e22e">build</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>            bean<span style="color:#f92672">.</span><span style="color:#a6e22e">convertAndSend</span><span style="color:#f92672">(</span>EventLogConstant<span style="color:#f92672">.</span><span style="color:#a6e22e">EVENTLOG_EXCHANGE</span><span style="color:#f92672">,</span> EventLogConstant<span style="color:#f92672">.</span><span style="color:#a6e22e">EVENTLOG_ROUTINGKEY</span><span style="color:#f92672">,</span> message<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> pjp<span style="color:#f92672">.</span><span style="color:#a6e22e">proceed</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> BusinessException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;埋点参数错误&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> EventLogBO <span style="color:#a6e22e">buildEventBO</span><span style="color:#f92672">(</span>Action action<span style="color:#f92672">,</span> Action<span style="color:#f92672">.</span><span style="color:#a6e22e">Param</span> param<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        String userId <span style="color:#f92672">=</span> Optional<span style="color:#f92672">.</span><span style="color:#a6e22e">ofNullable</span><span style="color:#f92672">(</span>SysUserUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">getLoginAppUser</span><span style="color:#f92672">()).</span><span style="color:#a6e22e">map</span><span style="color:#f92672">(</span>SysUser<span style="color:#f92672">::</span>getId<span style="color:#f92672">).</span><span style="color:#a6e22e">orElse</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;d50a4f05-d193-4017-8b94-238297d76bb6&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> EventLogBO<span style="color:#f92672">.</span><span style="color:#a6e22e">builder</span><span style="color:#f92672">()</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">id</span><span style="color:#f92672">(</span>Long<span style="color:#f92672">.</span><span style="color:#a6e22e">valueOf</span><span style="color:#f92672">(</span>CommonUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">getUniqueId</span><span style="color:#f92672">()))</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">eventType</span><span style="color:#f92672">(</span>action<span style="color:#f92672">.</span><span style="color:#a6e22e">getActionType</span><span style="color:#f92672">())</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">eventName</span><span style="color:#f92672">(</span>action<span style="color:#f92672">.</span><span style="color:#a6e22e">getActionName</span><span style="color:#f92672">())</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">eventDesc</span><span style="color:#f92672">(</span>action<span style="color:#f92672">.</span><span style="color:#a6e22e">getActionDesc</span><span style="color:#f92672">())</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">(</span>DictionaryUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">getUserNameById</span><span style="color:#f92672">(</span>userId<span style="color:#f92672">))</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">userId</span><span style="color:#f92672">(</span>userId<span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">phone</span><span style="color:#f92672">(</span>DictionaryUtil<span style="color:#f92672">.</span><span style="color:#a6e22e">getUserNameById</span><span style="color:#f92672">(</span>userId<span style="color:#f92672">,</span><span style="color:#e6db74">&#34;phone&#34;</span><span style="color:#f92672">))</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">eventTime</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Date<span style="color:#f92672">())</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">build</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span></code></pre></div><h2 id="公共和事件枚举类">公共和事件枚举类</h2>
-<ul>
-<li>枚举</li>
-</ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Getter</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">enum</span> Action <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    DEFAULT<span style="color:#f92672">(-</span><span style="color:#ae81ff">1</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;-1&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;-1&#34;</span><span style="color:#f92672">),</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    TECH_BOOK_VISIT_COUNT<span style="color:#f92672">(</span><span style="color:#ae81ff">1</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;xxx&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;xxx&#34;</span><span style="color:#f92672">),</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    UNIT_COUNT_VISIT_COUNT<span style="color:#f92672">(</span><span style="color:#ae81ff">2</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;xxx&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;xxx&#34;</span><span style="color:#f92672">),</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    DANCE_VISIT_COUNT<span style="color:#f92672">(</span><span style="color:#ae81ff">3</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;xxx&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;xxx&#34;</span><span style="color:#f92672">),</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    SYLLABUS_VISIT_COUNT<span style="color:#f92672">(</span><span style="color:#ae81ff">4</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;xxx&#34;</span><span style="color:#f92672">,</span><span style="color:#e6db74">&#34;xxx&#34;</span><span style="color:#f92672">),</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    Action<span style="color:#f92672">(</span>Integer actionType<span style="color:#f92672">,</span> String actionName<span style="color:#f92672">,</span> String actionDesc<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">actionType</span> <span style="color:#f92672">=</span> actionType<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">actionName</span> <span style="color:#f92672">=</span> actionName<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">actionDesc</span> <span style="color:#f92672">=</span> actionDesc<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> Action <span style="color:#a6e22e">of</span><span style="color:#f92672">(</span>Integer type<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">isNull</span><span style="color:#f92672">(</span>type<span style="color:#f92672">)){</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> BusinessException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;类型不能为空&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">stream</span><span style="color:#f92672">(</span>Action<span style="color:#f92672">.</span><span style="color:#a6e22e">values</span><span style="color:#f92672">()).</span><span style="color:#a6e22e">filter</span><span style="color:#f92672">(</span>item <span style="color:#f92672">-&gt;</span> item<span style="color:#f92672">.</span><span style="color:#a6e22e">actionType</span><span style="color:#f92672">.</span><span style="color:#a6e22e">compareTo</span><span style="color:#f92672">(</span>type<span style="color:#f92672">)</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">findAny</span><span style="color:#f92672">().</span><span style="color:#a6e22e">orElseThrow</span><span style="color:#f92672">(()</span> <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">new</span> BusinessException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;埋点类型不存在&#34;</span><span style="color:#f92672">));</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">toString</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Action{&#34;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;actionType=&#34;</span> <span style="color:#f92672">+</span> actionType <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;, actionName=&#39;&#34;</span> <span style="color:#f92672">+</span> actionName <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;\&#39;&#39;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;, actionDesc=&#39;&#34;</span> <span style="color:#f92672">+</span> actionDesc <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;\&#39;&#39;</span> <span style="color:#f92672">+</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#39;}&#39;</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Integer actionType<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String actionName<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String actionDesc<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Data</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@AllArgsConstructor</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@NoArgsConstructor</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Builder</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Param</span><span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">@ApiModelProperty</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;xxx&#34;</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> Integer type<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span></code></pre></div><ul>
-<li>BO和常量类</li>
-</ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Data</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@AllArgsConstructor</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@NoArgsConstructor</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Builder</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EventLogBO</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Long id<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String userId<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String name<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String phone<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Integer eventType<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String eventName<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String eventDesc<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@ApiModelProperty</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;创建时间&#34;</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@JsonFormat</span><span style="color:#f92672">(</span>timezone <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;GMT+8&#34;</span><span style="color:#f92672">,</span> pattern <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;yyyy-MM-dd HH:mm:ss&#34;</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Date eventTime<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EventLogConstant</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String EVENTLOG_QUEUE <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;eventlog_queue&#34;</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String EVENTLOG_EXCHANGE <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;eventlog_exchange&#34;</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String EVENTLOG_ROUTINGKEY <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;eventlog_routingkey&#34;</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span></code></pre></div><h2 id="spring-starter类">spring starter类</h2>
-<ul>
-<li>aop bean 配置</li>
-</ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Slf4j</span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Configuration</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EventLogAutoConfiguration</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Bean</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> EventLogAspect <span style="color:#a6e22e">eventLogAspect</span><span style="color:#f92672">(){</span>
-</span></span><span style="display:flex;"><span>        log<span style="color:#f92672">.</span><span style="color:#a6e22e">info</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;init EventLogAspect&#34;</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> EventLogAspect<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span></code></pre></div><ul>
-<li>mq bean 配置</li>
-</ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Configuration</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EventLogRabbitMqConfig</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Bean</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Queue <span style="color:#a6e22e">eventlogQueue</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> QueueBuilder<span style="color:#f92672">.</span><span style="color:#a6e22e">durable</span><span style="color:#f92672">(</span>EventLogConstant<span style="color:#f92672">.</span><span style="color:#a6e22e">EVENTLOG_QUEUE</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">build</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Bean</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> DirectExchange <span style="color:#a6e22e">eventlogExchange</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> DirectExchange<span style="color:#f92672">(</span>EventLogConstant<span style="color:#f92672">.</span><span style="color:#a6e22e">EVENTLOG_EXCHANGE</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Bean</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Binding <span style="color:#a6e22e">eventlogBinding</span><span style="color:#f92672">(</span>Queue eventlogQueue<span style="color:#f92672">,</span> DirectExchange eventlogExchange<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> BindingBuilder<span style="color:#f92672">.</span><span style="color:#a6e22e">bind</span><span style="color:#f92672">(</span>eventlogQueue<span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">to</span><span style="color:#f92672">(</span>eventlogExchange<span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#a6e22e">with</span><span style="color:#f92672">(</span>EventLogConstant<span style="color:#f92672">.</span><span style="color:#a6e22e">EVENTLOG_ROUTINGKEY</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span></code></pre></div><ul>
-<li>resource/META-INF/spring.factories 配置</li>
-</ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>org<span style="color:#f92672">.</span><span style="color:#a6e22e">springframework</span><span style="color:#f92672">.</span><span style="color:#a6e22e">boot</span><span style="color:#f92672">.</span><span style="color:#a6e22e">autoconfigure</span><span style="color:#f92672">.</span><span style="color:#a6e22e">EnableAutoConfiguration</span><span style="color:#f92672">=</span>com<span style="color:#f92672">.</span><span style="color:#a6e22e">xxx</span><span style="color:#f92672">.</span><span style="color:#a6e22e">EventLogAutoConfiguration</span><span style="color:#f92672">,</span>com<span style="color:#f92672">.</span><span style="color:#a6e22e">xxx</span><span style="color:#f92672">.</span><span style="color:#a6e22e">EventLogRabbitMqConfig</span>
-</span></span></code></pre></div></div><div class="post-footer" id="post-footer">
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents"></nav></div>
+            </div><div class="content" id="content"><h1 id="常用的网站记录">常用的网站记录</h1>
+<p><a href="https://coolaf.com/" target="_blank" rel="noopener noreffer ">在线markdown</a></p>
+<p><a href="https://dockerproxy.com/" target="_blank" rel="noopener noreffer ">docker国内镜像加速</a></p>
+<p><a href="https://www.mvncenter.com/" target="_blank" rel="noopener noreffer ">另一个maven仓库</a></p>
+<p><a href="https://www.pdai.tech/" target="_blank" rel="noopener noreffer ">java全栈知识体系</a></p>
+<p><a href="https://www.injdk.cn/" target="_blank" rel="noopener noreffer ">jdk版本-爪哇我话你知</a></p>
+<p><a href="https://programmercarl.com/" target="_blank" rel="noopener noreffer ">代码随想录-算法</a></p>
+<p><a href="https://labuladong.gitee.io/algo/" target="_blank" rel="noopener noreffer ">labuladong 的算法小抄</a></p>
+<p><a href="https://www.cs.usfca.edu/~galles/visualization/Algorithms.html" target="_blank" rel="noopener noreffer ">Data Structure Visualizations</a></p>
+<p><a href="https://gupiaozhushou.net/" target="_blank" rel="noopener noreffer ">股票自动交易助手</a></p>
+<p><a href="https://excalidraw.com/" target="_blank" rel="noopener noreffer ">excalidraw</a></p>
+<p><a href="https://www.v2ex.com/" target="_blank" rel="noopener noreffer ">v2ex</a></p>
+<p><a href="https://www.imgurl.org" target="_blank" rel="noopener noreffer ">免费图床</a></p>
+<p><a href="http://redisdoc.com/" target="_blank" rel="noopener noreffer ">Redis命令集</a></p>
+<p><a href="https://searchcode.com/" target="_blank" rel="noopener noreffer ">在线搜索代码网站</a></p>
+<p><a href="https://searchcode.com/" target="_blank" rel="noopener noreffer ">在线搜索代码网站</a></p>
+<p><a href="https://gee.cs.oswego.edu/dl/" target="_blank" rel="noopener noreffer ">Doug Lea&rsquo;s Home Page</a></p>
+<p><a href="https://www.cjavapy.com/" target="_blank" rel="noopener noreffer ">编程之路</a></p>
+</div><div class="post-footer" id="post-footer">
     <div class="post-info">
         <div class="post-info-line">
             <div class="post-info-mod">
-                <span>Updated on 2023-10-20</span>
+                <span>Updated on 2023-06-20</span>
             </div></div>
         <div class="post-info-line">
             <div class="post-info-md"></div>
             <div class="post-info-share">
-                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://847850277.github.io/posts/2023/web/" data-title="事件日志埋点" data-hashtags="event-log"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://847850277.github.io/posts/2023/web/" data-hashtag="event-log"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://847850277.github.io/posts/2023/web/" data-title="事件日志埋点"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://847850277.github.io/posts/2023/web/" data-title="事件日志埋点"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.3.0/icons/line.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://847850277.github.io/posts/2023/web/" data-title="事件日志埋点"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+                <span><a href="javascript:void(0);" title="Share on Twitter" data-sharer="twitter" data-url="https://847850277.github.io/posts/2023/web/" data-title="常用web记录" data-hashtags="web"><i class="fab fa-twitter fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Facebook" data-sharer="facebook" data-url="https://847850277.github.io/posts/2023/web/" data-hashtag="web"><i class="fab fa-facebook-square fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Hacker News" data-sharer="hackernews" data-url="https://847850277.github.io/posts/2023/web/" data-title="常用web记录"><i class="fab fa-hacker-news fa-fw" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on Line" data-sharer="line" data-url="https://847850277.github.io/posts/2023/web/" data-title="常用web记录"><i data-svg-src="https://cdn.jsdelivr.net/npm/simple-icons@7.3.0/icons/line.svg" aria-hidden="true"></i></a><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://847850277.github.io/posts/2023/web/" data-title="常用web记录"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
             </div>
         </div>
     </div>
 
     <div class="post-info-more">
-        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/event-log/">event-log</a></section>
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/web/">web</a></section>
         <section>
             <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
         </section>
     </div>
 
-    <div class="post-nav"><a href="/posts/gateway/gateway-01/" class="prev" rel="prev" title="网关系列-介绍"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>网关系列-介绍</a></div>
+    <div class="post-nav"><a href="/posts/apache-shenyu/shenyu-spi/" class="prev" rel="prev" title="apache shenyu的spi机制"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>apache shenyu的spi机制</a>
+            <a href="/posts/2023/metadata/" class="next" rel="next" title="什么是metadata">什么是metadata<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
 </div>
 </article></div>
             </main><footer class="footer">
