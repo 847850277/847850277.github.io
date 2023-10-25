@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>apache shenyu重构之AbstractShenyuPlugin - ZhengPengDe Blog</title><meta name="Description" content="apache shenyu重构之AbstractShenyuPlugin"><meta property="og:title" content="apache shenyu重构之AbstractShenyuPlugin" />
+<meta property="og:description" content="apache shenyu重构之AbstractShenyuPlugin" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://847850277.github.io/posts/apache-shenyu/shenyu-refactor-abstractshenyuplugin/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-11-11T16:00:00+00:00" />
+<meta property="article:modified_time" content="2022-11-12T16:00:00+00:00" /><meta property="og:site_name" content="ZhengPengDe网络日志" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="apache shenyu重构之AbstractShenyuPlugin"/>
+<meta name="twitter:description" content="apache shenyu重构之AbstractShenyuPlugin"/>
+<meta name="application-name" content="ZhengPengDe网络日志">
+<meta name="apple-mobile-web-app-title" content="ZhengPengDe网络日志"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://847850277.github.io/posts/apache-shenyu/shenyu-refactor-abstractshenyuplugin/" /><link rel="prev" href="https://847850277.github.io/posts/apache-shenyu/shenyu-introduce/" /><link rel="next" href="https://847850277.github.io/posts/2023/renewal_integration_testing/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "apache shenyu重构之AbstractShenyuPlugin",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/847850277.github.io\/posts\/apache-shenyu\/shenyu-refactor-abstractshenyuplugin\/"
+        },"genre": "posts","keywords": "apache shenyu, package","wordcount":  463 ,
+        "url": "https:\/\/847850277.github.io\/posts\/apache-shenyu\/shenyu-refactor-abstractshenyuplugin\/","datePublished": "2022-11-11T16:00:00+00:00","dateModified": "2022-11-12T16:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "zhengpengde"
+            },"description": "apache shenyu重构之AbstractShenyuPlugin"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="ZhengPengDe Blog">ZhengPengDe网络日志</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/about/"> 关于 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="ZhengPengDe Blog">ZhengPengDe网络日志</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/about/" title="">关于</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">apache shenyu重构之AbstractShenyuPlugin</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>zhengpengde</a></span>&nbsp;<span class="post-category">included in <a href="/categories/apache-shenyu/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>apache shenyu</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2022-11-11">2022-11-11</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;463 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;3 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#重构abstractshenyupluginexecute方法">重构AbstractShenyuPlugin.execute()方法</a>
+      <ul>
+        <li><a href="#原来的执行流程">原来的执行流程</a></li>
+        <li><a href="#重构流程">重构流程</a></li>
+        <li><a href="#重构后的代码">重构后的代码</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h2 id="重构abstractshenyupluginexecute方法">重构AbstractShenyuPlugin.execute()方法</h2>
+<h3 id="原来的执行流程">原来的执行流程</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>initMatchCacheConfig<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>String pluginName <span style="color:#f92672">=</span> named<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>PluginData pluginData <span style="color:#f92672">=</span> BaseDataCache<span style="color:#f92672">.</span><span style="color:#a6e22e">getInstance</span><span style="color:#f92672">().</span><span style="color:#a6e22e">obtainPluginData</span><span style="color:#f92672">(</span>pluginName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">nonNull</span><span style="color:#f92672">(</span>pluginData<span style="color:#f92672">)</span> <span style="color:#f92672">&amp;&amp;</span> pluginData<span style="color:#f92672">.</span><span style="color:#a6e22e">getEnabled</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">final</span> String path <span style="color:#f92672">=</span> exchange<span style="color:#f92672">.</span><span style="color:#a6e22e">getRequest</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getURI</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getPath</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    SelectorData selectorData <span style="color:#f92672">=</span> obtainSelectorDataCacheIfEnabled<span style="color:#f92672">(</span>exchange<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">isNull</span><span style="color:#f92672">(</span>selectorData<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        List<span style="color:#f92672">&lt;</span>SelectorData<span style="color:#f92672">&gt;</span> selectors <span style="color:#f92672">=</span> BaseDataCache<span style="color:#f92672">.</span><span style="color:#a6e22e">getInstance</span><span style="color:#f92672">().</span><span style="color:#a6e22e">obtainSelectorData</span><span style="color:#f92672">(</span>pluginName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>CollectionUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">(</span>selectors<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> handleSelectorIfNull<span style="color:#f92672">(</span>pluginName<span style="color:#f92672">,</span> exchange<span style="color:#f92672">,</span> chain<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        Pair<span style="color:#f92672">&lt;</span>Boolean<span style="color:#f92672">,</span> SelectorData<span style="color:#f92672">&gt;</span> matchSelectorData <span style="color:#f92672">=</span> matchSelector<span style="color:#f92672">(</span>exchange<span style="color:#f92672">,</span> selectors<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        selectorData <span style="color:#f92672">=</span> matchSelectorData<span style="color:#f92672">.</span><span style="color:#a6e22e">getRight</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">isNull</span><span style="color:#f92672">(</span>selectorData<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>matchCacheConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">getSelectorEnabled</span><span style="color:#f92672">()</span> <span style="color:#f92672">&amp;&amp;</span> matchSelectorData<span style="color:#f92672">.</span><span style="color:#a6e22e">getLeft</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                selectorData <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SelectorData<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>                selectorData<span style="color:#f92672">.</span><span style="color:#a6e22e">setPluginName</span><span style="color:#f92672">(</span>named<span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>                cacheSelectorData<span style="color:#f92672">(</span>path<span style="color:#f92672">,</span> selectorData<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> handleSelectorIfNull<span style="color:#f92672">(</span>pluginName<span style="color:#f92672">,</span> exchange<span style="color:#f92672">,</span> chain<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>matchCacheConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">getSelectorEnabled</span><span style="color:#f92672">()</span> <span style="color:#f92672">&amp;&amp;</span> matchSelectorData<span style="color:#f92672">.</span><span style="color:#a6e22e">getLeft</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                cacheSelectorData<span style="color:#f92672">(</span>path<span style="color:#f92672">,</span> selectorData<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>StringUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">isBlank</span><span style="color:#f92672">(</span>selectorData<span style="color:#f92672">.</span><span style="color:#a6e22e">getId</span><span style="color:#f92672">()))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> handleSelectorIfNull<span style="color:#f92672">(</span>pluginName<span style="color:#f92672">,</span> exchange<span style="color:#f92672">,</span> chain<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    selectorLog<span style="color:#f92672">(</span>selectorData<span style="color:#f92672">,</span> pluginName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">nonNull</span><span style="color:#f92672">(</span>selectorData<span style="color:#f92672">.</span><span style="color:#a6e22e">getContinued</span><span style="color:#f92672">())</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>selectorData<span style="color:#f92672">.</span><span style="color:#a6e22e">getContinued</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// if continued， not match rules
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">return</span> doExecute<span style="color:#f92672">(</span>exchange<span style="color:#f92672">,</span> chain<span style="color:#f92672">,</span> selectorData<span style="color:#f92672">,</span> defaultRuleData<span style="color:#f92672">(</span>selectorData<span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// handle rule
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    RuleData ruleData <span style="color:#f92672">=</span> obtainRuleDataCacheIfEnabled<span style="color:#f92672">(</span>exchange<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">isNull</span><span style="color:#f92672">(</span>ruleData<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// execute no cache
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        List<span style="color:#f92672">&lt;</span>RuleData<span style="color:#f92672">&gt;</span> rules <span style="color:#f92672">=</span> BaseDataCache<span style="color:#f92672">.</span><span style="color:#a6e22e">getInstance</span><span style="color:#f92672">().</span><span style="color:#a6e22e">obtainRuleData</span><span style="color:#f92672">(</span>selectorData<span style="color:#f92672">.</span><span style="color:#a6e22e">getId</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>CollectionUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">(</span>rules<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> handleRuleIfNull<span style="color:#f92672">(</span>pluginName<span style="color:#f92672">,</span> exchange<span style="color:#f92672">,</span> chain<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>selectorData<span style="color:#f92672">.</span><span style="color:#a6e22e">getType</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> SelectorTypeEnum<span style="color:#f92672">.</span><span style="color:#a6e22e">FULL_FLOW</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getCode</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//get last
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            RuleData rule <span style="color:#f92672">=</span> rules<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>rules<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">()</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            ruleLog<span style="color:#f92672">(</span>rule<span style="color:#f92672">,</span> pluginName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> doExecute<span style="color:#f92672">(</span>exchange<span style="color:#f92672">,</span> chain<span style="color:#f92672">,</span> selectorData<span style="color:#f92672">,</span> rule<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            Pair<span style="color:#f92672">&lt;</span>Boolean<span style="color:#f92672">,</span> RuleData<span style="color:#f92672">&gt;</span> matchRuleData <span style="color:#f92672">=</span> matchRule<span style="color:#f92672">(</span>exchange<span style="color:#f92672">,</span> rules<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            ruleData <span style="color:#f92672">=</span> matchRuleData<span style="color:#f92672">.</span><span style="color:#a6e22e">getRight</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">isNull</span><span style="color:#f92672">(</span>ruleData<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">cacheRuleData</span><span style="color:#f92672">(</span>pluginName<span style="color:#f92672">,</span> path<span style="color:#f92672">,</span> matchRuleData<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> handleRuleIfNull<span style="color:#f92672">(</span>pluginName<span style="color:#f92672">,</span> exchange<span style="color:#f92672">,</span> chain<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// if match success, cache rule.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>matchCacheConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">getRuleEnabled</span><span style="color:#f92672">()</span> <span style="color:#f92672">&amp;&amp;</span> matchRuleData<span style="color:#f92672">.</span><span style="color:#a6e22e">getLeft</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                    cacheRuleData<span style="color:#f92672">(</span>path<span style="color:#f92672">,</span> ruleData<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">isNull</span><span style="color:#f92672">(</span>ruleData<span style="color:#f92672">.</span><span style="color:#a6e22e">getId</span><span style="color:#f92672">()))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// handle rule not match
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">return</span> handleRuleIfNull<span style="color:#f92672">(</span>pluginName<span style="color:#f92672">,</span> exchange<span style="color:#f92672">,</span> chain<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    ruleLog<span style="color:#f92672">(</span>ruleData<span style="color:#f92672">,</span> pluginName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> doExecute<span style="color:#f92672">(</span>exchange<span style="color:#f92672">,</span> chain<span style="color:#f92672">,</span> selectorData<span style="color:#f92672">,</span> ruleData<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">return</span> chain<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span>exchange<span style="color:#f92672">);</span>
+</span></span></code></pre></div><h3 id="重构流程">重构流程</h3>
+<ul>
+<li>获取变量数据
+<ul>
+<li>plugin</li>
+<li>selector</li>
+<li>rule</li>
+</ul>
+</li>
+<li>卫语句提前结束</li>
+<li>processSelector
+<ul>
+<li>处理select为空的情况，卫语句提前执行</li>
+<li>记录日志，不为空记录日志</li>
+<li>已知selecor对象
+<ul>
+<li>缓存获取</li>
+<li>不需要缓存对象</li>
+</ul>
+</li>
+<li>执行select选中逻辑</li>
+</ul>
+</li>
+<li>processRule
+<ul>
+<li>处理rule为空的情况，卫语句提前执行</li>
+<li>记录日志，不为空记录日志</li>
+<li>已知rule对象
+<ul>
+<li>缓存获取</li>
+<li>不需要缓存对象</li>
+</ul>
+</li>
+<li>执行select选中逻辑</li>
+</ul>
+</li>
+</ul>
+<h3 id="重构后的代码">重构后的代码</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>initMatchCacheConfig<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">final</span> String pluginName <span style="color:#f92672">=</span> named<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">final</span> String path <span style="color:#f92672">=</span> exchange<span style="color:#f92672">.</span><span style="color:#a6e22e">getRequest</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getURI</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getPath</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>PluginData pluginData <span style="color:#f92672">=</span> BaseDataCache<span style="color:#f92672">.</span><span style="color:#a6e22e">getInstance</span><span style="color:#f92672">().</span><span style="color:#a6e22e">obtainPluginData</span><span style="color:#f92672">(</span>pluginName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>List<span style="color:#f92672">&lt;</span>SelectorData<span style="color:#f92672">&gt;</span> selectors <span style="color:#f92672">=</span> BaseDataCache<span style="color:#f92672">.</span><span style="color:#a6e22e">getInstance</span><span style="color:#f92672">().</span><span style="color:#a6e22e">obtainSelectorData</span><span style="color:#f92672">(</span>pluginName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>SelectorData selectorData <span style="color:#f92672">=</span> obtainSelectorDataCacheIfEnabled<span style="color:#f92672">(</span>path<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// early exit
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">isNull</span><span style="color:#f92672">(</span>pluginData<span style="color:#f92672">)</span> <span style="color:#f92672">||</span> <span style="color:#f92672">!</span>pluginData<span style="color:#f92672">.</span><span style="color:#a6e22e">getEnabled</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> chain<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span>exchange<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// handle Selector
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">nonNull</span><span style="color:#f92672">(</span>selectorData<span style="color:#f92672">)</span> <span style="color:#f92672">&amp;&amp;</span> StringUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">isBlank</span><span style="color:#f92672">(</span>selectorData<span style="color:#f92672">.</span><span style="color:#a6e22e">getId</span><span style="color:#f92672">()))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> handleSelectorIfNull<span style="color:#f92672">(</span>pluginName<span style="color:#f92672">,</span> exchange<span style="color:#f92672">,</span> chain<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">isNull</span><span style="color:#f92672">(</span>selectorData<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>CollectionUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">(</span>selectors<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> handleSelectorIfNull<span style="color:#f92672">(</span>pluginName<span style="color:#f92672">,</span> exchange<span style="color:#f92672">,</span> chain<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    Pair<span style="color:#f92672">&lt;</span>Boolean<span style="color:#f92672">,</span> SelectorData<span style="color:#f92672">&gt;</span> matchSelectorData <span style="color:#f92672">=</span> matchSelector<span style="color:#f92672">(</span>exchange<span style="color:#f92672">,</span> selectors<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    selectorData <span style="color:#f92672">=</span> matchSelectorData<span style="color:#f92672">.</span><span style="color:#a6e22e">getRight</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">isNull</span><span style="color:#f92672">(</span>selectorData<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>matchCacheConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">getSelectorEnabled</span><span style="color:#f92672">()</span> <span style="color:#f92672">&amp;&amp;</span> matchSelectorData<span style="color:#f92672">.</span><span style="color:#a6e22e">getLeft</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            selectorData <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SelectorData<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            selectorData<span style="color:#f92672">.</span><span style="color:#a6e22e">setPluginName</span><span style="color:#f92672">(</span>pluginName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            cacheSelectorData<span style="color:#f92672">(</span>path<span style="color:#f92672">,</span> selectorData<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> handleSelectorIfNull<span style="color:#f92672">(</span>pluginName<span style="color:#f92672">,</span> exchange<span style="color:#f92672">,</span> chain<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>matchCacheConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">getSelectorEnabled</span><span style="color:#f92672">()</span> <span style="color:#f92672">&amp;&amp;</span> matchSelectorData<span style="color:#f92672">.</span><span style="color:#a6e22e">getLeft</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            cacheSelectorData<span style="color:#f92672">(</span>path<span style="color:#f92672">,</span> selectorData<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>printLog<span style="color:#f92672">(</span>selectorData<span style="color:#f92672">,</span> pluginName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">nonNull</span><span style="color:#f92672">(</span>selectorData<span style="color:#f92672">.</span><span style="color:#a6e22e">getContinued</span><span style="color:#f92672">())</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>selectorData<span style="color:#f92672">.</span><span style="color:#a6e22e">getContinued</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// if continued， not match rules
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> doExecute<span style="color:#f92672">(</span>exchange<span style="color:#f92672">,</span> chain<span style="color:#f92672">,</span> selectorData<span style="color:#f92672">,</span> defaultRuleData<span style="color:#f92672">(</span>selectorData<span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// handle Rule
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>RuleData ruleData <span style="color:#f92672">=</span> obtainRuleDataCacheIfEnabled<span style="color:#f92672">(</span>path<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>List<span style="color:#f92672">&lt;</span>RuleData<span style="color:#f92672">&gt;</span> rules <span style="color:#f92672">=</span> BaseDataCache<span style="color:#f92672">.</span><span style="color:#a6e22e">getInstance</span><span style="color:#f92672">().</span><span style="color:#a6e22e">obtainRuleData</span><span style="color:#f92672">(</span>selectorData<span style="color:#f92672">.</span><span style="color:#a6e22e">getId</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">nonNull</span><span style="color:#f92672">(</span>ruleData<span style="color:#f92672">)</span> <span style="color:#f92672">&amp;&amp;</span> Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">isNull</span><span style="color:#f92672">(</span>ruleData<span style="color:#f92672">.</span><span style="color:#a6e22e">getId</span><span style="color:#f92672">()))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> handleRuleIfNull<span style="color:#f92672">(</span>pluginName<span style="color:#f92672">,</span> exchange<span style="color:#f92672">,</span> chain<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>CollectionUtils<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">(</span>rules<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> handleRuleIfNull<span style="color:#f92672">(</span>pluginName<span style="color:#f92672">,</span> exchange<span style="color:#f92672">,</span> chain<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>selectorData<span style="color:#f92672">.</span><span style="color:#a6e22e">getType</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> SelectorTypeEnum<span style="color:#f92672">.</span><span style="color:#a6e22e">FULL_FLOW</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getCode</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//get last
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    RuleData rule <span style="color:#f92672">=</span> rules<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>rules<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">()</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    printLog<span style="color:#f92672">(</span>rule<span style="color:#f92672">,</span> pluginName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> doExecute<span style="color:#f92672">(</span>exchange<span style="color:#f92672">,</span> chain<span style="color:#f92672">,</span> selectorData<span style="color:#f92672">,</span> rule<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    Pair<span style="color:#f92672">&lt;</span>Boolean<span style="color:#f92672">,</span> RuleData<span style="color:#f92672">&gt;</span> matchRuleData <span style="color:#f92672">=</span> matchRule<span style="color:#f92672">(</span>exchange<span style="color:#f92672">,</span> rules<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    ruleData <span style="color:#f92672">=</span> matchRuleData<span style="color:#f92672">.</span><span style="color:#a6e22e">getRight</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">isNull</span><span style="color:#f92672">(</span>ruleData<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">cacheRuleData</span><span style="color:#f92672">(</span>pluginName<span style="color:#f92672">,</span> path<span style="color:#f92672">,</span> matchRuleData<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> handleRuleIfNull<span style="color:#f92672">(</span>pluginName<span style="color:#f92672">,</span> exchange<span style="color:#f92672">,</span> chain<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// if match success, cache rule.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>matchCacheConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">getRuleEnabled</span><span style="color:#f92672">()</span> <span style="color:#f92672">&amp;&amp;</span> matchRuleData<span style="color:#f92672">.</span><span style="color:#a6e22e">getLeft</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            cacheRuleData<span style="color:#f92672">(</span>path<span style="color:#f92672">,</span> ruleData<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>printLog<span style="color:#f92672">(</span>ruleData<span style="color:#f92672">,</span> pluginName<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">return</span> doExecute<span style="color:#f92672">(</span>exchange<span style="color:#f92672">,</span> chain<span style="color:#f92672">,</span> selectorData<span style="color:#f92672">,</span> ruleData<span style="color:#f92672">);</span>
+</span></span></code></pre></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2022-11-12</span>
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://847850277.github.io/posts/apache-shenyu/shenyu-refactor-abstractshenyuplugin/" data-title="apache shenyu重构之AbstractShenyuPlugin"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/apache-shenyu/">apache shenyu</a>,&nbsp;<a href="/tags/package/">package</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/apache-shenyu/shenyu-introduce/" class="prev" rel="prev" title="apache shenyu 介绍"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>apache shenyu 介绍</a>
+            <a href="/posts/2023/renewal_integration_testing/" class="next" rel="next" title="非正规集成&#43;压力测试">非正规集成+压力测试<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.112.5">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.11"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2021 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank"></a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sharer.js@0.5.1/sharer.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

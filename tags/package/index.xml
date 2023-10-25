@@ -12,6 +12,14 @@
     <description><![CDATA[打包常用的命令 # example打包 ./mvnw -B clean install -Pexample -DskipTests -f ./shenyu-examples/shenyu-examples-springcloud/pom.xml ./mvnw -B clean install -Pexample -DskipTests -f ./shenyu-examples/shenyu-examples-dubbo/pom.xml ./mvnw -B clean install -Pexample -DskipTests -f ./shenyu-examples/shenyu-examples-http/pom.xml ./mvnw -B clean install -DskipTests -f ./shenyu-client/pom.xml ./mvnw -B clean install -Pexample -DskipTests -f ./shenyu-examples/pom.xml ./mvnw -B clean install -Prelease -DskipTests -f ./shenyu-dist/pom.xml ./mvnw -B clean install -Pdocker -DskipTests -f ./shenyu-dist/pom.xml # 集成测试打包 ./mvnw -B clean install -Pit -DskipTests -f ./shenyu-integrated-test/shenyu-integrated-test-spring-cloud/pom.xml ./mvnw -B clean install -Pit -DskipTests -f .]]></description>
 </item>
 <item>
+    <title>apache shenyu重构之AbstractShenyuPlugin</title>
+    <link>https://847850277.github.io/posts/apache-shenyu/shenyu-refactor-abstractshenyuplugin/</link>
+    <pubDate>Fri, 11 Nov 2022 16:00:00 &#43;0000</pubDate>
+    <author>zhengpengde</author>
+    <guid>https://847850277.github.io/posts/apache-shenyu/shenyu-refactor-abstractshenyuplugin/</guid>
+    <description><![CDATA[重构AbstractShenyuPlugin.execute()方法 原来的执行流程 initMatchCacheConfig(); String pluginName = named(); PluginData pluginData = BaseDataCache.getInstance().obtainPluginData(pluginName); if (Objects.nonNull(pluginData) &amp;&amp; pluginData.getEnabled()) { final String path = exchange.getRequest().getURI().getPath(); SelectorData selectorData = obtainSelectorDataCacheIfEnabled(exchange); if (Objects.isNull(selectorData)) { List&lt;SelectorData&gt; selectors = BaseDataCache.getInstance().obtainSelectorData(pluginName); if (CollectionUtils.isEmpty(selectors)) { return handleSelectorIfNull(pluginName, exchange, chain); } Pair&lt;Boolean, SelectorData&gt; matchSelectorData = matchSelector(exchange, selectors); selectorData = matchSelectorData.getRight(); if (Objects.isNull(selectorData)) { if (matchCacheConfig.getSelectorEnabled() &amp;&amp; matchSelectorData.getLeft()) { selectorData = new SelectorData(); selectorData.setPluginName(named()); cacheSelectorData(path, selectorData); } return handleSelectorIfNull(pluginName, exchange, chain); } else { if (matchCacheConfig.]]></description>
+</item>
+<item>
     <title>apache shenyu 介绍</title>
     <link>https://847850277.github.io/posts/apache-shenyu/shenyu-introduce/</link>
     <pubDate>Fri, 29 Apr 2022 16:00:00 &#43;0000</pubDate>
