@@ -11,5 +11,14 @@
     <guid>https://847850277.github.io/posts/apache-shenyu/shenyu-maven-package/</guid>
     <description><![CDATA[打包常用的命令 # example打包 ./mvnw -B clean install -Pexample -DskipTests -f ./shenyu-examples/shenyu-examples-springcloud/pom.xml ./mvnw -B clean install -Pexample -DskipTests -f ./shenyu-examples/shenyu-examples-dubbo/pom.xml ./mvnw -B clean install -Pexample -DskipTests -f ./shenyu-examples/shenyu-examples-http/pom.xml ./mvnw -B clean install -DskipTests -f ./shenyu-client/pom.xml ./mvnw -B clean install -Pexample -DskipTests -f ./shenyu-examples/pom.xml ./mvnw -B clean install -Prelease -DskipTests -f ./shenyu-dist/pom.xml ./mvnw -B clean install -Pdocker -DskipTests -f ./shenyu-dist/pom.xml # 集成测试打包 ./mvnw -B clean install -Pit -DskipTests -f ./shenyu-integrated-test/shenyu-integrated-test-spring-cloud/pom.xml ./mvnw -B clean install -Pit -DskipTests -f .]]></description>
 </item>
+<item>
+    <title>apache shenyu 介绍</title>
+    <link>https://847850277.github.io/posts/apache-shenyu/shenyu-introduce/</link>
+    <pubDate>Fri, 29 Apr 2022 16:00:00 &#43;0000</pubDate>
+    <author>zhengpengde</author>
+    <guid>https://847850277.github.io/posts/apache-shenyu/shenyu-introduce/</guid>
+    <description><![CDATA[shenyu是什么 是一个java实现的网关、高性能、跨语言的、响应式API网关。
+架构图 模块说明 admin 管理后台和配置模块 bootstrap 程序的主入口 client 客户端模块，提供支持Spring MVC 、Dubbo 、Spring Cloud 快速访问 disruptor 基于disruptor的封装 register-center shenyu-client提供各种rpc接入注册中心的支持 common 框架的通用类 dist 构建项目 metrics prometheus（普罗米修斯）实现的 metrics plugin 插件集合 spin 定义的spi spring-boot-starter 支持 spring-boot-starter sync-data-center 提供 ZooKeeper，HTTP，WebSocket，Nacos 的方式同步数据 examples 示例模块 web 包括插件、请求路由和转发等核心处理包 ]]></description>
+</item>
 </channel>
 </rss>
