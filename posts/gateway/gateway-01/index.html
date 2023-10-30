@@ -4,14 +4,14 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="robots" content="noodp" />
-        <title>WEB网关系列-什么是WEB网关 - ZhengPengDe Blog</title><meta name="Description" content="什么是WEB网关"><meta property="og:title" content="WEB网关系列-什么是WEB网关" />
+        <title>WEB网关系列01-什么是WEB网关 - ZhengPengDe Blog</title><meta name="Description" content="什么是WEB网关"><meta property="og:title" content="WEB网关系列01-什么是WEB网关" />
 <meta property="og:description" content="什么是WEB网关" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://847850277.github.io/posts/gateway/gateway-01/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2023-10-10T09:00:00+00:00" />
 <meta property="article:modified_time" content="2023-10-10T10:00:00+00:00" /><meta property="og:site_name" content="ZhengPengDe网络日志" />
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="WEB网关系列-什么是WEB网关"/>
+<meta name="twitter:title" content="WEB网关系列01-什么是WEB网关"/>
 <meta name="twitter:description" content="什么是WEB网关"/>
 <meta name="application-name" content="ZhengPengDe网络日志">
 <meta name="apple-mobile-web-app-title" content="ZhengPengDe网络日志"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
@@ -22,12 +22,12 @@
     {
         "@context": "http://schema.org",
         "@type": "BlogPosting",
-        "headline": "WEB网关系列-什么是WEB网关",
+        "headline": "WEB网关系列01-什么是WEB网关",
         "inLanguage": "zh-cn",
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/847850277.github.io\/posts\/gateway\/gateway-01\/"
-        },"genre": "posts","keywords": "gateway, 网关","wordcount":  4 ,
+        },"genre": "posts","keywords": "gateway, 网关","wordcount":  11 ,
         "url": "https:\/\/847850277.github.io\/posts\/gateway\/gateway-01\/","datePublished": "2023-10-10T09:00:00+00:00","dateModified": "2023-10-10T10:00:00+00:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
@@ -95,13 +95,14 @@
     </div>
     <div class="search-dropdown mobile">
         <div id="search-dropdown-mobile"></div>
-    </div><main class="main">
+    </div><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<meta name="referrer" content="no-referrer-when-downgrade"><main class="main">
                 <div class="container"><div class="toc" id="toc-auto">
             <h2 class="toc-title">Contents</h2>
             <div class="toc-content" id="toc-content-auto"></div>
-        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">WEB网关系列-什么是WEB网关</h1><div class="post-meta">
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">WEB网关系列01-什么是WEB网关</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>zhengpengde</a></span>&nbsp;<span class="post-category">included in <a href="/categories/gateway/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>gateway</a>&nbsp;<a href="/categories/%E7%BD%91%E5%85%B3/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>网关</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-10-10">2023-10-10</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;4 words&nbsp;
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-10-10">2023-10-10</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;11 words&nbsp;
                 <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;One minute&nbsp;</div>
         </div><div class="details toc" id="toc-static"  data-kept="">
                 <div class="details-summary toc-title">
@@ -114,7 +115,15 @@
   </ul>
 </nav></div>
             </div><div class="content" id="content"><h2 id="web网关系列-什么是web网关">WEB网关系列-什么是WEB网关</h2>
-<p>hello world 01</p>
+<p>gateway，我们一般都称为网关。翻译意思有<code>网关;(通往其他地区的)门户;方法;途径;出入口;手段;门道;大门口</code>。</p>
+<p>现实生活中的网关有比如，高速公路的收费口、城门入口、景区或者游乐园的入口等。它们都充当了入口的功能，还有检测功能等等。</p>
+<p>而在web中的网关，它充当的是流量的入口，一般来说当有流量进入到web程序，它的第一层便是经过网关，然后经网关代理到准确的服务地址上，
+同时，对应的服务产生响应，然后网关把响应反馈回去。那么网关就充当了，流量转发的角色， 个人觉得它是一个网关最核心的功能。</p>
+<p>在流量转发这个场景下，可以衍生出无数种组合出来。因为，我们的web应用程序存在的方式是多种多样的，比如在线购物网站、wps、视频网站等等。当然市面上常用的就是基于http协议的web服务，
+还有tcp、udp、websocket等。</p>
+<p>除了流量转发，网关还需要限制恶意的请求过来，仅正确的用户、正确的请求才可以通过，也就是网关需要提供鉴权的功能。</p>
+<p>网关还有就是限制请求流量的作用，举个例子来说，当一台计算机器它的瞬时处理能力只有1千个请求，那瞬时有2千个请求过来，网关处理不过来的话，
+限流就在这种场景下面产生了。</p>
 </div><div class="post-footer" id="post-footer">
     <div class="post-info">
         <div class="post-info-line">
@@ -124,7 +133,7 @@
         <div class="post-info-line">
             <div class="post-info-md"></div>
             <div class="post-info-share">
-                <span><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://847850277.github.io/posts/gateway/gateway-01/" data-title="WEB网关系列-什么是WEB网关"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
+                <span><a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="https://847850277.github.io/posts/gateway/gateway-01/" data-title="WEB网关系列01-什么是WEB网关"><i class="fab fa-weibo fa-fw" aria-hidden="true"></i></a></span>
             </div>
         </div>
     </div>
@@ -138,13 +147,27 @@
 
     <div class="post-nav"><a href="/posts/pattern/reactor/" class="prev" rel="prev" title="Reactor Pattern"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Reactor Pattern</a>
             <a href="/posts/2023/event-log/" class="next" rel="next" title="事件日志埋点">事件日志埋点<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+
+    
+    <div  class="meta-item">
+        <span id="busuanzi_container_page_pv">本文阅读量<span id="busuanzi_value_page_pv"></span>次</span>
+    </div>
+
 </div>
 </article></div>
             </main><footer class="footer">
         <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.112.5">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.11"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
                 </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2021 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank"></a></span></div>
         </div>
-    </footer></div>
+        
+        <div class="busuanzi-footer">
+          <span id="busuanzi_container_site_pv">
+            本站总访问量<span id="busuanzi_value_site_pv"></span>次
+          </span>
+                    <span id="busuanzi_container_site_uv">
+            本站访客数<span id="busuanzi_value_site_uv"></span>人次
+          </span>
+        </div></footer></div>
 
         <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
                 <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>

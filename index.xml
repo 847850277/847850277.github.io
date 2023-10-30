@@ -3,9 +3,17 @@
         <title>ZhengPengDe Blog</title>
         <link>https://847850277.github.io/</link>
         <description>This is ZhengPengDe网络日志</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 19 Oct 2023 09:00:00 &#43;0000</lastBuildDate>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 29 Oct 2023 09:00:00 &#43;0000</lastBuildDate>
             <atom:link href="https://847850277.github.io/index.xml" rel="self" type="application/rss+xml" />
         <item>
+    <title>WEB网关系列02-基于http协议实现流量的代理</title>
+    <link>https://847850277.github.io/posts/gateway/gateway-02-http-proxy/</link>
+    <pubDate>Sun, 29 Oct 2023 09:00:00 &#43;0000</pubDate>
+    <author>zhengpengde</author>
+    <guid>https://847850277.github.io/posts/gateway/gateway-02-http-proxy/</guid>
+    <description><![CDATA[基于http协议实现流量的代理 ]]></description>
+</item>
+<item>
     <title>事件日志埋点</title>
     <link>https://847850277.github.io/posts/2023/event-log/</link>
     <pubDate>Thu, 19 Oct 2023 09:00:00 &#43;0000</pubDate>
@@ -14,12 +22,17 @@
     <description><![CDATA[通过自定义注解和AOP实现自定义事件日志埋点 注解和aop类 注解 @Target(ElementType.METHOD) @Retention(RetentionPolicy.RUNTIME) public @interface EventLog { Action action() default Action.DEFAULT; boolean recordUserId() default true; boolean recordUserName() default true; boolean recordUserPhone() default true; boolean recordTime() default true; } aop @Slf4j @Aspect @Order(1) public class EventLogAspect { public EventLogAspect() { } @Pointcut(&#34;@annotation(com.xxxx.EventLog)&#34;) private void eventLogPoint() { } @Around(&#34;eventLogPoint() &amp;&amp; @annotation(eventLog)&#34;) public Object around(ProceedingJoinPoint pjp, EventLog eventLog) throws Throwable { Object[] args = pjp.getArgs(); if (args[0] instanceof Action.Param){ Action.Param param = (Action.]]></description>
 </item>
 <item>
-    <title>WEB网关系列-什么是WEB网关</title>
+    <title>WEB网关系列01-什么是WEB网关</title>
     <link>https://847850277.github.io/posts/gateway/gateway-01/</link>
     <pubDate>Tue, 10 Oct 2023 09:00:00 &#43;0000</pubDate>
     <author>zhengpengde</author>
     <guid>https://847850277.github.io/posts/gateway/gateway-01/</guid>
-    <description><![CDATA[WEB网关系列-什么是WEB网关 hello world 01]]></description>
+    <description><![CDATA[WEB网关系列-什么是WEB网关 gateway，我们一般都称为网关。翻译意思有网关;(通往其他地区的)门户;方法;途径;出入口;手段;门道;大门口。
+现实生活中的网关有比如，高速公路的收费口、城门入口、景区或者游乐园的入口等。它们都充当了入口的功能，还有检测功能等等。
+而在web中的网关，它充当的是流量的入口，一般来说当有流量进入到web程序，它的第一层便是经过网关，然后经网关代理到准确的服务地址上， 同时，对应的服务产生响应，然后网关把响应反馈回去。那么网关就充当了，流量转发的角色， 个人觉得它是一个网关最核心的功能。
+在流量转发这个场景下，可以衍生出无数种组合出来。因为，我们的web应用程序存在的方式是多种多样的，比如在线购物网站、wps、视频网站等等。当然市面上常用的就是基于http协议的web服务， 还有tcp、udp、websocket等。
+除了流量转发，网关还需要限制恶意的请求过来，仅正确的用户、正确的请求才可以通过，也就是网关需要提供鉴权的功能。
+网关还有就是限制请求流量的作用，举个例子来说，当一台计算机器它的瞬时处理能力只有1千个请求，那瞬时有2千个请求过来，网关处理不过来的话， 限流就在这种场景下面产生了。]]></description>
 </item>
 <item>
     <title>Reactor Pattern</title>
@@ -99,14 +112,6 @@ JDK SPI 的代码示例 接口定义 public interface Search { public List&lt;St
     <author>zhengpengde</author>
     <guid>https://847850277.github.io/posts/apache-shenyu/shenyu-maven-package/</guid>
     <description><![CDATA[打包常用的命令 # example打包 ./mvnw -B clean install -Pexample -DskipTests -f ./shenyu-examples/shenyu-examples-springcloud/pom.xml ./mvnw -B clean install -Pexample -DskipTests -f ./shenyu-examples/shenyu-examples-dubbo/pom.xml ./mvnw -B clean install -Pexample -DskipTests -f ./shenyu-examples/shenyu-examples-http/pom.xml ./mvnw -B clean install -DskipTests -f ./shenyu-client/pom.xml ./mvnw -B clean install -Pexample -DskipTests -f ./shenyu-examples/pom.xml ./mvnw -B clean install -Prelease -DskipTests -f ./shenyu-dist/pom.xml ./mvnw -B clean install -Pdocker -DskipTests -f ./shenyu-dist/pom.xml # 集成测试打包 ./mvnw -B clean install -Pit -DskipTests -f ./shenyu-integrated-test/shenyu-integrated-test-spring-cloud/pom.xml ./mvnw -B clean install -Pit -DskipTests -f .]]></description>
-</item>
-<item>
-    <title>我的第一篇博客</title>
-    <link>https://847850277.github.io/posts/my-first/</link>
-    <pubDate>Thu, 01 Jun 2023 09:00:00 &#43;0000</pubDate>
-    <author>zhengpengde</author>
-    <guid>https://847850277.github.io/posts/my-first/</guid>
-    <description><![CDATA[这里是Markdown 正文 hello world]]></description>
 </item>
 </channel>
 </rss>
