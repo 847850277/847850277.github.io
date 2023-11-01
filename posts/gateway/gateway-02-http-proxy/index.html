@@ -27,7 +27,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/847850277.github.io\/posts\/gateway\/gateway-02-http-proxy\/"
-        },"genre": "posts","keywords": "gateway, 网关","wordcount":  1 ,
+        },"genre": "posts","keywords": "gateway, 网关","wordcount":  161 ,
         "url": "https:\/\/847850277.github.io\/posts\/gateway\/gateway-02-http-proxy\/","datePublished": "2023-10-29T09:00:00+00:00","dateModified": "2023-10-30T10:00:00+00:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
@@ -102,7 +102,7 @@
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">WEB网关系列02-基于http协议实现流量的代理</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>zhengpengde</a></span>&nbsp;<span class="post-category">included in <a href="/categories/gateway/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>gateway</a>&nbsp;<a href="/categories/%E7%BD%91%E5%85%B3/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>网关</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-10-29">2023-10-29</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;One word&nbsp;
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-10-29">2023-10-29</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;161 words&nbsp;
                 <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;One minute&nbsp;</div>
         </div><div class="details toc" id="toc-static"  data-kept="">
                 <div class="details-summary toc-title">
@@ -111,10 +111,132 @@
                 </div>
                 <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
   <ul>
-    <li><a href="#基于http协议实现流量的代理">基于http协议实现流量的代理</a></li>
+    <li><a href="#模式之间差异">模式之间差异</a></li>
+    <li><a href="#直连模式">直连模式</a></li>
+    <li><a href="#代理模式">代理模式</a>
+      <ul>
+        <li><a href="#代理模式01-不带路由转发的代理功能">代理模式01 不带路由转发的代理功能</a></li>
+      </ul>
+    </li>
   </ul>
 </nav></div>
-            </div><div class="content" id="content"><h2 id="基于http协议实现流量的代理">基于http协议实现流量的代理</h2>
+            </div><div class="content" id="content"><h1 id="基于http协议实现流量的代理">基于http协议实现流量的代理</h1>
+<h2 id="模式之间差异">模式之间差异</h2>
+<ul>
+<li>直连模式</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/img/source/gateway/proxy/direct_mode.png"
+        data-srcset="/img/source/gateway/proxy/direct_mode.png, /img/source/gateway/proxy/direct_mode.png 1.5x, /img/source/gateway/proxy/direct_mode.png 2x"
+        data-sizes="auto"
+        alt="/img/source/gateway/proxy/direct_mode.png"
+        title="direct_mode" /></p>
+<ul>
+<li>代理模式</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/img/source/gateway/proxy/proxy_mode.png"
+        data-srcset="/img/source/gateway/proxy/proxy_mode.png, /img/source/gateway/proxy/proxy_mode.png 1.5x, /img/source/gateway/proxy/proxy_mode.png 2x"
+        data-sizes="auto"
+        alt="/img/source/gateway/proxy/proxy_mode.png"
+        title="proxy_mode" /></p>
+<h2 id="直连模式">直连模式</h2>
+<blockquote>
+<p>直连模式，也就是服务与服务之间直接请求调用，比如说我们正常在浏览器上面输入<a href="http://www.baidu.com" target="_blank" rel="noopener noreffer ">baidu</a>,然后浏览器把百度相应的响应反馈回来的过程。
+这个过程种，用户充当了service-A的角色，百度的服务器充当了service-B的角色。</p>
+</blockquote>
+<ul>
+<li>代码还原以上过程，利用java的<code>Java.net.HttpURLConnection</code>类实现网络访问
+<ul>
+<li>除了HttpURLConnection还有很多java封装的包也能实现网络访问
+<ul>
+<li>通过common封装好HttpClient；</li>
+<li>通过 Apache 封装好CloseableHttpClient；</li>
+<li>通过SpringBoot-RestTemplate；</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.BufferedReader<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.IOException<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.InputStream<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.InputStreamReader<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.net.HttpURLConnection<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.net.URL<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.nio.charset.StandardCharsets<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DirectMode</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        String api <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;https://www.baidu.com&#34;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        HttpURLConnection connection <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        InputStream in <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        BufferedReader reader <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//构造一个URL对象
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            URL url <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> URL<span style="color:#f92672">(</span>api<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//获取URLConnection对象
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            connection <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>HttpURLConnection<span style="color:#f92672">)</span> url<span style="color:#f92672">.</span><span style="color:#a6e22e">openConnection</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//getOutputStream会隐含的进行connect(即：如同调用上面的connect()方法，所以在开发中不调用connect()也可以)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            in <span style="color:#f92672">=</span> connection<span style="color:#f92672">.</span><span style="color:#a6e22e">getInputStream</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//通过InputStreamReader将字节流转换成字符串，在通过BufferedReader将字符流转换成自带缓冲流
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            reader <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> BufferedReader<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> InputStreamReader<span style="color:#f92672">(</span>in<span style="color:#f92672">,</span> StandardCharsets<span style="color:#f92672">.</span><span style="color:#a6e22e">UTF_8</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>            StringBuilder sb <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> StringBuilder<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            String line <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//按行读取
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">while</span> <span style="color:#f92672">((</span>line <span style="color:#f92672">=</span> reader<span style="color:#f92672">.</span><span style="color:#a6e22e">readLine</span><span style="color:#f92672">())</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                sb<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>line<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>            String response <span style="color:#f92672">=</span> sb<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>response<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception exception<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            exception<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>connection <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                connection<span style="color:#f92672">.</span><span style="color:#a6e22e">disconnect</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>in <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                    in<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                    e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>reader <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                    reader<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                    e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>上面的代码会输出百度的响应信息，跟我们正常在浏览器上面访问百度是同样的效果，只是，浏览器上面有更美观的样式展现出来了。</p>
+<h2 id="代理模式">代理模式</h2>
+<blockquote>
+<p>直连模式，也就是服务与服务中间经过了代理服务的转发，分别是请求和响应的转发。代理服务除了处理转发外还需要相应的路由寻址，
+也就是把请求对应转发到对应的目标服务上，比如<code>http://xxx/request1</code>对应的地址为<code>service-B</code>上的地址。<code>http://xxx/request2</code>对应的地址为<code>service-C</code>上的地址。
+那么就需要代理服务能正确的进行路由匹配和转发了。</p>
+</blockquote>
+<h3 id="代理模式01-不带路由转发的代理功能">代理模式01 不带路由转发的代理功能</h3>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/img/source/gateway/proxy/socket_proxy_mode.png"
+        data-srcset="/img/source/gateway/proxy/socket_proxy_mode.png, /img/source/gateway/proxy/socket_proxy_mode.png 1.5x, /img/source/gateway/proxy/socket_proxy_mode.png 2x"
+        data-sizes="auto"
+        alt="/img/source/gateway/proxy/socket_proxy_mode.png"
+        title="socket_proxy_mode" /></p>
+<p><a href="https://blog.csdn.net/jxlhljh/article/details/119963668" target="_blank" rel="noopener noreffer ">https://blog.csdn.net/jxlhljh/article/details/119963668</a></p>
 </div><div class="post-footer" id="post-footer">
     <div class="post-info">
         <div class="post-info-line">

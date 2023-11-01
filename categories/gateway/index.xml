@@ -9,7 +9,8 @@
     <pubDate>Sun, 29 Oct 2023 09:00:00 &#43;0000</pubDate>
     <author>zhengpengde</author>
     <guid>https://847850277.github.io/posts/gateway/gateway-02-http-proxy/</guid>
-    <description><![CDATA[基于http协议实现流量的代理 ]]></description>
+    <description><![CDATA[基于http协议实现流量的代理 模式之间差异 直连模式 代理模式 直连模式 直连模式，也就是服务与服务之间直接请求调用，比如说我们正常在浏览器上面输入baidu,然后浏览器把百度相应的响应反馈回来的过程。 这个过程种，用户充当了service-A的角色，百度的服务器充当了service-B的角色。
+代码还原以上过程，利用java的Java.net.HttpURLConnection类实现网络访问 除了HttpURLConnection还有很多java封装的包也能实现网络访问 通过common封装好HttpClient； 通过 Apache 封装好CloseableHttpClient； 通过SpringBoot-RestTemplate； import java.io.BufferedReader; import java.io.IOException; import java.io.InputStream; import java.io.InputStreamReader; import java.net.HttpURLConnection; import java.net.URL; import java.nio.charset.StandardCharsets; public class DirectMode { public static void main(String[] args) { String api = &#34;https://www.baidu.com&#34;; HttpURLConnection connection = null; InputStream in = null; BufferedReader reader = null; try { //构造一个URL对象 URL url = new URL(api); //获取URLConnection对象 connection = (HttpURLConnection) url.openConnection(); //getOutputStream会隐含的进行connect(即：如同调用上面的connect()方法，所以在开发中不调用connect()也可以) in = connection.]]></description>
 </item>
 <item>
     <title>WEB网关系列01-什么是WEB网关</title>
