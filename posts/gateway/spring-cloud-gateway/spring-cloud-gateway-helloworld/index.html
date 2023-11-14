@@ -4,36 +4,36 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="robots" content="noodp" />
-        <title>常用web记录 - ZhengPengDe Blog</title><meta name="Description" content="常用web记录"><meta property="og:title" content="常用web记录" />
-<meta property="og:description" content="常用web记录" />
+        <title>WEB网关系列-spring-cloud-gateway克隆与启动 - ZhengPengDe Blog</title><meta name="Description" content="spring-cloud-gateway克隆与启动"><meta property="og:title" content="WEB网关系列-spring-cloud-gateway克隆与启动" />
+<meta property="og:description" content="spring-cloud-gateway克隆与启动" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://847850277.github.io/posts/2023/web/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2023-06-19T09:00:00+00:00" />
-<meta property="article:modified_time" content="2023-06-20T10:00:00+00:00" /><meta property="og:site_name" content="ZhengPengDe网络日志" />
+<meta property="og:url" content="https://847850277.github.io/posts/gateway/spring-cloud-gateway/spring-cloud-gateway-helloworld/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-10-31T09:00:00+00:00" />
+<meta property="article:modified_time" content="2023-11-01T10:00:00+00:00" /><meta property="og:site_name" content="ZhengPengDe网络日志" />
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="常用web记录"/>
-<meta name="twitter:description" content="常用web记录"/>
+<meta name="twitter:title" content="WEB网关系列-spring-cloud-gateway克隆与启动"/>
+<meta name="twitter:description" content="spring-cloud-gateway克隆与启动"/>
 <meta name="application-name" content="ZhengPengDe网络日志">
 <meta name="apple-mobile-web-app-title" content="ZhengPengDe网络日志"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://847850277.github.io/posts/2023/web/" /><link rel="prev" href="https://847850277.github.io/posts/2023/terminal/" /><link rel="next" href="https://847850277.github.io/posts/2023/metadata/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://847850277.github.io/posts/gateway/spring-cloud-gateway/spring-cloud-gateway-helloworld/" /><link rel="prev" href="https://847850277.github.io/posts/gateway/gateway-02-http-proxy/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
     {
         "@context": "http://schema.org",
         "@type": "BlogPosting",
-        "headline": "常用web记录",
+        "headline": "WEB网关系列-spring-cloud-gateway克隆与启动",
         "inLanguage": "zh-cn",
         "mainEntityOfPage": {
             "@type": "WebPage",
-            "@id": "https:\/\/847850277.github.io\/posts\/2023\/web\/"
-        },"genre": "posts","keywords": "web","wordcount":  24 ,
-        "url": "https:\/\/847850277.github.io\/posts\/2023\/web\/","datePublished": "2023-06-19T09:00:00+00:00","dateModified": "2023-06-20T10:00:00+00:00","publisher": {
+            "@id": "https:\/\/847850277.github.io\/posts\/gateway\/spring-cloud-gateway\/spring-cloud-gateway-helloworld\/"
+        },"genre": "posts","keywords": "gateway, 网关, spring-cloud-gateway","wordcount":  10 ,
+        "url": "https:\/\/847850277.github.io\/posts\/gateway\/spring-cloud-gateway\/spring-cloud-gateway-helloworld\/","datePublished": "2023-10-31T09:00:00+00:00","dateModified": "2023-11-01T10:00:00+00:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
                 "@type": "Person",
                 "name": "zhengpengde"
-            },"description": "常用web记录"
+            },"description": "spring-cloud-gateway克隆与启动"
     }
     </script></head>
     <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
@@ -100,39 +100,44 @@
                 <div class="container"><div class="toc" id="toc-auto">
             <h2 class="toc-title">Contents</h2>
             <div class="toc-content" id="toc-content-auto"></div>
-        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">常用web记录</h1><div class="post-meta">
-            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>zhengpengde</a></span>&nbsp;<span class="post-category">included in <a href="/categories/web/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>web</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-06-19">2023-06-19</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;24 words&nbsp;
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">WEB网关系列-spring-cloud-gateway克隆与启动</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>zhengpengde</a></span>&nbsp;<span class="post-category">included in <a href="/categories/gateway/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>gateway</a>&nbsp;<a href="/categories/%E7%BD%91%E5%85%B3/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>网关</a>&nbsp;<a href="/categories/spring-cloud-gateway/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>spring-cloud-gateway</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-10-31">2023-10-31</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;10 words&nbsp;
                 <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;One minute&nbsp;</div>
         </div><div class="details toc" id="toc-static"  data-kept="">
                 <div class="details-summary toc-title">
                     <span>Contents</span>
                     <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
                 </div>
-                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents"></nav></div>
-            </div><div class="content" id="content"><h1 id="常用的网站记录">常用的网站记录</h1>
-<p><a href="https://coolaf.com/" target="_blank" rel="noopener noreffer ">在线markdown</a></p>
-<p><a href="https://dockerproxy.com/" target="_blank" rel="noopener noreffer ">docker国内镜像加速</a></p>
-<p><a href="https://www.mvncenter.com/" target="_blank" rel="noopener noreffer ">另一个maven仓库</a></p>
-<p><a href="https://www.pdai.tech/" target="_blank" rel="noopener noreffer ">java全栈知识体系</a></p>
-<p><a href="https://www.injdk.cn/" target="_blank" rel="noopener noreffer ">jdk版本-爪哇我话你知</a></p>
-<p><a href="https://programmercarl.com/" target="_blank" rel="noopener noreffer ">代码随想录-算法</a></p>
-<p><a href="https://labuladong.gitee.io/algo/" target="_blank" rel="noopener noreffer ">labuladong 的算法小抄</a></p>
-<p><a href="https://www.cs.usfca.edu/~galles/visualization/Algorithms.html" target="_blank" rel="noopener noreffer ">Data Structure Visualizations</a></p>
-<p><a href="https://gupiaozhushou.net/" target="_blank" rel="noopener noreffer ">股票自动交易助手</a></p>
-<p><a href="https://excalidraw.com/" target="_blank" rel="noopener noreffer ">excalidraw</a></p>
-<p><a href="https://www.v2ex.com/" target="_blank" rel="noopener noreffer ">v2ex</a></p>
-<p><a href="https://www.imgurl.org" target="_blank" rel="noopener noreffer ">免费图床</a></p>
-<p><a href="http://redisdoc.com/" target="_blank" rel="noopener noreffer ">Redis命令集</a></p>
-<p><a href="https://searchcode.com/" target="_blank" rel="noopener noreffer ">在线搜索代码网站</a></p>
-<p><a href="https://gee.cs.oswego.edu/dl/" target="_blank" rel="noopener noreffer ">Doug Lea&rsquo;s Home Page</a></p>
-<p><a href="https://www.cjavapy.com/" target="_blank" rel="noopener noreffer ">编程之路</a></p>
-<p><a href="https://archive.ubuntukylin.com/ubuntukylin/pool/partner/weixin_2.1.4_amd64.deb" target="_blank" rel="noopener noreffer ">ubuntu微信</a></p>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#web网关系列-spring-cloud-gateway克隆与启动">WEB网关系列-spring-cloud-gateway克隆与启动</a>
+      <ul>
+        <li><a href="#克隆项目">克隆项目</a></li>
+        <li><a href="#idea项目配置">IDEA项目配置</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h2 id="web网关系列-spring-cloud-gateway克隆与启动">WEB网关系列-spring-cloud-gateway克隆与启动</h2>
+<h3 id="克隆项目">克隆项目</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>git clone https://github.com/spring-cloud/spring-cloud-gateway.git
+</span></span></code></pre></div><h3 id="idea项目配置">IDEA项目配置</h3>
+<ul>
+<li>1、用IDEA打开项目</li>
+<li>2、配置check-style
+<ul>
+<li>2、1</li>
+<li>2、2</li>
+</ul>
+</li>
+</ul>
 </div><div class="post-footer" id="post-footer">
     <div class="post-info">
         <div class="post-info-line">
             <div class="post-info-mod">
-                <span>Updated on 2023-06-20</span>
+                <span>Updated on 2023-11-01</span>
 
             </div></div>
         <div class="post-info-line">
@@ -148,15 +153,14 @@
     </div>
 
     <div class="post-info-more">
-        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/web/">web</a></section>
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/gateway/">gateway</a>,&nbsp;<a href="/tags/%E7%BD%91%E5%85%B3/">网关</a>,&nbsp;<a href="/tags/spring-cloud-gateway/">spring-cloud-gateway</a></section>
         <section>
             <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
         </section>
     </div>
 
 
-    <div class="post-nav"><a href="/posts/2023/terminal/" class="prev" rel="prev" title="常用命令记录"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>常用命令记录</a>
-            <a href="/posts/2023/metadata/" class="next" rel="next" title="什么是metadata">什么是metadata<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+    <div class="post-nav"><a href="/posts/gateway/gateway-02-http-proxy/" class="prev" rel="prev" title="WEB网关系列02-基于http协议实现流量的代理"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>WEB网关系列02-基于http协议实现流量的代理</a></div>
 
 
 </div>

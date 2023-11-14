@@ -16,7 +16,7 @@
 <meta name="application-name" content="ZhengPengDe网络日志">
 <meta name="apple-mobile-web-app-title" content="ZhengPengDe网络日志"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://847850277.github.io/posts/gateway/gateway-02-http-proxy/" /><link rel="prev" href="https://847850277.github.io/posts/2023/event-log/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://847850277.github.io/posts/gateway/gateway-02-http-proxy/" /><link rel="prev" href="https://847850277.github.io/posts/2023/event-log/" /><link rel="next" href="https://847850277.github.io/posts/gateway/spring-cloud-gateway/spring-cloud-gateway-helloworld/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
     {
@@ -27,7 +27,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/847850277.github.io\/posts\/gateway\/gateway-02-http-proxy\/"
-        },"genre": "posts","keywords": "gateway, 网关","wordcount":  161 ,
+        },"genre": "posts","keywords": "gateway, 网关","wordcount":  958 ,
         "url": "https:\/\/847850277.github.io\/posts\/gateway\/gateway-02-http-proxy\/","datePublished": "2023-10-29T09:00:00+00:00","dateModified": "2023-10-30T10:00:00+00:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
@@ -102,8 +102,8 @@
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">WEB网关系列02-基于http协议实现流量的代理</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>zhengpengde</a></span>&nbsp;<span class="post-category">included in <a href="/categories/gateway/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>gateway</a>&nbsp;<a href="/categories/%E7%BD%91%E5%85%B3/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>网关</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-10-29">2023-10-29</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;161 words&nbsp;
-                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;One minute&nbsp;</div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-10-29">2023-10-29</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;958 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;5 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  data-kept="">
                 <div class="details-summary toc-title">
                     <span>Contents</span>
@@ -116,6 +116,7 @@
     <li><a href="#代理模式">代理模式</a>
       <ul>
         <li><a href="#代理模式01-不带路由转发的代理功能">代理模式01 不带路由转发的代理功能</a></li>
+        <li><a href="#代理模式02-带路由转发的代理功能hello-world版">代理模式02 带路由转发的代理功能hello-world版</a></li>
       </ul>
     </li>
   </ul>
@@ -236,7 +237,281 @@
         data-sizes="auto"
         alt="/img/source/gateway/proxy/socket_proxy_mode.png"
         title="socket_proxy_mode" /></p>
+<ul>
+<li>代码如下</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.BufferedReader<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.Closeable<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.IOException<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.InputStream<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.InputStreamReader<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.OutputStream<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.net.ServerSocket<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.net.Socket<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.Base64<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.Date<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ProxyHttpsServer</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> bufferSize <span style="color:#f92672">=</span> <span style="color:#ae81ff">8092</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> defaultPort <span style="color:#f92672">=</span> <span style="color:#ae81ff">1080</span><span style="color:#f92672">;</span> <span style="color:#75715e">//默认端口
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">int</span> localPort <span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> ServerSocket localServerSocket<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">boolean</span> socksNeekLogin <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span><span style="color:#75715e">//是否需要登录
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">private</span> String username <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;admin&#34;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String password <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;admin123&#34;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        Integer port <span style="color:#f92672">=</span> args<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">?</span> Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">parseInt</span><span style="color:#f92672">(</span>args<span style="color:#f92672">[</span><span style="color:#ae81ff">0</span><span style="color:#f92672">])</span> <span style="color:#f92672">:</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">new</span> ProxyHttpsServer<span style="color:#f92672">(</span>port<span style="color:#f92672">).</span><span style="color:#a6e22e">startService</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">ProxyHttpsServer</span><span style="color:#f92672">(</span>Integer port<span style="color:#f92672">){</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">localPort</span> <span style="color:#f92672">=</span> port <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">?</span> defaultPort <span style="color:#f92672">:</span> port<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">startService</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//开启一个ServerSocket服务器,监听请求的到来.
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            localServerSocket <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ServerSocket<span style="color:#f92672">(</span>localPort<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            log<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;httpproxy server started , listen on &#34;</span> <span style="color:#f92672">+</span>localServerSocket<span style="color:#f92672">.</span><span style="color:#a6e22e">getInetAddress</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getHostAddress</span><span style="color:#f92672">()+</span><span style="color:#e6db74">&#34;:&#34;</span><span style="color:#f92672">+</span> localPort <span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// 一直监听，接收到新连接，则开启新线程去处理
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">true</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                Socket localSocket <span style="color:#f92672">=</span> localServerSocket<span style="color:#f92672">.</span><span style="color:#a6e22e">accept</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">new</span> SocketThread<span style="color:#f92672">(</span>localSocket<span style="color:#f92672">).</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//格式化打印方法，用来打印信息
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">log</span><span style="color:#f92672">(</span>Object message<span style="color:#f92672">,</span> Object<span style="color:#f92672">...</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        Date dat <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Date<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        String msg <span style="color:#f92672">=</span> String<span style="color:#f92672">.</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;%1$tF %1$tT %2$-5s %3$s%n&#34;</span><span style="color:#f92672">,</span> dat<span style="color:#f92672">,</span> Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">currentThread</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getId</span><span style="color:#f92672">(),</span> String<span style="color:#f92672">.</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span>message<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">(),</span>args<span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">print</span><span style="color:#f92672">(</span>msg<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * IO操作中共同的关闭方法
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * @param socket
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">closeIo</span><span style="color:#f92672">(</span>Socket closeable<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">null</span> <span style="color:#f92672">!=</span> closeable<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                closeable<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * IO操作中共同的关闭方法
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * @param socket
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">closeIo</span><span style="color:#f92672">(</span>Closeable closeable<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">null</span> <span style="color:#f92672">!=</span> closeable<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                closeable<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SocketThread</span> <span style="color:#66d9ef">extends</span> Thread <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> Socket localSocket<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> Socket remoteSocket<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> InputStream lin<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> InputStream rin<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> OutputStream lout<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> OutputStream rout<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">SocketThread</span><span style="color:#f92672">(</span>Socket socket<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">localSocket</span> <span style="color:#f92672">=</span> socket<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//获取远程socket的地址，然后进行打印
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            String addr <span style="color:#f92672">=</span> localSocket<span style="color:#f92672">.</span><span style="color:#a6e22e">getRemoteSocketAddress</span><span style="color:#f92672">().</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            log<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;process one socket : %s&#34;</span><span style="color:#f92672">,</span> addr<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                lin <span style="color:#f92672">=</span> localSocket<span style="color:#f92672">.</span><span style="color:#a6e22e">getInputStream</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>                lout <span style="color:#f92672">=</span> localSocket<span style="color:#f92672">.</span><span style="color:#a6e22e">getOutputStream</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                StringBuilder headStr <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> StringBuilder<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>                BufferedReader br <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> BufferedReader<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> InputStreamReader<span style="color:#f92672">(</span>lin<span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">//读取HTTP请求头，并拿到HOST请求头和method
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>                String line<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>                String host <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>                String proxy_Authorization <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">while</span> <span style="color:#f92672">((</span>line <span style="color:#f92672">=</span> br<span style="color:#f92672">.</span><span style="color:#a6e22e">readLine</span><span style="color:#f92672">())</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#75715e">//打印http协议头
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                    log<span style="color:#f92672">(</span>line<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                    headStr<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>line <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;\r\n&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>line<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#66d9ef">break</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                        String<span style="color:#f92672">[]</span> temp <span style="color:#f92672">=</span> line<span style="color:#f92672">.</span><span style="color:#a6e22e">split</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34; &#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>temp<span style="color:#f92672">[</span><span style="color:#ae81ff">0</span><span style="color:#f92672">].</span><span style="color:#a6e22e">contains</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Host&#34;</span><span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                            host <span style="color:#f92672">=</span> temp<span style="color:#f92672">[</span><span style="color:#ae81ff">1</span><span style="color:#f92672">];</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#75715e">//如果配置了需要登陆，就解析消息头里面的Proxy-Authorization字段，认证的账号和密码信息是通过base64加密传过来的。
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                        <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>socksNeekLogin <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">(</span>temp<span style="color:#f92672">[</span><span style="color:#ae81ff">0</span><span style="color:#f92672">].</span><span style="color:#a6e22e">contains</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Proxy-Authorization&#34;</span><span style="color:#f92672">))){</span><span style="color:#75715e">//获取认证信息
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                            proxy_Authorization <span style="color:#f92672">=</span> temp<span style="color:#f92672">[</span><span style="color:#ae81ff">2</span><span style="color:#f92672">];</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                String type <span style="color:#f92672">=</span> headStr<span style="color:#f92672">.</span><span style="color:#a6e22e">substring</span><span style="color:#f92672">(</span><span style="color:#ae81ff">0</span><span style="color:#f92672">,</span> headStr<span style="color:#f92672">.</span><span style="color:#a6e22e">indexOf</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34; &#34;</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">//根据host头解析出目标服务器的host和port
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                String<span style="color:#f92672">[]</span> hostTemp <span style="color:#f92672">=</span> host<span style="color:#f92672">.</span><span style="color:#a6e22e">split</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;:&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                host <span style="color:#f92672">=</span> hostTemp<span style="color:#f92672">[</span><span style="color:#ae81ff">0</span><span style="color:#f92672">];</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">int</span> port <span style="color:#f92672">=</span> <span style="color:#ae81ff">80</span><span style="color:#f92672">;</span> <span style="color:#75715e">//先设置成默认的Http端口80
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                <span style="color:#75715e">//hostTemp的长度大于1表示用户指定了非80或443端口，解析出对应的端口出来
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>hostTemp<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                    port <span style="color:#f92672">=</span> Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">valueOf</span><span style="color:#f92672">(</span>hostTemp<span style="color:#f92672">[</span><span style="color:#ae81ff">1</span><span style="color:#f92672">]);</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span><span style="color:#66d9ef">else</span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#75715e">//端口如果没有指定，有可能是443,也有可能是80,因此尝试根据HTTP method来判断是https还是http请求,有CONNECT的是HTTPS请求，采用443端口
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#e6db74">&#34;CONNECT&#34;</span><span style="color:#f92672">.</span><span style="color:#a6e22e">equalsIgnoreCase</span><span style="color:#f92672">(</span>type<span style="color:#f92672">)){</span>
+</span></span><span style="display:flex;"><span>                        port <span style="color:#f92672">=</span> <span style="color:#ae81ff">443</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">boolean</span> isLogin <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">//如果需要登录，校验登录是否通过
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>socksNeekLogin<span style="color:#f92672">){</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#75715e">//通过username和password进行base64加密得到一个串，然后和请求里面传过来的Proxy-Authorization比较，一致的话就认证成功。
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                    String authenticationEncoding <span style="color:#f92672">=</span> Base64<span style="color:#f92672">.</span><span style="color:#a6e22e">getEncoder</span><span style="color:#f92672">().</span><span style="color:#a6e22e">encodeToString</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> String<span style="color:#f92672">(</span>username <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;:&#34;</span> <span style="color:#f92672">+</span> password<span style="color:#f92672">).</span><span style="color:#a6e22e">getBytes</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>proxy_Authorization<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>authenticationEncoding<span style="color:#f92672">)){</span>
+</span></span><span style="display:flex;"><span>                        isLogin <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span><span style="color:#75715e">//登录通过
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                        <span style="color:#75715e">//log(&#34;login success, basic: %s&#34;, proxy_Authorization);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                    <span style="color:#f92672">}</span><span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                        log<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;httpproxy server need login,but login failed .&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">//不需要登录或已被校验登录成功,才进入代理，否则直接程序结束，关闭连接
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                <span style="color:#66d9ef">if</span><span style="color:#f92672">(!</span>socksNeekLogin <span style="color:#f92672">||</span> isLogin<span style="color:#f92672">){</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#75715e">//连接到目标服务器
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                    remoteSocket <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Socket<span style="color:#f92672">(</span>host<span style="color:#f92672">,</span> port<span style="color:#f92672">);</span><span style="color:#75715e">//进行远程连接
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                    rin <span style="color:#f92672">=</span> remoteSocket<span style="color:#f92672">.</span><span style="color:#a6e22e">getInputStream</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>                    rout <span style="color:#f92672">=</span> remoteSocket<span style="color:#f92672">.</span><span style="color:#a6e22e">getOutputStream</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#75715e">//根据HTTP method来判断是https还是http请求
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#e6db74">&#34;CONNECT&#34;</span><span style="color:#f92672">.</span><span style="color:#a6e22e">equalsIgnoreCase</span><span style="color:#f92672">(</span>type<span style="color:#f92672">))</span> <span style="color:#f92672">{</span><span style="color:#75715e">//https先建立隧道
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                        lout<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;HTTP/1.1 200 Connection Established\r\n\r\n&#34;</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getBytes</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>                        lout<span style="color:#f92672">.</span><span style="color:#a6e22e">flush</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">}</span><span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span><span style="color:#75715e">//http直接将请求头转发
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                        rout<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>headStr<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getBytes</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>                        rout<span style="color:#f92672">.</span><span style="color:#a6e22e">flush</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">new</span> ReadThread<span style="color:#f92672">().</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#75715e">//设置超时，超过时间未收到客户端请求，关闭资源
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                    <span style="color:#75715e">//remoteSocket.setSoTimeout(10000);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                    <span style="color:#75715e">//写数据,负责读取客户端发送过来的数据，转发给远程
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                    <span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> data <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">byte</span><span style="color:#f92672">[</span>bufferSize<span style="color:#f92672">];</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">int</span> len <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">while</span><span style="color:#f92672">((</span>len <span style="color:#f92672">=</span> lin<span style="color:#f92672">.</span><span style="color:#a6e22e">read</span><span style="color:#f92672">(</span>data<span style="color:#f92672">))</span> <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">){</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>len <span style="color:#f92672">==</span> bufferSize<span style="color:#f92672">)</span> <span style="color:#f92672">{</span><span style="color:#75715e">//读到了缓存大小一致的数据，不需要拷贝，直接使用
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                            rout<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>data<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                            rout<span style="color:#f92672">.</span><span style="color:#a6e22e">flush</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">}</span><span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span><span style="color:#75715e">//读到了比缓存大小的数据，需要拷贝到新数组然后再使用
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                            <span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> dest <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">byte</span><span style="color:#f92672">[</span>len<span style="color:#f92672">];</span>
+</span></span><span style="display:flex;"><span>                            System<span style="color:#f92672">.</span><span style="color:#a6e22e">arraycopy</span><span style="color:#f92672">(</span>data<span style="color:#f92672">,</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">,</span> dest<span style="color:#f92672">,</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">,</span> len<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                            rout<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>dest<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                            rout<span style="color:#f92672">.</span><span style="color:#a6e22e">flush</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                log<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;exception : %s %s&#34;</span><span style="color:#f92672">,</span> e<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">(),</span> e<span style="color:#f92672">.</span><span style="color:#a6e22e">getLocalizedMessage</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">//e.printStackTrace();
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                log<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;close socket, system cleanning ...  %s &#34;</span><span style="color:#f92672">,</span> addr<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                closeIo<span style="color:#f92672">(</span>lin<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                closeIo<span style="color:#f92672">(</span>rin<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                closeIo<span style="color:#f92672">(</span>lout<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                closeIo<span style="color:#f92672">(</span>rout<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                closeIo<span style="color:#f92672">(</span>localSocket<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                closeIo<span style="color:#f92672">(</span>remoteSocket<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//读数据线程负责读取远程数据后回写到客户端
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ReadThread</span> <span style="color:#66d9ef">extends</span> Thread <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> data <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">byte</span><span style="color:#f92672">[</span>bufferSize<span style="color:#f92672">];</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">int</span> len <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">while</span><span style="color:#f92672">((</span>len <span style="color:#f92672">=</span> rin<span style="color:#f92672">.</span><span style="color:#a6e22e">read</span><span style="color:#f92672">(</span>data<span style="color:#f92672">))</span> <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">){</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>len <span style="color:#f92672">==</span> bufferSize<span style="color:#f92672">)</span> <span style="color:#f92672">{</span><span style="color:#75715e">//读到了缓存大小一致的数据，不需要拷贝，直接使用
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                            lout<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>data<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                            lout<span style="color:#f92672">.</span><span style="color:#a6e22e">flush</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">}</span><span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span><span style="color:#75715e">//读到了比缓存大小的数据，需要拷贝到新数组然后再使用
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                            <span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> dest <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">byte</span><span style="color:#f92672">[</span>len<span style="color:#f92672">];</span>
+</span></span><span style="display:flex;"><span>                            System<span style="color:#f92672">.</span><span style="color:#a6e22e">arraycopy</span><span style="color:#f92672">(</span>data<span style="color:#f92672">,</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">,</span> dest<span style="color:#f92672">,</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">,</span> len<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                            lout<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>dest<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                            lout<span style="color:#f92672">.</span><span style="color:#a6e22e">flush</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#75715e">//log(remoteSocket.getLocalAddress() + &#34;:&#34;+ remoteSocket.getPort() + &#34; remoteSocket InputStream disconnected.&#34;);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                <span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><p>通过命令来代理访问百度地址</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">--</span> <span style="color:#960050;background-color:#1e0010">代理访问百度</span>
+</span></span><span style="display:flex;"><span>curl <span style="color:#f92672">-</span>i <span style="color:#f92672">-</span>x <span style="color:#ae81ff">127.0.0.1</span><span style="color:#f92672">:</span><span style="color:#ae81ff">1080</span>  http<span style="color:#f92672">:</span><span style="color:#75715e">//www.baidu.com
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">--</span> <span style="color:#960050;background-color:#1e0010">对应乡音如下</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>HTTP<span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span> <span style="color:#ae81ff">200</span> OK
+</span></span><span style="display:flex;"><span>Accept<span style="color:#f92672">-</span>Ranges<span style="color:#f92672">:</span> bytes
+</span></span><span style="display:flex;"><span>Cache<span style="color:#f92672">-</span>Control<span style="color:#f92672">:</span> <span style="color:#66d9ef">private</span><span style="color:#f92672">,</span> no<span style="color:#f92672">-</span>cache<span style="color:#f92672">,</span> no<span style="color:#f92672">-</span>store<span style="color:#f92672">,</span> proxy<span style="color:#f92672">-</span>revalidate<span style="color:#f92672">,</span> no<span style="color:#f92672">-</span>transform
+</span></span><span style="display:flex;"><span>Connection: keep<span style="color:#f92672">-</span>alive
+</span></span><span style="display:flex;"><span>Content<span style="color:#f92672">-</span>Length<span style="color:#f92672">:</span> <span style="color:#ae81ff">2381</span>
+</span></span><span style="display:flex;"><span>Content<span style="color:#f92672">-</span>Type<span style="color:#f92672">:</span> text<span style="color:#f92672">/</span>html
+</span></span><span style="display:flex;"><span>Date: Wed<span style="color:#f92672">,</span> <span style="color:#ae81ff">08</span> Nov <span style="color:#ae81ff">2023</span> <span style="color:#ae81ff">03</span><span style="color:#f92672">:</span><span style="color:#ae81ff">41</span><span style="color:#f92672">:</span><span style="color:#ae81ff">02</span> GMT
+</span></span><span style="display:flex;"><span>Etag: <span style="color:#e6db74">&#34;588604dc-94d&#34;</span>
+</span></span><span style="display:flex;"><span>Last<span style="color:#f92672">-</span>Modified<span style="color:#f92672">:</span> Mon<span style="color:#f92672">,</span> <span style="color:#ae81ff">23</span> Jan <span style="color:#ae81ff">2017</span> <span style="color:#ae81ff">13</span><span style="color:#f92672">:</span><span style="color:#ae81ff">27</span><span style="color:#f92672">:</span><span style="color:#ae81ff">56</span> GMT
+</span></span><span style="display:flex;"><span>Pragma: no<span style="color:#f92672">-</span>cache
+</span></span><span style="display:flex;"><span>Server: bfe<span style="color:#f92672">/</span><span style="color:#ae81ff">1.0.8.18</span>
+</span></span><span style="display:flex;"><span>Set<span style="color:#f92672">-</span>Cookie<span style="color:#f92672">:</span> BDORZ<span style="color:#f92672">=</span><span style="color:#ae81ff">27315</span><span style="color:#f92672">;</span> max<span style="color:#f92672">-</span>age<span style="color:#f92672">=</span><span style="color:#ae81ff">86400</span><span style="color:#f92672">;</span> domain<span style="color:#f92672">=.</span><span style="color:#a6e22e">baidu</span><span style="color:#f92672">.</span><span style="color:#a6e22e">com</span><span style="color:#f92672">;</span> path<span style="color:#f92672">=/</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;!</span>DOCTYPE html<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;!--</span>STATUS OK<span style="color:#f92672">--&gt;&lt;</span>html<span style="color:#f92672">&gt;</span> <span style="color:#f92672">&lt;</span>head<span style="color:#f92672">&gt;&lt;</span>meta http<span style="color:#f92672">-</span>equiv<span style="color:#f92672">=</span>content<span style="color:#f92672">-</span>type content<span style="color:#f92672">=</span>text<span style="color:#f92672">/</span>html<span style="color:#f92672">;</span>charset<span style="color:#f92672">=</span>utf<span style="color:#f92672">-</span><span style="color:#ae81ff">8</span><span style="color:#f92672">&gt;&lt;</span>meta http<span style="color:#f92672">-</span>equiv<span style="color:#f92672">=</span>X<span style="color:#f92672">-</span>UA<span style="color:#f92672">-</span>Compatible content<span style="color:#f92672">=</span>IE<span style="color:#f92672">=</span>Edge<span style="color:#f92672">&gt;&lt;</span>meta content<span style="color:#f92672">=</span>always name<span style="color:#f92672">=</span>referrer<span style="color:#f92672">&gt;&lt;</span>link rel<span style="color:#f92672">=</span>stylesheet type<span style="color:#f92672">=</span>text<span style="color:#f92672">/</span>css href<span style="color:#f92672">=</span>http<span style="color:#f92672">:</span><span style="color:#75715e">//s1.bdstatic.com/r/www/cache/bdorz/baidu.min.css&gt;&lt;title&gt;百度一下，你就知道&lt;/title&gt;&lt;/head&gt; &lt;body link=#0000cc&gt; &lt;div id=wrapper&gt; &lt;div id=head&gt; &lt;div class=head_wrapper&gt; &lt;div class=s_form&gt; &lt;div class=s_form_wrapper&gt; &lt;div id=lg&gt; &lt;ocus=true src=//www.baidu.com/img/bd_logo1.png width=270 height=129&gt; &lt;/div&gt; &lt;form id=form name=f action=//www.baidu.com/s class=fm&gt; &lt;input type=hidden name=bdorz_come value=1&gt; &lt;input type=hidden name=ie value=utf-8&gt; &lt;input type=hidden name=f value=8&gt; &lt;input type=hidden name=rsv_bp value=1&gt; &lt;input type=hidden name=rsv_idx value=1&gt; &lt;input type=hidden name=tn value=baidu&gt;&lt;span class=&#34;bg s_ipt_wr&#34;&gt;&lt;input id=kw name=wd class=s_ipt value maxlength=255 autocomplete=off autofocus&gt;&lt;/span&gt;&lt;span class=&#34;bg s_btn_wr&#34;&gt;&lt;input type=submit id=su value=百度一下 class=&#34;bg s_btn&#34;&gt;&lt;/span&gt; &lt;/form&gt; &lt;/div&gt; &lt;/div&gt; &lt;div id=u1&gt; &lt;a href=http://news.baidu.com name=tj_trnews class=mnav&gt;新闻a href=http://www.hao123.com name=tj_trhao123 class=mnav&gt;hao123&lt;/a&gt; &lt;a href=http://map.baidu.com name=tj_trmap class=mnav&gt;地图&lt;/a&gt; &lt;a href=http://v.baidu.com name=tj_trvideo class=mnav&gt;视频&lt;/a&gt; &lt;a href=http://tieba.baidu.come=tj_trtieba class=mnav&gt;贴吧&lt;/a&gt; &lt;noscript&gt; &lt;a href=http://www.baidu.com/bdorz/login.gif?login&amp;amp;tpl=mn&amp;amp;u=http%3A%2F%2Fwww.baidu.com%2f%3fbdorz_come%3d1 name=tj_login class=lb&gt;登录&lt;/a&gt; &lt;/noscript&gt; &lt;script&gt;document.write(&#39;&lt;a href=&#34;http://www.baidu.com/bdorz/login.gif?login&amp;tpl=mn&amp;u=&#39;+ encodeURIComponent(window.location.href+ (window.location.search === &#34;&#34; ? &#34;?&#34; : &#34;&amp;&#34;)+ &#34;bdorz_come=1&#34;)+ &#39;&#34; name=&#34;tj_login&#34; class=&#34;lb&#34;&gt;登录&lt;/a&gt;&#39;);&lt;/script&gt;  href=//www.baidu.com/more/ name=tj_briicon class=bri style=&#34;display: block;&#34;&gt;更多产品&lt;/a&gt; &lt;/div&gt; &lt;/div&gt; &lt;/div&gt; &lt;div id=ftCon&gt; &lt;div id=ftConw&gt; &lt;p id=lh&gt; &lt;a href=http://home.baidu.com&gt;关于百度&lt;/a&gt; &lt;a href=http://ir.baidu.com&gt;About Baidu&lt;/a&gt; &lt;/p&gt; &lt;p id=cp&gt;&amp;copy;2017&amp;nbsp;Baidu&amp;nbsp;&lt;a href=http://www.baidu.com/duty/&gt;使用百度前必读&lt;/a&gt;&amp;nbsp; &lt;a href=http://jianyi.baidu.com/ class=cp-feedback&gt;意见反馈&lt;/a&gt;&amp;nbsp;京ICP证030173号&amp;nbsp; &lt;img src=//www/gs.gif&gt; &lt;/p&gt; &lt;/div&gt; &lt;/div&gt; &lt;/div&gt; &lt;/body&gt; &lt;/html&gt;
+</span></span></span></code></pre></div><p>参考代码实现地址</p>
 <p><a href="https://blog.csdn.net/jxlhljh/article/details/119963668" target="_blank" rel="noopener noreffer ">https://blog.csdn.net/jxlhljh/article/details/119963668</a></p>
+<p><a href="https://github.com/monkeyWie/proxyee" target="_blank" rel="noopener noreffer ">https://github.com/monkeyWie/proxyee</a></p>
+<h3 id="代理模式02-带路由转发的代理功能hello-world版">代理模式02 带路由转发的代理功能hello-world版</h3>
 </div><div class="post-footer" id="post-footer">
     <div class="post-info">
         <div class="post-info-line">
@@ -264,7 +539,8 @@
     </div>
 
 
-    <div class="post-nav"><a href="/posts/2023/event-log/" class="prev" rel="prev" title="事件日志埋点"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>事件日志埋点</a></div>
+    <div class="post-nav"><a href="/posts/2023/event-log/" class="prev" rel="prev" title="事件日志埋点"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>事件日志埋点</a>
+            <a href="/posts/gateway/spring-cloud-gateway/spring-cloud-gateway-helloworld/" class="next" rel="next" title="WEB网关系列-spring-cloud-gateway克隆与启动">WEB网关系列-spring-cloud-gateway克隆与启动<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
 
 
 </div>
