@@ -16,7 +16,7 @@
 <meta name="application-name" content="ZhengPengDe网络日志">
 <meta name="apple-mobile-web-app-title" content="ZhengPengDe网络日志"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://847850277.github.io/posts/gateway/gateway-02-http-proxy/" /><link rel="prev" href="https://847850277.github.io/posts/2023/event-log/" /><link rel="next" href="https://847850277.github.io/posts/gateway/spring-cloud-gateway/spring-cloud-gateway-helloworld/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://847850277.github.io/posts/gateway/gateway-02-http-proxy/" /><link rel="prev" href="https://847850277.github.io/posts/2023/event-log/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
         <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
     {
@@ -27,7 +27,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/847850277.github.io\/posts\/gateway\/gateway-02-http-proxy\/"
-        },"genre": "posts","keywords": "gateway, 网关","wordcount":  958 ,
+        },"genre": "posts","keywords": "gateway, 网关","wordcount":  1112 ,
         "url": "https:\/\/847850277.github.io\/posts\/gateway\/gateway-02-http-proxy\/","datePublished": "2023-10-29T09:00:00+00:00","dateModified": "2023-10-30T10:00:00+00:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
@@ -102,8 +102,8 @@
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">WEB网关系列02-基于http协议实现流量的代理</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>zhengpengde</a></span>&nbsp;<span class="post-category">included in <a href="/categories/gateway/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>gateway</a>&nbsp;<a href="/categories/%E7%BD%91%E5%85%B3/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>网关</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-10-29">2023-10-29</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;958 words&nbsp;
-                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;5 minutes&nbsp;</div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-10-29">2023-10-29</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;1112 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;6 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  data-kept="">
                 <div class="details-summary toc-title">
                     <span>Contents</span>
@@ -224,7 +224,7 @@
 </span></span></code></pre></div><p>上面的代码会输出百度的响应信息，跟我们正常在浏览器上面访问百度是同样的效果，只是，浏览器上面有更美观的样式展现出来了。</p>
 <h2 id="代理模式">代理模式</h2>
 <blockquote>
-<p>直连模式，也就是服务与服务中间经过了代理服务的转发，分别是请求和响应的转发。代理服务除了处理转发外还需要相应的路由寻址，
+<p>代理模式，也就是服务与服务中间经过了代理服务的转发，分别是请求和响应的转发。代理服务除了处理转发外还需要相应的路由寻址，
 也就是把请求对应转发到对应的目标服务上，比如<code>http://xxx/request1</code>对应的地址为<code>service-B</code>上的地址。<code>http://xxx/request2</code>对应的地址为<code>service-C</code>上的地址。
 那么就需要代理服务能正确的进行路由匹配和转发了。</p>
 </blockquote>
@@ -486,12 +486,14 @@
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span></code></pre></div><p>通过命令来代理访问百度地址</p>
+</span></span></code></pre></div><ul>
+<li>通过命令来代理访问百度地址</li>
+</ul>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">--</span> <span style="color:#960050;background-color:#1e0010">代理访问百度</span>
 </span></span><span style="display:flex;"><span>curl <span style="color:#f92672">-</span>i <span style="color:#f92672">-</span>x <span style="color:#ae81ff">127.0.0.1</span><span style="color:#f92672">:</span><span style="color:#ae81ff">1080</span>  http<span style="color:#f92672">:</span><span style="color:#75715e">//www.baidu.com
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">--</span> <span style="color:#960050;background-color:#1e0010">对应乡音如下</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">--</span> <span style="color:#960050;background-color:#1e0010">对应响应如下</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>HTTP<span style="color:#f92672">/</span><span style="color:#ae81ff">1.1</span> <span style="color:#ae81ff">200</span> OK
 </span></span><span style="display:flex;"><span>Accept<span style="color:#f92672">-</span>Ranges<span style="color:#f92672">:</span> bytes
@@ -508,10 +510,82 @@
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;!</span>DOCTYPE html<span style="color:#f92672">&gt;</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;!--</span>STATUS OK<span style="color:#f92672">--&gt;&lt;</span>html<span style="color:#f92672">&gt;</span> <span style="color:#f92672">&lt;</span>head<span style="color:#f92672">&gt;&lt;</span>meta http<span style="color:#f92672">-</span>equiv<span style="color:#f92672">=</span>content<span style="color:#f92672">-</span>type content<span style="color:#f92672">=</span>text<span style="color:#f92672">/</span>html<span style="color:#f92672">;</span>charset<span style="color:#f92672">=</span>utf<span style="color:#f92672">-</span><span style="color:#ae81ff">8</span><span style="color:#f92672">&gt;&lt;</span>meta http<span style="color:#f92672">-</span>equiv<span style="color:#f92672">=</span>X<span style="color:#f92672">-</span>UA<span style="color:#f92672">-</span>Compatible content<span style="color:#f92672">=</span>IE<span style="color:#f92672">=</span>Edge<span style="color:#f92672">&gt;&lt;</span>meta content<span style="color:#f92672">=</span>always name<span style="color:#f92672">=</span>referrer<span style="color:#f92672">&gt;&lt;</span>link rel<span style="color:#f92672">=</span>stylesheet type<span style="color:#f92672">=</span>text<span style="color:#f92672">/</span>css href<span style="color:#f92672">=</span>http<span style="color:#f92672">:</span><span style="color:#75715e">//s1.bdstatic.com/r/www/cache/bdorz/baidu.min.css&gt;&lt;title&gt;百度一下，你就知道&lt;/title&gt;&lt;/head&gt; &lt;body link=#0000cc&gt; &lt;div id=wrapper&gt; &lt;div id=head&gt; &lt;div class=head_wrapper&gt; &lt;div class=s_form&gt; &lt;div class=s_form_wrapper&gt; &lt;div id=lg&gt; &lt;ocus=true src=//www.baidu.com/img/bd_logo1.png width=270 height=129&gt; &lt;/div&gt; &lt;form id=form name=f action=//www.baidu.com/s class=fm&gt; &lt;input type=hidden name=bdorz_come value=1&gt; &lt;input type=hidden name=ie value=utf-8&gt; &lt;input type=hidden name=f value=8&gt; &lt;input type=hidden name=rsv_bp value=1&gt; &lt;input type=hidden name=rsv_idx value=1&gt; &lt;input type=hidden name=tn value=baidu&gt;&lt;span class=&#34;bg s_ipt_wr&#34;&gt;&lt;input id=kw name=wd class=s_ipt value maxlength=255 autocomplete=off autofocus&gt;&lt;/span&gt;&lt;span class=&#34;bg s_btn_wr&#34;&gt;&lt;input type=submit id=su value=百度一下 class=&#34;bg s_btn&#34;&gt;&lt;/span&gt; &lt;/form&gt; &lt;/div&gt; &lt;/div&gt; &lt;div id=u1&gt; &lt;a href=http://news.baidu.com name=tj_trnews class=mnav&gt;新闻a href=http://www.hao123.com name=tj_trhao123 class=mnav&gt;hao123&lt;/a&gt; &lt;a href=http://map.baidu.com name=tj_trmap class=mnav&gt;地图&lt;/a&gt; &lt;a href=http://v.baidu.com name=tj_trvideo class=mnav&gt;视频&lt;/a&gt; &lt;a href=http://tieba.baidu.come=tj_trtieba class=mnav&gt;贴吧&lt;/a&gt; &lt;noscript&gt; &lt;a href=http://www.baidu.com/bdorz/login.gif?login&amp;amp;tpl=mn&amp;amp;u=http%3A%2F%2Fwww.baidu.com%2f%3fbdorz_come%3d1 name=tj_login class=lb&gt;登录&lt;/a&gt; &lt;/noscript&gt; &lt;script&gt;document.write(&#39;&lt;a href=&#34;http://www.baidu.com/bdorz/login.gif?login&amp;tpl=mn&amp;u=&#39;+ encodeURIComponent(window.location.href+ (window.location.search === &#34;&#34; ? &#34;?&#34; : &#34;&amp;&#34;)+ &#34;bdorz_come=1&#34;)+ &#39;&#34; name=&#34;tj_login&#34; class=&#34;lb&#34;&gt;登录&lt;/a&gt;&#39;);&lt;/script&gt;  href=//www.baidu.com/more/ name=tj_briicon class=bri style=&#34;display: block;&#34;&gt;更多产品&lt;/a&gt; &lt;/div&gt; &lt;/div&gt; &lt;/div&gt; &lt;div id=ftCon&gt; &lt;div id=ftConw&gt; &lt;p id=lh&gt; &lt;a href=http://home.baidu.com&gt;关于百度&lt;/a&gt; &lt;a href=http://ir.baidu.com&gt;About Baidu&lt;/a&gt; &lt;/p&gt; &lt;p id=cp&gt;&amp;copy;2017&amp;nbsp;Baidu&amp;nbsp;&lt;a href=http://www.baidu.com/duty/&gt;使用百度前必读&lt;/a&gt;&amp;nbsp; &lt;a href=http://jianyi.baidu.com/ class=cp-feedback&gt;意见反馈&lt;/a&gt;&amp;nbsp;京ICP证030173号&amp;nbsp; &lt;img src=//www/gs.gif&gt; &lt;/p&gt; &lt;/div&gt; &lt;/div&gt; &lt;/div&gt; &lt;/body&gt; &lt;/html&gt;
-</span></span></span></code></pre></div><p>参考代码实现地址</p>
+</span></span></span></code></pre></div><ul>
+<li>通过代码来实现代理访问百度</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.BufferedReader<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.IOException<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.InputStream<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.InputStreamReader<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.net.HttpURLConnection<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.net.InetSocketAddress<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.net.Proxy<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.net.URL<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.nio.charset.StandardCharsets<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ProxyHttpsServerTest</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//设置代理服务器的ip和端口
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        Proxy proxy <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Proxy<span style="color:#f92672">(</span>Proxy<span style="color:#f92672">.</span><span style="color:#a6e22e">Type</span><span style="color:#f92672">.</span><span style="color:#a6e22e">HTTP</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> InetSocketAddress<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;127.0.0.1&#34;</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">1080</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>        String api <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;https://www.baidu.com&#34;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        HttpURLConnection connection <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        InputStream in <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        BufferedReader reader <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//构造一个URL对象
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            URL url <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> URL<span style="color:#f92672">(</span>api<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//获取URLConnection对象
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            connection <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>HttpURLConnection<span style="color:#f92672">)</span> url<span style="color:#f92672">.</span><span style="color:#a6e22e">openConnection</span><span style="color:#f92672">(</span>proxy<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//getOutputStream会隐含的进行connect(即：如同调用上面的connect()方法，所以在开发中不调用connect()也可以)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            in <span style="color:#f92672">=</span> connection<span style="color:#f92672">.</span><span style="color:#a6e22e">getInputStream</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//通过InputStreamReader将字节流转换成字符串，在通过BufferedReader将字符流转换成自带缓冲流
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            reader <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> BufferedReader<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> InputStreamReader<span style="color:#f92672">(</span>in<span style="color:#f92672">,</span> StandardCharsets<span style="color:#f92672">.</span><span style="color:#a6e22e">UTF_8</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>            StringBuilder sb <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> StringBuilder<span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            String line <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//按行读取
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#66d9ef">while</span> <span style="color:#f92672">((</span>line <span style="color:#f92672">=</span> reader<span style="color:#f92672">.</span><span style="color:#a6e22e">readLine</span><span style="color:#f92672">())</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                sb<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>line<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>            String response <span style="color:#f92672">=</span> sb<span style="color:#f92672">.</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>response<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>Exception exception<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            exception<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>connection <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                connection<span style="color:#f92672">.</span><span style="color:#a6e22e">disconnect</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>in <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                    in<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                    e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>reader <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                    reader<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                    e<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div><h3 id="代理模式02-带路由转发的代理功能hello-world版">代理模式02 带路由转发的代理功能hello-world版</h3>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="/img/source/gateway/proxy/socket_match_proxy_mode.png"
+        data-srcset="/img/source/gateway/proxy/socket_match_proxy_mode.png, /img/source/gateway/proxy/socket_match_proxy_mode.png 1.5x, /img/source/gateway/proxy/socket_match_proxy_mode.png 2x"
+        data-sizes="auto"
+        alt="/img/source/gateway/proxy/socket_match_proxy_mode.png"
+        title="socket_match_proxy_mode" /></p>
+<p>参考</p>
 <p><a href="https://blog.csdn.net/jxlhljh/article/details/119963668" target="_blank" rel="noopener noreffer ">https://blog.csdn.net/jxlhljh/article/details/119963668</a></p>
 <p><a href="https://github.com/monkeyWie/proxyee" target="_blank" rel="noopener noreffer ">https://github.com/monkeyWie/proxyee</a></p>
-<h3 id="代理模式02-带路由转发的代理功能hello-world版">代理模式02 带路由转发的代理功能hello-world版</h3>
+<p><a href="https://www.runoob.com/java/net-serversocket-socket.html" target="_blank" rel="noopener noreffer ">https://www.runoob.com/java/net-serversocket-socket.html</a></p>
 </div><div class="post-footer" id="post-footer">
     <div class="post-info">
         <div class="post-info-line">
@@ -539,15 +613,14 @@
     </div>
 
 
-    <div class="post-nav"><a href="/posts/2023/event-log/" class="prev" rel="prev" title="事件日志埋点"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>事件日志埋点</a>
-            <a href="/posts/gateway/spring-cloud-gateway/spring-cloud-gateway-helloworld/" class="next" rel="next" title="WEB网关系列-spring-cloud-gateway克隆与启动">WEB网关系列-spring-cloud-gateway克隆与启动<i class="fas fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+    <div class="post-nav"><a href="/posts/2023/event-log/" class="prev" rel="prev" title="事件日志埋点"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>事件日志埋点</a></div>
 
 
 </div>
 </article></div>
             </main><footer class="footer">
         <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.112.5">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.11"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
-                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2021 - 2023</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank"></a></span></div>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2021 - 2024</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank"></a></span></div>
 
             
             <div class="busuanzi-footer">

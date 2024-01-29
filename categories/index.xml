@@ -3,26 +3,18 @@
         <title>Categories - Category - ZhengPengDe Blog</title>
         <link>https://847850277.github.io/categories/</link>
         <description>Categories - Category - ZhengPengDe Blog</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 31 Oct 2023 09:00:00 &#43;0000</lastBuildDate><atom:link href="https://847850277.github.io/categories/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 29 Oct 2023 09:00:00 &#43;0000</lastBuildDate><atom:link href="https://847850277.github.io/categories/" rel="self" type="application/rss+xml" /><item>
     <title>gateway</title>
     <link>https://847850277.github.io/categories/gateway/</link>
-    <pubDate>Tue, 31 Oct 2023 09:00:00 &#43;0000</pubDate>
+    <pubDate>Sun, 29 Oct 2023 09:00:00 &#43;0000</pubDate>
     <author>Author</author>
     <guid>https://847850277.github.io/categories/gateway/</guid>
     <description><![CDATA[]]></description>
 </item>
 <item>
-    <title>spring-cloud-gateway</title>
-    <link>https://847850277.github.io/categories/spring-cloud-gateway/</link>
-    <pubDate>Tue, 31 Oct 2023 09:00:00 &#43;0000</pubDate>
-    <author>Author</author>
-    <guid>https://847850277.github.io/categories/spring-cloud-gateway/</guid>
-    <description><![CDATA[]]></description>
-</item>
-<item>
     <title>网关</title>
     <link>https://847850277.github.io/categories/%E7%BD%91%E5%85%B3/</link>
-    <pubDate>Tue, 31 Oct 2023 09:00:00 &#43;0000</pubDate>
+    <pubDate>Sun, 29 Oct 2023 09:00:00 &#43;0000</pubDate>
     <author>Author</author>
     <guid>https://847850277.github.io/categories/%E7%BD%91%E5%85%B3/</guid>
     <description><![CDATA[]]></description>
@@ -81,6 +73,14 @@
     <pubDate>Fri, 16 Jun 2023 09:00:00 &#43;0000</pubDate>
     <author>Author</author>
     <guid>https://847850277.github.io/categories/spi/</guid>
+    <description><![CDATA[]]></description>
+</item>
+<item>
+    <title>dubbo</title>
+    <link>https://847850277.github.io/categories/dubbo/</link>
+    <pubDate>Sat, 10 Jun 2023 09:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://847850277.github.io/categories/dubbo/</guid>
     <description><![CDATA[]]></description>
 </item>
 </channel>

@@ -3,17 +3,9 @@
         <title>ZhengPengDe Blog</title>
         <link>https://847850277.github.io/</link>
         <description>This is ZhengPengDe网络日志</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 31 Oct 2023 09:00:00 &#43;0000</lastBuildDate>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 29 Oct 2023 09:00:00 &#43;0000</lastBuildDate>
             <atom:link href="https://847850277.github.io/index.xml" rel="self" type="application/rss+xml" />
         <item>
-    <title>WEB网关系列-spring-cloud-gateway克隆与启动</title>
-    <link>https://847850277.github.io/posts/gateway/spring-cloud-gateway/spring-cloud-gateway-helloworld/</link>
-    <pubDate>Tue, 31 Oct 2023 09:00:00 &#43;0000</pubDate>
-    <author>zhengpengde</author>
-    <guid>https://847850277.github.io/posts/gateway/spring-cloud-gateway/spring-cloud-gateway-helloworld/</guid>
-    <description><![CDATA[WEB网关系列-spring-cloud-gateway克隆与启动 克隆项目 git clone https://github.com/spring-cloud/spring-cloud-gateway.git IDEA项目配置 1、用IDEA打开项目 2、配置check-style 2、1 2、2 ]]></description>
-</item>
-<item>
     <title>WEB网关系列02-基于http协议实现流量的代理</title>
     <link>https://847850277.github.io/posts/gateway/gateway-02-http-proxy/</link>
     <pubDate>Sun, 29 Oct 2023 09:00:00 &#43;0000</pubDate>
@@ -113,6 +105,14 @@ ubuntu微信]]></description>
 JDK的SPI实现 Dubbo的SPI实现、ShenYu的 SPI Spring的SPI实现 JDK的SPI实现流程为
 在类路径的META-INF/services目录创建一个以接口全限定名称命名的文件（本质是一个properties）文件，例如命名为java.sql.Driver 该文件中可以指定具体的实现类，也就是每个实现类的全类型限定名为单独一行 例如 META-INF/services/java.sql.Driver # META-INF/services/java.sql.Driver文件内容 com.mysql.jdbc.Driver org.postgresql.Driver 最后通过java.util.ServiceLoader对该文件进行加载，实例化接口的对应实现类（这里隐含了一个约定，所有实现类必须提供无参构造函数,用来反射调用） 底层的实现涉及到类加载、双亲委派等内容，这里不展开。基于这种设计思路，很多主流框架实现了一套SPI扩展，例如Dubbo的SPI扩展模块，就是读取类路径 下META-INF/services/dubbo目录的文件内容进行类加载。ShenYu-SPI模块也是沿用类似的设计思路。
 JDK SPI 的代码示例 接口定义 public interface Search { public List&lt;String&gt; searchDoc(String keyword); } 实现类 public class FileSearch implements Search{ @Override public List&lt;String&gt; searchDoc(String keyword) { System.out.println(&#34;文件搜索 &#34;+keyword); return null; } } public class DatabaseSearch implements Search{ @Override public List&lt;String&gt; searchDoc(String keyword) { System.]]></description>
+</item>
+<item>
+    <title>dubbo是否有对文件上传下载导入导出的支持</title>
+    <link>https://847850277.github.io/posts/dubbo/dubbo-upload/</link>
+    <pubDate>Sat, 10 Jun 2023 09:00:00 &#43;0000</pubDate>
+    <author>zhengpengde</author>
+    <guid>https://847850277.github.io/posts/dubbo/dubbo-upload/</guid>
+    <description><![CDATA[dubbo是否有对文件上传下载导入导出的支持 项目当前架构： HTTP请求 -&gt; 网关SpringCloudGateway -&gt; 网关路由匹配 -&gt; 网关dubbo泛化调用 -&gt; dubbo服务 但与文件相关的操作，还是需要以Controller的形式暴露服务，因为涉及HttpServletResponse、ModelAndView、MultipartFile这些对象，如： @PostMapping(&#34;/upload&#34;) public Result uploadFile(@RequestParam(&#34;file&#34;) MultipartFile file) { ...... } **问题：**请问dubbo可支持文件类型的操作，向外暴露服务，从而去除掉controller ？ 对于大文件类型的操作，我们建议在首次接收到 MultipartFile 请求之后将文件存储到 HDFS 或者 OSS 等存储介质上，然后在后端传递的时候直接通过一个标识符传递。对于小文件，将 file 转换成 byte 数组传递就行。 这个想的有点大，dubbo专注于分布式式RPC框架，如果把MVC功能，或者消息堆积之类的功能都实现了，就不太好专注于RPC，想的大一些其实可以考虑一些子项目Dubbo-MVC, Dubbo-MQ ，Dubbo-Framework 😄 dubbo是否有对文件上传下载导入导出的支持]]></description>
 </item>
 </channel>
 </rss>
