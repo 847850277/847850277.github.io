@@ -3,7 +3,31 @@
         <title>Tags - Tag - ZhengPengDe Blog</title>
         <link>https://847850277.github.io/tags/</link>
         <description>Tags - Tag - ZhengPengDe Blog</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 29 Oct 2023 09:00:00 &#43;0000</lastBuildDate><atom:link href="https://847850277.github.io/tags/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 03 Nov 2024 10:00:00 &#43;0000</lastBuildDate><atom:link href="https://847850277.github.io/tags/" rel="self" type="application/rss+xml" /><item>
+    <title>Http Web Server</title>
+    <link>https://847850277.github.io/tags/http-web-server/</link>
+    <pubDate>Sun, 03 Nov 2024 10:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://847850277.github.io/tags/http-web-server/</guid>
+    <description><![CDATA[]]></description>
+</item>
+<item>
+    <title>Mario</title>
+    <link>https://847850277.github.io/tags/mario/</link>
+    <pubDate>Sun, 03 Nov 2024 10:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://847850277.github.io/tags/mario/</guid>
+    <description><![CDATA[]]></description>
+</item>
+<item>
+    <title>Rust</title>
+    <link>https://847850277.github.io/tags/rust/</link>
+    <pubDate>Sun, 03 Nov 2024 10:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://847850277.github.io/tags/rust/</guid>
+    <description><![CDATA[]]></description>
+</item>
+<item>
     <title>gateway</title>
     <link>https://847850277.github.io/tags/gateway/</link>
     <pubDate>Sun, 29 Oct 2023 09:00:00 &#43;0000</pubDate>
@@ -57,30 +81,6 @@
     <pubDate>Mon, 19 Jun 2023 09:00:00 &#43;0000</pubDate>
     <author>Author</author>
     <guid>https://847850277.github.io/tags/%E5%91%BD%E4%BB%A4/</guid>
-    <description><![CDATA[]]></description>
-</item>
-<item>
-    <title>apache shenyu</title>
-    <link>https://847850277.github.io/tags/apache-shenyu/</link>
-    <pubDate>Fri, 16 Jun 2023 09:00:00 &#43;0000</pubDate>
-    <author>Author</author>
-    <guid>https://847850277.github.io/tags/apache-shenyu/</guid>
-    <description><![CDATA[]]></description>
-</item>
-<item>
-    <title>spi</title>
-    <link>https://847850277.github.io/tags/spi/</link>
-    <pubDate>Fri, 16 Jun 2023 09:00:00 &#43;0000</pubDate>
-    <author>Author</author>
-    <guid>https://847850277.github.io/tags/spi/</guid>
-    <description><![CDATA[]]></description>
-</item>
-<item>
-    <title>dubbo</title>
-    <link>https://847850277.github.io/tags/dubbo/</link>
-    <pubDate>Sat, 10 Jun 2023 09:00:00 &#43;0000</pubDate>
-    <author>Author</author>
-    <guid>https://847850277.github.io/tags/dubbo/</guid>
     <description><![CDATA[]]></description>
 </item>
 </channel>
