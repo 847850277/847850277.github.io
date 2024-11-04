@@ -1,0 +1,16 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Mario - Tag - ZhengPengDe Blog</title>
+        <link>https://847850277.github.io/tags/mario/</link>
+        <description>Mario - Tag - ZhengPengDe Blog</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 03 Nov 2024 10:00:00 &#43;0000</lastBuildDate><atom:link href="https://847850277.github.io/tags/mario/" rel="self" type="application/rss+xml" /><item>
+    <title>Rust实现Http Web Server</title>
+    <link>https://847850277.github.io/posts/rust-http-server/mario-01/</link>
+    <pubDate>Sun, 03 Nov 2024 10:00:00 &#43;0000</pubDate>
+    <author>zhengpengde</author>
+    <guid>https://847850277.github.io/posts/rust-http-server/mario-01/</guid>
+    <description><![CDATA[用Rust实现WebSerer的第一篇 最近业余时间一直在学习Rust,也在尝试用Rust去造轮子。第一个轮子就是用Rust去实现Web服务器。Web服务器的核心流程就是Request 和 Response。 简单的总结就是解析请求，然后匹配到Server初始化的路由处理器，然后路由处理器处理完返回。
+同步版本的程序 启动TCP服务 解析处理请求 匹配路由 返回响应 示范代码如下 use sync_core::server::Server; use sync_core::service::Service; fn main() { //trace log tracing_subscriber::fmt::init(); let mut server = Server::new(Service::new()); let route = sync_core::route::Route::new(&#34;GET&#34;.to_string(), &#34;/hello&#34;.to_string(), || { &#34;Hello World&#34;.to_string() }); // hello world 2 return int value let route2 = sync_core::route::Route::new(&#34;GET&#34;.to_string(), &#34;/hello2&#34;.to_string(), || { //i32 value return 42.to_string() }); // push route to server server.service.routes.push(route); server.service.routes.push(route2); server.start(); } use crate::service::Service; use log::info; use std::io::{Read, Write}; use std::net::{TcpListener, TcpStream}; pub struct Server { pub service: Service, } impl Server { pub fn new(service: Service) -&gt; Self { Self { service } } pub fn start(&amp;self) { let addr = &#34;127.]]></description>
+</item>
+</channel>
+</rss>
