@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <title>锈迹片段 - ZhengPengDe Blog</title><meta name="Description" content="锈迹片段"><meta property="og:title" content="锈迹片段" />
+<meta property="og:description" content="锈迹片段" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://847850277.github.io/posts/rust-snippet/rust-snippet/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-11-04T10:00:00+00:00" />
+<meta property="article:modified_time" content="2024-11-04T16:00:00+00:00" /><meta property="og:site_name" content="ZhengPengDe网络日志" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="锈迹片段"/>
+<meta name="twitter:description" content="锈迹片段"/>
+<meta name="application-name" content="ZhengPengDe网络日志">
+<meta name="apple-mobile-web-app-title" content="ZhengPengDe网络日志"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://847850277.github.io/posts/rust-snippet/rust-snippet/" /><link rel="prev" href="https://847850277.github.io/posts/rust-http-server/mario-01/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.1/css/all.min.css"></noscript><link rel="preload" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css"></noscript><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "锈迹片段",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/847850277.github.io\/posts\/rust-snippet\/rust-snippet\/"
+        },"genre": "posts","keywords": "Rust, Snippet","wordcount":  267 ,
+        "url": "https:\/\/847850277.github.io\/posts\/rust-snippet\/rust-snippet\/","datePublished": "2024-11-04T10:00:00+00:00","dateModified": "2024-11-04T16:00:00+00:00","publisher": {
+            "@type": "Organization",
+            "name": ""},"author": {
+                "@type": "Person",
+                "name": "zhengpengde"
+            },"description": "锈迹片段"
+    }
+    </script></head>
+    <body data-header-desktop="fixed" data-header-mobile="auto"><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="ZhengPengDe Blog">ZhengPengDe网络日志</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/about/"> 关于 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-desktop">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+                </a></div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="ZhengPengDe Blog">ZhengPengDe网络日志</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><div class="search-wrapper">
+                    <div class="search mobile" id="search-mobile">
+                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                            <i class="fas fa-search fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                            <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
+                        </a>
+                        <span class="search-button search-loading" id="search-loading-mobile">
+                            <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+                        Cancel
+                    </a>
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/about/" title="">关于</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
+            </a></div>
+    </div>
+</header><div class="search-dropdown desktop">
+        <div id="search-dropdown-desktop"></div>
+    </div>
+    <div class="search-dropdown mobile">
+        <div id="search-dropdown-mobile"></div>
+    </div><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<meta name="referrer" content="no-referrer-when-downgrade"><main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">锈迹片段</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>zhengpengde</a></span>&nbsp;<span class="post-category">included in <a href="/categories/rust/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Rust</a>&nbsp;<a href="/categories/snippet/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Snippet</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2024-11-04">2024-11-04</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;267 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;2 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  data-kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#如何调试rust过程属性宏的代码">如何调试Rust过程属性宏的代码</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="rust-snippet-锈迹片段">Rust Snippet 锈迹片段</h1>
+<h2 id="如何调试rust过程属性宏的代码">如何调试Rust过程属性宏的代码</h2>
+<p>通过<code>println!()</code>,可以打印出宏展开后的代码。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">generate_handler</span>(internal: <span style="color:#66d9ef">bool</span>, input: <span style="color:#a6e22e">TokenStream</span>) -&gt; Result<span style="color:#f92672">&lt;</span>TokenStream<span style="color:#f92672">&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> crate_name <span style="color:#f92672">=</span> utils::get_crate_name(internal);
+</span></span><span style="display:flex;"><span>    println!(<span style="color:#e6db74">&#34;crate_name: </span><span style="color:#e6db74">{:?}</span><span style="color:#e6db74">&#34;</span>, crate_name);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> item_fn <span style="color:#f92672">=</span> syn::parse::<span style="color:#f92672">&lt;</span>ItemFn<span style="color:#f92672">&gt;</span>(input)<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> (impl_generics, type_generics, where_clause) <span style="color:#f92672">=</span> item_fn.sig.generics.split_for_impl();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> vis <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>item_fn.vis;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> docs <span style="color:#f92672">=</span> item_fn
+</span></span><span style="display:flex;"><span>        .attrs
+</span></span><span style="display:flex;"><span>        .iter()
+</span></span><span style="display:flex;"><span>        .filter(<span style="color:#f92672">|</span>attr<span style="color:#f92672">|</span> attr.path().is_ident(<span style="color:#e6db74">&#34;doc&#34;</span>))
+</span></span><span style="display:flex;"><span>        .cloned()
+</span></span><span style="display:flex;"><span>        .collect::<span style="color:#f92672">&lt;</span>Vec<span style="color:#f92672">&lt;</span>_<span style="color:#f92672">&gt;&gt;</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> ident <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>item_fn.sig.ident;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> call_await <span style="color:#f92672">=</span> <span style="color:#66d9ef">if</span> item_fn.sig.asyncness.is_some() {
+</span></span><span style="display:flex;"><span>        Some(quote::quote!(.<span style="color:#66d9ef">await</span>))
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>        None
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> def_struct <span style="color:#f92672">=</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">!</span>item_fn.sig.generics.params.is_empty() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> iter <span style="color:#f92672">=</span> item_fn
+</span></span><span style="display:flex;"><span>            .sig
+</span></span><span style="display:flex;"><span>            .generics
+</span></span><span style="display:flex;"><span>            .params
+</span></span><span style="display:flex;"><span>            .iter()
+</span></span><span style="display:flex;"><span>            .filter_map(<span style="color:#f92672">|</span>param<span style="color:#f92672">|</span> <span style="color:#66d9ef">match</span> param {
+</span></span><span style="display:flex;"><span>                GenericParam::Type(ty) <span style="color:#f92672">=&gt;</span> Some(ty),
+</span></span><span style="display:flex;"><span>                _ <span style="color:#f92672">=&gt;</span> None,
+</span></span><span style="display:flex;"><span>            })
+</span></span><span style="display:flex;"><span>            .enumerate()
+</span></span><span style="display:flex;"><span>            .map(<span style="color:#f92672">|</span>(idx, ty)<span style="color:#f92672">|</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">let</span> ident <span style="color:#f92672">=</span> format_ident!(<span style="color:#e6db74">&#34;_mark{}&#34;</span>, idx);
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">let</span> ty_ident <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>ty.ident;
+</span></span><span style="display:flex;"><span>                (ident, ty_ident)
+</span></span><span style="display:flex;"><span>            });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> struct_members <span style="color:#f92672">=</span> iter.clone().map(<span style="color:#f92672">|</span>(ident, ty_ident)<span style="color:#f92672">|</span> {
+</span></span><span style="display:flex;"><span>            quote! { #ident: ::std::marker::PhantomData<span style="color:#f92672">&lt;</span>#ty_ident<span style="color:#f92672">&gt;</span> }
+</span></span><span style="display:flex;"><span>        });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> default_members <span style="color:#f92672">=</span> iter.clone().map(<span style="color:#f92672">|</span>(ident, _ty_ident)<span style="color:#f92672">|</span> {
+</span></span><span style="display:flex;"><span>            quote! { #ident: ::std::marker::PhantomData }
+</span></span><span style="display:flex;"><span>        });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        quote! {
+</span></span><span style="display:flex;"><span>            #vis <span style="color:#66d9ef">struct</span> #ident #type_generics { #(#struct_members),<span style="color:#f92672">*</span>}
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">impl</span> #type_generics ::std::default::Default <span style="color:#66d9ef">for</span> #ident #type_generics {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">default</span>() -&gt; <span style="color:#a6e22e">Self</span> {
+</span></span><span style="display:flex;"><span>                    Self { #(#default_members),<span style="color:#f92672">*</span> }
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>        quote! { #vis <span style="color:#66d9ef">struct</span> #ident; }
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> extractors <span style="color:#f92672">=</span> Vec::new();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> args <span style="color:#f92672">=</span> Vec::new();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (idx, input) <span style="color:#66d9ef">in</span> item_fn.sig.inputs.clone().into_iter().enumerate() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#66d9ef">let</span> FnArg::Typed(pat) <span style="color:#f92672">=</span> input {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">let</span> ty <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>pat.ty;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">let</span> id <span style="color:#f92672">=</span> quote::format_ident!(<span style="color:#e6db74">&#34;p{}&#34;</span>, idx);
+</span></span><span style="display:flex;"><span>            args.push(id.clone());
+</span></span><span style="display:flex;"><span>            extractors.push(quote! {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">let</span> #id <span style="color:#f92672">=</span> <span style="color:#f92672">&lt;</span>#ty <span style="color:#66d9ef">as</span> #crate_name::FromRequest<span style="color:#f92672">&gt;</span>::from_request(<span style="color:#f92672">&amp;</span>req, <span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> body).<span style="color:#66d9ef">await</span><span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>            });
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> expanded <span style="color:#f92672">=</span> quote! {
+</span></span><span style="display:flex;"><span>        #(#docs)<span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">#[allow(non_camel_case_types)]</span>
+</span></span><span style="display:flex;"><span>        #def_struct
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">impl</span> #impl_generics #crate_name::Endpoint <span style="color:#66d9ef">for</span> #ident #type_generics #where_clause {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Output</span> <span style="color:#f92672">=</span> #crate_name::Response;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//println!(output: #crate_name::Response);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#75715e">//println!(Output);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">#[allow(unused_mut)]</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">call</span>(<span style="color:#f92672">&amp;</span>self, <span style="color:#66d9ef">mut</span> req: #crate_name::Request) -&gt; #crate_name::Result<span style="color:#f92672">&lt;</span>Self::Output<span style="color:#f92672">&gt;</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">let</span> (req, <span style="color:#66d9ef">mut</span> body) <span style="color:#f92672">=</span> req.split();
+</span></span><span style="display:flex;"><span>                #(#extractors)<span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>                #item_fn
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">let</span> res <span style="color:#f92672">=</span> #ident(#(#args),<span style="color:#f92672">*</span>)#call_await;
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">let</span> res <span style="color:#f92672">=</span> #crate_name::error::IntoResult::into_result(res);
+</span></span><span style="display:flex;"><span>                std::result::Result::map(res, #crate_name::IntoResponse::into_response)
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    println!(<span style="color:#e6db74">&#34;Expanded code: </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span>, expanded);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Ok(expanded.into())
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2024-11-04</span>
+
+            </div></div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span></span>
+                
+                <div class="meta-item">
+                    <span id="busuanzi_container_page_pv">本文阅读量<span id="busuanzi_value_page_pv"></span>次</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/rust/">Rust</a>,&nbsp;<a href="/tags/snippet/">Snippet</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+
+    <div class="post-nav"><a href="/posts/rust-http-server/mario-01/" class="prev" rel="prev" title="Rust实现Http Web Server"><i class="fas fa-angle-left fa-fw" aria-hidden="true"></i>Rust实现Http Web Server</a></div>
+
+
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.112.5">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.11"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2021 - 2024</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank"></a></span></div>
+
+            
+            <div class="busuanzi-footer">
+                <span id="busuanzi_container_site_pv">
+                    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+                </span>
+                <span id="busuanzi_container_site_uv">
+                    本站访客数<span id="busuanzi_value_site_uv"></span>人次
+                </span>
+            </div></div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
+            </a>
+        </div><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

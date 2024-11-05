@@ -3,9 +3,18 @@
         <title>ZhengPengDe Blog</title>
         <link>https://847850277.github.io/</link>
         <description>This is ZhengPengDe网络日志</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 03 Nov 2024 10:00:00 &#43;0000</lastBuildDate>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Mon, 04 Nov 2024 10:00:00 &#43;0000</lastBuildDate>
             <atom:link href="https://847850277.github.io/index.xml" rel="self" type="application/rss+xml" />
         <item>
+    <title>锈迹片段</title>
+    <link>https://847850277.github.io/posts/rust-snippet/rust-snippet/</link>
+    <pubDate>Mon, 04 Nov 2024 10:00:00 &#43;0000</pubDate>
+    <author>zhengpengde</author>
+    <guid>https://847850277.github.io/posts/rust-snippet/rust-snippet/</guid>
+    <description><![CDATA[Rust Snippet 锈迹片段 如何调试Rust过程属性宏的代码 通过println!(),可以打印出宏展开后的代码。
+fn generate_handler(internal: bool, input: TokenStream) -&gt; Result&lt;TokenStream&gt; { let crate_name = utils::get_crate_name(internal); println!(&#34;crate_name: {:?}&#34;, crate_name); let item_fn = syn::parse::&lt;ItemFn&gt;(input)?; let (impl_generics, type_generics, where_clause) = item_fn.sig.generics.split_for_impl(); let vis = &amp;item_fn.vis; let docs = item_fn .attrs .iter() .filter(|attr| attr.path().is_ident(&#34;doc&#34;)) .cloned() .collect::&lt;Vec&lt;_&gt;&gt;(); let ident = &amp;item_fn.sig.ident; let call_await = if item_fn.sig.asyncness.is_some() { Some(quote::quote!(.await)) } else { None }; let def_struct = if !item_fn.sig.generics.params.is_empty() { let iter = item_fn .]]></description>
+</item>
+<item>
     <title>Rust实现Http Web Server</title>
     <link>https://847850277.github.io/posts/rust-http-server/mario-01/</link>
     <pubDate>Sun, 03 Nov 2024 10:00:00 &#43;0000</pubDate>
@@ -102,18 +111,6 @@ ubuntu微信]]></description>
     <author>zhengpengde</author>
     <guid>https://847850277.github.io/posts/2023/terminal/</guid>
     <description><![CDATA[常用命令记录 通用命令 -- 查询系统超过100M的文件 sudo find / -type f -size +100M -- 查找某某文件 sudo find / -name *.java ubuntu常用命令 -- 安装jdk sudo apt install openjdk-8-jdk -- 卸载jdk sudo apt purge openjdk-8-jdk -- 切换java版本 sudo update-alternatives --config java ]]></description>
-</item>
-<item>
-    <title>apache shenyu的spi机制</title>
-    <link>https://847850277.github.io/posts/apache-shenyu/shenyu-spi/</link>
-    <pubDate>Fri, 16 Jun 2023 09:00:00 &#43;0000</pubDate>
-    <author>zhengpengde</author>
-    <guid>https://847850277.github.io/posts/apache-shenyu/shenyu-spi/</guid>
-    <description><![CDATA[什么是spi SPI就是Service Provider Interface,是一种动态的服务发现机制。 可以基于运行时动态的加载接口的实现类。通过(接口编程 + 策略模式 + 配置文件) 实现解耦和扩展。
-应用 数据库驱动 基于该接口的实现有MySQL,PostgreSQL,SqlServer等。 SLF4J日志框架 Dubbo的SPI扩展 dubbo apache shenyu spring boot starter jdbc的应用 日志的应用 apache shenyu的spi应用 dubbo的spi应用 实现方式 市面上常见的SPI的实现方式有：
-JDK的SPI实现 Dubbo的SPI实现、ShenYu的 SPI Spring的SPI实现 JDK的SPI实现流程为
-在类路径的META-INF/services目录创建一个以接口全限定名称命名的文件（本质是一个properties）文件，例如命名为java.sql.Driver 该文件中可以指定具体的实现类，也就是每个实现类的全类型限定名为单独一行 例如 META-INF/services/java.sql.Driver # META-INF/services/java.sql.Driver文件内容 com.mysql.jdbc.Driver org.postgresql.Driver 最后通过java.util.ServiceLoader对该文件进行加载，实例化接口的对应实现类（这里隐含了一个约定，所有实现类必须提供无参构造函数,用来反射调用） 底层的实现涉及到类加载、双亲委派等内容，这里不展开。基于这种设计思路，很多主流框架实现了一套SPI扩展，例如Dubbo的SPI扩展模块，就是读取类路径 下META-INF/services/dubbo目录的文件内容进行类加载。ShenYu-SPI模块也是沿用类似的设计思路。
-JDK SPI 的代码示例 接口定义 public interface Search { public List&lt;String&gt; searchDoc(String keyword); } 实现类 public class FileSearch implements Search{ @Override public List&lt;String&gt; searchDoc(String keyword) { System.out.println(&#34;文件搜索 &#34;+keyword); return null; } } public class DatabaseSearch implements Search{ @Override public List&lt;String&gt; searchDoc(String keyword) { System.]]></description>
 </item>
 </channel>
 </rss>

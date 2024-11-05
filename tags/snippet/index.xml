@@ -1,0 +1,16 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Snippet - Tag - ZhengPengDe Blog</title>
+        <link>https://847850277.github.io/tags/snippet/</link>
+        <description>Snippet - Tag - ZhengPengDe Blog</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Mon, 04 Nov 2024 10:00:00 &#43;0000</lastBuildDate><atom:link href="https://847850277.github.io/tags/snippet/" rel="self" type="application/rss+xml" /><item>
+    <title>锈迹片段</title>
+    <link>https://847850277.github.io/posts/rust-snippet/rust-snippet/</link>
+    <pubDate>Mon, 04 Nov 2024 10:00:00 &#43;0000</pubDate>
+    <author>zhengpengde</author>
+    <guid>https://847850277.github.io/posts/rust-snippet/rust-snippet/</guid>
+    <description><![CDATA[Rust Snippet 锈迹片段 如何调试Rust过程属性宏的代码 通过println!(),可以打印出宏展开后的代码。
+fn generate_handler(internal: bool, input: TokenStream) -&gt; Result&lt;TokenStream&gt; { let crate_name = utils::get_crate_name(internal); println!(&#34;crate_name: {:?}&#34;, crate_name); let item_fn = syn::parse::&lt;ItemFn&gt;(input)?; let (impl_generics, type_generics, where_clause) = item_fn.sig.generics.split_for_impl(); let vis = &amp;item_fn.vis; let docs = item_fn .attrs .iter() .filter(|attr| attr.path().is_ident(&#34;doc&#34;)) .cloned() .collect::&lt;Vec&lt;_&gt;&gt;(); let ident = &amp;item_fn.sig.ident; let call_await = if item_fn.sig.asyncness.is_some() { Some(quote::quote!(.await)) } else { None }; let def_struct = if !item_fn.sig.generics.params.is_empty() { let iter = item_fn .]]></description>
+</item>
+</channel>
+</rss>

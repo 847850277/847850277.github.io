@@ -3,7 +3,23 @@
         <title>Categories - Category - ZhengPengDe Blog</title>
         <link>https://847850277.github.io/categories/</link>
         <description>Categories - Category - ZhengPengDe Blog</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 03 Nov 2024 10:00:00 &#43;0000</lastBuildDate><atom:link href="https://847850277.github.io/categories/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Mon, 04 Nov 2024 10:00:00 &#43;0000</lastBuildDate><atom:link href="https://847850277.github.io/categories/" rel="self" type="application/rss+xml" /><item>
+    <title>Rust</title>
+    <link>https://847850277.github.io/categories/rust/</link>
+    <pubDate>Mon, 04 Nov 2024 10:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://847850277.github.io/categories/rust/</guid>
+    <description><![CDATA[]]></description>
+</item>
+<item>
+    <title>Snippet</title>
+    <link>https://847850277.github.io/categories/snippet/</link>
+    <pubDate>Mon, 04 Nov 2024 10:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://847850277.github.io/categories/snippet/</guid>
+    <description><![CDATA[]]></description>
+</item>
+<item>
     <title>Http Web Server</title>
     <link>https://847850277.github.io/categories/http-web-server/</link>
     <pubDate>Sun, 03 Nov 2024 10:00:00 &#43;0000</pubDate>
@@ -17,14 +33,6 @@
     <pubDate>Sun, 03 Nov 2024 10:00:00 &#43;0000</pubDate>
     <author>Author</author>
     <guid>https://847850277.github.io/categories/mario/</guid>
-    <description><![CDATA[]]></description>
-</item>
-<item>
-    <title>Rust</title>
-    <link>https://847850277.github.io/categories/rust/</link>
-    <pubDate>Sun, 03 Nov 2024 10:00:00 &#43;0000</pubDate>
-    <author>Author</author>
-    <guid>https://847850277.github.io/categories/rust/</guid>
     <description><![CDATA[]]></description>
 </item>
 <item>
@@ -73,14 +81,6 @@
     <pubDate>Mon, 19 Jun 2023 09:00:00 &#43;0000</pubDate>
     <author>Author</author>
     <guid>https://847850277.github.io/categories/web/</guid>
-    <description><![CDATA[]]></description>
-</item>
-<item>
-    <title>命令</title>
-    <link>https://847850277.github.io/categories/%E5%91%BD%E4%BB%A4/</link>
-    <pubDate>Mon, 19 Jun 2023 09:00:00 &#43;0000</pubDate>
-    <author>Author</author>
-    <guid>https://847850277.github.io/categories/%E5%91%BD%E4%BB%A4/</guid>
     <description><![CDATA[]]></description>
 </item>
 </channel>
