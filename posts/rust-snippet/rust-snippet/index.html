@@ -27,7 +27,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/847850277.github.io\/posts\/rust-snippet\/rust-snippet\/"
-        },"genre": "posts","keywords": "Rust, Snippet","wordcount":  267 ,
+        },"genre": "posts","keywords": "Rust, Snippet","wordcount":  317 ,
         "url": "https:\/\/847850277.github.io\/posts\/rust-snippet\/rust-snippet\/","datePublished": "2024-11-04T10:00:00+00:00","dateModified": "2024-11-04T16:00:00+00:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
@@ -102,7 +102,7 @@
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">锈迹片段</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>zhengpengde</a></span>&nbsp;<span class="post-category">included in <a href="/categories/rust/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Rust</a>&nbsp;<a href="/categories/snippet/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Snippet</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2024-11-04">2024-11-04</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;267 words&nbsp;
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2024-11-04">2024-11-04</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;317 words&nbsp;
                 <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;2 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  data-kept="">
                 <div class="details-summary toc-title">
@@ -112,6 +112,11 @@
                 <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
   <ul>
     <li><a href="#如何调试rust过程属性宏的代码">如何调试Rust过程属性宏的代码</a></li>
+    <li><a href="#清楚本地的cargo-缓存">清楚本地的cargo 缓存</a>
+      <ul>
+        <li><a href="#option-1-use-cargo-cache-tool-recommended">Option 1: Use cargo-cache tool (recommended)</a></li>
+      </ul>
+    </li>
   </ul>
 </nav></div>
             </div><div class="content" id="content"><h1 id="rust-snippet-锈迹片段">Rust Snippet 锈迹片段</h1>
@@ -215,6 +220,16 @@
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    Ok(expanded.into())
 </span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="清楚本地的cargo-缓存">清楚本地的cargo 缓存</h2>
+<h3 id="option-1-use-cargo-cache-tool-recommended">Option 1: Use cargo-cache tool (recommended)</h3>
+<p>First install the tool if you don&rsquo;t have it:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cargo install cargo-cache
+</span></span></code></pre></div><p>Then run the following command to clear the cache:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Clear everything</span>
+</span></span><span style="display:flex;"><span>cargo cache --autoclean
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Or just clear git checkouts (which contains the zed dependency)</span>
+</span></span><span style="display:flex;"><span>cargo cache -r git-checkouts
 </span></span></code></pre></div></div><div class="post-footer" id="post-footer">
     <div class="post-info">
         <div class="post-info-line">
@@ -249,7 +264,7 @@
 </article></div>
             </main><footer class="footer">
         <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.112.5">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.11"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
-                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2021 - 2024</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank"></a></span></div>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2021 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank"></a></span></div>
 
             
             <div class="busuanzi-footer">
