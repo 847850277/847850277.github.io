@@ -3,7 +3,19 @@
         <title>Rust - Tag - ZhengPengDe Blog</title>
         <link>https://847850277.github.io/tags/rust/</link>
         <description>Rust - Tag - ZhengPengDe Blog</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Mon, 04 Nov 2024 10:00:00 &#43;0000</lastBuildDate><atom:link href="https://847850277.github.io/tags/rust/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 01 Jun 2025 09:00:00 &#43;0000</lastBuildDate><atom:link href="https://847850277.github.io/tags/rust/" rel="self" type="application/rss+xml" /><item>
+    <title>Rust GUI</title>
+    <link>https://847850277.github.io/posts/rust-gui/gpui/</link>
+    <pubDate>Sun, 01 Jun 2025 09:00:00 &#43;0000</pubDate>
+    <author>zhengpengde</author>
+    <guid>https://847850277.github.io/posts/rust-gui/gpui/</guid>
+    <description><![CDATA[Rust GUI 使用 gpui Render 和 Render Once 的区别 Render：
+持续渲染模式
+组件会在每一帧都重新渲染 适用于需要频繁更新的动态内容 消耗更多资源，但能保持实时更新 Render Once：
+一次性渲染模式
+组件只在初始化或状态变化时渲染 适用于静态内容或不频繁更新的组件 性能更好，资源消耗更少 在 GPUI 中选择合适的渲染模式可以优化应用性能和用户体验。 ]]></description>
+</item>
+<item>
     <title>锈迹片段</title>
     <link>https://847850277.github.io/posts/rust-snippet/rust-snippet/</link>
     <pubDate>Mon, 04 Nov 2024 10:00:00 &#43;0000</pubDate>

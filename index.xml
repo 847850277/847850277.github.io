@@ -3,9 +3,21 @@
         <title>ZhengPengDe Blog</title>
         <link>https://847850277.github.io/</link>
         <description>This is ZhengPengDe网络日志</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Mon, 04 Nov 2024 10:00:00 &#43;0000</lastBuildDate>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 01 Jun 2025 09:00:00 &#43;0000</lastBuildDate>
             <atom:link href="https://847850277.github.io/index.xml" rel="self" type="application/rss+xml" />
         <item>
+    <title>Rust GUI</title>
+    <link>https://847850277.github.io/posts/rust-gui/gpui/</link>
+    <pubDate>Sun, 01 Jun 2025 09:00:00 &#43;0000</pubDate>
+    <author>zhengpengde</author>
+    <guid>https://847850277.github.io/posts/rust-gui/gpui/</guid>
+    <description><![CDATA[Rust GUI 使用 gpui Render 和 Render Once 的区别 Render：
+持续渲染模式
+组件会在每一帧都重新渲染 适用于需要频繁更新的动态内容 消耗更多资源，但能保持实时更新 Render Once：
+一次性渲染模式
+组件只在初始化或状态变化时渲染 适用于静态内容或不频繁更新的组件 性能更好，资源消耗更少 在 GPUI 中选择合适的渲染模式可以优化应用性能和用户体验。 ]]></description>
+</item>
+<item>
     <title>锈迹片段</title>
     <link>https://847850277.github.io/posts/rust-snippet/rust-snippet/</link>
     <pubDate>Mon, 04 Nov 2024 10:00:00 &#43;0000</pubDate>
@@ -103,14 +115,6 @@ Redis命令集
 Doug Lea&rsquo;s Home Page
 编程之路
 ubuntu微信]]></description>
-</item>
-<item>
-    <title>常用命令记录</title>
-    <link>https://847850277.github.io/posts/2023/terminal/</link>
-    <pubDate>Mon, 19 Jun 2023 09:00:00 &#43;0000</pubDate>
-    <author>zhengpengde</author>
-    <guid>https://847850277.github.io/posts/2023/terminal/</guid>
-    <description><![CDATA[常用命令记录 通用命令 -- 查询系统超过100M的文件 sudo find / -type f -size +100M -- 查找某某文件 sudo find / -name *.java ubuntu常用命令 -- 安装jdk sudo apt install openjdk-8-jdk -- 卸载jdk sudo apt purge openjdk-8-jdk -- 切换java版本 sudo update-alternatives --config java ]]></description>
 </item>
 </channel>
 </rss>

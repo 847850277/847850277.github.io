@@ -3,10 +3,26 @@
         <title>Categories - Category - ZhengPengDe Blog</title>
         <link>https://847850277.github.io/categories/</link>
         <description>Categories - Category - ZhengPengDe Blog</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Mon, 04 Nov 2024 10:00:00 &#43;0000</lastBuildDate><atom:link href="https://847850277.github.io/categories/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 01 Jun 2025 09:00:00 &#43;0000</lastBuildDate><atom:link href="https://847850277.github.io/categories/" rel="self" type="application/rss+xml" /><item>
+    <title>gpui</title>
+    <link>https://847850277.github.io/categories/gpui/</link>
+    <pubDate>Sun, 01 Jun 2025 09:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://847850277.github.io/categories/gpui/</guid>
+    <description><![CDATA[]]></description>
+</item>
+<item>
+    <title>Gui</title>
+    <link>https://847850277.github.io/categories/gui/</link>
+    <pubDate>Sun, 01 Jun 2025 09:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://847850277.github.io/categories/gui/</guid>
+    <description><![CDATA[]]></description>
+</item>
+<item>
     <title>Rust</title>
     <link>https://847850277.github.io/categories/rust/</link>
-    <pubDate>Mon, 04 Nov 2024 10:00:00 &#43;0000</pubDate>
+    <pubDate>Sun, 01 Jun 2025 09:00:00 &#43;0000</pubDate>
     <author>Author</author>
     <guid>https://847850277.github.io/categories/rust/</guid>
     <description><![CDATA[]]></description>
@@ -65,22 +81,6 @@
     <pubDate>Sat, 01 Jul 2023 09:00:00 &#43;0000</pubDate>
     <author>Author</author>
     <guid>https://847850277.github.io/categories/metadata/</guid>
-    <description><![CDATA[]]></description>
-</item>
-<item>
-    <title>terminal</title>
-    <link>https://847850277.github.io/categories/terminal/</link>
-    <pubDate>Mon, 19 Jun 2023 09:00:00 &#43;0000</pubDate>
-    <author>Author</author>
-    <guid>https://847850277.github.io/categories/terminal/</guid>
-    <description><![CDATA[]]></description>
-</item>
-<item>
-    <title>web</title>
-    <link>https://847850277.github.io/categories/web/</link>
-    <pubDate>Mon, 19 Jun 2023 09:00:00 &#43;0000</pubDate>
-    <author>Author</author>
-    <guid>https://847850277.github.io/categories/web/</guid>
     <description><![CDATA[]]></description>
 </item>
 </channel>
