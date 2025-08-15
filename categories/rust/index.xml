@@ -13,7 +13,11 @@
 持续渲染模式
 组件会在每一帧都重新渲染 适用于需要频繁更新的动态内容 消耗更多资源，但能保持实时更新 Render Once：
 一次性渲染模式
-组件只在初始化或状态变化时渲染 适用于静态内容或不频繁更新的组件 性能更好，资源消耗更少 在 GPUI 中选择合适的渲染模式可以优化应用性能和用户体验。 ]]></description>
+组件只在初始化或状态变化时渲染 适用于静态内容或不频繁更新的组件 性能更好，资源消耗更少 在 GPUI 中选择合适的渲染模式可以优化应用性能和用户体验。 Entity 是什么
+Entity 是 GPUI 框架中的一个智能指针类型，类似于 React 中的引用机制。它用于管理 UI 组件的生命周期和状态。
+Entity 的主要用法 1. 创建 Entity Entity 通过 cx.new() 方法创建，接受一个闭包来初始化组件：
+pub fn view(window: &amp;mut Window, cx: &amp;mut App) -&gt; Entity&lt;Self&gt; { cx.new(|cx| Self::new(window, cx)) } 2. 在结构体中存储 Entity Entity 常被用作结构体字段，用于持有子组件的引用：
+pub struct Example { root: Entity&lt;ButtonStory&gt;, } 3. 在构造函数中创建子组件 impl Example { pub fn new(window: &amp;mut Window, cx: &amp;mut Context&lt;Self&gt;) -&gt; Self { let root = ButtonStory::view(window, cx); Self { root } } 4.]]></description>
 </item>
 <item>
     <title>锈迹片段</title>

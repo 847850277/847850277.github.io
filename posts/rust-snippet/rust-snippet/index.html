@@ -27,7 +27,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/847850277.github.io\/posts\/rust-snippet\/rust-snippet\/"
-        },"genre": "posts","keywords": "Rust, Snippet","wordcount":  317 ,
+        },"genre": "posts","keywords": "Rust, Snippet","wordcount":  386 ,
         "url": "https:\/\/847850277.github.io\/posts\/rust-snippet\/rust-snippet\/","datePublished": "2024-11-04T10:00:00+00:00","dateModified": "2024-11-04T16:00:00+00:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
@@ -102,7 +102,7 @@
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">锈迹片段</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>zhengpengde</a></span>&nbsp;<span class="post-category">included in <a href="/categories/rust/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Rust</a>&nbsp;<a href="/categories/snippet/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Snippet</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2024-11-04">2024-11-04</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;317 words&nbsp;
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2024-11-04">2024-11-04</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;386 words&nbsp;
                 <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;2 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  data-kept="">
                 <div class="details-summary toc-title">
@@ -117,6 +117,7 @@
         <li><a href="#option-1-use-cargo-cache-tool-recommended">Option 1: Use cargo-cache tool (recommended)</a></li>
       </ul>
     </li>
+    <li><a href="#idea--rustrover-调整rust程序">IDEA || RustRover 调整Rust程序</a></li>
   </ul>
 </nav></div>
             </div><div class="content" id="content"><h1 id="rust-snippet-锈迹片段">Rust Snippet 锈迹片段</h1>
@@ -230,6 +231,25 @@
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># Or just clear git checkouts (which contains the zed dependency)</span>
 </span></span><span style="display:flex;"><span>cargo cache -r git-checkouts
+</span></span></code></pre></div><h2 id="idea--rustrover-调整rust程序">IDEA || RustRover 调整Rust程序</h2>
+<p>通常在IDEA或RustRover中，我们可以以Run模式运行Rust程序，但有时我们需要以Debug模式运行。</p>
+<p>针对某些命令行程序，我们可以直接运行时候指定参数，然后Debug运行进行断点调试。</p>
+<p>比如</p>
+<ul>
+<li>原始命令 <code>meroctl --help</code></li>
+<li>Debug运行时可以指定参数 <code>-- --help</code></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cargo run --bin meroctl -- --help
+</span></span></code></pre></div><ul>
+<li>原始命令 <code>merod --bin merod -- --node-name node1 run</code></li>
+<li>Debug运行时可以指定参数 <code>-- --node-name node1 run</code></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>run --package merod --bin merod -- --node-name node1 run
+</span></span></code></pre></div><ul>
+<li>原始命令 <code>meroctl --node node1 app install --path ./target/wasm32-unknown-unknown/release/kv_store.wasm</code></li>
+<li>Debug运行时可以指定参数 <code>-- --node node1 app install --path ./target/wasm32-unknown-unknown/release/kv_store.wasm</code></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>run --package meroctl --bin meroctl -- --node node1 app install --path ./target/wasm32-unknown-unknown/release/kv_store.wasm
 </span></span></code></pre></div></div><div class="post-footer" id="post-footer">
     <div class="post-info">
         <div class="post-info-line">

@@ -27,7 +27,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/847850277.github.io\/posts\/rust-gui\/gpui\/"
-        },"genre": "posts","keywords": "Rust, Gui, gpui","wordcount":  23 ,
+        },"genre": "posts","keywords": "Rust, Gui, gpui","wordcount":  217 ,
         "url": "https:\/\/847850277.github.io\/posts\/rust-gui\/gpui\/","datePublished": "2025-06-01T09:00:00+00:00","dateModified": "2025-06-02T10:00:00+00:00","publisher": {
             "@type": "Organization",
             "name": ""},"author": {
@@ -102,8 +102,8 @@
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Rust GUI</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>zhengpengde</a></span>&nbsp;<span class="post-category">included in <a href="/categories/rust/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Rust</a>&nbsp;<a href="/categories/gui/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>Gui</a>&nbsp;<a href="/categories/gpui/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>gpui</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2025-06-01">2025-06-01</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;23 words&nbsp;
-                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;One minute&nbsp;</div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2025-06-01">2025-06-01</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;217 words&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;2 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  data-kept="">
                 <div class="details-summary toc-title">
                     <span>Contents</span>
@@ -111,15 +111,23 @@
                 </div>
                 <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
   <ul>
-    <li><a href="#rust-gui-使用-gpui">Rust GUI 使用 gpui</a>
+    <li><a href="#render-和-render-once-的区别">Render 和 Render Once 的区别</a></li>
+    <li><a href="#entity-的主要用法">Entity 的主要用法</a>
       <ul>
-        <li><a href="#render-和-render-once-的区别">Render 和 Render Once 的区别</a></li>
+        <li><a href="#1-创建-entity">1. 创建 Entity</a></li>
+        <li><a href="#2-在结构体中存储-entity">2. 在结构体中存储 Entity</a></li>
+        <li><a href="#3-在构造函数中创建子组件">3. 在构造函数中创建子组件</a></li>
+        <li><a href="#4-在-render-方法中使用-entity">4. 在 render 方法中使用 Entity</a></li>
+        <li><a href="#5-复杂的-entity-使用场景">5. 复杂的 Entity 使用场景</a></li>
+        <li><a href="#6-创建带有复杂初始化的-entity">6. 创建带有复杂初始化的 Entity</a></li>
       </ul>
     </li>
+    <li><a href="#entity-的特性">Entity 的特性</a></li>
+    <li><a href="#使用模式总结">使用模式总结</a></li>
   </ul>
 </nav></div>
-            </div><div class="content" id="content"><h2 id="rust-gui-使用-gpui">Rust GUI 使用 gpui</h2>
-<h3 id="render-和-render-once-的区别">Render 和 Render Once 的区别</h3>
+            </div><div class="content" id="content"><h1 id="rust-gui-使用-gpui">Rust GUI 使用 gpui</h1>
+<h2 id="render-和-render-once-的区别">Render 和 Render Once 的区别</h2>
 <p>Render：</p>
 <p>持续渲染模式</p>
 <ul>
@@ -135,6 +143,68 @@
 <li>性能更好，资源消耗更少</li>
 <li>在 GPUI 中选择合适的渲染模式可以优化应用性能和用户体验。</li>
 </ul>
+<p>Entity 是什么</p>
+<p><code>Entity</code> 是 GPUI 框架中的一个智能指针类型，类似于 React 中的引用机制。它用于管理 UI 组件的生命周期和状态。</p>
+<h2 id="entity-的主要用法">Entity 的主要用法</h2>
+<h3 id="1-创建-entity">1. 创建 Entity</h3>
+<p>Entity 通过 <code>cx.new()</code> 方法创建，接受一个闭包来初始化组件：</p>
+<pre tabindex="0"><code class="language-gpui-component/crates/story/src/welcome_story.rs#L12-14" data-lang="gpui-component/crates/story/src/welcome_story.rs#L12-14">pub fn view(window: &amp;mut Window, cx: &amp;mut App) -&gt; Entity&lt;Self&gt; {
+    cx.new(|cx| Self::new(window, cx))
+}
+</code></pre><h3 id="2-在结构体中存储-entity">2. 在结构体中存储 Entity</h3>
+<p>Entity 常被用作结构体字段，用于持有子组件的引用：</p>
+<pre tabindex="0"><code class="language-gpui-component/crates/story/examples/button.rs#L4-6" data-lang="gpui-component/crates/story/examples/button.rs#L4-6">pub struct Example {
+    root: Entity&lt;ButtonStory&gt;,
+}
+</code></pre><h3 id="3-在构造函数中创建子组件">3. 在构造函数中创建子组件</h3>
+<pre tabindex="0"><code class="language-gpui-component/crates/story/examples/button.rs#L8-13" data-lang="gpui-component/crates/story/examples/button.rs#L8-13">impl Example {
+    pub fn new(window: &amp;mut Window, cx: &amp;mut Context&lt;Self&gt;) -&gt; Self {
+        let root = ButtonStory::view(window, cx);
+
+        Self { root }
+    }
+</code></pre><h3 id="4-在-render-方法中使用-entity">4. 在 render 方法中使用 Entity</h3>
+<p>Entity 可以直接作为子元素使用，因为它实现了 <code>IntoElement</code> trait：</p>
+<pre tabindex="0"><code class="language-gpui-component/crates/story/examples/button.rs#L20-22" data-lang="gpui-component/crates/story/examples/button.rs#L20-22">fn render(&amp;mut self, _window: &amp;mut Window, _cx: &amp;mut Context&lt;Self&gt;) -&gt; impl IntoElement {
+    div().p_4().size_full().child(self.root.clone())
+}
+</code></pre><h3 id="5-复杂的-entity-使用场景">5. 复杂的 Entity 使用场景</h3>
+<p>在更复杂的场景中，比如 dock 系统，Entity 被用来管理多个组件：</p>
+<pre tabindex="0"><code class="language-gpui-component/crates/story/examples/dock.rs#L47-53" data-lang="gpui-component/crates/story/examples/dock.rs#L47-53">pub struct StoryWorkspace {
+    title_bar: Entity&lt;AppTitleBar&gt;,
+    dock_area: Entity&lt;DockArea&gt;,
+    last_layout_state: Option&lt;DockAreaState&gt;,
+    toggle_button_visible: bool,
+    _save_layout_task: Option&lt;Task&lt;()&gt;&gt;,
+}
+</code></pre><h3 id="6-创建带有复杂初始化的-entity">6. 创建带有复杂初始化的 Entity</h3>
+<pre tabindex="0"><code class="language-gpui-component/crates/story/examples/html.rs#L13-23" data-lang="gpui-component/crates/story/examples/html.rs#L13-23">pub fn new(window: &amp;mut Window, cx: &amp;mut Context&lt;Self&gt;) -&gt; Self {
+    let text_input = cx.new(|cx| {
+        TextInput::new(window, cx)
+            .multi_line()
+            .appearance(false)
+            .h_full()
+            .placeholder(&#34;Enter your HTML here...&#34;)
+    });
+
+    let _subscribe = cx.subscribe(
+        &amp;text_input,
+</code></pre><h2 id="entity-的特性">Entity 的特性</h2>
+<ol>
+<li><strong>可克隆</strong>: Entity 可以被克隆，这允许在多个地方引用同一个组件</li>
+<li><strong>类型安全</strong>: Entity 是泛型的，可以指定具体的组件类型如 <code>Entity&lt;ButtonStory&gt;</code></li>
+<li><strong>自动生命周期管理</strong>: Entity 会自动管理组件的生命周期</li>
+<li><strong>事件订阅</strong>: 可以通过 <code>cx.subscribe()</code> 订阅 Entity 的事件</li>
+<li><strong>弱引用</strong>: 还有 <code>WeakEntity</code> 类型，用于避免循环引用</li>
+</ol>
+<h2 id="使用模式总结">使用模式总结</h2>
+<ol>
+<li><strong>容器模式</strong>: 父组件持有子组件的 Entity</li>
+<li><strong>工厂模式</strong>: 通过静态方法创建 Entity</li>
+<li><strong>事件订阅</strong>: 订阅 Entity 的事件来实现组件间通信</li>
+<li><strong>状态管理</strong>: 通过 Entity 访问和修改组件状态</li>
+</ol>
+<p>Entity 是 GPUI 框架中组件管理的核心机制，它提供了类型安全、高性能的组件引用和状态管理功能。</p>
 </div><div class="post-footer" id="post-footer">
     <div class="post-info">
         <div class="post-info-line">
