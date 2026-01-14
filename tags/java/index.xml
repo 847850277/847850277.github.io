@@ -1,0 +1,16 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Java - Tag - ZhengPengDe Blog</title>
+        <link>https://847850277.github.io/tags/java/</link>
+        <description>Java - Tag - ZhengPengDe Blog</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 11 Jan 2026 09:00:00 &#43;0000</lastBuildDate><atom:link href="https://847850277.github.io/tags/java/" rel="self" type="application/rss+xml" /><item>
+    <title>Java 写出Rust 的match 代码</title>
+    <link>https://847850277.github.io/posts/2026/java_reference_rust_match/</link>
+    <pubDate>Sun, 11 Jan 2026 09:00:00 &#43;0000</pubDate>
+    <author>zhengpengde</author>
+    <guid>https://847850277.github.io/posts/2026/java_reference_rust_match/</guid>
+    <description><![CDATA[Java 写出Rust 的match 代码 在Java中，我们可以使用switch语句来实现类似于Rust中match的功能。下面是一个示例，展示了如何在Java中使用switch来模拟Rust的match语法。
+public enum ServiceType { RESUME_COMMUNICATION(1, &#34;复课沟通&#34;), CLASS_PLANNING(2, &#34;班级规划&#34;), STUDENT_PLANNING(3, &#34;学员规划&#34;), STUDENT_INVENTORY(4, &#34;学员盘点&#34;), RENEWAL_INVENTORY_LOCK(5, &#34;续报盘点锁定&#34;), SATISFACTION_SURVEY(6, &#34;满意度问卷&#34;); private final Integer code; private final String description; ServiceType(Integer code, String description) { this.code = code; this.description = description; } public Integer getCode() { return code; } public String getDescription() { return description; } public static ServiceType fromCode(Integer code) { for (ServiceType type : values()) { if (type.code.equals(code)) { return type; } } throw new IllegalArgumentException(&#34;Unknown service type code: &#34; + code); } // 模拟 Rust 的 match 表达式 public &lt;T&gt; T match( java.]]></description>
+</item>
+</channel>
+</rss>
