@@ -3,7 +3,16 @@
         <title>All Posts - ZhengPengDe Blog</title>
         <link>https://847850277.github.io/posts/</link>
         <description>All Posts | ZhengPengDe Blog</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 01 Jun 2025 09:00:00 &#43;0000</lastBuildDate><atom:link href="https://847850277.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 11 Jan 2026 09:00:00 &#43;0000</lastBuildDate><atom:link href="https://847850277.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+    <title>Java 写出Rust 的match 代码</title>
+    <link>https://847850277.github.io/posts/2026/java_reference_rust_match/</link>
+    <pubDate>Sun, 11 Jan 2026 09:00:00 &#43;0000</pubDate>
+    <author>zhengpengde</author>
+    <guid>https://847850277.github.io/posts/2026/java_reference_rust_match/</guid>
+    <description><![CDATA[Java 写出Rust 的match 代码 在Java中，我们可以使用switch语句来实现类似于Rust中match的功能。下面是一个示例，展示了如何在Java中使用switch来模拟Rust的match语法。
+public enum ServiceType { RESUME_COMMUNICATION(1, &#34;复课沟通&#34;), CLASS_PLANNING(2, &#34;班级规划&#34;), STUDENT_PLANNING(3, &#34;学员规划&#34;), STUDENT_INVENTORY(4, &#34;学员盘点&#34;), RENEWAL_INVENTORY_LOCK(5, &#34;续报盘点锁定&#34;), SATISFACTION_SURVEY(6, &#34;满意度问卷&#34;); private final Integer code; private final String description; ServiceType(Integer code, String description) { this.code = code; this.description = description; } public Integer getCode() { return code; } public String getDescription() { return description; } public static ServiceType fromCode(Integer code) { for (ServiceType type : values()) { if (type.code.equals(code)) { return type; } } throw new IllegalArgumentException(&#34;Unknown service type code: &#34; + code); } // 模拟 Rust 的 match 表达式 public &lt;T&gt; T match( java.]]></description>
+</item>
+<item>
     <title>Rust GUI</title>
     <link>https://847850277.github.io/posts/rust-gui/gpui/</link>
     <pubDate>Sun, 01 Jun 2025 09:00:00 &#43;0000</pubDate>
@@ -93,30 +102,6 @@ fn generate_handler(internal: bool, input: TokenStream) -&gt; Result&lt;TokenStr
 元数据是数据的数据,这意味着他是数据的描述和上下文。它帮助我们了解和认识数据。下面有一些真是的关于元数据的例子。
 Typical metadata Those are some typical metadata elements:
 Title and description, Tags and categories, Who created and when, Who last modified and when, Who can access or update. A photo Every time you take a photo with today&rsquo;s cameras a bunch of metadata is gathered and saved with it]]></description>
-</item>
-<item>
-    <title>常用web记录</title>
-    <link>https://847850277.github.io/posts/2023/web/</link>
-    <pubDate>Mon, 19 Jun 2023 09:00:00 &#43;0000</pubDate>
-    <author>zhengpengde</author>
-    <guid>https://847850277.github.io/posts/2023/web/</guid>
-    <description><![CDATA[常用的网站记录 在线markdown
-docker国内镜像加速
-另一个maven仓库
-java全栈知识体系
-jdk版本-爪哇我话你知
-代码随想录-算法
-labuladong 的算法小抄
-Data Structure Visualizations
-股票自动交易助手
-excalidraw
-v2ex
-免费图床
-Redis命令集
-在线搜索代码网站
-Doug Lea&rsquo;s Home Page
-编程之路
-ubuntu微信]]></description>
 </item>
 </channel>
 </rss>

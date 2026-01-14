@@ -3,7 +3,31 @@
         <title>Categories - Category - ZhengPengDe Blog</title>
         <link>https://847850277.github.io/categories/</link>
         <description>Categories - Category - ZhengPengDe Blog</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 01 Jun 2025 09:00:00 &#43;0000</lastBuildDate><atom:link href="https://847850277.github.io/categories/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 11 Jan 2026 09:00:00 &#43;0000</lastBuildDate><atom:link href="https://847850277.github.io/categories/" rel="self" type="application/rss+xml" /><item>
+    <title>Java</title>
+    <link>https://847850277.github.io/categories/java/</link>
+    <pubDate>Sun, 11 Jan 2026 09:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://847850277.github.io/categories/java/</guid>
+    <description><![CDATA[]]></description>
+</item>
+<item>
+    <title>match 语法</title>
+    <link>https://847850277.github.io/categories/match-%E8%AF%AD%E6%B3%95/</link>
+    <pubDate>Sun, 11 Jan 2026 09:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://847850277.github.io/categories/match-%E8%AF%AD%E6%B3%95/</guid>
+    <description><![CDATA[]]></description>
+</item>
+<item>
+    <title>Rust</title>
+    <link>https://847850277.github.io/categories/rust/</link>
+    <pubDate>Sun, 11 Jan 2026 09:00:00 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>https://847850277.github.io/categories/rust/</guid>
+    <description><![CDATA[]]></description>
+</item>
+<item>
     <title>gpui</title>
     <link>https://847850277.github.io/categories/gpui/</link>
     <pubDate>Sun, 01 Jun 2025 09:00:00 &#43;0000</pubDate>
@@ -17,14 +41,6 @@
     <pubDate>Sun, 01 Jun 2025 09:00:00 &#43;0000</pubDate>
     <author>Author</author>
     <guid>https://847850277.github.io/categories/gui/</guid>
-    <description><![CDATA[]]></description>
-</item>
-<item>
-    <title>Rust</title>
-    <link>https://847850277.github.io/categories/rust/</link>
-    <pubDate>Sun, 01 Jun 2025 09:00:00 &#43;0000</pubDate>
-    <author>Author</author>
-    <guid>https://847850277.github.io/categories/rust/</guid>
     <description><![CDATA[]]></description>
 </item>
 <item>
@@ -65,22 +81,6 @@
     <pubDate>Sun, 29 Oct 2023 09:00:00 &#43;0000</pubDate>
     <author>Author</author>
     <guid>https://847850277.github.io/categories/%E7%BD%91%E5%85%B3/</guid>
-    <description><![CDATA[]]></description>
-</item>
-<item>
-    <title>event-log</title>
-    <link>https://847850277.github.io/categories/event-log/</link>
-    <pubDate>Thu, 19 Oct 2023 09:00:00 &#43;0000</pubDate>
-    <author>Author</author>
-    <guid>https://847850277.github.io/categories/event-log/</guid>
-    <description><![CDATA[]]></description>
-</item>
-<item>
-    <title>metadata</title>
-    <link>https://847850277.github.io/categories/metadata/</link>
-    <pubDate>Sat, 01 Jul 2023 09:00:00 &#43;0000</pubDate>
-    <author>Author</author>
-    <guid>https://847850277.github.io/categories/metadata/</guid>
     <description><![CDATA[]]></description>
 </item>
 </channel>

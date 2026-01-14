@@ -88,6 +88,16 @@
 <meta name="referrer" content="no-referrer-when-downgrade"><main class="main">
                 <div class="container"><div class="page home" data-home="posts"><div class="home-profile"><div class="home-subtitle"><div id="id-1" class="typeit"></div></div><div class="links"><a href="https://github.com/847850277" title="GitHub" target="_blank" rel="noopener noreffer me"><i class="fab fa-github fa-fw" aria-hidden="true"></i></a><a href="mailto:847850277@qq.com,penzheng@apache.org" title="Email" rel="me"><i class="far fa-envelope fa-fw" aria-hidden="true"></i></a></div></div>
 <article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
+        <a href="/posts/gateway/gateway-01/">WEB网关系列01-什么是WEB网关</a>
+    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>zhengpengde</a></span>&nbsp;<span class="post-publish">published on <time datetime="2023-10-10">2023-10-10</time></span>&nbsp;<span class="post-category">included in <a href="/categories/gateway/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>gateway</a>&nbsp;<a href="/categories/%E7%BD%91%E5%85%B3/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>网关</a></span></div><div class="content">WEB网关系列-什么是WEB网关 gateway，我们一般都称为网关。翻译意思有网关;(通往其他地区的)门户;方法;途径;出入口;手段;门道;大门口。
+现实生活中的网关有比如，高速公路的收费口、城门入口、景区或者游乐园的入口等。它们都充当了入口的功能，还有检测功能等等。
+而在web中的网关，它充当的是流量的入口，一般来说当有流量进入到web程序，它的第一层便是经过网关，然后经网关代理到准确的服务地址上， 同时，对应的服务产生响应，然后网关把响应反馈回去。那么网关就充当了，流量转发的角色， 个人觉得它是一个网关最核心的功能。
+在流量转发这个场景下，可以衍生出无数种组合出来。因为，我们的web应用程序存在的方式是多种多样的，比如在线购物网站、wps、视频网站等等。当然市面上常用的就是基于http协议的web服务， 还有tcp、udp、websocket等。
+除了流量转发，网关还需要限制恶意的请求过来，仅正确的用户、正确的请求才可以通过，也就是网关需要提供鉴权的功能。
+网关还有就是限制请求流量的作用，举个例子来说，当一台计算机器它的瞬时处理能力只有1千个请求，那瞬时有2千个请求过来，网关处理不过来的话， 限流就在这种场景下面产生了。</div><div class="post-footer">
+        <a href="/posts/gateway/gateway-01/">Read More</a><div class="post-tags">
+                <i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/gateway/">gateway</a>,&nbsp;<a href="/tags/%E7%BD%91%E5%85%B3/">网关</a></div></div>
+</article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
         <a href="/posts/pattern/reactor/">Reactor Pattern</a>
     </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>zhengpengde</a></span>&nbsp;<span class="post-publish">published on <time datetime="2023-08-18">2023-08-18</time></span></div><div class="content">Intent 意图 The Reactor design pattern handles service requests that are delivered concurrently to an application by one or more clients. 反应器设计模式处理由一个或多个客户端并发传递到应用程序的服务请求, The application can register specific handlers for processing which are called by reactor on specific events. 应用程序可以注册用于处理的特定处理程序，这些处理程序由反应器在特定事件上调用 Dispatching of event handlers is performed by an initiation dispatcher, which manages the registered event handlers. 事件处理程序的分派由启动分派程序执行，该程序管理已注册的事件处理程序 Demultiplexing of service requests is performed by a synchronous event demultiplexer. 服务请求的解复用由同步事件解复用器执行 Class diagram 类图 Applicability 应用 Use Reactor pattern when 以下场景可以使用Reactor 模式</div><div class="post-footer">
         <a href="/posts/pattern/reactor/">Read More</a></div>
@@ -129,15 +139,6 @@ ubuntu微信</div><div class="post-footer">
     </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>zhengpengde</a></span>&nbsp;<span class="post-publish">published on <time datetime="2023-06-19">2023-06-19</time></span>&nbsp;<span class="post-category">included in <a href="/categories/%E5%91%BD%E4%BB%A4/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>命令</a>&nbsp;<a href="/categories/terminal/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>terminal</a></span></div><div class="content">常用命令记录 通用命令 -- 查询系统超过100M的文件 sudo find / -type f -size +100M -- 查找某某文件 sudo find / -name *.java ubuntu常用命令 -- 安装jdk sudo apt install openjdk-8-jdk -- 卸载jdk sudo apt purge openjdk-8-jdk -- 切换java版本 sudo update-alternatives --config java </div><div class="post-footer">
         <a href="/posts/2023/terminal/">Read More</a><div class="post-tags">
                 <i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/%E5%91%BD%E4%BB%A4/">命令</a>,&nbsp;<a href="/tags/terminal/">terminal</a></div></div>
-</article><article class="single summary" itemscope itemtype="http://schema.org/Article"><h1 class="single-title" itemprop="name headline">
-        <a href="/posts/apache-shenyu/shenyu-spi/">apache shenyu的spi机制</a>
-    </h1><div class="post-meta"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>zhengpengde</a></span>&nbsp;<span class="post-publish">published on <time datetime="2023-06-16">2023-06-16</time></span>&nbsp;<span class="post-category">included in <a href="/categories/spi/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>spi</a>&nbsp;<a href="/categories/apache-shenyu/"><i class="far fa-folder fa-fw" aria-hidden="true"></i>apache shenyu</a></span></div><div class="content">什么是spi SPI就是Service Provider Interface,是一种动态的服务发现机制。 可以基于运行时动态的加载接口的实现类。通过(接口编程 + 策略模式 + 配置文件) 实现解耦和扩展。
-应用 数据库驱动 基于该接口的实现有MySQL,PostgreSQL,SqlServer等。 SLF4J日志框架 Dubbo的SPI扩展 dubbo apache shenyu spring boot starter jdbc的应用 日志的应用 apache shenyu的spi应用 dubbo的spi应用 实现方式 市面上常见的SPI的实现方式有：
-JDK的SPI实现 Dubbo的SPI实现、ShenYu的 SPI Spring的SPI实现 JDK的SPI实现流程为
-在类路径的META-INF/services目录创建一个以接口全限定名称命名的文件（本质是一个properties）文件，例如命名为java.sql.Driver 该文件中可以指定具体的实现类，也就是每个实现类的全类型限定名为单独一行 例如 META-INF/services/java.sql.Driver # META-INF/services/java.sql.Driver文件内容 com.mysql.jdbc.Driver org.postgresql.Driver 最后通过java.util.ServiceLoader对该文件进行加载，实例化接口的对应实现类（这里隐含了一个约定，所有实现类必须提供无参构造函数,用来反射调用） 底层的实现涉及到类加载、双亲委派等内容，这里不展开。基于这种设计思路，很多主流框架实现了一套SPI扩展，例如Dubbo的SPI扩展模块，就是读取类路径 下META-INF/services/dubbo目录的文件内容进行类加载。ShenYu-SPI模块也是沿用类似的设计思路。
-JDK SPI 的代码示例 接口定义 public interface Search { public List&lt;String&gt; searchDoc(String keyword); } 实现类 public class FileSearch implements Search{ @Override public List&lt;String&gt; searchDoc(String keyword) { System.out.println(&#34;文件搜索 &#34;+keyword); return null; } } public class DatabaseSearch implements Search{ @Override public List&lt;String&gt; searchDoc(String keyword) { System.</div><div class="post-footer">
-        <a href="/posts/apache-shenyu/shenyu-spi/">Read More</a><div class="post-tags">
-                <i class="fas fa-tags fa-fw" aria-hidden="true"></i>&nbsp;<a href="/tags/spi/">spi</a>,&nbsp;<a href="/tags/apache-shenyu/">apache shenyu</a></div></div>
 </article><ul class="pagination"><li class="page-item ">
                     <span class="page-link">
                         <a href="/">1</a>
@@ -157,7 +158,7 @@ JDK SPI 的代码示例 接口定义 public interface Search { public List&lt;St
                 </li></ul></div></div>
             </main><footer class="footer">
         <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.112.5">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.11"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
-                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2021 - 2025</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank"></a></span></div>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2021 - 2026</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank"></a></span></div>
 
             
             <div class="busuanzi-footer">
