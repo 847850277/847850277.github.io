@@ -5,16 +5,215 @@
         <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Sat, 20 Jun 2026 09:00:00 &#43;0000</lastBuildDate>
             <atom:link href="https://847850277.github.io/index.xml" rel="self" type="application/rss+xml" />
         <item>
-    <title>ScalarFunctionExpr protobuf 序列化/反序列化 最小例子</title>
+    <title>ScalarFunctionExpr protobuf 序列化/反序列化最小例子</title>
     <link>https://847850277.github.io/posts/2026/datafusion_scalarfunctionexpr_protobuf_mini_example/</link>
     <pubDate>Sat, 20 Jun 2026 09:00:00 &#43;0000</pubDate>
     <author>zhengpengde</author>
     <guid>https://847850277.github.io/posts/2026/datafusion_scalarfunctionexpr_protobuf_mini_example/</guid>
-    <description><![CDATA[<h1 id="scalarfunctionexpr-protobuf-序列化反序列化-最小例子">ScalarFunctionExpr protobuf 序列化/反序列化 最小例子</h1>
+    <description><![CDATA[<h1 id="scalarfunctionexpr-protobuf-序列化反序列化最小例子">ScalarFunctionExpr protobuf 序列化/反序列化最小例子</h1>
 <h2 id="什么是-scalarfunctionexpr">什么是 ScalarFunctionExpr</h2>
+<p><code>ScalarFunctionExpr</code> 是 <code>Datafusion</code> 物理执行层对一次标量函数调用的完整描述。</p>
+<p>它描述的是</p>
+<ul>
+<li>函数名称是什么</li>
+<li>函数参数有哪些</li>
+<li>函数返回，包括返回类型是什么，是否可空等等</li>
+<li>执行过程中的配置信息</li>
+</ul>
+<p>比如 <code>sqrt(a)</code>,平方根 它的物理表达式大概长</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>ScalarFunctionExpr
+</span></span><span style="display:flex;"><span>function: sqrt 的实现
+</span></span><span style="display:flex;"><span>name: &#34;sqrt&#34;
+</span></span><span style="display:flex;"><span>args:
+</span></span><span style="display:flex;"><span>- Column(&#34;a&#34;, index=0)
+</span></span><span style="display:flex;"><span>return_type: Float64
+</span></span><span style="display:flex;"><span>nullable: false/true
+</span></span></code></pre></div><h3 id="标量函数和聚合函数">标量函数和聚合函数</h3>
+<p>标量函数
+参数和值一一对应，比如 sqrt、abs、lower、upper、trim、length、concat 等等</p>
+<p>聚合函数
+多个输入对一一个输出，比如 sum、avg、count、max、min 等等</p>
 <h2 id="什么是-protobuf">什么是 protobuf</h2>
-<h2 id="如何写最小例子">如何写最小例子</h2>
-<h2 id="完整例子代码">完整例子代码</h2>]]></description>
+<p>protobuf是一种格式
+是一种面向高效传输和跨语言通信的序列化格式。</p>
+<pre tabindex="0"><code>JSON:
+文本格式
+人能直接看懂
+调试方便
+体积相对大
+解析通常慢一点
+不强制 schema
+
+protobuf:
+二进制格式
+人不能直接看懂
+体积小
+解析快
+强依赖 .proto schema
+更适合高性能/跨语言 RPC
+</code></pre><h2 id="如何写最小例子">如何写最小例子</h2>
+<ul>
+<li>定义表达式</li>
+<li>编码</li>
+<li>解码</li>
+<li>验证</li>
+</ul>
+<h2 id="完整例子代码">完整例子代码</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-Rust" data-lang="Rust"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Licensed to the Apache Software Foundation (ASF) under one
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// or more contributor license agreements.  See the NOTICE file
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// distributed with this work for additional information
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// regarding copyright ownership.  The ASF licenses this file
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// to you under the Apache License, Version 2.0 (the
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// &#34;License&#34;); you may not use this file except in compliance
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// with the License.  You may obtain a copy of the License at
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//   http://www.apache.org/licenses/LICENSE-2.0
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// Unless required by applicable law or agreed to in writing,
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// software distributed under the License is distributed on an
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// &#34;AS IS&#34; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// KIND, either express or implied.  See the License for the
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// specific language governing permissions and limitations
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// under the License.
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">//! See `main.rs` for how to run it.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">//!
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">//! This example demonstrates the smallest useful round trip for a physical
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">//! [`ScalarFunctionExpr`]:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">//!
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">//! 1. Build a physical expression for `sqrt(a)`.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">//! 2. Serialize it to a protobuf `PhysicalExprNode`.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">//! 3. Deserialize it back to a physical expression.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">//! 4. Evaluate both expressions against the same batch.
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> std::sync::Arc;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> arrow::array::Float64Array;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> arrow::datatypes::{DataType, Field, Schema};
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> arrow::record_batch::RecordBatch;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> datafusion::common::config::ConfigOptions;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> datafusion::common::{DataFusionError, Result};
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> datafusion::physical_expr::ScalarFunctionExpr;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> datafusion::physical_plan::PhysicalExpr;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> datafusion::physical_plan::expressions::Column;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> datafusion::prelude::SessionContext;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> datafusion_proto::physical_plan::DefaultPhysicalExtensionCodec;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> datafusion_proto::physical_plan::from_proto::parse_physical_expr;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> datafusion_proto::physical_plan::to_proto::serialize_physical_expr;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> datafusion_proto::protobuf::physical_expr_node::ExprType;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">scalar_function_expr</span>() -&gt; Result<span style="color:#f92672">&lt;</span>()<span style="color:#f92672">&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">println!</span>(<span style="color:#e6db74">&#34;=== ScalarFunctionExpr Proto Round Trip Example ===</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 定义输入数据长什么样
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 我们有一张输入表/输入 batch，它只有一列：
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 列名: a
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 类型: Float64
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 是否允许 NULL: false
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 也就是类似 SQL 里的：
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// CREATE TABLE t (
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">//   a DOUBLE NOT NULL
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// );
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> schema <span style="color:#f92672">=</span> Arc::new(Schema::new(<span style="color:#a6e22e">vec!</span>[Field::new(<span style="color:#e6db74">&#34;a&#34;</span>, DataType::Float64, <span style="color:#66d9ef">false</span>)]));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 对输入 batch 里的第 0 列 a 求平方根。
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> expr <span style="color:#f92672">=</span> Arc::new(ScalarFunctionExpr::try_new(
+</span></span><span style="display:flex;"><span>        datafusion::functions::math::sqrt(),
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">vec!</span>[Arc::new(Column::new(<span style="color:#e6db74">&#34;a&#34;</span>, <span style="color:#ae81ff">0</span>))],
+</span></span><span style="display:flex;"><span>        schema.as_ref(),
+</span></span><span style="display:flex;"><span>        Arc::new(ConfigOptions::new()),
+</span></span><span style="display:flex;"><span>    )<span style="color:#f92672">?</span>) <span style="color:#66d9ef">as</span> Arc<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">dyn</span> PhysicalExpr<span style="color:#f92672">&gt;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">println!</span>(<span style="color:#e6db74">&#34;Step 1: Built physical expression: </span><span style="color:#e6db74">{expr}</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 这段是在把刚刚造好的物理表达式 sqrt(a@0) 转成 proto 结构，序列化
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> codec <span style="color:#f92672">=</span> DefaultPhysicalExtensionCodec {};
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> proto <span style="color:#f92672">=</span> serialize_physical_expr(<span style="color:#f92672">&amp;</span>expr, <span style="color:#f92672">&amp;</span>codec)<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> Some(ExprType::ScalarUdf(scalar_udf)) <span style="color:#f92672">=</span> proto.expr_type.as_ref() <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> Err(DataFusionError::Execution(
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;Expected ScalarUdf proto node&#34;</span>.to_string(),
+</span></span><span style="display:flex;"><span>        ));
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">println!</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;Step 2: Serialized to proto: name=</span><span style="color:#e6db74">{}</span><span style="color:#e6db74">, args=</span><span style="color:#e6db74">{}</span><span style="color:#e6db74">, has_fun_definition=</span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>        scalar_udf.name,
+</span></span><span style="display:flex;"><span>        scalar_udf.args.len(),
+</span></span><span style="display:flex;"><span>        scalar_udf.fun_definition.is_some()
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 反序列化
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> ctx <span style="color:#f92672">=</span> SessionContext::new();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> decoded_expr <span style="color:#f92672">=</span> parse_physical_expr(<span style="color:#f92672">&amp;</span>proto, <span style="color:#f92672">&amp;</span>ctx.task_ctx(), <span style="color:#f92672">&amp;</span>schema, <span style="color:#f92672">&amp;</span>codec)<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">println!</span>(<span style="color:#e6db74">&#34;Step 3: Deserialized expression: </span><span style="color:#e6db74">{decoded_expr}</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 验证反序列化的表达式、执行结果是不是和原来一样
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> batch <span style="color:#f92672">=</span> RecordBatch::try_new(
+</span></span><span style="display:flex;"><span>        Arc::clone(<span style="color:#f92672">&amp;</span>schema),
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">vec!</span>[Arc::new(Float64Array::from(<span style="color:#a6e22e">vec!</span>[<span style="color:#ae81ff">4.0</span>, <span style="color:#ae81ff">9.0</span>, <span style="color:#ae81ff">16.0</span>]))],
+</span></span><span style="display:flex;"><span>    )<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> original <span style="color:#f92672">=</span> expr.evaluate(<span style="color:#f92672">&amp;</span>batch)<span style="color:#f92672">?</span>.into_array(batch.num_rows())<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> decoded <span style="color:#f92672">=</span> decoded_expr
+</span></span><span style="display:flex;"><span>        .evaluate(<span style="color:#f92672">&amp;</span>batch)<span style="color:#f92672">?</span>
+</span></span><span style="display:flex;"><span>        .into_array(batch.num_rows())<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> original <span style="color:#f92672">=</span> original
+</span></span><span style="display:flex;"><span>        .as_any()
+</span></span><span style="display:flex;"><span>        .downcast_ref::<span style="color:#f92672">&lt;</span>Float64Array<span style="color:#f92672">&gt;</span>()
+</span></span><span style="display:flex;"><span>        .ok_or_else(<span style="color:#f92672">||</span> {
+</span></span><span style="display:flex;"><span>            DataFusionError::Execution(<span style="color:#e6db74">&#34;Expected Float64 result array&#34;</span>.to_string())
+</span></span><span style="display:flex;"><span>        })<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> decoded <span style="color:#f92672">=</span> decoded
+</span></span><span style="display:flex;"><span>        .as_any()
+</span></span><span style="display:flex;"><span>        .downcast_ref::<span style="color:#f92672">&lt;</span>Float64Array<span style="color:#f92672">&gt;</span>()
+</span></span><span style="display:flex;"><span>        .ok_or_else(<span style="color:#f92672">||</span> {
+</span></span><span style="display:flex;"><span>            DataFusionError::Execution(<span style="color:#e6db74">&#34;Expected Float64 result array&#34;</span>.to_string())
+</span></span><span style="display:flex;"><span>        })<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">assert_eq!</span>(original, decoded);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">println!</span>(<span style="color:#e6db74">&#34;Step 4: Evaluated both expressions successfully&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">println!</span>(<span style="color:#e6db74">&#34;  input:  [4.0, 9.0, 16.0]&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">println!</span>(<span style="color:#e6db74">&#34;  output: </span><span style="color:#e6db74">{decoded:?}</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Ok(())
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="执行流程">执行流程</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ScalarFunctionExpr(sqrt(a))
+</span></span><span style="display:flex;"><span>↓ serialize_physical_expr
+</span></span><span style="display:flex;"><span>PhysicalExprNode::ScalarUdf
+</span></span><span style="display:flex;"><span>↓ parse_physical_expr
+</span></span><span style="display:flex;"><span>ScalarFunctionExpr(sqrt(a))
+</span></span><span style="display:flex;"><span>↓ evaluate
+</span></span><span style="display:flex;"><span>Float64Array [2.0, 3.0, 4.0]
+</span></span></code></pre></div><h2 id="运行命令和输出">运行命令和输出</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>/Users/zhengpeng/.cargo/bin/cargo run --color<span style="color:#f92672">=</span>always --example proto --profile dev --manifest-path /Users/zhengpeng/Source/Code/Rust-Code/Github/datafusion/datafusion-examples/Cargo.toml -- scalar_function_expr
+</span></span><span style="display:flex;"><span>    Finished <span style="color:#e6db74">`</span>dev<span style="color:#e6db74">`</span> profile <span style="color:#f92672">[</span>unoptimized + debuginfo<span style="color:#f92672">]</span> target<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> in 0.19s
+</span></span><span style="display:flex;"><span>     Running <span style="color:#e6db74">`</span>target/debug/examples/proto scalar_function_expr<span style="color:#e6db74">`</span>
+</span></span><span style="display:flex;"><span>Usage: cargo run --example proto -- <span style="color:#f92672">[</span>all|composed_extension_codec|expression_deduplication|scalar_function_expr<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===</span> ScalarFunctionExpr Proto Round Trip Example <span style="color:#f92672">===</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Step 1: Built physical expression: sqrt<span style="color:#f92672">(</span>a@0<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Step 2: Serialized to proto: name<span style="color:#f92672">=</span>sqrt, args<span style="color:#f92672">=</span>1, has_fun_definition<span style="color:#f92672">=</span>false
+</span></span><span style="display:flex;"><span>Step 3: Deserialized expression: sqrt<span style="color:#f92672">(</span>a@0<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Step 4: Evaluated both expressions successfully
+</span></span><span style="display:flex;"><span>  input:  <span style="color:#f92672">[</span>4.0, 9.0, 16.0<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>  output: PrimitiveArray&lt;Float64&gt;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>
+</span></span><span style="display:flex;"><span>  2.0,
+</span></span><span style="display:flex;"><span>  3.0,
+</span></span><span style="display:flex;"><span>  4.0,
+</span></span><span style="display:flex;"><span><span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Process finished with exit code <span style="color:#ae81ff">0</span>
+</span></span></code></pre></div><h2 id="说明">说明</h2>
+<p>例子里的 serialize_physical_expr 是把 Rust 里的 PhysicalExpr 转成 protobuf 的 Rust struct，还没有进一步 encode 成二进制 bytes；
+如果要网络传输，还需要 prost::Message::encode。</p>]]></description>
 </item>
 <item>
     <title>Java 写出Rust 的match 代码</title>
