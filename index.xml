@@ -1,18 +1,84 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
-    <channel>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel>
         <title>ZhengPengDe Blog</title>
         <link>https://847850277.github.io/</link>
         <description>This is ZhengPengDe网络日志</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 11 Jan 2026 09:00:00 &#43;0000</lastBuildDate>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Sat, 20 Jun 2026 09:00:00 &#43;0000</lastBuildDate>
             <atom:link href="https://847850277.github.io/index.xml" rel="self" type="application/rss+xml" />
         <item>
+    <title>ScalarFunctionExpr protobuf 序列化/反序列化 最小例子</title>
+    <link>https://847850277.github.io/posts/2026/datafusion_scalarfunctionexpr_protobuf_mini_example/</link>
+    <pubDate>Sat, 20 Jun 2026 09:00:00 &#43;0000</pubDate>
+    <author>zhengpengde</author>
+    <guid>https://847850277.github.io/posts/2026/datafusion_scalarfunctionexpr_protobuf_mini_example/</guid>
+    <description><![CDATA[<h1 id="scalarfunctionexpr-protobuf-序列化反序列化-最小例子">ScalarFunctionExpr protobuf 序列化/反序列化 最小例子</h1>
+<h2 id="什么是-scalarfunctionexpr">什么是 ScalarFunctionExpr</h2>
+<h2 id="什么是-protobuf">什么是 protobuf</h2>
+<h2 id="如何写最小例子">如何写最小例子</h2>
+<h2 id="完整例子代码">完整例子代码</h2>]]></description>
+</item>
+<item>
     <title>Java 写出Rust 的match 代码</title>
     <link>https://847850277.github.io/posts/2026/java_reference_rust_match/</link>
     <pubDate>Sun, 11 Jan 2026 09:00:00 &#43;0000</pubDate>
     <author>zhengpengde</author>
     <guid>https://847850277.github.io/posts/2026/java_reference_rust_match/</guid>
-    <description><![CDATA[Java 写出Rust 的match 代码 在Java中，我们可以使用switch语句来实现类似于Rust中match的功能。下面是一个示例，展示了如何在Java中使用switch来模拟Rust的match语法。
-public enum ServiceType { RESUME_COMMUNICATION(1, &#34;复课沟通&#34;), CLASS_PLANNING(2, &#34;班级规划&#34;), STUDENT_PLANNING(3, &#34;学员规划&#34;), STUDENT_INVENTORY(4, &#34;学员盘点&#34;), RENEWAL_INVENTORY_LOCK(5, &#34;续报盘点锁定&#34;), SATISFACTION_SURVEY(6, &#34;满意度问卷&#34;); private final Integer code; private final String description; ServiceType(Integer code, String description) { this.code = code; this.description = description; } public Integer getCode() { return code; } public String getDescription() { return description; } public static ServiceType fromCode(Integer code) { for (ServiceType type : values()) { if (type.code.equals(code)) { return type; } } throw new IllegalArgumentException(&#34;Unknown service type code: &#34; + code); } // 模拟 Rust 的 match 表达式 public &lt;T&gt; T match( java.]]></description>
+    <description><![CDATA[<h1 id="java-写出rust-的match-代码">Java 写出Rust 的match 代码</h1>
+<p>在Java中，我们可以使用<code>switch</code>语句来实现类似于Rust中<code>match</code>的功能。下面是一个示例，展示了如何在Java中使用<code>switch</code>来模拟Rust的<code>match</code>语法。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">enum</span> ServiceType {
+</span></span><span style="display:flex;"><span>    RESUME_COMMUNICATION(1, <span style="color:#e6db74">&#34;复课沟通&#34;</span>),
+</span></span><span style="display:flex;"><span>    CLASS_PLANNING(2, <span style="color:#e6db74">&#34;班级规划&#34;</span>),
+</span></span><span style="display:flex;"><span>    STUDENT_PLANNING(3, <span style="color:#e6db74">&#34;学员规划&#34;</span>),
+</span></span><span style="display:flex;"><span>    STUDENT_INVENTORY(4, <span style="color:#e6db74">&#34;学员盘点&#34;</span>),
+</span></span><span style="display:flex;"><span>    RENEWAL_INVENTORY_LOCK(5, <span style="color:#e6db74">&#34;续报盘点锁定&#34;</span>),
+</span></span><span style="display:flex;"><span>    SATISFACTION_SURVEY(6, <span style="color:#e6db74">&#34;满意度问卷&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> Integer code;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">final</span> String description;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    ServiceType(Integer code, String description) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">code</span> <span style="color:#f92672">=</span> code;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">description</span> <span style="color:#f92672">=</span> description;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Integer <span style="color:#a6e22e">getCode</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> code;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getDescription</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> description;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> ServiceType <span style="color:#a6e22e">fromCode</span>(Integer code) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> (ServiceType type : values()) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (type.<span style="color:#a6e22e">code</span>.<span style="color:#a6e22e">equals</span>(code)) {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">return</span> type;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalArgumentException(<span style="color:#e6db74">&#34;Unknown service type code: &#34;</span> <span style="color:#f92672">+</span> code);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 模拟 Rust 的 match 表达式</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> T <span style="color:#a6e22e">match</span>(
+</span></span><span style="display:flex;"><span>        java.<span style="color:#a6e22e">util</span>.<span style="color:#a6e22e">function</span>.<span style="color:#a6e22e">Supplier</span><span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> resumeCommunication,
+</span></span><span style="display:flex;"><span>        java.<span style="color:#a6e22e">util</span>.<span style="color:#a6e22e">function</span>.<span style="color:#a6e22e">Supplier</span><span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> classPlanning,
+</span></span><span style="display:flex;"><span>        java.<span style="color:#a6e22e">util</span>.<span style="color:#a6e22e">function</span>.<span style="color:#a6e22e">Supplier</span><span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> studentPlanning,
+</span></span><span style="display:flex;"><span>        java.<span style="color:#a6e22e">util</span>.<span style="color:#a6e22e">function</span>.<span style="color:#a6e22e">Supplier</span><span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> studentInventory,
+</span></span><span style="display:flex;"><span>        java.<span style="color:#a6e22e">util</span>.<span style="color:#a6e22e">function</span>.<span style="color:#a6e22e">Supplier</span><span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> renewalInventoryLock,
+</span></span><span style="display:flex;"><span>        java.<span style="color:#a6e22e">util</span>.<span style="color:#a6e22e">function</span>.<span style="color:#a6e22e">Supplier</span><span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> satisfactionSurvey
+</span></span><span style="display:flex;"><span>    ) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">switch</span> (<span style="color:#66d9ef">this</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">case</span> RESUME_COMMUNICATION: <span style="color:#66d9ef">return</span> resumeCommunication.<span style="color:#a6e22e">get</span>();
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">case</span> CLASS_PLANNING: <span style="color:#66d9ef">return</span> classPlanning.<span style="color:#a6e22e">get</span>();
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">case</span> STUDENT_PLANNING: <span style="color:#66d9ef">return</span> studentPlanning.<span style="color:#a6e22e">get</span>();
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">case</span> STUDENT_INVENTORY: <span style="color:#66d9ef">return</span> studentInventory.<span style="color:#a6e22e">get</span>();
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">case</span> RENEWAL_INVENTORY_LOCK: <span style="color:#66d9ef">return</span> renewalInventoryLock.<span style="color:#a6e22e">get</span>();
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">case</span> SATISFACTION_SURVEY: <span style="color:#66d9ef">return</span> satisfactionSurvey.<span style="color:#a6e22e">get</span>();
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">default</span>: <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IllegalStateException(<span style="color:#e6db74">&#34;Unexpected value: &#34;</span> <span style="color:#f92672">+</span> <span style="color:#66d9ef">this</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>使用示例：</p>]]></description>
 </item>
 <item>
     <title>Rust GUI</title>
@@ -20,15 +86,45 @@ public enum ServiceType { RESUME_COMMUNICATION(1, &#34;复课沟通&#34;), CLASS
     <pubDate>Sun, 01 Jun 2025 09:00:00 &#43;0000</pubDate>
     <author>zhengpengde</author>
     <guid>https://847850277.github.io/posts/rust-gui/gpui/</guid>
-    <description><![CDATA[Rust GUI 使用 gpui Render 和 Render Once 的区别 Render：
-持续渲染模式
-组件会在每一帧都重新渲染 适用于需要频繁更新的动态内容 消耗更多资源，但能保持实时更新 Render Once：
-一次性渲染模式
-组件只在初始化或状态变化时渲染 适用于静态内容或不频繁更新的组件 性能更好，资源消耗更少 在 GPUI 中选择合适的渲染模式可以优化应用性能和用户体验。 Entity 是什么
-Entity 是 GPUI 框架中的一个智能指针类型，类似于 React 中的引用机制。它用于管理 UI 组件的生命周期和状态。
-Entity 的主要用法 1. 创建 Entity Entity 通过 cx.new() 方法创建，接受一个闭包来初始化组件：
-pub fn view(window: &amp;mut Window, cx: &amp;mut App) -&gt; Entity&lt;Self&gt; { cx.new(|cx| Self::new(window, cx)) } 2. 在结构体中存储 Entity Entity 常被用作结构体字段，用于持有子组件的引用：
-pub struct Example { root: Entity&lt;ButtonStory&gt;, } 3. 在构造函数中创建子组件 impl Example { pub fn new(window: &amp;mut Window, cx: &amp;mut Context&lt;Self&gt;) -&gt; Self { let root = ButtonStory::view(window, cx); Self { root } } 4.]]></description>
+    <description><![CDATA[<h1 id="rust-gui-使用-gpui">Rust GUI 使用 gpui</h1>
+<h2 id="render-和-render-once-的区别">Render 和 Render Once 的区别</h2>
+<p>Render：</p>
+<p>持续渲染模式</p>
+<ul>
+<li>组件会在每一帧都重新渲染</li>
+<li>适用于需要频繁更新的动态内容</li>
+<li>消耗更多资源，但能保持实时更新</li>
+</ul>
+<p>Render Once：</p>
+<p>一次性渲染模式</p>
+<ul>
+<li>组件只在初始化或状态变化时渲染</li>
+<li>适用于静态内容或不频繁更新的组件</li>
+<li>性能更好，资源消耗更少</li>
+<li>在 GPUI 中选择合适的渲染模式可以优化应用性能和用户体验。</li>
+</ul>
+<p>Entity 是什么</p>
+<p><code>Entity</code> 是 GPUI 框架中的一个智能指针类型，类似于 React 中的引用机制。它用于管理 UI 组件的生命周期和状态。</p>
+<h2 id="entity-的主要用法">Entity 的主要用法</h2>
+<h3 id="1-创建-entity">1. 创建 Entity</h3>
+<p>Entity 通过 <code>cx.new()</code> 方法创建，接受一个闭包来初始化组件：</p>
+<pre tabindex="0"><code class="language-gpui-component/crates/story/src/welcome_story.rs#L12-14" data-lang="gpui-component/crates/story/src/welcome_story.rs#L12-14">pub fn view(window: &amp;mut Window, cx: &amp;mut App) -&gt; Entity&lt;Self&gt; {
+    cx.new(|cx| Self::new(window, cx))
+}
+</code></pre><h3 id="2-在结构体中存储-entity">2. 在结构体中存储 Entity</h3>
+<p>Entity 常被用作结构体字段，用于持有子组件的引用：</p>
+<pre tabindex="0"><code class="language-gpui-component/crates/story/examples/button.rs#L4-6" data-lang="gpui-component/crates/story/examples/button.rs#L4-6">pub struct Example {
+    root: Entity&lt;ButtonStory&gt;,
+}
+</code></pre><h3 id="3-在构造函数中创建子组件">3. 在构造函数中创建子组件</h3>
+<pre tabindex="0"><code class="language-gpui-component/crates/story/examples/button.rs#L8-13" data-lang="gpui-component/crates/story/examples/button.rs#L8-13">impl Example {
+    pub fn new(window: &amp;mut Window, cx: &amp;mut Context&lt;Self&gt;) -&gt; Self {
+        let root = ButtonStory::view(window, cx);
+
+        Self { root }
+    }
+</code></pre><h3 id="4-在-render-方法中使用-entity">4. 在 render 方法中使用 Entity</h3>
+<p>Entity 可以直接作为子元素使用，因为它实现了 <code>IntoElement</code> trait：</p>]]></description>
 </item>
 <item>
     <title>锈迹片段</title>
@@ -36,8 +132,110 @@ pub struct Example { root: Entity&lt;ButtonStory&gt;, } 3. 在构造函数中创
     <pubDate>Mon, 04 Nov 2024 10:00:00 &#43;0000</pubDate>
     <author>zhengpengde</author>
     <guid>https://847850277.github.io/posts/rust-snippet/rust-snippet/</guid>
-    <description><![CDATA[Rust Snippet 锈迹片段 如何调试Rust过程属性宏的代码 通过println!(),可以打印出宏展开后的代码。
-fn generate_handler(internal: bool, input: TokenStream) -&gt; Result&lt;TokenStream&gt; { let crate_name = utils::get_crate_name(internal); println!(&#34;crate_name: {:?}&#34;, crate_name); let item_fn = syn::parse::&lt;ItemFn&gt;(input)?; let (impl_generics, type_generics, where_clause) = item_fn.sig.generics.split_for_impl(); let vis = &amp;item_fn.vis; let docs = item_fn .attrs .iter() .filter(|attr| attr.path().is_ident(&#34;doc&#34;)) .cloned() .collect::&lt;Vec&lt;_&gt;&gt;(); let ident = &amp;item_fn.sig.ident; let call_await = if item_fn.sig.asyncness.is_some() { Some(quote::quote!(.await)) } else { None }; let def_struct = if !item_fn.sig.generics.params.is_empty() { let iter = item_fn .]]></description>
+    <description><![CDATA[<h1 id="rust-snippet-锈迹片段">Rust Snippet 锈迹片段</h1>
+<h2 id="如何调试rust过程属性宏的代码">如何调试Rust过程属性宏的代码</h2>
+<p>通过<code>println!()</code>,可以打印出宏展开后的代码。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">generate_handler</span>(internal: <span style="color:#66d9ef">bool</span>, input: <span style="color:#a6e22e">TokenStream</span>) -&gt; Result<span style="color:#f92672">&lt;</span>TokenStream<span style="color:#f92672">&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> crate_name <span style="color:#f92672">=</span> utils::get_crate_name(internal);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">println!</span>(<span style="color:#e6db74">&#34;crate_name: </span><span style="color:#e6db74">{:?}</span><span style="color:#e6db74">&#34;</span>, crate_name);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> item_fn <span style="color:#f92672">=</span> syn::parse::<span style="color:#f92672">&lt;</span>ItemFn<span style="color:#f92672">&gt;</span>(input)<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> (impl_generics, type_generics, where_clause) <span style="color:#f92672">=</span> item_fn.sig.generics.split_for_impl();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> vis <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>item_fn.vis;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> docs <span style="color:#f92672">=</span> item_fn
+</span></span><span style="display:flex;"><span>        .attrs
+</span></span><span style="display:flex;"><span>        .iter()
+</span></span><span style="display:flex;"><span>        .filter(<span style="color:#f92672">|</span>attr<span style="color:#f92672">|</span> attr.path().is_ident(<span style="color:#e6db74">&#34;doc&#34;</span>))
+</span></span><span style="display:flex;"><span>        .cloned()
+</span></span><span style="display:flex;"><span>        .collect::<span style="color:#f92672">&lt;</span>Vec<span style="color:#f92672">&lt;</span>_<span style="color:#f92672">&gt;&gt;</span>();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> ident <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>item_fn.sig.ident;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> call_await <span style="color:#f92672">=</span> <span style="color:#66d9ef">if</span> item_fn.sig.asyncness.is_some() {
+</span></span><span style="display:flex;"><span>        Some(quote::<span style="color:#a6e22e">quote!</span>(.<span style="color:#66d9ef">await</span>))
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>        None
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> def_struct <span style="color:#f92672">=</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">!</span>item_fn.sig.generics.params.is_empty() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> iter <span style="color:#f92672">=</span> item_fn
+</span></span><span style="display:flex;"><span>            .sig
+</span></span><span style="display:flex;"><span>            .generics
+</span></span><span style="display:flex;"><span>            .params
+</span></span><span style="display:flex;"><span>            .iter()
+</span></span><span style="display:flex;"><span>            .filter_map(<span style="color:#f92672">|</span>param<span style="color:#f92672">|</span> <span style="color:#66d9ef">match</span> param {
+</span></span><span style="display:flex;"><span>                GenericParam::Type(ty) <span style="color:#f92672">=&gt;</span> Some(ty),
+</span></span><span style="display:flex;"><span>                _ <span style="color:#f92672">=&gt;</span> None,
+</span></span><span style="display:flex;"><span>            })
+</span></span><span style="display:flex;"><span>            .enumerate()
+</span></span><span style="display:flex;"><span>            .map(<span style="color:#f92672">|</span>(idx, ty)<span style="color:#f92672">|</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">let</span> ident <span style="color:#f92672">=</span> <span style="color:#a6e22e">format_ident!</span>(<span style="color:#e6db74">&#34;_mark{}&#34;</span>, idx);
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">let</span> ty_ident <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>ty.ident;
+</span></span><span style="display:flex;"><span>                (ident, ty_ident)
+</span></span><span style="display:flex;"><span>            });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> struct_members <span style="color:#f92672">=</span> iter.clone().map(<span style="color:#f92672">|</span>(ident, ty_ident)<span style="color:#f92672">|</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">quote!</span> { #ident: ::std::marker::PhantomData<span style="color:#f92672">&lt;</span>#ty_ident<span style="color:#f92672">&gt;</span> }
+</span></span><span style="display:flex;"><span>        });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> default_members <span style="color:#f92672">=</span> iter.clone().map(<span style="color:#f92672">|</span>(ident, _ty_ident)<span style="color:#f92672">|</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">quote!</span> { #ident: ::std::marker::PhantomData }
+</span></span><span style="display:flex;"><span>        });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">quote!</span> {
+</span></span><span style="display:flex;"><span>            #vis <span style="color:#66d9ef">struct</span> #ident #type_generics { #(#struct_members),<span style="color:#f92672">*</span>}
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">impl</span> #type_generics ::std::default::Default <span style="color:#66d9ef">for</span> #ident #type_generics {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">default</span>() -&gt; <span style="color:#a6e22e">Self</span> {
+</span></span><span style="display:flex;"><span>                    Self { #(#default_members),<span style="color:#f92672">*</span> }
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">quote!</span> { #vis <span style="color:#66d9ef">struct</span> #ident; }
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> extractors <span style="color:#f92672">=</span> Vec::new();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> args <span style="color:#f92672">=</span> Vec::new();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (idx, input) <span style="color:#66d9ef">in</span> item_fn.sig.inputs.clone().into_iter().enumerate() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#66d9ef">let</span> FnArg::Typed(pat) <span style="color:#f92672">=</span> input {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">let</span> ty <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>pat.ty;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">let</span> id <span style="color:#f92672">=</span> quote::<span style="color:#a6e22e">format_ident!</span>(<span style="color:#e6db74">&#34;p{}&#34;</span>, idx);
+</span></span><span style="display:flex;"><span>            args.push(id.clone());
+</span></span><span style="display:flex;"><span>            extractors.push(<span style="color:#a6e22e">quote!</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">let</span> #id <span style="color:#f92672">=</span> <span style="color:#f92672">&lt;</span>#ty <span style="color:#66d9ef">as</span> #crate_name::FromRequest<span style="color:#f92672">&gt;</span>::from_request(<span style="color:#f92672">&amp;</span>req, <span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> body).<span style="color:#66d9ef">await</span><span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>            });
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> expanded <span style="color:#f92672">=</span> <span style="color:#a6e22e">quote!</span> {
+</span></span><span style="display:flex;"><span>        #(#docs)<span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">#[allow(non_camel_case_types)]</span>
+</span></span><span style="display:flex;"><span>        #def_struct
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">impl</span> #impl_generics #crate_name::Endpoint <span style="color:#66d9ef">for</span> #ident #type_generics #where_clause {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Output</span> <span style="color:#f92672">=</span> #crate_name::Response;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//println!(output: #crate_name::Response);
+</span></span></span><span style="display:flex;"><span>            <span style="color:#75715e">//println!(Output);
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">#[allow(unused_mut)]</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">async</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">call</span>(<span style="color:#f92672">&amp;</span>self, <span style="color:#66d9ef">mut</span> req: #crate_name::Request) -&gt; #crate_name::Result<span style="color:#f92672">&lt;</span>Self::Output<span style="color:#f92672">&gt;</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">let</span> (req, <span style="color:#66d9ef">mut</span> body) <span style="color:#f92672">=</span> req.split();
+</span></span><span style="display:flex;"><span>                #(#extractors)<span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span>                #item_fn
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">let</span> res <span style="color:#f92672">=</span> #ident(#(#args),<span style="color:#f92672">*</span>)#call_await;
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">let</span> res <span style="color:#f92672">=</span> #crate_name::error::IntoResult::into_result(res);
+</span></span><span style="display:flex;"><span>                std::result::Result::map(res, #crate_name::IntoResponse::into_response)
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">println!</span>(<span style="color:#e6db74">&#34;Expanded code: </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span>, expanded);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Ok(expanded.into())
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="清除本地的cargo-缓存">清除本地的cargo 缓存</h2>
+<h3 id="option-1-use-cargo-cache-tool-recommended">Option 1: Use cargo-cache tool (recommended)</h3>
+<p>First install the tool if you don&rsquo;t have it:</p>]]></description>
 </item>
 <item>
     <title>Rust实现Http Web Server</title>
@@ -45,8 +243,137 @@ fn generate_handler(internal: bool, input: TokenStream) -&gt; Result&lt;TokenStr
     <pubDate>Sun, 03 Nov 2024 10:00:00 &#43;0000</pubDate>
     <author>zhengpengde</author>
     <guid>https://847850277.github.io/posts/rust-http-server/mario-01/</guid>
-    <description><![CDATA[用Rust实现WebSerer的第一篇 最近业余时间一直在学习Rust,也在尝试用Rust去造轮子。第一个轮子就是用Rust去实现Web服务器。Web服务器的核心流程就是Request 和 Response。 简单的总结就是解析请求，然后匹配到Server初始化的路由处理器，然后路由处理器处理完返回。
-同步版本的程序 启动TCP服务 解析处理请求 匹配路由 返回响应 示范代码如下 use sync_core::server::Server; use sync_core::service::Service; fn main() { //trace log tracing_subscriber::fmt::init(); let mut server = Server::new(Service::new()); let route = sync_core::route::Route::new(&#34;GET&#34;.to_string(), &#34;/hello&#34;.to_string(), || { &#34;Hello World&#34;.to_string() }); // hello world 2 return int value let route2 = sync_core::route::Route::new(&#34;GET&#34;.to_string(), &#34;/hello2&#34;.to_string(), || { //i32 value return 42.to_string() }); // push route to server server.service.routes.push(route); server.service.routes.push(route2); server.start(); } use crate::service::Service; use log::info; use std::io::{Read, Write}; use std::net::{TcpListener, TcpStream}; pub struct Server { pub service: Service, } impl Server { pub fn new(service: Service) -&gt; Self { Self { service } } pub fn start(&amp;self) { let addr = &#34;127.]]></description>
+    <description><![CDATA[<h1 id="用rust实现webserer的第一篇">用Rust实现WebSerer的第一篇</h1>
+<p>最近业余时间一直在学习Rust,也在尝试用Rust去造轮子。第一个轮子就是用Rust去实现Web服务器。Web服务器的核心流程就是<code>Request</code> 和 <code>Response</code>。
+简单的总结就是<code>解析请求</code>，然后<code>匹配到Server初始化的路由处理器</code>，然后<code>路由处理器处理完返回</code>。</p>
+<h2 id="同步版本的程序">同步版本的程序</h2>
+<ul>
+<li>启动<code>TCP</code>服务</li>
+<li>解析处理请求</li>
+<li>匹配路由</li>
+<li>返回响应</li>
+</ul>
+<h3 id="示范代码如下">示范代码如下</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> sync_core::server::Server;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> sync_core::service::Service;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//trace log
+</span></span></span><span style="display:flex;"><span>    tracing_subscriber::fmt::init();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> server <span style="color:#f92672">=</span> Server::new(Service::new());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> route <span style="color:#f92672">=</span> sync_core::route::Route::new(<span style="color:#e6db74">&#34;GET&#34;</span>.to_string(), <span style="color:#e6db74">&#34;/hello&#34;</span>.to_string(), <span style="color:#f92672">||</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;Hello World&#34;</span>.to_string()
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// hello world 2 return int value
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> route2 <span style="color:#f92672">=</span> sync_core::route::Route::new(<span style="color:#e6db74">&#34;GET&#34;</span>.to_string(), <span style="color:#e6db74">&#34;/hello2&#34;</span>.to_string(), <span style="color:#f92672">||</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//i32 value return
+</span></span></span><span style="display:flex;"><span>        <span style="color:#ae81ff">42.</span>to_string()
+</span></span><span style="display:flex;"><span>    });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// push route to server
+</span></span></span><span style="display:flex;"><span>    server.service.routes.push(route);
+</span></span><span style="display:flex;"><span>    server.service.routes.push(route2);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    server.start();
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> <span style="color:#66d9ef">crate</span>::service::Service;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> log::info;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> std::io::{Read, Write};
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> std::net::{TcpListener, TcpStream};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Server</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pub</span> service: <span style="color:#a6e22e">Service</span>,
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">impl</span> Server {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">new</span>(service: <span style="color:#a6e22e">Service</span>) -&gt; <span style="color:#a6e22e">Self</span> {
+</span></span><span style="display:flex;"><span>        Self { service }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">start</span>(<span style="color:#f92672">&amp;</span>self) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> addr <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;127.0.0.1:8080&#34;</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> listener <span style="color:#f92672">=</span> TcpListener::bind(addr).unwrap();
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">info!</span>(<span style="color:#e6db74">&#34;Listening on http://{}&#34;</span>, addr);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> stream <span style="color:#66d9ef">in</span> listener.incoming() {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">match</span> stream {
+</span></span><span style="display:flex;"><span>                Ok(stream) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>                    self.handle_connection(stream);
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>                Err(e) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">eprintln!</span>(<span style="color:#e6db74">&#34;failed: </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span>, e);
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">handle_connection</span>(<span style="color:#f92672">&amp;</span>self, <span style="color:#66d9ef">mut</span> tcp_stream: <span style="color:#a6e22e">TcpStream</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> buffer <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0</span>; <span style="color:#ae81ff">1024</span>];
+</span></span><span style="display:flex;"><span>        tcp_stream.read(<span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> buffer).unwrap();
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">info!</span>(<span style="color:#e6db74">&#34;Request: {}&#34;</span>, String::from_utf8_lossy(<span style="color:#f92672">&amp;</span>buffer));
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// parse request
+</span></span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> request <span style="color:#f92672">=</span> String::from_utf8_lossy(<span style="color:#f92672">&amp;</span>buffer);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> request <span style="color:#f92672">=</span> request.split_whitespace().collect::<span style="color:#f92672">&lt;</span>Vec<span style="color:#f92672">&lt;&amp;</span><span style="color:#66d9ef">str</span><span style="color:#f92672">&gt;&gt;</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> method <span style="color:#f92672">=</span> request[<span style="color:#ae81ff">0</span>];
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> path <span style="color:#f92672">=</span> request[<span style="color:#ae81ff">1</span>];
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> _version <span style="color:#f92672">=</span> request[<span style="color:#ae81ff">2</span>];
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">info!</span>(<span style="color:#e6db74">&#34;Method: {}&#34;</span>, method);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">info!</span>(<span style="color:#e6db74">&#34;Path: {}&#34;</span>, path);
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">info!</span>(<span style="color:#e6db74">&#34;Version: {}&#34;</span>, _version);
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// find route
+</span></span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> route <span style="color:#f92672">=</span> self
+</span></span><span style="display:flex;"><span>            .service
+</span></span><span style="display:flex;"><span>            .routes
+</span></span><span style="display:flex;"><span>            .iter()
+</span></span><span style="display:flex;"><span>            .find(<span style="color:#f92672">|</span>r<span style="color:#f92672">|</span> r.method <span style="color:#f92672">==</span> method <span style="color:#f92672">&amp;&amp;</span> r.path <span style="color:#f92672">==</span> path);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">match</span> route {
+</span></span><span style="display:flex;"><span>            Some(route) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">let</span> response_body <span style="color:#f92672">=</span> (route.handler)();
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">let</span> response <span style="color:#f92672">=</span> <span style="color:#a6e22e">format!</span>(<span style="color:#e6db74">&#34;HTTP/1.1 200 OK</span><span style="color:#ae81ff">\r\n\r\n</span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span>, response_body);
+</span></span><span style="display:flex;"><span>                tcp_stream.write(response.as_bytes()).unwrap();
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            None <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">let</span> response_body <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Not Found Route&#34;</span>;
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">let</span> response <span style="color:#f92672">=</span> <span style="color:#a6e22e">format!</span>(<span style="color:#e6db74">&#34;HTTP/1.1 200 OK</span><span style="color:#ae81ff">\r\n\r\n</span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span>, response_body);
+</span></span><span style="display:flex;"><span>                tcp_stream.write(response.as_bytes()).unwrap();
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> <span style="color:#66d9ef">crate</span>::route::Route;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Service</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pub</span> routes: Vec<span style="color:#f92672">&lt;</span>Route<span style="color:#f92672">&gt;</span>,
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">impl</span> Service {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">new</span>() -&gt; <span style="color:#a6e22e">Self</span> {
+</span></span><span style="display:flex;"><span>        Self { routes: Vec::new() }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">Route</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pub</span> method: String,
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pub</span> path: String,
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pub</span> handler: <span style="color:#a6e22e">fn</span>() -&gt; String,
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">impl</span> Route {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">new</span>(method: String, path: String, handler: <span style="color:#a6e22e">fn</span>() -&gt; String) -&gt; <span style="color:#a6e22e">Self</span> {
+</span></span><span style="display:flex;"><span>        Self {
+</span></span><span style="display:flex;"><span>            method,
+</span></span><span style="display:flex;"><span>            path,
+</span></span><span style="display:flex;"><span>            handler,
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div>]]></description>
 </item>
 <item>
     <title>WEB网关系列02-基于http协议实现流量的代理</title>
@@ -54,8 +381,93 @@ fn generate_handler(internal: bool, input: TokenStream) -&gt; Result&lt;TokenStr
     <pubDate>Sun, 29 Oct 2023 09:00:00 &#43;0000</pubDate>
     <author>zhengpengde</author>
     <guid>https://847850277.github.io/posts/gateway/gateway-02-http-proxy/</guid>
-    <description><![CDATA[基于http协议实现流量的代理 模式之间差异 直连模式 代理模式 直连模式 直连模式，也就是服务与服务之间直接请求调用，比如说我们正常在浏览器上面输入baidu,然后浏览器把百度相应的响应反馈回来的过程。 这个过程种，用户充当了service-A的角色，百度的服务器充当了service-B的角色。
-代码还原以上过程，利用java的Java.net.HttpURLConnection类实现网络访问 除了HttpURLConnection还有很多java封装的包也能实现网络访问 通过common封装好HttpClient； 通过 Apache 封装好CloseableHttpClient； 通过SpringBoot-RestTemplate； import java.io.BufferedReader; import java.io.IOException; import java.io.InputStream; import java.io.InputStreamReader; import java.net.HttpURLConnection; import java.net.URL; import java.nio.charset.StandardCharsets; public class DirectMode { public static void main(String[] args) { String api = &#34;https://www.baidu.com&#34;; HttpURLConnection connection = null; InputStream in = null; BufferedReader reader = null; try { //构造一个URL对象 URL url = new URL(api); //获取URLConnection对象 connection = (HttpURLConnection) url.openConnection(); //getOutputStream会隐含的进行connect(即：如同调用上面的connect()方法，所以在开发中不调用connect()也可以) in = connection.]]></description>
+    <description><![CDATA[<h1 id="基于http协议实现流量的代理">基于http协议实现流量的代理</h1>
+<h2 id="模式之间差异">模式之间差异</h2>
+<ul>
+<li>直连模式</li>
+</ul>
+<p></p>
+<ul>
+<li>代理模式</li>
+</ul>
+<p></p>
+<h2 id="直连模式">直连模式</h2>
+<blockquote>
+<p>直连模式，也就是服务与服务之间直接请求调用，比如说我们正常在浏览器上面输入<a href="http://www.baidu.com" target="_blank" rel="noopener noreffer ">baidu</a>,然后浏览器把百度相应的响应反馈回来的过程。
+这个过程种，用户充当了service-A的角色，百度的服务器充当了service-B的角色。</p>
+</blockquote>
+<ul>
+<li>代码还原以上过程，利用java的<code>Java.net.HttpURLConnection</code>类实现网络访问
+<ul>
+<li>除了HttpURLConnection还有很多java封装的包也能实现网络访问
+<ul>
+<li>通过common封装好HttpClient；</li>
+<li>通过 Apache 封装好CloseableHttpClient；</li>
+<li>通过SpringBoot-RestTemplate；</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.BufferedReader;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.IOException;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.InputStream;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.InputStreamReader;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.net.HttpURLConnection;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.net.URL;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.nio.charset.StandardCharsets;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">DirectMode</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(String<span style="color:#f92672">[]</span> args) {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        String api <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;https://www.baidu.com&#34;</span>;
+</span></span><span style="display:flex;"><span>        HttpURLConnection connection <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>        InputStream in <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>        BufferedReader reader <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//构造一个URL对象</span>
+</span></span><span style="display:flex;"><span>            URL url <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> URL(api);
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//获取URLConnection对象</span>
+</span></span><span style="display:flex;"><span>            connection <span style="color:#f92672">=</span> (HttpURLConnection) url.<span style="color:#a6e22e">openConnection</span>();
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//getOutputStream会隐含的进行connect(即：如同调用上面的connect()方法，所以在开发中不调用connect()也可以)</span>
+</span></span><span style="display:flex;"><span>            in <span style="color:#f92672">=</span> connection.<span style="color:#a6e22e">getInputStream</span>();
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//通过InputStreamReader将字节流转换成字符串，在通过BufferedReader将字符流转换成自带缓冲流</span>
+</span></span><span style="display:flex;"><span>            reader <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> BufferedReader(<span style="color:#66d9ef">new</span> InputStreamReader(in, StandardCharsets.<span style="color:#a6e22e">UTF_8</span>));
+</span></span><span style="display:flex;"><span>            StringBuilder sb <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> StringBuilder();
+</span></span><span style="display:flex;"><span>            String line <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//按行读取</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">while</span> ((line <span style="color:#f92672">=</span> reader.<span style="color:#a6e22e">readLine</span>()) <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>                sb.<span style="color:#a6e22e">append</span>(line);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            String response <span style="color:#f92672">=</span> sb.<span style="color:#a6e22e">toString</span>();
+</span></span><span style="display:flex;"><span>            System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(response);
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (Exception exception) {
+</span></span><span style="display:flex;"><span>            exception.<span style="color:#a6e22e">printStackTrace</span>();
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">finally</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (connection <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>                connection.<span style="color:#a6e22e">disconnect</span>();
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (in <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>                    in.<span style="color:#a6e22e">close</span>();
+</span></span><span style="display:flex;"><span>                } <span style="color:#66d9ef">catch</span> (IOException e) {
+</span></span><span style="display:flex;"><span>                    e.<span style="color:#a6e22e">printStackTrace</span>();
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (reader <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>) {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>                    reader.<span style="color:#a6e22e">close</span>();
+</span></span><span style="display:flex;"><span>                } <span style="color:#66d9ef">catch</span> (IOException e) {
+</span></span><span style="display:flex;"><span>                    e.<span style="color:#a6e22e">printStackTrace</span>();
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>上面的代码会输出百度的响应信息，跟我们正常在浏览器上面访问百度是同样的效果，只是，浏览器上面有更美观的样式展现出来了。</p>]]></description>
 </item>
 <item>
     <title>事件日志埋点</title>
@@ -63,7 +475,229 @@ fn generate_handler(internal: bool, input: TokenStream) -&gt; Result&lt;TokenStr
     <pubDate>Thu, 19 Oct 2023 09:00:00 &#43;0000</pubDate>
     <author>zhengpengde</author>
     <guid>https://847850277.github.io/posts/2023/event-log/</guid>
-    <description><![CDATA[通过自定义注解和AOP实现自定义事件日志埋点 注解和aop类 注解 @Target(ElementType.METHOD) @Retention(RetentionPolicy.RUNTIME) public @interface EventLog { Action action() default Action.DEFAULT; boolean recordUserId() default true; boolean recordUserName() default true; boolean recordUserPhone() default true; boolean recordTime() default true; } aop @Slf4j @Aspect @Order(1) public class EventLogAspect { public EventLogAspect() { } @Pointcut(&#34;@annotation(com.xxxx.EventLog)&#34;) private void eventLogPoint() { } @Around(&#34;eventLogPoint() &amp;&amp; @annotation(eventLog)&#34;) public Object around(ProceedingJoinPoint pjp, EventLog eventLog) throws Throwable { Object[] args = pjp.getArgs(); if (args[0] instanceof Action.Param){ Action.Param param = (Action.]]></description>
+    <description><![CDATA[<h1 id="通过自定义注解和aop实现自定义事件日志埋点">通过自定义注解和AOP实现自定义事件日志埋点</h1>
+<h2 id="注解和aop类">注解和aop类</h2>
+<ul>
+<li>注解</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Target</span>(ElementType.<span style="color:#a6e22e">METHOD</span>)
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Retention</span>(RetentionPolicy.<span style="color:#a6e22e">RUNTIME</span>)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#a6e22e">@interface</span> EventLog {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Action <span style="color:#a6e22e">action</span>() <span style="color:#66d9ef">default</span> Action.<span style="color:#a6e22e">DEFAULT</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">recordUserId</span>() <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">recordUserName</span>() <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">recordUserPhone</span>() <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">recordTime</span>() <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li>aop</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Slf4j</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Aspect</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Order</span>(1)
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EventLogAspect</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">EventLogAspect</span>() {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Pointcut</span>(<span style="color:#e6db74">&#34;@annotation(com.xxxx.EventLog)&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">eventLogPoint</span>() {
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Around</span>(<span style="color:#e6db74">&#34;eventLogPoint() &amp;&amp; @annotation(eventLog)&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">around</span>(ProceedingJoinPoint pjp, EventLog eventLog) <span style="color:#66d9ef">throws</span> Throwable {
+</span></span><span style="display:flex;"><span>        Object<span style="color:#f92672">[]</span> args <span style="color:#f92672">=</span> pjp.<span style="color:#a6e22e">getArgs</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (args<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span> <span style="color:#66d9ef">instanceof</span> Action.<span style="color:#a6e22e">Param</span>){
+</span></span><span style="display:flex;"><span>            Action.<span style="color:#a6e22e">Param</span> param <span style="color:#f92672">=</span> (Action.<span style="color:#a6e22e">Param</span>) args<span style="color:#f92672">[</span>0<span style="color:#f92672">]</span>;
+</span></span><span style="display:flex;"><span>            Action action <span style="color:#f92672">=</span> Action.<span style="color:#a6e22e">of</span>(param.<span style="color:#a6e22e">getType</span>());
+</span></span><span style="display:flex;"><span>            RabbitTemplate bean <span style="color:#f92672">=</span> SpringUtils.<span style="color:#a6e22e">getBean</span>(RabbitTemplate.<span style="color:#a6e22e">class</span>);
+</span></span><span style="display:flex;"><span>            EventLogBO bo <span style="color:#f92672">=</span> buildEventBO(action,param);
+</span></span><span style="display:flex;"><span>            Message message <span style="color:#f92672">=</span> MessageBuilder.<span style="color:#a6e22e">withBody</span>(JSON.<span style="color:#a6e22e">toJSONString</span>(bo).<span style="color:#a6e22e">getBytes</span>())
+</span></span><span style="display:flex;"><span>                    .<span style="color:#a6e22e">setContentType</span>(MessageProperties.<span style="color:#a6e22e">CONTENT_TYPE_JSON</span>)
+</span></span><span style="display:flex;"><span>                    .<span style="color:#a6e22e">setContentEncoding</span>(<span style="color:#e6db74">&#34;utf-8&#34;</span>)
+</span></span><span style="display:flex;"><span>                    .<span style="color:#a6e22e">build</span>();
+</span></span><span style="display:flex;"><span>            bean.<span style="color:#a6e22e">convertAndSend</span>(EventLogConstant.<span style="color:#a6e22e">EVENTLOG_EXCHANGE</span>, EventLogConstant.<span style="color:#a6e22e">EVENTLOG_ROUTINGKEY</span>, message);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> pjp.<span style="color:#a6e22e">proceed</span>();
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> BusinessException(<span style="color:#e6db74">&#34;埋点参数错误&#34;</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> EventLogBO <span style="color:#a6e22e">buildEventBO</span>(Action action, Action.<span style="color:#a6e22e">Param</span> param) {
+</span></span><span style="display:flex;"><span>        String userId <span style="color:#f92672">=</span> Optional.<span style="color:#a6e22e">ofNullable</span>(SysUserUtil.<span style="color:#a6e22e">getLoginAppUser</span>()).<span style="color:#a6e22e">map</span>(SysUser::getId).<span style="color:#a6e22e">orElse</span>(<span style="color:#e6db74">&#34;d50a4f05-d193-4017-8b94-238297d76bb6&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> EventLogBO.<span style="color:#a6e22e">builder</span>()
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">id</span>(Long.<span style="color:#a6e22e">valueOf</span>(CommonUtils.<span style="color:#a6e22e">getUniqueId</span>()))
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">eventType</span>(action.<span style="color:#a6e22e">getActionType</span>())
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">eventName</span>(action.<span style="color:#a6e22e">getActionName</span>())
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">eventDesc</span>(action.<span style="color:#a6e22e">getActionDesc</span>())
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">name</span>(DictionaryUtil.<span style="color:#a6e22e">getUserNameById</span>(userId))
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">userId</span>(userId)
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">phone</span>(DictionaryUtil.<span style="color:#a6e22e">getUserNameById</span>(userId,<span style="color:#e6db74">&#34;phone&#34;</span>))
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">eventTime</span>(<span style="color:#66d9ef">new</span> Date())
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">build</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="公共和事件枚举类">公共和事件枚举类</h2>
+<ul>
+<li>枚举</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Getter</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">enum</span> Action {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    DEFAULT(<span style="color:#f92672">-</span>1,<span style="color:#e6db74">&#34;-1&#34;</span>,<span style="color:#e6db74">&#34;-1&#34;</span>),
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    TECH_BOOK_VISIT_COUNT(1,<span style="color:#e6db74">&#34;xxx&#34;</span>,<span style="color:#e6db74">&#34;xxx&#34;</span>),
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    UNIT_COUNT_VISIT_COUNT(2,<span style="color:#e6db74">&#34;xxx&#34;</span>,<span style="color:#e6db74">&#34;xxx&#34;</span>),
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    DANCE_VISIT_COUNT(3,<span style="color:#e6db74">&#34;xxx&#34;</span>,<span style="color:#e6db74">&#34;xxx&#34;</span>),
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    SYLLABUS_VISIT_COUNT(4,<span style="color:#e6db74">&#34;xxx&#34;</span>,<span style="color:#e6db74">&#34;xxx&#34;</span>),
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    ;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Action(Integer actionType, String actionName, String actionDesc) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">actionType</span> <span style="color:#f92672">=</span> actionType;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">actionName</span> <span style="color:#f92672">=</span> actionName;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">actionDesc</span> <span style="color:#f92672">=</span> actionDesc;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> Action <span style="color:#a6e22e">of</span>(Integer type) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span>(Objects.<span style="color:#a6e22e">isNull</span>(type)){
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> BusinessException(<span style="color:#e6db74">&#34;类型不能为空&#34;</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> Arrays.<span style="color:#a6e22e">stream</span>(Action.<span style="color:#a6e22e">values</span>()).<span style="color:#a6e22e">filter</span>(item <span style="color:#f92672">-&gt;</span> item.<span style="color:#a6e22e">actionType</span>.<span style="color:#a6e22e">compareTo</span>(type) <span style="color:#f92672">==</span> 0)
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">findAny</span>().<span style="color:#a6e22e">orElseThrow</span>(() <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">new</span> BusinessException(<span style="color:#e6db74">&#34;埋点类型不存在&#34;</span>));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">toString</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Action{&#34;</span> <span style="color:#f92672">+</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;actionType=&#34;</span> <span style="color:#f92672">+</span> actionType <span style="color:#f92672">+</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;, actionName=&#39;&#34;</span> <span style="color:#f92672">+</span> actionName <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;\&#39;&#39;</span> <span style="color:#f92672">+</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;, actionDesc=&#39;&#34;</span> <span style="color:#f92672">+</span> actionDesc <span style="color:#f92672">+</span> <span style="color:#e6db74">&#39;\&#39;&#39;</span> <span style="color:#f92672">+</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#39;}&#39;</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Integer actionType;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String actionName;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String actionDesc;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Data</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@AllArgsConstructor</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@NoArgsConstructor</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Builder</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Param</span>{
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">@ApiModelProperty</span>(<span style="color:#e6db74">&#34;xxx&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> Integer type;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li>BO和常量类</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Data</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@AllArgsConstructor</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@NoArgsConstructor</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Builder</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EventLogBO</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Long id;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String userId;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String name;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String phone;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Integer eventType;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String eventName;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> String eventDesc;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@ApiModelProperty</span>(<span style="color:#e6db74">&#34;创建时间&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@JsonFormat</span>(timezone <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;GMT+8&#34;</span>, pattern <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;yyyy-MM-dd HH:mm:ss&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> Date eventTime;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EventLogConstant</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String EVENTLOG_QUEUE <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;eventlog_queue&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String EVENTLOG_EXCHANGE <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;eventlog_exchange&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> String EVENTLOG_ROUTINGKEY <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;eventlog_routingkey&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="spring-starter类">spring starter类</h2>
+<ul>
+<li>aop bean 配置</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Slf4j</span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Configuration</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EventLogAutoConfiguration</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Bean</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> EventLogAspect <span style="color:#a6e22e">eventLogAspect</span>(){
+</span></span><span style="display:flex;"><span>        log.<span style="color:#a6e22e">info</span>(<span style="color:#e6db74">&#34;init EventLogAspect&#34;</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> EventLogAspect();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li>mq bean 配置</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#a6e22e">@Configuration</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EventLogRabbitMqConfig</span> {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Bean</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Queue <span style="color:#a6e22e">eventlogQueue</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> QueueBuilder.<span style="color:#a6e22e">durable</span>(EventLogConstant.<span style="color:#a6e22e">EVENTLOG_QUEUE</span>)
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">build</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Bean</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> DirectExchange <span style="color:#a6e22e">eventlogExchange</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> DirectExchange(EventLogConstant.<span style="color:#a6e22e">EVENTLOG_EXCHANGE</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Bean</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> Binding <span style="color:#a6e22e">eventlogBinding</span>(Queue eventlogQueue, DirectExchange eventlogExchange) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> BindingBuilder.<span style="color:#a6e22e">bind</span>(eventlogQueue)
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">to</span>(eventlogExchange)
+</span></span><span style="display:flex;"><span>                .<span style="color:#a6e22e">with</span>(EventLogConstant.<span style="color:#a6e22e">EVENTLOG_ROUTINGKEY</span>);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li>resource/META-INF/spring.factories 配置</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>org.<span style="color:#a6e22e">springframework</span>.<span style="color:#a6e22e">boot</span>.<span style="color:#a6e22e">autoconfigure</span>.<span style="color:#a6e22e">EnableAutoConfiguration</span><span style="color:#f92672">=</span>com.<span style="color:#a6e22e">xxx</span>.<span style="color:#a6e22e">EventLogAutoConfiguration</span>,com.<span style="color:#a6e22e">xxx</span>.<span style="color:#a6e22e">EventLogRabbitMqConfig</span>
+</span></span></code></pre></div>]]></description>
 </item>
 <item>
     <title>WEB网关系列01-什么是WEB网关</title>
@@ -71,12 +705,16 @@ fn generate_handler(internal: bool, input: TokenStream) -&gt; Result&lt;TokenStr
     <pubDate>Tue, 10 Oct 2023 09:00:00 &#43;0000</pubDate>
     <author>zhengpengde</author>
     <guid>https://847850277.github.io/posts/gateway/gateway-01/</guid>
-    <description><![CDATA[WEB网关系列-什么是WEB网关 gateway，我们一般都称为网关。翻译意思有网关;(通往其他地区的)门户;方法;途径;出入口;手段;门道;大门口。
-现实生活中的网关有比如，高速公路的收费口、城门入口、景区或者游乐园的入口等。它们都充当了入口的功能，还有检测功能等等。
-而在web中的网关，它充当的是流量的入口，一般来说当有流量进入到web程序，它的第一层便是经过网关，然后经网关代理到准确的服务地址上， 同时，对应的服务产生响应，然后网关把响应反馈回去。那么网关就充当了，流量转发的角色， 个人觉得它是一个网关最核心的功能。
-在流量转发这个场景下，可以衍生出无数种组合出来。因为，我们的web应用程序存在的方式是多种多样的，比如在线购物网站、wps、视频网站等等。当然市面上常用的就是基于http协议的web服务， 还有tcp、udp、websocket等。
-除了流量转发，网关还需要限制恶意的请求过来，仅正确的用户、正确的请求才可以通过，也就是网关需要提供鉴权的功能。
-网关还有就是限制请求流量的作用，举个例子来说，当一台计算机器它的瞬时处理能力只有1千个请求，那瞬时有2千个请求过来，网关处理不过来的话， 限流就在这种场景下面产生了。]]></description>
+    <description><![CDATA[<h2 id="web网关系列-什么是web网关">WEB网关系列-什么是WEB网关</h2>
+<p>gateway，我们一般都称为网关。翻译意思有<code>网关;(通往其他地区的)门户;方法;途径;出入口;手段;门道;大门口</code>。</p>
+<p>现实生活中的网关有比如，高速公路的收费口、城门入口、景区或者游乐园的入口等。它们都充当了入口的功能，还有检测功能等等。</p>
+<p>而在web中的网关，它充当的是流量的入口，一般来说当有流量进入到web程序，它的第一层便是经过网关，然后经网关代理到准确的服务地址上，
+同时，对应的服务产生响应，然后网关把响应反馈回去。那么网关就充当了，流量转发的角色， 个人觉得它是一个网关最核心的功能。</p>
+<p>在流量转发这个场景下，可以衍生出无数种组合出来。因为，我们的web应用程序存在的方式是多种多样的，比如在线购物网站、wps、视频网站等等。当然市面上常用的就是基于http协议的web服务，
+还有tcp、udp、websocket等。</p>
+<p>除了流量转发，网关还需要限制恶意的请求过来，仅正确的用户、正确的请求才可以通过，也就是网关需要提供鉴权的功能。</p>
+<p>网关还有就是限制请求流量的作用，举个例子来说，当一台计算机器它的瞬时处理能力只有1千个请求，那瞬时有2千个请求过来，网关处理不过来的话，
+限流就在这种场景下面产生了。</p>]]></description>
 </item>
 <item>
     <title>Reactor Pattern</title>
@@ -84,7 +722,15 @@ fn generate_handler(internal: bool, input: TokenStream) -&gt; Result&lt;TokenStr
     <pubDate>Fri, 18 Aug 2023 13:56:30 &#43;0800</pubDate>
     <author>zhengpengde</author>
     <guid>https://847850277.github.io/posts/pattern/reactor/</guid>
-    <description><![CDATA[Intent 意图 The Reactor design pattern handles service requests that are delivered concurrently to an application by one or more clients. 反应器设计模式处理由一个或多个客户端并发传递到应用程序的服务请求, The application can register specific handlers for processing which are called by reactor on specific events. 应用程序可以注册用于处理的特定处理程序，这些处理程序由反应器在特定事件上调用 Dispatching of event handlers is performed by an initiation dispatcher, which manages the registered event handlers. 事件处理程序的分派由启动分派程序执行，该程序管理已注册的事件处理程序 Demultiplexing of service requests is performed by a synchronous event demultiplexer. 服务请求的解复用由同步事件解复用器执行 Class diagram 类图 Applicability 应用 Use Reactor pattern when 以下场景可以使用Reactor 模式]]></description>
+    <description><![CDATA[<h2 id="intent-意图">Intent 意图</h2>
+<ul>
+<li>The Reactor design pattern handles service requests that are delivered concurrently to an application by one or more clients. 反应器设计模式处理由一个或多个客户端并发传递到应用程序的服务请求,</li>
+<li>The application can register specific handlers for processing which are called by reactor on specific events. 应用程序可以注册用于处理的特定处理程序，这些处理程序由反应器在特定事件上调用</li>
+<li>Dispatching of event handlers is performed by an initiation dispatcher, which manages the registered event handlers. 事件处理程序的分派由启动分派程序执行，该程序管理已注册的事件处理程序</li>
+<li>Demultiplexing of service requests is performed by a synchronous event demultiplexer. 服务请求的解复用由同步事件解复用器执行</li>
+</ul>
+<h2 id="class-diagram-类图">Class diagram 类图</h2>
+<p></p>]]></description>
 </item>
 <item>
     <title>Scalable in java 翻译</title>
@@ -92,18 +738,42 @@ fn generate_handler(internal: bool, input: TokenStream) -&gt; Result&lt;TokenStr
     <pubDate>Wed, 16 Aug 2023 09:27:36 &#43;0800</pubDate>
     <author>zhengpengde</author>
     <guid>https://847850277.github.io/posts/2023/scalable_in_java_translate/</guid>
-    <description><![CDATA[目录 Scalable network services 可扩展的网络服务 Event-driven processing 事件驱动处理 Reactor pattern Reactor 模式 Basic version 基本版本 Multithreaded versions 多线程版本 Other variants 其他变体 Walkthrough of java.nio nonblocking IO APIs 预编排java.nio nonblocking IO APIs Network Services 网络服务 Web services, Distributed Objects, etc 网络服务,分布式对象，等等。 Most have same basic structure: 大多数都有以下的基本结构 Read request 读请求 Decode request 解码请求 Process service 处理服务 Encode reply 编码响应 Send reply 发送响应 But differ in nature and cost of each step 当然在实际应用中每一步的运行效率都是不同的，例如其中可能涉及到xml解析、文件传输、web页面的加载、计算服务等不同功能 XML parsing, File transfer, Web page generation, computational services, &hellip; Classic Service Designs 传统的服务设计 Each handler may be started in its own thread 在一般的网络服务当中都会为每一个连接的处理开启一个新的线程，我们可以看下大致的示意图： public class Test { private static Integer PORT = 8080; public static void main(String[] args) { Server server = new Server(); server.]]></description>
-</item>
-<item>
-    <title>什么是metadata</title>
-    <link>https://847850277.github.io/posts/2023/metadata/</link>
-    <pubDate>Sat, 01 Jul 2023 09:00:00 &#43;0000</pubDate>
-    <author>zhengpengde</author>
-    <guid>https://847850277.github.io/posts/2023/metadata/</guid>
-    <description><![CDATA[什么是metadata,带例子 metadata is simply data about data,It means it is a description and context of the data. It helps to organize, find and understand data. Here are a few real world examples of metadata.
-元数据是数据的数据,这意味着他是数据的描述和上下文。它帮助我们了解和认识数据。下面有一些真是的关于元数据的例子。
-Typical metadata Those are some typical metadata elements:
-Title and description, Tags and categories, Who created and when, Who last modified and when, Who can access or update. A photo Every time you take a photo with today&rsquo;s cameras a bunch of metadata is gathered and saved with it]]></description>
+    <description><![CDATA[<h2 id="目录">目录</h2>
+<ul>
+<li><code>Scalable network services</code> 可扩展的网络服务</li>
+<li><code>Event-driven processing</code> 事件驱动处理</li>
+<li><code>Reactor pattern</code> Reactor 模式
+<ul>
+<li><code>Basic version</code> 基本版本</li>
+<li><code>Multithreaded versions</code> 多线程版本</li>
+<li><code>Other variants</code> 其他变体</li>
+</ul>
+</li>
+<li><code>Walkthrough of java.nio nonblocking IO APIs</code> 预编排<code>java.nio nonblocking IO APIs</code></li>
+</ul>
+<h2 id="network-services-网络服务">Network Services 网络服务</h2>
+<ul>
+<li>Web services, Distributed Objects, etc 网络服务,分布式对象，等等。</li>
+<li>Most have same basic structure: 大多数都有以下的基本结构
+<ul>
+<li>Read request 读请求</li>
+<li>Decode request 解码请求</li>
+<li>Process service 处理服务</li>
+<li>Encode reply 编码响应</li>
+<li>Send reply 发送响应</li>
+</ul>
+</li>
+<li>But differ in nature and cost of each step 当然在实际应用中每一步的运行效率都是不同的，例如其中可能涉及到xml解析、文件传输、web页面的加载、计算服务等不同功能
+<ul>
+<li>XML parsing, File transfer, Web page generation, computational services, &hellip;</li>
+</ul>
+</li>
+</ul>
+<h3 id="classic-service-designs-传统的服务设计">Classic Service Designs 传统的服务设计</h3>
+<ul>
+<li>Each handler may be started in its own thread  在一般的网络服务当中都会为每一个连接的处理开启一个新的线程，我们可以看下大致的示意图：</li>
+</ul>
+<p></p>]]></description>
 </item>
 </channel>
 </rss>

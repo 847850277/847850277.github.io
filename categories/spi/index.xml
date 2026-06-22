@@ -1,19 +1,24 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
-    <channel>
-        <title>spi - Category - ZhengPengDe Blog</title>
-        <link>https://847850277.github.io/categories/spi/</link>
-        <description>spi - Category - ZhengPengDe Blog</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Fri, 16 Jun 2023 09:00:00 &#43;0000</lastBuildDate><atom:link href="https://847850277.github.io/categories/spi/" rel="self" type="application/rss+xml" /><item>
-    <title>apache shenyu的spi机制</title>
-    <link>https://847850277.github.io/posts/apache-shenyu/shenyu-spi/</link>
-    <pubDate>Fri, 16 Jun 2023 09:00:00 &#43;0000</pubDate>
-    <author>zhengpengde</author>
-    <guid>https://847850277.github.io/posts/apache-shenyu/shenyu-spi/</guid>
-    <description><![CDATA[什么是spi SPI就是Service Provider Interface,是一种动态的服务发现机制。 可以基于运行时动态的加载接口的实现类。通过(接口编程 + 策略模式 + 配置文件) 实现解耦和扩展。
-应用 数据库驱动 基于该接口的实现有MySQL,PostgreSQL,SqlServer等。 SLF4J日志框架 Dubbo的SPI扩展 dubbo apache shenyu spring boot starter jdbc的应用 日志的应用 apache shenyu的spi应用 dubbo的spi应用 实现方式 市面上常见的SPI的实现方式有：
-JDK的SPI实现 Dubbo的SPI实现、ShenYu的 SPI Spring的SPI实现 JDK的SPI实现流程为
-在类路径的META-INF/services目录创建一个以接口全限定名称命名的文件（本质是一个properties）文件，例如命名为java.sql.Driver 该文件中可以指定具体的实现类，也就是每个实现类的全类型限定名为单独一行 例如 META-INF/services/java.sql.Driver # META-INF/services/java.sql.Driver文件内容 com.mysql.jdbc.Driver org.postgresql.Driver 最后通过java.util.ServiceLoader对该文件进行加载，实例化接口的对应实现类（这里隐含了一个约定，所有实现类必须提供无参构造函数,用来反射调用） 底层的实现涉及到类加载、双亲委派等内容，这里不展开。基于这种设计思路，很多主流框架实现了一套SPI扩展，例如Dubbo的SPI扩展模块，就是读取类路径 下META-INF/services/dubbo目录的文件内容进行类加载。ShenYu-SPI模块也是沿用类似的设计思路。
-JDK SPI 的代码示例 接口定义 public interface Search { public List&lt;String&gt; searchDoc(String keyword); } 实现类 public class FileSearch implements Search{ @Override public List&lt;String&gt; searchDoc(String keyword) { System.out.println(&#34;文件搜索 &#34;+keyword); return null; } } public class DatabaseSearch implements Search{ @Override public List&lt;String&gt; searchDoc(String keyword) { System.]]></description>
-</item>
-</channel>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Spi on ZhengPengDe Blog</title>
+		<link>https://847850277.github.io/categories/spi/</link>
+		<description>Recent content in Spi on ZhengPengDe Blog</description>
+		<generator>Hugo</generator>
+		<language>zh-CN</language>
+		
+		
+		
+		
+			<lastBuildDate>Mon, 31 Jul 2023 10:00:00 +0000</lastBuildDate>
+		
+			<atom:link href="https://847850277.github.io/categories/spi/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>apache shenyu的spi机制</title>
+				<link>https://847850277.github.io/posts/apache-shenyu/shenyu-spi/</link>
+				<pubDate>Fri, 16 Jun 2023 09:00:00 +0000</pubDate>
+				<guid>https://847850277.github.io/posts/apache-shenyu/shenyu-spi/</guid>
+				<description>&lt;h2 id=&#34;什么是spi&#34;&gt;什么是spi&lt;/h2&gt;&#xA;&lt;p&gt;&lt;code&gt;SPI&lt;/code&gt;就是&lt;code&gt;Service Provider Interface&lt;/code&gt;,是一种动态的服务发现机制。&#xA;可以基于运行时动态的加载接口的实现类。通过(接口编程 + 策略模式 + 配置文件) 实现&lt;code&gt;解耦&lt;/code&gt;和&lt;code&gt;扩展&lt;/code&gt;。&lt;/p&gt;&#xA;&lt;p&gt;&lt;img&#xA;        class=&#34;lazyload&#34;&#xA;        src=&#34;https://847850277.github.io/svg/loading.min.svg&#34;&#xA;        data-src=&#34;https://847850277.github.io/img/source/spi/spi.png&#34;&#xA;        data-srcset=&#34;https://847850277.github.io/img/source/spi/spi.png, https://847850277.github.io/img/source/spi/spi.png 1.5x, https://847850277.github.io/img/source/spi/spi.png 2x&#34;&#xA;        data-sizes=&#34;auto&#34;&#xA;        alt=&#34;/img/source/spi/spi.png&#34;&#xA;        title=&#34;spi&#34; /&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;应用&#34;&gt;应用&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;数据库驱动&#xA;&lt;ul&gt;&#xA;&lt;li&gt;基于该接口的实现有&lt;code&gt;MySQL&lt;/code&gt;,&lt;code&gt;PostgreSQL&lt;/code&gt;,&lt;code&gt;SqlServer&lt;/code&gt;等。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;SLF4J日志框架&lt;/li&gt;&#xA;&lt;li&gt;&lt;code&gt;Dubbo&lt;/code&gt;的&lt;code&gt;SPI&lt;/code&gt;扩展&#xA;&lt;ul&gt;&#xA;&lt;li&gt;dubbo&lt;/li&gt;&#xA;&lt;li&gt;apache shenyu&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;&lt;code&gt;spring boot starter&lt;/code&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;jdbc的应用&#xA;&lt;img&#xA;        class=&#34;lazyload&#34;&#xA;        src=&#34;https://847850277.github.io/svg/loading.min.svg&#34;&#xA;        data-src=&#34;https://847850277.github.io/img/source/spi/spi_jdbc.png&#34;&#xA;        data-srcset=&#34;https://847850277.github.io/img/source/spi/spi_jdbc.png, https://847850277.github.io/img/source/spi/spi_jdbc.png 1.5x, https://847850277.github.io/img/source/spi/spi_jdbc.png 2x&#34;&#xA;        data-sizes=&#34;auto&#34;&#xA;        alt=&#34;/img/source/spi/spi_jdbc.png&#34;&#xA;        title=&#34;spi&#34; /&gt;&lt;/p&gt;&#xA;&lt;p&gt;日志的应用&#xA;&lt;img&#xA;        class=&#34;lazyload&#34;&#xA;        src=&#34;https://847850277.github.io/svg/loading.min.svg&#34;&#xA;        data-src=&#34;https://847850277.github.io/img/source/spi/spi_log.png&#34;&#xA;        data-srcset=&#34;https://847850277.github.io/img/source/spi/spi_log.png, https://847850277.github.io/img/source/spi/spi_log.png 1.5x, https://847850277.github.io/img/source/spi/spi_log.png 2x&#34;&#xA;        data-sizes=&#34;auto&#34;&#xA;        alt=&#34;/img/source/spi/spi_log.png&#34;&#xA;        title=&#34;spi&#34; /&gt;&lt;/p&gt;&#xA;&lt;p&gt;apache shenyu的spi应用&#xA;&lt;img&#xA;        class=&#34;lazyload&#34;&#xA;        src=&#34;https://847850277.github.io/svg/loading.min.svg&#34;&#xA;        data-src=&#34;https://847850277.github.io/img/source/spi/spi_shenyu.png&#34;&#xA;        data-srcset=&#34;https://847850277.github.io/img/source/spi/spi_shenyu.png, https://847850277.github.io/img/source/spi/spi_shenyu.png 1.5x, https://847850277.github.io/img/source/spi/spi_shenyu.png 2x&#34;&#xA;        data-sizes=&#34;auto&#34;&#xA;        alt=&#34;/img/source/spi/spi_shenyu.png&#34;&#xA;        title=&#34;spi&#34; /&gt;&lt;/p&gt;&#xA;&lt;p&gt;dubbo的spi应用&#xA;&lt;img&#xA;        class=&#34;lazyload&#34;&#xA;        src=&#34;https://847850277.github.io/svg/loading.min.svg&#34;&#xA;        data-src=&#34;https://847850277.github.io/img/source/spi/spi_dubbo_extention.png&#34;&#xA;        data-srcset=&#34;https://847850277.github.io/img/source/spi/spi_dubbo_extention.png, https://847850277.github.io/img/source/spi/spi_dubbo_extention.png 1.5x, https://847850277.github.io/img/source/spi/spi_dubbo_extention.png 2x&#34;&#xA;        data-sizes=&#34;auto&#34;&#xA;        alt=&#34;/img/source/spi/spi_dubbo_extention.png&#34;&#xA;        title=&#34;spi&#34; /&gt;&lt;/p&gt;&#xA;&lt;h2 id=&#34;实现方式&#34;&gt;实现方式&lt;/h2&gt;&#xA;&lt;p&gt;市面上常见的SPI的实现方式有：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;code&gt;JDK&lt;/code&gt;的&lt;code&gt;SPI&lt;/code&gt;实现&lt;/li&gt;&#xA;&lt;li&gt;&lt;code&gt;Dubbo&lt;/code&gt;的&lt;code&gt;SPI&lt;/code&gt;实现、&lt;code&gt;ShenYu&lt;/code&gt;的 &lt;code&gt;SPI&lt;/code&gt;&lt;/li&gt;&#xA;&lt;li&gt;&lt;code&gt;Spring&lt;/code&gt;的&lt;code&gt;SPI&lt;/code&gt;实现&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&lt;code&gt;JDK&lt;/code&gt;的&lt;code&gt;SPI&lt;/code&gt;实现流程为&lt;/p&gt;</description>
+			</item>
+	</channel>
 </rss>

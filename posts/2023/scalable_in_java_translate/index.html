@@ -1,18 +1,22 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html lang="zh-CN">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="robots" content="noodp" />
-        <title>Scalable in java 翻译 - ZhengPengDe Blog</title><meta name="Description" content="This is ZhengPengDe网络日志"><meta property="og:title" content="Scalable in java 翻译" />
-<meta property="og:description" content="目录 Scalable network services 可扩展的网络服务 Event-driven processing 事件驱动处理 Reactor pattern Reactor 模式 Basic version 基本版本 Multithreaded versions 多线程版本 Other variants 其他变体 Walkthrough of java.nio nonblocking IO APIs 预编排java.nio nonblocking IO APIs Network Services 网络服务 Web services, Distributed Objects, etc 网络服务,分布式对象，等等。 Most have same basic structure: 大多数都有以下的基本结构 Read request 读请求 Decode request 解码请求 Process service 处理服务 Encode reply 编码响应 Send reply 发送响应 But differ in nature and cost of each step 当然在实际应用中每一步的运行效率都是不同的，例如其中可能涉及到xml解析、文件传输、web页面的加载、计算服务等不同功能 XML parsing, File transfer, Web page generation, computational services, &hellip; Classic Service Designs 传统的服务设计 Each handler may be started in its own thread 在一般的网络服务当中都会为每一个连接的处理开启一个新的线程，我们可以看下大致的示意图： public class Test { private static Integer PORT = 8080; public static void main(String[] args) { Server server = new Server(); server." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://847850277.github.io/posts/2023/scalable_in_java_translate/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2023-08-16T09:27:36+08:00" />
-<meta property="article:modified_time" content="2023-08-16T09:27:36+08:00" /><meta property="og:site_name" content="ZhengPengDe网络日志" />
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Scalable in java 翻译"/>
-<meta name="twitter:description" content="目录 Scalable network services 可扩展的网络服务 Event-driven processing 事件驱动处理 Reactor pattern Reactor 模式 Basic version 基本版本 Multithreaded versions 多线程版本 Other variants 其他变体 Walkthrough of java.nio nonblocking IO APIs 预编排java.nio nonblocking IO APIs Network Services 网络服务 Web services, Distributed Objects, etc 网络服务,分布式对象，等等。 Most have same basic structure: 大多数都有以下的基本结构 Read request 读请求 Decode request 解码请求 Process service 处理服务 Encode reply 编码响应 Send reply 发送响应 But differ in nature and cost of each step 当然在实际应用中每一步的运行效率都是不同的，例如其中可能涉及到xml解析、文件传输、web页面的加载、计算服务等不同功能 XML parsing, File transfer, Web page generation, computational services, &hellip; Classic Service Designs 传统的服务设计 Each handler may be started in its own thread 在一般的网络服务当中都会为每一个连接的处理开启一个新的线程，我们可以看下大致的示意图： public class Test { private static Integer PORT = 8080; public static void main(String[] args) { Server server = new Server(); server."/>
+        <title>Scalable in java 翻译 - ZhengPengDe Blog</title><meta name="Description" content="This is ZhengPengDe网络日志"><meta property="og:url" content="https://847850277.github.io/posts/2023/scalable_in_java_translate/">
+	<meta property="og:site_name" content="ZhengPengDe Blog">
+	<meta property="og:title" content="Scalable in java 翻译">
+	<meta property="og:description" content="目录 Scalable network services 可扩展的网络服务 Event-driven processing 事件驱动处理 Reactor pattern Reactor 模式 Basic version 基本版本 Multithreaded versions 多线程版本 Other variants 其他变体 Walkthrough of java.nio nonblocking IO APIs 预编排java.nio nonblocking IO APIs Network Services 网络服务 Web services, Distributed Objects, etc 网络服务,分布式对象，等等。 Most have same basic structure: 大多数都有以下的基本结构 Read request 读请求 Decode request 解码请求 Process service 处理服务 Encode reply 编码响应 Send reply 发送响应 But differ in nature and cost of each step 当然在实际应用中每一步的运行效率都是不同的，例如其中可能涉及到xml解析、文件传输、web页面的加载、计算服务等不同功能 XML parsing, File transfer, Web page generation, computational services, … Classic Service Designs 传统的服务设计 Each handler may be started in its own thread 在一般的网络服务当中都会为每一个连接的处理开启一个新的线程，我们可以看下大致的示意图：">
+	<meta property="og:locale" content="zh_CN">
+	<meta property="og:type" content="article">
+		<meta property="article:section" content="posts">
+		<meta property="article:published_time" content="2023-08-16T09:27:36+08:00">
+		<meta property="article:modified_time" content="2023-08-16T09:27:36+08:00">
+
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="Scalable in java 翻译">
+	<meta name="twitter:description" content="目录 Scalable network services 可扩展的网络服务 Event-driven processing 事件驱动处理 Reactor pattern Reactor 模式 Basic version 基本版本 Multithreaded versions 多线程版本 Other variants 其他变体 Walkthrough of java.nio nonblocking IO APIs 预编排java.nio nonblocking IO APIs Network Services 网络服务 Web services, Distributed Objects, etc 网络服务,分布式对象，等等。 Most have same basic structure: 大多数都有以下的基本结构 Read request 读请求 Decode request 解码请求 Process service 处理服务 Encode reply 编码响应 Send reply 发送响应 But differ in nature and cost of each step 当然在实际应用中每一步的运行效率都是不同的，例如其中可能涉及到xml解析、文件传输、web页面的加载、计算服务等不同功能 XML parsing, File transfer, Web page generation, computational services, … Classic Service Designs 传统的服务设计 Each handler may be started in its own thread 在一般的网络服务当中都会为每一个连接的处理开启一个新的线程，我们可以看下大致的示意图：">
 <meta name="application-name" content="ZhengPengDe网络日志">
 <meta name="apple-mobile-web-app-title" content="ZhengPengDe网络日志"><meta name="theme-color" content="#ffffff"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -23,7 +27,7 @@
         "@context": "http://schema.org",
         "@type": "BlogPosting",
         "headline": "Scalable in java 翻译",
-        "inLanguage": "zh-cn",
+        "inLanguage": "zh-CN",
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/847850277.github.io\/posts\/2023\/scalable_in_java_translate\/"
@@ -45,17 +49,17 @@
         </div>
         <div class="menu">
             <div class="menu-inner"><a class="menu-item" href="/posts/"> 所有文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><a class="menu-item" href="/about/"> 关于 </a><span class="menu-item delimiter"></span><span class="menu-item search" id="search-desktop">
-                        <input type="text" placeholder="Search titles or contents..." id="search-input-desktop">
-                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-desktop">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
                             <i class="fas fa-search fa-fw" aria-hidden="true"></i>
                         </a>
-                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
                             <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
                         </a>
                         <span class="search-button search-loading" id="search-loading-desktop">
                             <i class="fas fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
                         </span>
-                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    </span><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
                     <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
                 </a></div>
         </div>
@@ -72,11 +76,11 @@
         </div>
         <div class="menu" id="menu-mobile"><div class="search-wrapper">
                     <div class="search mobile" id="search-mobile">
-                        <input type="text" placeholder="Search titles or contents..." id="search-input-mobile">
-                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                        <input type="text" placeholder="搜索文章标题或内容..." id="search-input-mobile">
+                        <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
                             <i class="fas fa-search fa-fw" aria-hidden="true"></i>
                         </a>
-                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                        <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
                             <i class="fas fa-times-circle fa-fw" aria-hidden="true"></i>
                         </a>
                         <span class="search-button search-loading" id="search-loading-mobile">
@@ -84,9 +88,9 @@
                         </span>
                     </div>
                     <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
-                        Cancel
+                        取消
                     </a>
-                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/about/" title="">关于</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                </div><a class="menu-item" href="/posts/" title="">所有文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a class="menu-item" href="/about/" title="">关于</a><a href="javascript:void(0);" class="menu-item theme-switch" title="切换主题">
                 <i class="fas fa-adjust fa-fw" aria-hidden="true"></i>
             </a></div>
     </div>
@@ -98,15 +102,15 @@
     </div><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 <meta name="referrer" content="no-referrer-when-downgrade"><main class="main">
                 <div class="container"><div class="toc" id="toc-auto">
-            <h2 class="toc-title">Contents</h2>
+            <h2 class="toc-title">目录</h2>
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Scalable in java 翻译</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel="author" class="author"><i class="fas fa-user-circle fa-fw" aria-hidden="true"></i>zhengpengde</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-08-16">2023-08-16</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;2304 words&nbsp;
-                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;11 minutes&nbsp;</div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw" aria-hidden="true"></i>&nbsp;<time datetime="2023-08-16">2023-08-16</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden="true"></i>&nbsp;约 2304 字&nbsp;
+                <i class="far fa-clock fa-fw" aria-hidden="true"></i>&nbsp;预计阅读 11 分钟&nbsp;</div>
         </div><div class="details toc" id="toc-static"  data-kept="">
                 <div class="details-summary toc-title">
-                    <span>Contents</span>
+                    <span>目录</span>
                     <span><i class="details-icon fas fa-angle-right" aria-hidden="true"></i></span>
                 </div>
                 <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
@@ -167,56 +171,56 @@
         data-sizes="auto"
         alt="/img/source/scalable_in_java/图片_20230816094711.png"
         title="classic" /></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Test</span> <span style="color:#f92672">{</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Test</span> {
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> Integer PORT <span style="color:#f92672">=</span> <span style="color:#ae81ff">8080</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> Integer PORT <span style="color:#f92672">=</span> 8080;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        Server server <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Server<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>        server<span style="color:#f92672">.</span><span style="color:#a6e22e">run</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(String<span style="color:#f92672">[]</span> args) {
+</span></span><span style="display:flex;"><span>        Server server <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Server();
+</span></span><span style="display:flex;"><span>        server.<span style="color:#a6e22e">run</span>();
+</span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Server</span> <span style="color:#66d9ef">implements</span> Runnable <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Server</span> <span style="color:#66d9ef">implements</span> Runnable {
 </span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">@Override</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>                ServerSocket ss <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ServerSocket<span style="color:#f92672">(</span>PORT<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">while</span> <span style="color:#f92672">(!</span>Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">interrupted</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">new</span> Thread<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Handler<span style="color:#f92672">(</span>ss<span style="color:#f92672">.</span><span style="color:#a6e22e">accept</span><span style="color:#f92672">())).</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException ex<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span>() {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>                ServerSocket ss <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ServerSocket(PORT);
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">while</span> (<span style="color:#f92672">!</span>Thread.<span style="color:#a6e22e">interrupted</span>()) {
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">new</span> Thread(<span style="color:#66d9ef">new</span> Handler(ss.<span style="color:#a6e22e">accept</span>())).<span style="color:#a6e22e">start</span>();
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            } <span style="color:#66d9ef">catch</span> (IOException ex) {
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Handler</span> <span style="color:#66d9ef">implements</span> Runnable <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Handler</span> <span style="color:#66d9ef">implements</span> Runnable {
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">final</span> Socket socket<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> Integer MAX_INPUT <span style="color:#f92672">=</span> <span style="color:#ae81ff">1024</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">final</span> Socket socket;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> Integer MAX_INPUT <span style="color:#f92672">=</span> 1024;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        Handler<span style="color:#f92672">(</span>Socket s<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>            socket <span style="color:#f92672">=</span> s<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        Handler(Socket s) {
+</span></span><span style="display:flex;"><span>            socket <span style="color:#f92672">=</span> s;
+</span></span><span style="display:flex;"><span>        }
 </span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">@Override</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> input <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">byte</span><span style="color:#f92672">[</span>MAX_INPUT<span style="color:#f92672">];</span>
-</span></span><span style="display:flex;"><span>                socket<span style="color:#f92672">.</span><span style="color:#a6e22e">getInputStream</span><span style="color:#f92672">().</span><span style="color:#a6e22e">read</span><span style="color:#f92672">(</span>input<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> output <span style="color:#f92672">=</span> process<span style="color:#f92672">(</span>input<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>                socket<span style="color:#f92672">.</span><span style="color:#a6e22e">getOutputStream</span><span style="color:#f92672">().</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>output<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException ex<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span>() {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> input <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">byte</span><span style="color:#f92672">[</span>MAX_INPUT<span style="color:#f92672">]</span>;
+</span></span><span style="display:flex;"><span>                socket.<span style="color:#a6e22e">getInputStream</span>().<span style="color:#a6e22e">read</span>(input);
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> output <span style="color:#f92672">=</span> process(input);
+</span></span><span style="display:flex;"><span>                socket.<span style="color:#a6e22e">getOutputStream</span>().<span style="color:#a6e22e">write</span>(output);
+</span></span><span style="display:flex;"><span>            } <span style="color:#66d9ef">catch</span> (IOException ex) {
 </span></span><span style="display:flex;"><span>                <span style="color:#75715e">/* ... */</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> <span style="color:#a6e22e">process</span><span style="color:#f92672">(</span><span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> cmd<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>            System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>cmd<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> cmd<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> <span style="color:#a6e22e">process</span>(<span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> cmd) {
+</span></span><span style="display:flex;"><span>            System.<span style="color:#a6e22e">out</span>.<span style="color:#a6e22e">println</span>(cmd);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> cmd;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h3 id="classic-serversocket-loop-构建高性能可伸缩的io服务">Classic ServerSocket Loop 构建高性能可伸缩的IO服务</h3>
 <ul>
 <li>Scalability Goals 在构建高性能可伸缩的IO服务过程中，我们希望达到以下的目标
@@ -395,129 +399,129 @@
 <p>Per-State Handlers 基于GoF状态对象模式对Handler类的一个优化实现，不需要再进行状态的判断</p>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.IOException<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.net.InetSocketAddress<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.nio.channels.SelectionKey<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.nio.channels.Selector<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.nio.channels.ServerSocketChannel<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.nio.channels.SocketChannel<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.Iterator<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.Set<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.IOException;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.net.InetSocketAddress;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.nio.channels.SelectionKey;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.nio.channels.Selector;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.nio.channels.ServerSocketChannel;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.nio.channels.SocketChannel;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.Iterator;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.Set;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Reactor</span> <span style="color:#66d9ef">implements</span> Runnable<span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Reactor</span> <span style="color:#66d9ef">implements</span> Runnable{
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">new</span> Reactor<span style="color:#f92672">(</span><span style="color:#ae81ff">8080</span><span style="color:#f92672">).</span><span style="color:#a6e22e">run</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> RuntimeException<span style="color:#f92672">(</span>e<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span>(String<span style="color:#f92672">[]</span> args) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">new</span> Reactor(8080).<span style="color:#a6e22e">run</span>();
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">catch</span> (IOException e) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> RuntimeException(e);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">final</span> Selector selector<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">final</span> ServerSocketChannel serverSocket<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>  Reactor<span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> port<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    selector <span style="color:#f92672">=</span> Selector<span style="color:#f92672">.</span><span style="color:#a6e22e">open</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    serverSocket <span style="color:#f92672">=</span> ServerSocketChannel<span style="color:#f92672">.</span><span style="color:#a6e22e">open</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    serverSocket<span style="color:#f92672">.</span><span style="color:#a6e22e">socket</span><span style="color:#f92672">().</span><span style="color:#a6e22e">bind</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> InetSocketAddress<span style="color:#f92672">(</span>port<span style="color:#f92672">));</span>
-</span></span><span style="display:flex;"><span>    serverSocket<span style="color:#f92672">.</span><span style="color:#a6e22e">configureBlocking</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    SelectionKey sk <span style="color:#f92672">=</span> serverSocket<span style="color:#f92672">.</span><span style="color:#a6e22e">register</span><span style="color:#f92672">(</span>selector<span style="color:#f92672">,</span> SelectionKey<span style="color:#f92672">.</span><span style="color:#a6e22e">OP_ACCEPT</span><span style="color:#f92672">);</span> <span style="color:#75715e">//注册accept事件
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    sk<span style="color:#f92672">.</span><span style="color:#a6e22e">attach</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Acceptor<span style="color:#f92672">());</span> <span style="color:#75715e">//调用Acceptor()为回调方法
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">final</span> Selector selector;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">final</span> ServerSocketChannel serverSocket;
+</span></span><span style="display:flex;"><span>  Reactor(<span style="color:#66d9ef">int</span> port) <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>    selector <span style="color:#f92672">=</span> Selector.<span style="color:#a6e22e">open</span>();
+</span></span><span style="display:flex;"><span>    serverSocket <span style="color:#f92672">=</span> ServerSocketChannel.<span style="color:#a6e22e">open</span>();
+</span></span><span style="display:flex;"><span>    serverSocket.<span style="color:#a6e22e">socket</span>().<span style="color:#a6e22e">bind</span>(<span style="color:#66d9ef">new</span> InetSocketAddress(port));
+</span></span><span style="display:flex;"><span>    serverSocket.<span style="color:#a6e22e">configureBlocking</span>(<span style="color:#66d9ef">false</span>);
+</span></span><span style="display:flex;"><span>    SelectionKey sk <span style="color:#f92672">=</span> serverSocket.<span style="color:#a6e22e">register</span>(selector, SelectionKey.<span style="color:#a6e22e">OP_ACCEPT</span>); <span style="color:#75715e">//注册accept事件</span>
+</span></span><span style="display:flex;"><span>    sk.<span style="color:#a6e22e">attach</span>(<span style="color:#66d9ef">new</span> Acceptor()); <span style="color:#75715e">//调用Acceptor()为回调方法</span>
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">while</span> <span style="color:#f92672">(!</span>Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">interrupted</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span><span style="color:#75715e">//循环
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        selector<span style="color:#f92672">.</span><span style="color:#a6e22e">select</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>        Set selected <span style="color:#f92672">=</span> selector<span style="color:#f92672">.</span><span style="color:#a6e22e">selectedKeys</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>        Iterator it <span style="color:#f92672">=</span> selected<span style="color:#f92672">.</span><span style="color:#a6e22e">iterator</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>it<span style="color:#f92672">.</span><span style="color:#a6e22e">hasNext</span><span style="color:#f92672">()){</span>
-</span></span><span style="display:flex;"><span>          <span style="color:#75715e">//dispatch分发事件
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>          dispatch<span style="color:#f92672">((</span>SelectionKey<span style="color:#f92672">)</span>it<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>        selected<span style="color:#f92672">.</span><span style="color:#a6e22e">clear</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException ex<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> <span style="color:#75715e">/* ... */</span> <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">while</span> (<span style="color:#f92672">!</span>Thread.<span style="color:#a6e22e">interrupted</span>()) {<span style="color:#75715e">//循环</span>
+</span></span><span style="display:flex;"><span>        selector.<span style="color:#a6e22e">select</span>();
+</span></span><span style="display:flex;"><span>        Set selected <span style="color:#f92672">=</span> selector.<span style="color:#a6e22e">selectedKeys</span>();
+</span></span><span style="display:flex;"><span>        Iterator it <span style="color:#f92672">=</span> selected.<span style="color:#a6e22e">iterator</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">while</span> (it.<span style="color:#a6e22e">hasNext</span>()){
+</span></span><span style="display:flex;"><span>          <span style="color:#75715e">//dispatch分发事件</span>
+</span></span><span style="display:flex;"><span>          dispatch((SelectionKey)it.<span style="color:#a6e22e">next</span>());
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        selected.<span style="color:#a6e22e">clear</span>();
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">catch</span> (IOException ex) { <span style="color:#75715e">/* ... */</span> }
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">dispatch</span><span style="color:#f92672">(</span>SelectionKey k<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    Runnable r <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Runnable<span style="color:#f92672">)(</span>k<span style="color:#f92672">.</span><span style="color:#a6e22e">attachment</span><span style="color:#f92672">());</span> <span style="color:#75715e">//调用SelectionKey绑定的调用对象
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>r <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>      r<span style="color:#f92672">.</span><span style="color:#a6e22e">run</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">dispatch</span>(SelectionKey k) {
+</span></span><span style="display:flex;"><span>    Runnable r <span style="color:#f92672">=</span> (Runnable)(k.<span style="color:#a6e22e">attachment</span>()); <span style="color:#75715e">//调用SelectionKey绑定的调用对象</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (r <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>)
+</span></span><span style="display:flex;"><span>      r.<span style="color:#a6e22e">run</span>();
+</span></span><span style="display:flex;"><span>  }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// Acceptor 连接处理类
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Acceptor</span> <span style="color:#66d9ef">implements</span> Runnable <span style="color:#f92672">{</span> <span style="color:#75715e">// inner
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        SocketChannel c <span style="color:#f92672">=</span> serverSocket<span style="color:#f92672">.</span><span style="color:#a6e22e">accept</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>c <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">new</span> Handler<span style="color:#f92672">(</span>selector<span style="color:#f92672">,</span> c<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">catch</span><span style="color:#f92672">(</span>IOException ex<span style="color:#f92672">)</span> <span style="color:#f92672">{</span> <span style="color:#75715e">/* ... */</span> <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.IOException<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.nio.ByteBuffer<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.nio.channels.SelectionKey<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.nio.channels.Selector<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.nio.channels.SocketChannel<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// Acceptor 连接处理类</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Acceptor</span> <span style="color:#66d9ef">implements</span> Runnable { <span style="color:#75715e">// inner</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span>() {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>        SocketChannel c <span style="color:#f92672">=</span> serverSocket.<span style="color:#a6e22e">accept</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (c <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>)
+</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">new</span> Handler(selector, c);
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">catch</span>(IOException ex) { <span style="color:#75715e">/* ... */</span> }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.IOException;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.nio.ByteBuffer;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.nio.channels.SelectionKey;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.nio.channels.Selector;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.nio.channels.SocketChannel;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Handler</span> <span style="color:#66d9ef">implements</span> Runnable<span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Handler</span> <span style="color:#66d9ef">implements</span> Runnable{
 </span></span><span style="display:flex;"><span>    
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">final</span> SocketChannel socket<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">final</span> SelectionKey sk<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>    ByteBuffer input <span style="color:#f92672">=</span> ByteBuffer<span style="color:#f92672">.</span><span style="color:#a6e22e">allocate</span><span style="color:#f92672">(</span><span style="color:#ae81ff">1024</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    ByteBuffer output <span style="color:#f92672">=</span> ByteBuffer<span style="color:#f92672">.</span><span style="color:#a6e22e">allocate</span><span style="color:#f92672">(</span><span style="color:#ae81ff">1024</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> READING <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">,</span> SENDING <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> state <span style="color:#f92672">=</span> READING<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">final</span> SocketChannel socket;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">final</span> SelectionKey sk;
+</span></span><span style="display:flex;"><span>    ByteBuffer input <span style="color:#f92672">=</span> ByteBuffer.<span style="color:#a6e22e">allocate</span>(1024);
+</span></span><span style="display:flex;"><span>    ByteBuffer output <span style="color:#f92672">=</span> ByteBuffer.<span style="color:#a6e22e">allocate</span>(1024);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> READING <span style="color:#f92672">=</span> 0, SENDING <span style="color:#f92672">=</span> 1;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> state <span style="color:#f92672">=</span> READING;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    Handler<span style="color:#f92672">(</span>Selector sel<span style="color:#f92672">,</span> SocketChannel c<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        socket <span style="color:#f92672">=</span> c<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>        c<span style="color:#f92672">.</span><span style="color:#a6e22e">configureBlocking</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Optionally try first read now
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        sk <span style="color:#f92672">=</span> socket<span style="color:#f92672">.</span><span style="color:#a6e22e">register</span><span style="color:#f92672">(</span>sel<span style="color:#f92672">,</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>        sk<span style="color:#f92672">.</span><span style="color:#a6e22e">attach</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">);</span> <span style="color:#75715e">//将Handler绑定到SelectionKey上
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        sk<span style="color:#f92672">.</span><span style="color:#a6e22e">interestOps</span><span style="color:#f92672">(</span>SelectionKey<span style="color:#f92672">.</span><span style="color:#a6e22e">OP_READ</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>        sel<span style="color:#f92672">.</span><span style="color:#a6e22e">wakeup</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">inputIsComplete</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span> <span style="color:#75715e">/* ... */</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">outputIsComplete</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span> <span style="color:#75715e">/* ... */</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">process</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span> <span style="color:#75715e">/* ... */</span> <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    Handler(Selector sel, SocketChannel c) <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>        socket <span style="color:#f92672">=</span> c;
+</span></span><span style="display:flex;"><span>        c.<span style="color:#a6e22e">configureBlocking</span>(<span style="color:#66d9ef">false</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Optionally try first read now</span>
+</span></span><span style="display:flex;"><span>        sk <span style="color:#f92672">=</span> socket.<span style="color:#a6e22e">register</span>(sel, 0);
+</span></span><span style="display:flex;"><span>        sk.<span style="color:#a6e22e">attach</span>(<span style="color:#66d9ef">this</span>); <span style="color:#75715e">//将Handler绑定到SelectionKey上</span>
+</span></span><span style="display:flex;"><span>        sk.<span style="color:#a6e22e">interestOps</span>(SelectionKey.<span style="color:#a6e22e">OP_READ</span>);
+</span></span><span style="display:flex;"><span>        sel.<span style="color:#a6e22e">wakeup</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">inputIsComplete</span>() { <span style="color:#75715e">/* ... */</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">outputIsComplete</span>() { <span style="color:#75715e">/* ... */</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">process</span>() { <span style="color:#75715e">/* ... */</span> }
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * 这是Handler处理类
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**/</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>state <span style="color:#f92672">==</span> READING<span style="color:#f92672">)</span> read<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>state <span style="color:#f92672">==</span> SENDING<span style="color:#f92672">)</span> send<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException ex<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (state <span style="color:#f92672">==</span> READING) read();
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (state <span style="color:#f92672">==</span> SENDING) send();
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (IOException ex) {  }
+</span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">read</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        socket<span style="color:#f92672">.</span><span style="color:#a6e22e">read</span><span style="color:#f92672">(</span>input<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>inputIsComplete<span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>            process<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>            state <span style="color:#f92672">=</span> SENDING<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Normally also do first write now
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            sk<span style="color:#f92672">.</span><span style="color:#a6e22e">interestOps</span><span style="color:#f92672">(</span>SelectionKey<span style="color:#f92672">.</span><span style="color:#a6e22e">OP_WRITE</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">send</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        socket<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>output<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>outputIsComplete<span style="color:#f92672">())</span> sk<span style="color:#f92672">.</span><span style="color:#a6e22e">cancel</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">read</span>() <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>        socket.<span style="color:#a6e22e">read</span>(input);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (inputIsComplete()) {
+</span></span><span style="display:flex;"><span>            process();
+</span></span><span style="display:flex;"><span>            state <span style="color:#f92672">=</span> SENDING;
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Normally also do first write now</span>
+</span></span><span style="display:flex;"><span>            sk.<span style="color:#a6e22e">interestOps</span>(SelectionKey.<span style="color:#a6e22e">OP_WRITE</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">send</span>() <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>        socket.<span style="color:#a6e22e">write</span>(output);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (outputIsComplete()) sk.<span style="color:#a6e22e">cancel</span>();
+</span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * 下面是基于GoF状态对象模式对Handler类的一个优化实现，不需要再进行状态的判断。
@@ -551,7 +555,7 @@
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">    }
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h4 id="multithreaded-designs-多线程设计">Multithreaded Designs 多线程设计</h4>
 <ul>
 <li>Strategically add threads for scalability 策略性地添加线程以提高可伸缩性
@@ -616,100 +620,100 @@
         alt="/img/source/scalable_in_java/图片_20230817160645.png"
         title="图片_20230817160645" /></p>
 <h4 id="handler-with-thread-pool-带有线程池的处理器">Handler with Thread Pool 带有线程池的处理器</h4>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.IOException<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.nio.ByteBuffer<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.nio.channels.SelectionKey<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.nio.channels.Selector<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.nio.channels.SocketChannel<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.concurrent.ArrayBlockingQueue<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.concurrent.ThreadPoolExecutor<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.concurrent.TimeUnit<span style="color:#f92672">;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.io.IOException;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.nio.ByteBuffer;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.nio.channels.SelectionKey;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.nio.channels.Selector;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.nio.channels.SocketChannel;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.concurrent.ArrayBlockingQueue;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.concurrent.ThreadPoolExecutor;
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> java.util.concurrent.TimeUnit;
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Handler</span> <span style="color:#66d9ef">implements</span> Runnable<span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Handler</span> <span style="color:#66d9ef">implements</span> Runnable{
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> CORE_POOL_SIZE <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> MAX_POOL_SIZE <span style="color:#f92672">=</span> <span style="color:#ae81ff">10</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> QUEUE_CAPACITY <span style="color:#f92672">=</span> <span style="color:#ae81ff">100</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Long KEEP_ALIVE_TIME <span style="color:#f92672">=</span> <span style="color:#ae81ff">1L</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// uses util.concurrent thread pool
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">static</span> ThreadPoolExecutor pool <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ThreadPoolExecutor<span style="color:#f92672">(</span>
-</span></span><span style="display:flex;"><span>            CORE_POOL_SIZE<span style="color:#f92672">,</span>
-</span></span><span style="display:flex;"><span>            MAX_POOL_SIZE<span style="color:#f92672">,</span>
-</span></span><span style="display:flex;"><span>            KEEP_ALIVE_TIME<span style="color:#f92672">,</span>
-</span></span><span style="display:flex;"><span>            TimeUnit<span style="color:#f92672">.</span><span style="color:#a6e22e">SECONDS</span><span style="color:#f92672">,</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">new</span> ArrayBlockingQueue<span style="color:#f92672">&lt;&gt;(</span>QUEUE_CAPACITY<span style="color:#f92672">),</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">new</span> ThreadPoolExecutor<span style="color:#f92672">.</span><span style="color:#a6e22e">CallerRunsPolicy</span><span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> PROCESSING <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> CORE_POOL_SIZE <span style="color:#f92672">=</span> 5;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> MAX_POOL_SIZE <span style="color:#f92672">=</span> 10;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> QUEUE_CAPACITY <span style="color:#f92672">=</span> 100;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Long KEEP_ALIVE_TIME <span style="color:#f92672">=</span> 1L;
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">final</span> SocketChannel socket<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">final</span> SelectionKey sk<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>    ByteBuffer input <span style="color:#f92672">=</span> ByteBuffer<span style="color:#f92672">.</span><span style="color:#a6e22e">allocate</span><span style="color:#f92672">(</span><span style="color:#ae81ff">1024</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    ByteBuffer output <span style="color:#f92672">=</span> ByteBuffer<span style="color:#f92672">.</span><span style="color:#a6e22e">allocate</span><span style="color:#f92672">(</span><span style="color:#ae81ff">1024</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> READING <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">,</span> SENDING <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> state <span style="color:#f92672">=</span> READING<span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// uses util.concurrent thread pool</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">static</span> ThreadPoolExecutor pool <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ThreadPoolExecutor(
+</span></span><span style="display:flex;"><span>            CORE_POOL_SIZE,
+</span></span><span style="display:flex;"><span>            MAX_POOL_SIZE,
+</span></span><span style="display:flex;"><span>            KEEP_ALIVE_TIME,
+</span></span><span style="display:flex;"><span>            TimeUnit.<span style="color:#a6e22e">SECONDS</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">new</span> ArrayBlockingQueue<span style="color:#f92672">&lt;&gt;</span>(QUEUE_CAPACITY),
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">new</span> ThreadPoolExecutor.<span style="color:#a6e22e">CallerRunsPolicy</span>());
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    Handler<span style="color:#f92672">(</span>Selector sel<span style="color:#f92672">,</span> SocketChannel c<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        socket <span style="color:#f92672">=</span> c<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>        c<span style="color:#f92672">.</span><span style="color:#a6e22e">configureBlocking</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Optionally try first read now
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        sk <span style="color:#f92672">=</span> socket<span style="color:#f92672">.</span><span style="color:#a6e22e">register</span><span style="color:#f92672">(</span>sel<span style="color:#f92672">,</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>        sk<span style="color:#f92672">.</span><span style="color:#a6e22e">attach</span><span style="color:#f92672">(</span><span style="color:#66d9ef">this</span><span style="color:#f92672">);</span> <span style="color:#75715e">//将Handler绑定到SelectionKey上
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        sk<span style="color:#f92672">.</span><span style="color:#a6e22e">interestOps</span><span style="color:#f92672">(</span>SelectionKey<span style="color:#f92672">.</span><span style="color:#a6e22e">OP_READ</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>        sel<span style="color:#f92672">.</span><span style="color:#a6e22e">wakeup</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">inputIsComplete</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span> <span style="color:#75715e">/* ... */</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">outputIsComplete</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span> <span style="color:#75715e">/* ... */</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">process</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span> <span style="color:#75715e">/* ... */</span> <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> PROCESSING <span style="color:#f92672">=</span> 3;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">final</span> SocketChannel socket;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">final</span> SelectionKey sk;
+</span></span><span style="display:flex;"><span>    ByteBuffer input <span style="color:#f92672">=</span> ByteBuffer.<span style="color:#a6e22e">allocate</span>(1024);
+</span></span><span style="display:flex;"><span>    ByteBuffer output <span style="color:#f92672">=</span> ByteBuffer.<span style="color:#a6e22e">allocate</span>(1024);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> READING <span style="color:#f92672">=</span> 0, SENDING <span style="color:#f92672">=</span> 1;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> state <span style="color:#f92672">=</span> READING;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Handler(Selector sel, SocketChannel c) <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>        socket <span style="color:#f92672">=</span> c;
+</span></span><span style="display:flex;"><span>        c.<span style="color:#a6e22e">configureBlocking</span>(<span style="color:#66d9ef">false</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// Optionally try first read now</span>
+</span></span><span style="display:flex;"><span>        sk <span style="color:#f92672">=</span> socket.<span style="color:#a6e22e">register</span>(sel, 0);
+</span></span><span style="display:flex;"><span>        sk.<span style="color:#a6e22e">attach</span>(<span style="color:#66d9ef">this</span>); <span style="color:#75715e">//将Handler绑定到SelectionKey上</span>
+</span></span><span style="display:flex;"><span>        sk.<span style="color:#a6e22e">interestOps</span>(SelectionKey.<span style="color:#a6e22e">OP_READ</span>);
+</span></span><span style="display:flex;"><span>        sel.<span style="color:#a6e22e">wakeup</span>();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">inputIsComplete</span>() { <span style="color:#75715e">/* ... */</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">outputIsComplete</span>() { <span style="color:#75715e">/* ... */</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">process</span>() { <span style="color:#75715e">/* ... */</span> }
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">     * 这是Handler处理类
 </span></span></span><span style="display:flex;"><span><span style="color:#75715e">     */</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#75715e">/**/</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">@Override</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>state <span style="color:#f92672">==</span> READING<span style="color:#f92672">)</span> read<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>state <span style="color:#f92672">==</span> SENDING<span style="color:#f92672">)</span> send<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException ex<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>  <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span>() {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (state <span style="color:#f92672">==</span> READING) read();
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (state <span style="color:#f92672">==</span> SENDING) send();
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">catch</span> (IOException ex) {  }
+</span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">synchronized</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">read</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        socket<span style="color:#f92672">.</span><span style="color:#a6e22e">read</span><span style="color:#f92672">(</span>input<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>inputIsComplete<span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">//            process();
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//            state = SENDING;
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//            // Normally also do first write now
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//            sk.interestOps(SelectionKey.OP_WRITE);
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
-</span></span><span style="display:flex;"><span>            state <span style="color:#f92672">=</span> PROCESSING<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>            pool<span style="color:#f92672">.</span><span style="color:#a6e22e">execute</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Processer<span style="color:#f92672">());</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">send</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        socket<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>output<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>outputIsComplete<span style="color:#f92672">())</span> sk<span style="color:#f92672">.</span><span style="color:#a6e22e">cancel</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">synchronized</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">read</span>() <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>        socket.<span style="color:#a6e22e">read</span>(input);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (inputIsComplete()) {
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//            process();</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//            state = SENDING;</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//            // Normally also do first write now</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//            sk.interestOps(SelectionKey.OP_WRITE);</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">synchronized</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">processAndHandOff</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        process<span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>        state <span style="color:#f92672">=</span> SENDING<span style="color:#f92672">;</span> <span style="color:#75715e">// or rebind attachment
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        sk<span style="color:#f92672">.</span><span style="color:#a6e22e">interestOps</span><span style="color:#f92672">(</span>SelectionKey<span style="color:#f92672">.</span><span style="color:#a6e22e">OP_WRITE</span><span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>            state <span style="color:#f92672">=</span> PROCESSING;
+</span></span><span style="display:flex;"><span>            pool.<span style="color:#a6e22e">execute</span>(<span style="color:#66d9ef">new</span> Processer());
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">send</span>() <span style="color:#66d9ef">throws</span> IOException {
+</span></span><span style="display:flex;"><span>        socket.<span style="color:#a6e22e">write</span>(output);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (outputIsComplete()) sk.<span style="color:#a6e22e">cancel</span>();
+</span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Processer</span> <span style="color:#66d9ef">implements</span> Runnable <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span> processAndHandOff<span style="color:#f92672">();</span> <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">synchronized</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">processAndHandOff</span>() {
+</span></span><span style="display:flex;"><span>        process();
+</span></span><span style="display:flex;"><span>        state <span style="color:#f92672">=</span> SENDING; <span style="color:#75715e">// or rebind attachment</span>
+</span></span><span style="display:flex;"><span>        sk.<span style="color:#a6e22e">interestOps</span>(SelectionKey.<span style="color:#a6e22e">OP_WRITE</span>);
+</span></span><span style="display:flex;"><span>    }
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Processer</span> <span style="color:#66d9ef">implements</span> Runnable {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span>() { processAndHandOff(); }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><h4 id="coordinating-tasks-协调任务">Coordinating Tasks 协调任务</h4>
 <p>当你把非IO操作放到线程池中运行时，你需要注意以下几点问题</p>
 <ul>
@@ -771,19 +775,19 @@
 </ul>
 </li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>Selector<span style="color:#f92672">[]</span> selectors<span style="color:#f92672">;</span> <span style="color:#75715e">// Selector集合，每一个Selector 对应一个subReactor线程
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//mainReactor线程
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Acceptor</span> <span style="color:#f92672">{</span> <span style="color:#75715e">// ...
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">synchronized</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span> 
-</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//...
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        Socket connection <span style="color:#f92672">=</span> serverSocket<span style="color:#f92672">.</span><span style="color:#a6e22e">accept</span><span style="color:#f92672">();</span> 
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>connection <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">new</span> Handler<span style="color:#f92672">(</span>selectors<span style="color:#f92672">[</span>next<span style="color:#f92672">],</span> connection<span style="color:#f92672">);</span> 
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(++</span>next <span style="color:#f92672">==</span> selectors<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span>            next <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Selector<span style="color:#f92672">[]</span> selectors; <span style="color:#75715e">// Selector集合，每一个Selector 对应一个subReactor线程</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//mainReactor线程</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Acceptor</span> { <span style="color:#75715e">// ...</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">synchronized</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">run</span>() { 
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//...</span>
+</span></span><span style="display:flex;"><span>        Socket connection <span style="color:#f92672">=</span> serverSocket.<span style="color:#a6e22e">accept</span>(); 
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (connection <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span>)
+</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">new</span> Handler(selectors<span style="color:#f92672">[</span>next<span style="color:#f92672">]</span>, connection); 
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">++</span>next <span style="color:#f92672">==</span> selectors.<span style="color:#a6e22e">length</span>)
+</span></span><span style="display:flex;"><span>            next <span style="color:#f92672">=</span> 0;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p><img
         class="lazyload"
         src="/svg/loading.min.svg"
@@ -858,22 +862,22 @@ Best for applications with long-lived connections 在合适的情况下可以使
 <li>SelectionKey</li>
 </ul>
 <p>Buffer</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Buffer</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">capacity</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">position</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>  Buffer <span style="color:#a6e22e">position</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> newPosition<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">limit</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>  Buffer <span style="color:#a6e22e">limit</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> newLimit<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span>  Buffer <span style="color:#a6e22e">mark</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>  Buffer <span style="color:#a6e22e">reset</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>  Buffer <span style="color:#a6e22e">clear</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>  Buffer <span style="color:#a6e22e">flip</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>  Buffer <span style="color:#a6e22e">rewind</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">remaining</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">hasRemaining</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isReadOnly</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Buffer</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">capacity</span>();
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">position</span>();
+</span></span><span style="display:flex;"><span>  Buffer <span style="color:#a6e22e">position</span>(<span style="color:#66d9ef">int</span> newPosition);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">limit</span>();
+</span></span><span style="display:flex;"><span>  Buffer <span style="color:#a6e22e">limit</span>(<span style="color:#66d9ef">int</span> newLimit);
+</span></span><span style="display:flex;"><span>  Buffer <span style="color:#a6e22e">mark</span>();
+</span></span><span style="display:flex;"><span>  Buffer <span style="color:#a6e22e">reset</span>();
+</span></span><span style="display:flex;"><span>  Buffer <span style="color:#a6e22e">clear</span>();
+</span></span><span style="display:flex;"><span>  Buffer <span style="color:#a6e22e">flip</span>();
+</span></span><span style="display:flex;"><span>  Buffer <span style="color:#a6e22e">rewind</span>();
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">remaining</span>();
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">hasRemaining</span>();
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isReadOnly</span>();
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p><img
         class="lazyload"
         src="/svg/loading.min.svg"
@@ -883,232 +887,232 @@ Best for applications with long-lived connections 在合适的情况下可以使
         alt="/img/source/scalable_in_java/图片_20230818103012.png"
         title="图片_20230818103012" /></p>
 <p>ByteBuffer</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ByteBuffer</span> <span style="color:#66d9ef">extends</span> Buffer <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">static</span> ByteBuffer <span style="color:#a6e22e">allocateDirect</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> capacity<span style="color:#f92672">);</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ByteBuffer</span> <span style="color:#66d9ef">extends</span> Buffer {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">static</span> ByteBuffer <span style="color:#a6e22e">allocateDirect</span>(<span style="color:#66d9ef">int</span> capacity);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">static</span> ByteBuffer <span style="color:#a6e22e">allocate</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> capacity<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">static</span> ByteBuffer <span style="color:#a6e22e">allocate</span>(<span style="color:#66d9ef">int</span> capacity);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">static</span> ByteBuffer <span style="color:#a6e22e">wrap</span><span style="color:#f92672">(</span><span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> src<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> offset<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> len<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">static</span> ByteBuffer <span style="color:#a6e22e">wrap</span>(<span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> src, <span style="color:#66d9ef">int</span> offset, <span style="color:#66d9ef">int</span> len);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">static</span> ByteBuffer <span style="color:#a6e22e">wrap</span><span style="color:#f92672">(</span><span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> src<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">static</span> ByteBuffer <span style="color:#a6e22e">wrap</span>(<span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> src);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isDirect</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isDirect</span>();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    ByteOrder <span style="color:#a6e22e">order</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    ByteOrder <span style="color:#a6e22e">order</span>();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">order</span><span style="color:#f92672">(</span>ByteOrder bo<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">order</span>(ByteOrder bo);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">slice</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">slice</span>();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">duplicate</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">duplicate</span>();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">compact</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">compact</span>();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">asReadOnlyBuffer</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">asReadOnlyBuffer</span>();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">byte</span> <span style="color:#a6e22e">get</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">byte</span> <span style="color:#a6e22e">get</span>();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">byte</span> <span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> index<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">byte</span> <span style="color:#a6e22e">get</span>(<span style="color:#66d9ef">int</span> index);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> dst<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> offset<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> length<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">get</span>(<span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> dst, <span style="color:#66d9ef">int</span> offset, <span style="color:#66d9ef">int</span> length);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> dst<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">get</span>(<span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> dst);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#66d9ef">byte</span> b<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">put</span>(<span style="color:#66d9ef">byte</span> b);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> index<span style="color:#f92672">,</span> <span style="color:#66d9ef">byte</span> b<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">put</span>(<span style="color:#66d9ef">int</span> index, <span style="color:#66d9ef">byte</span> b);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> src<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> offset<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> length<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">put</span>(<span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> src, <span style="color:#66d9ef">int</span> offset, <span style="color:#66d9ef">int</span> length);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>ByteBuffer src<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">put</span>(ByteBuffer src);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">put</span><span style="color:#f92672">(</span><span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> src<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">put</span>(<span style="color:#66d9ef">byte</span><span style="color:#f92672">[]</span> src);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> <span style="color:#a6e22e">getChar</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> <span style="color:#a6e22e">getChar</span>();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> <span style="color:#a6e22e">getChar</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> index<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">char</span> <span style="color:#a6e22e">getChar</span>(<span style="color:#66d9ef">int</span> index);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">putChar</span><span style="color:#f92672">(</span><span style="color:#66d9ef">char</span> value<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">putChar</span>(<span style="color:#66d9ef">char</span> value);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">putChar</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> index<span style="color:#f92672">,</span> <span style="color:#66d9ef">char</span> value<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">putChar</span>(<span style="color:#66d9ef">int</span> index, <span style="color:#66d9ef">char</span> value);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    CharBuffer <span style="color:#a6e22e">asCharBuffer</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    CharBuffer <span style="color:#a6e22e">asCharBuffer</span>();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">short</span> <span style="color:#a6e22e">getShort</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">short</span> <span style="color:#a6e22e">getShort</span>();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">short</span> <span style="color:#a6e22e">getShort</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> index<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">short</span> <span style="color:#a6e22e">getShort</span>(<span style="color:#66d9ef">int</span> index);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">putShort</span><span style="color:#f92672">(</span><span style="color:#66d9ef">short</span> value<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">putShort</span>(<span style="color:#66d9ef">short</span> value);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">putShort</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> index<span style="color:#f92672">,</span> <span style="color:#66d9ef">short</span> value<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">putShort</span>(<span style="color:#66d9ef">int</span> index, <span style="color:#66d9ef">short</span> value);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    ShortBuffer <span style="color:#a6e22e">asShortBuffer</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    ShortBuffer <span style="color:#a6e22e">asShortBuffer</span>();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getInt</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getInt</span>();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getInt</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> index<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getInt</span>(<span style="color:#66d9ef">int</span> index);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">putInt</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> value<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">putInt</span>(<span style="color:#66d9ef">int</span> value);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">putInt</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> index<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> value<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">putInt</span>(<span style="color:#66d9ef">int</span> index, <span style="color:#66d9ef">int</span> value);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    IntBuffer <span style="color:#a6e22e">asIntBuffer</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    IntBuffer <span style="color:#a6e22e">asIntBuffer</span>();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">long</span> <span style="color:#a6e22e">getLong</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">long</span> <span style="color:#a6e22e">getLong</span>();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">long</span> <span style="color:#a6e22e">getLong</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> index<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">long</span> <span style="color:#a6e22e">getLong</span>(<span style="color:#66d9ef">int</span> index);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">putLong</span><span style="color:#f92672">(</span><span style="color:#66d9ef">long</span> value<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">putLong</span>(<span style="color:#66d9ef">long</span> value);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">putLong</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> index<span style="color:#f92672">,</span> <span style="color:#66d9ef">long</span> value<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">putLong</span>(<span style="color:#66d9ef">int</span> index, <span style="color:#66d9ef">long</span> value);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    LongBuffer <span style="color:#a6e22e">asLongBuffer</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    LongBuffer <span style="color:#a6e22e">asLongBuffer</span>();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">float</span> <span style="color:#a6e22e">getFloat</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">float</span> <span style="color:#a6e22e">getFloat</span>();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">float</span> <span style="color:#a6e22e">getFloat</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> index<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">float</span> <span style="color:#a6e22e">getFloat</span>(<span style="color:#66d9ef">int</span> index);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">putFloat</span><span style="color:#f92672">(</span><span style="color:#66d9ef">float</span> value<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">putFloat</span>(<span style="color:#66d9ef">float</span> value);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">putFloat</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> index<span style="color:#f92672">,</span> <span style="color:#66d9ef">float</span> value<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">putFloat</span>(<span style="color:#66d9ef">int</span> index, <span style="color:#66d9ef">float</span> value);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    FloatBuffer <span style="color:#a6e22e">asFloatBuffer</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    FloatBuffer <span style="color:#a6e22e">asFloatBuffer</span>();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">getDouble</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">getDouble</span>();
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">getDouble</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> index<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> <span style="color:#a6e22e">getDouble</span>(<span style="color:#66d9ef">int</span> index);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">putDouble</span><span style="color:#f92672">(</span><span style="color:#66d9ef">double</span> value<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">putDouble</span>(<span style="color:#66d9ef">double</span> value);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">putDouble</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> index<span style="color:#f92672">,</span> <span style="color:#66d9ef">double</span> value<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    ByteBuffer <span style="color:#a6e22e">putDouble</span>(<span style="color:#66d9ef">int</span> index, <span style="color:#66d9ef">double</span> value);
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    DoubleBuffer <span style="color:#a6e22e">asDoubleBuffer</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    DoubleBuffer <span style="color:#a6e22e">asDoubleBuffer</span>();
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>Channel</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Channel</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isOpen</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">close</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ReadableByteChannel</span> <span style="color:#66d9ef">extends</span> Channel <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">read</span><span style="color:#f92672">(</span>ByteBuffer dst<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">WritableByteChannel</span> <span style="color:#66d9ef">extends</span> Channel <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>ByteBuffer src<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ScatteringByteChannel</span> <span style="color:#66d9ef">extends</span> ReadableByteChannel <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">read</span><span style="color:#f92672">(</span>ByteBuffer<span style="color:#f92672">[]</span> dsts<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> offset<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> length<span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">read</span><span style="color:#f92672">(</span>ByteBuffer<span style="color:#f92672">[]</span> dsts<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">GatheringByteChannel</span> <span style="color:#66d9ef">extends</span> WritableByteChannel <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>ByteBuffer<span style="color:#f92672">[]</span> srcs<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> offset<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> length<span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>ByteBuffer<span style="color:#f92672">[]</span> srcs<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Channel</span> {
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isOpen</span>();
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">close</span>() <span style="color:#66d9ef">throws</span> IOException;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ReadableByteChannel</span> <span style="color:#66d9ef">extends</span> Channel {
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">read</span>(ByteBuffer dst) <span style="color:#66d9ef">throws</span> IOException;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">WritableByteChannel</span> <span style="color:#66d9ef">extends</span> Channel {
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">write</span>(ByteBuffer src) <span style="color:#66d9ef">throws</span> IOException;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">ScatteringByteChannel</span> <span style="color:#66d9ef">extends</span> ReadableByteChannel {
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">read</span>(ByteBuffer<span style="color:#f92672">[]</span> dsts, <span style="color:#66d9ef">int</span> offset, <span style="color:#66d9ef">int</span> length)
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">throws</span> IOException;
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">read</span>(ByteBuffer<span style="color:#f92672">[]</span> dsts) <span style="color:#66d9ef">throws</span> IOException;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">GatheringByteChannel</span> <span style="color:#66d9ef">extends</span> WritableByteChannel {
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">write</span>(ByteBuffer<span style="color:#f92672">[]</span> srcs, <span style="color:#66d9ef">int</span> offset, <span style="color:#66d9ef">int</span> length)
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">throws</span> IOException;
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">write</span>(ByteBuffer<span style="color:#f92672">[]</span> srcs) <span style="color:#66d9ef">throws</span> IOException;
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>SelectableChannel</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SelectableChannel</span> <span style="color:#66d9ef">implements</span> Channel <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">validOps</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isRegistered</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span> SelectionKey <span style="color:#a6e22e">keyFor</span><span style="color:#f92672">(</span>Selector sel<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span> SelectionKey <span style="color:#a6e22e">register</span><span style="color:#f92672">(</span>Selector sel<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> ops<span style="color:#f92672">)</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">throws</span> ClosedChannelException<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">configureBlocking</span><span style="color:#f92672">(</span><span style="color:#66d9ef">boolean</span> block<span style="color:#f92672">)</span> 
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isBlocking</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span> Object <span style="color:#a6e22e">blockingLock</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SelectableChannel</span> <span style="color:#66d9ef">implements</span> Channel {
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">validOps</span>();
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isRegistered</span>();
+</span></span><span style="display:flex;"><span> SelectionKey <span style="color:#a6e22e">keyFor</span>(Selector sel);
+</span></span><span style="display:flex;"><span> SelectionKey <span style="color:#a6e22e">register</span>(Selector sel, <span style="color:#66d9ef">int</span> ops)
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">throws</span> ClosedChannelException;
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">configureBlocking</span>(<span style="color:#66d9ef">boolean</span> block) 
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">throws</span> IOException;
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isBlocking</span>();
+</span></span><span style="display:flex;"><span> Object <span style="color:#a6e22e">blockingLock</span>();
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>SocketChannel</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SocketChannel</span> <span style="color:#66d9ef">implements</span> ByteChannel<span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">static</span> SocketChannel <span style="color:#a6e22e">open</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span> Socket <span style="color:#a6e22e">socket</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">validOps</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isConnected</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isConnectionPending</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isInputOpen</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isOutputOpen</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">connect</span><span style="color:#f92672">(</span>SocketAddress remote<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">finishConnect</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">shutdownInput</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">shutdownOutput</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">read</span><span style="color:#f92672">(</span>ByteBuffer dst<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">read</span><span style="color:#f92672">(</span>ByteBuffer<span style="color:#f92672">[]</span> dsts<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> offset<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> length<span style="color:#f92672">)</span> 
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">read</span><span style="color:#f92672">(</span>ByteBuffer<span style="color:#f92672">[]</span> dsts<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>ByteBuffer src<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>ByteBuffer<span style="color:#f92672">[]</span> srcs<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> offset<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> length<span style="color:#f92672">)</span> 
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>ByteBuffer<span style="color:#f92672">[]</span> srcs<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SocketChannel</span> <span style="color:#66d9ef">implements</span> ByteChannel{
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">static</span> SocketChannel <span style="color:#a6e22e">open</span>() <span style="color:#66d9ef">throws</span> IOException;
+</span></span><span style="display:flex;"><span> Socket <span style="color:#a6e22e">socket</span>();
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">validOps</span>();
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isConnected</span>();
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isConnectionPending</span>();
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isInputOpen</span>();
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isOutputOpen</span>();
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">connect</span>(SocketAddress remote) <span style="color:#66d9ef">throws</span> IOException;
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">finishConnect</span>() <span style="color:#66d9ef">throws</span> IOException;
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">shutdownInput</span>() <span style="color:#66d9ef">throws</span> IOException;
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">shutdownOutput</span>() <span style="color:#66d9ef">throws</span> IOException;
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">read</span>(ByteBuffer dst) <span style="color:#66d9ef">throws</span> IOException;
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">read</span>(ByteBuffer<span style="color:#f92672">[]</span> dsts, <span style="color:#66d9ef">int</span> offset, <span style="color:#66d9ef">int</span> length) 
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">throws</span> IOException;
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">read</span>(ByteBuffer<span style="color:#f92672">[]</span> dsts) <span style="color:#66d9ef">throws</span> IOException;
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">write</span>(ByteBuffer src) <span style="color:#66d9ef">throws</span> IOException;
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">write</span>(ByteBuffer<span style="color:#f92672">[]</span> srcs, <span style="color:#66d9ef">int</span> offset, <span style="color:#66d9ef">int</span> length) 
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">throws</span> IOException;
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">write</span>(ByteBuffer<span style="color:#f92672">[]</span> srcs) <span style="color:#66d9ef">throws</span> IOException;
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>ServerSocketChannel</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ServerSocketChannel</span> <span style="color:#66d9ef">extends</span> SocketChannel <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">static</span> ServerSocketChannel <span style="color:#a6e22e">open</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">validOps</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span> ServerSocket <span style="color:#a6e22e">socket</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span> SocketChannel <span style="color:#a6e22e">accept</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ServerSocketChannel</span> <span style="color:#66d9ef">extends</span> SocketChannel {
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">static</span> ServerSocketChannel <span style="color:#a6e22e">open</span>() <span style="color:#66d9ef">throws</span> IOException;
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">validOps</span>();
+</span></span><span style="display:flex;"><span> ServerSocket <span style="color:#a6e22e">socket</span>();
+</span></span><span style="display:flex;"><span> SocketChannel <span style="color:#a6e22e">accept</span>() <span style="color:#66d9ef">throws</span> IOException;
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>FileChannel</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">FileChannel</span> <span style="color:#66d9ef">implements</span> <span style="color:#f92672">...</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">read</span><span style="color:#f92672">(</span>ByteBuffer dst<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">read</span><span style="color:#f92672">(</span>ByteBuffer dst<span style="color:#f92672">,</span> <span style="color:#66d9ef">long</span> position<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">read</span><span style="color:#f92672">(</span>ByteBuffer<span style="color:#f92672">[]</span> dsts<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> offset<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> length<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">read</span><span style="color:#f92672">(</span>ByteBuffer<span style="color:#f92672">[]</span> dsts<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>ByteBuffer src<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>ByteBuffer src<span style="color:#f92672">,</span> <span style="color:#66d9ef">long</span> position<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>ByteBuffer<span style="color:#f92672">[]</span> srcs<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> offset<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> length<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>ByteBuffer<span style="color:#f92672">[]</span> srcs<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">long</span> <span style="color:#a6e22e">position</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">position</span><span style="color:#f92672">(</span><span style="color:#66d9ef">long</span> newPosition<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">long</span> <span style="color:#a6e22e">size</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">truncate</span><span style="color:#f92672">(</span><span style="color:#66d9ef">long</span> size<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">force</span><span style="color:#f92672">(</span><span style="color:#66d9ef">boolean</span> flushMetaDataToo<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">transferTo</span><span style="color:#f92672">(</span><span style="color:#66d9ef">long</span> position<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> count<span style="color:#f92672">,</span>
-</span></span><span style="display:flex;"><span> WritableByteChannel dst<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">transferFrom</span><span style="color:#f92672">(</span>ReadableByteChannel src<span style="color:#f92672">,</span> 
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">long</span> position<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> count<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span> FileLock <span style="color:#a6e22e">lock</span><span style="color:#f92672">(</span><span style="color:#66d9ef">long</span> position<span style="color:#f92672">,</span> <span style="color:#66d9ef">long</span> size<span style="color:#f92672">,</span> <span style="color:#66d9ef">boolean</span> shared<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span> FileLock <span style="color:#a6e22e">lock</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span> FileLock <span style="color:#a6e22e">tryLock</span><span style="color:#f92672">(</span><span style="color:#66d9ef">long</span> pos<span style="color:#f92672">,</span> <span style="color:#66d9ef">long</span> size<span style="color:#f92672">,</span> <span style="color:#66d9ef">boolean</span> shared<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span> FileLock <span style="color:#a6e22e">tryLock</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> MAP_RO<span style="color:#f92672">,</span> MAP_RW<span style="color:#f92672">,</span> MAP_COW<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span> MappedByteBuffer <span style="color:#a6e22e">map</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> mode<span style="color:#f92672">,</span> <span style="color:#66d9ef">long</span> position<span style="color:#f92672">,</span> <span style="color:#66d9ef">int</span> size<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span> 
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">FileChannel</span> <span style="color:#66d9ef">implements</span> ... {
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">read</span>(ByteBuffer dst);
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">read</span>(ByteBuffer dst, <span style="color:#66d9ef">long</span> position);
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">read</span>(ByteBuffer<span style="color:#f92672">[]</span> dsts, <span style="color:#66d9ef">int</span> offset, <span style="color:#66d9ef">int</span> length);
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">read</span>(ByteBuffer<span style="color:#f92672">[]</span> dsts);
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">write</span>(ByteBuffer src);
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">write</span>(ByteBuffer src, <span style="color:#66d9ef">long</span> position);
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">write</span>(ByteBuffer<span style="color:#f92672">[]</span> srcs, <span style="color:#66d9ef">int</span> offset, <span style="color:#66d9ef">int</span> length);
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">write</span>(ByteBuffer<span style="color:#f92672">[]</span> srcs);
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">long</span> <span style="color:#a6e22e">position</span>();
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">position</span>(<span style="color:#66d9ef">long</span> newPosition);
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">long</span> <span style="color:#a6e22e">size</span>();
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">truncate</span>(<span style="color:#66d9ef">long</span> size);
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">force</span>(<span style="color:#66d9ef">boolean</span> flushMetaDataToo);
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">transferTo</span>(<span style="color:#66d9ef">long</span> position, <span style="color:#66d9ef">int</span> count,
+</span></span><span style="display:flex;"><span> WritableByteChannel dst);
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">transferFrom</span>(ReadableByteChannel src, 
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">long</span> position, <span style="color:#66d9ef">int</span> count);
+</span></span><span style="display:flex;"><span> FileLock <span style="color:#a6e22e">lock</span>(<span style="color:#66d9ef">long</span> position, <span style="color:#66d9ef">long</span> size, <span style="color:#66d9ef">boolean</span> shared);
+</span></span><span style="display:flex;"><span> FileLock <span style="color:#a6e22e">lock</span>();
+</span></span><span style="display:flex;"><span> FileLock <span style="color:#a6e22e">tryLock</span>(<span style="color:#66d9ef">long</span> pos, <span style="color:#66d9ef">long</span> size, <span style="color:#66d9ef">boolean</span> shared);
+</span></span><span style="display:flex;"><span> FileLock <span style="color:#a6e22e">tryLock</span>();
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> MAP_RO, MAP_RW, MAP_COW;
+</span></span><span style="display:flex;"><span> MappedByteBuffer <span style="color:#a6e22e">map</span>(<span style="color:#66d9ef">int</span> mode, <span style="color:#66d9ef">long</span> position, <span style="color:#66d9ef">int</span> size);
+</span></span><span style="display:flex;"><span>} 
 </span></span></code></pre></div><p>Selector</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Selector</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">static</span> Selector <span style="color:#a6e22e">open</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span> Set <span style="color:#a6e22e">keys</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span> Set <span style="color:#a6e22e">selectedKeys</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">selectNow</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">select</span><span style="color:#f92672">(</span><span style="color:#66d9ef">long</span> timeout<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">select</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">wakeup</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">close</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Selector</span> {
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">static</span> Selector <span style="color:#a6e22e">open</span>() <span style="color:#66d9ef">throws</span> IOException;
+</span></span><span style="display:flex;"><span> Set <span style="color:#a6e22e">keys</span>();
+</span></span><span style="display:flex;"><span> Set <span style="color:#a6e22e">selectedKeys</span>();
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">selectNow</span>() <span style="color:#66d9ef">throws</span> IOException;
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">select</span>(<span style="color:#66d9ef">long</span> timeout) <span style="color:#66d9ef">throws</span> IOException;
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">select</span>() <span style="color:#66d9ef">throws</span> IOException;
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">wakeup</span>();
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">close</span>() <span style="color:#66d9ef">throws</span> IOException;
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><p>SelectionKey</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SelectionKey</span> <span style="color:#f92672">{</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> OP_READ<span style="color:#f92672">,</span> OP_WRITE<span style="color:#f92672">,</span> 
-</span></span><span style="display:flex;"><span> OP_CONNECT<span style="color:#f92672">,</span> OP_ACCEPT<span style="color:#f92672">;</span>
-</span></span><span style="display:flex;"><span> SelectableChannel <span style="color:#a6e22e">channel</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span> Selector <span style="color:#a6e22e">selector</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isValid</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">cancel</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">interestOps</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">interestOps</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> ops<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">readyOps</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isReadable</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isWritable</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isConnectable</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isAcceptable</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span> Object <span style="color:#a6e22e">attach</span><span style="color:#f92672">(</span>Object ob<span style="color:#f92672">);</span>
-</span></span><span style="display:flex;"><span> Object <span style="color:#a6e22e">attachment</span><span style="color:#f92672">();</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-java" data-lang="java"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">SelectionKey</span> {
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> OP_READ, OP_WRITE, 
+</span></span><span style="display:flex;"><span> OP_CONNECT, OP_ACCEPT;
+</span></span><span style="display:flex;"><span> SelectableChannel <span style="color:#a6e22e">channel</span>();
+</span></span><span style="display:flex;"><span> Selector <span style="color:#a6e22e">selector</span>();
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isValid</span>();
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">cancel</span>();
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">interestOps</span>();
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">interestOps</span>(<span style="color:#66d9ef">int</span> ops);
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">readyOps</span>();
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isReadable</span>();
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isWritable</span>();
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isConnectable</span>();
+</span></span><span style="display:flex;"><span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isAcceptable</span>();
+</span></span><span style="display:flex;"><span> Object <span style="color:#a6e22e">attach</span>(Object ob);
+</span></span><span style="display:flex;"><span> Object <span style="color:#a6e22e">attachment</span>();
+</span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><ul>
 <li><a href="http://gee.cs.oswego.edu/dl/cpjslides/nio.pdf" target="_blank" rel="noopener noreffer ">Doug Lea - Scalable IO in Java</a></li>
 <li><a href="https://www.cnblogs.com/dafanjoy/p/11217708.html" target="_blank" rel="noopener noreffer ">《Scalable IO in Java》译文 </a></li>
@@ -1117,7 +1121,7 @@ Best for applications with long-lived connections 在合适的情况下可以使
     <div class="post-info">
         <div class="post-info-line">
             <div class="post-info-mod">
-                <span>Updated on 2023-08-16</span>
+                <span>更新于 2023-08-16</span>
 
             </div></div>
         <div class="post-info-line">
@@ -1135,7 +1139,7 @@ Best for applications with long-lived connections 在合适的情况下可以使
     <div class="post-info-more">
         <section class="post-tags"></section>
         <section>
-            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
         </section>
     </div>
 
@@ -1147,8 +1151,8 @@ Best for applications with long-lived connections 在合适的情况下可以使
 </div>
 </article></div>
             </main><footer class="footer">
-        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.112.5">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.11"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
-                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2021 - 2026</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank"></a></span></div>
+        <div class="footer-container"><div class="footer-line">由 <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.163.0">Hugo</a> 强力驱动 | 主题 - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.11"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden="true"></i> LoveIt</a>
+                </div><div class="footer-line" itemscope itemtype="http://schema.org/CreativeWork"><i class="far fa-copyright fa-fw" aria-hidden="true"></i><span itemprop="copyrightYear">2021 - 2026</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank">ZhengPeng</a></span></div>
 
             
             <div class="busuanzi-footer">
@@ -1161,10 +1165,10 @@ Best for applications with long-lived connections 在合适的情况下可以使
             </div></div>
     </footer></div>
 
-        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="回到顶部">
                 <i class="fas fa-arrow-up fa-fw" aria-hidden="true"></i>
-            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+            </a><a href="#" id="view-comments" class="fixed-button" title="查看评论">
                 <i class="fas fa-comment fa-fw" aria-hidden="true"></i>
             </a>
-        </div><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","maxResultLength":10,"noResultsFound":"No results found","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+        </div><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/autocomplete.js@0.38.1/dist/autocomplete.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.stemmer.support.min.js"></script><script type="text/javascript" src="/lib/lunr/lunr.zh.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lazysizes@5.3.2/lazysizes.min.js"></script><script type="text/javascript" src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"复制到剪贴板","maxShownLines":50},"comment":{},"search":{"highlightTag":"em","lunrLanguageCode":"zh","lunrSegmentitURL":"/lib/lunr/lunr.segmentit.js","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":30}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
 </html>

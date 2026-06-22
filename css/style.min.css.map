@@ -1,7 +1,7 @@
 {
 	"version": 3,
 	"file": "style.min.css",
-	"sourceRoot": "/Users/zhengpeng/Work/Source/Code/847850277/hugo-blog",
+	"sourceRoot": "/Users/zhengpeng/Source/Code/Rust-Code/Github/hugo-blog",
 	"sources": [
 		"themes/LoveIt/assets/css/style.scss",
 		"themes/LoveIt/assets/lib/normalize/normalize.css",

@@ -1,87 +1,199 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
-    <channel>
-        <title>Categories - Category - ZhengPengDe Blog</title>
-        <link>https://847850277.github.io/categories/</link>
-        <description>Categories - Category - ZhengPengDe Blog</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 11 Jan 2026 09:00:00 &#43;0000</lastBuildDate><atom:link href="https://847850277.github.io/categories/" rel="self" type="application/rss+xml" /><item>
-    <title>Java</title>
-    <link>https://847850277.github.io/categories/java/</link>
-    <pubDate>Sun, 11 Jan 2026 09:00:00 &#43;0000</pubDate>
-    <author>Author</author>
-    <guid>https://847850277.github.io/categories/java/</guid>
-    <description><![CDATA[]]></description>
-</item>
-<item>
-    <title>match 语法</title>
-    <link>https://847850277.github.io/categories/match-%E8%AF%AD%E6%B3%95/</link>
-    <pubDate>Sun, 11 Jan 2026 09:00:00 &#43;0000</pubDate>
-    <author>Author</author>
-    <guid>https://847850277.github.io/categories/match-%E8%AF%AD%E6%B3%95/</guid>
-    <description><![CDATA[]]></description>
-</item>
-<item>
-    <title>Rust</title>
-    <link>https://847850277.github.io/categories/rust/</link>
-    <pubDate>Sun, 11 Jan 2026 09:00:00 &#43;0000</pubDate>
-    <author>Author</author>
-    <guid>https://847850277.github.io/categories/rust/</guid>
-    <description><![CDATA[]]></description>
-</item>
-<item>
-    <title>gpui</title>
-    <link>https://847850277.github.io/categories/gpui/</link>
-    <pubDate>Sun, 01 Jun 2025 09:00:00 &#43;0000</pubDate>
-    <author>Author</author>
-    <guid>https://847850277.github.io/categories/gpui/</guid>
-    <description><![CDATA[]]></description>
-</item>
-<item>
-    <title>Gui</title>
-    <link>https://847850277.github.io/categories/gui/</link>
-    <pubDate>Sun, 01 Jun 2025 09:00:00 &#43;0000</pubDate>
-    <author>Author</author>
-    <guid>https://847850277.github.io/categories/gui/</guid>
-    <description><![CDATA[]]></description>
-</item>
-<item>
-    <title>Snippet</title>
-    <link>https://847850277.github.io/categories/snippet/</link>
-    <pubDate>Mon, 04 Nov 2024 10:00:00 &#43;0000</pubDate>
-    <author>Author</author>
-    <guid>https://847850277.github.io/categories/snippet/</guid>
-    <description><![CDATA[]]></description>
-</item>
-<item>
-    <title>Http Web Server</title>
-    <link>https://847850277.github.io/categories/http-web-server/</link>
-    <pubDate>Sun, 03 Nov 2024 10:00:00 &#43;0000</pubDate>
-    <author>Author</author>
-    <guid>https://847850277.github.io/categories/http-web-server/</guid>
-    <description><![CDATA[]]></description>
-</item>
-<item>
-    <title>Mario</title>
-    <link>https://847850277.github.io/categories/mario/</link>
-    <pubDate>Sun, 03 Nov 2024 10:00:00 &#43;0000</pubDate>
-    <author>Author</author>
-    <guid>https://847850277.github.io/categories/mario/</guid>
-    <description><![CDATA[]]></description>
-</item>
-<item>
-    <title>gateway</title>
-    <link>https://847850277.github.io/categories/gateway/</link>
-    <pubDate>Sun, 29 Oct 2023 09:00:00 &#43;0000</pubDate>
-    <author>Author</author>
-    <guid>https://847850277.github.io/categories/gateway/</guid>
-    <description><![CDATA[]]></description>
-</item>
-<item>
-    <title>网关</title>
-    <link>https://847850277.github.io/categories/%E7%BD%91%E5%85%B3/</link>
-    <pubDate>Sun, 29 Oct 2023 09:00:00 &#43;0000</pubDate>
-    <author>Author</author>
-    <guid>https://847850277.github.io/categories/%E7%BD%91%E5%85%B3/</guid>
-    <description><![CDATA[]]></description>
-</item>
-</channel>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Categories on ZhengPengDe Blog</title>
+		<link>https://847850277.github.io/categories/</link>
+		<description>Recent content in Categories on ZhengPengDe Blog</description>
+		<generator>Hugo</generator>
+		<language>zh-CN</language>
+		
+		
+		
+		
+			<lastBuildDate>Mon, 22 Jun 2026 10:00:00 +0000</lastBuildDate>
+		
+			<atom:link href="https://847850277.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Datafusion</title>
+				<link>https://847850277.github.io/categories/datafusion/</link>
+				<pubDate>Sat, 20 Jun 2026 09:00:00 +0000</pubDate>
+				<guid>https://847850277.github.io/categories/datafusion/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Protobuf</title>
+				<link>https://847850277.github.io/categories/protobuf/</link>
+				<pubDate>Sat, 20 Jun 2026 09:00:00 +0000</pubDate>
+				<guid>https://847850277.github.io/categories/protobuf/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Rust</title>
+				<link>https://847850277.github.io/categories/rust/</link>
+				<pubDate>Sat, 20 Jun 2026 09:00:00 +0000</pubDate>
+				<guid>https://847850277.github.io/categories/rust/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>ScalarFunctionExpr</title>
+				<link>https://847850277.github.io/categories/scalarfunctionexpr/</link>
+				<pubDate>Sat, 20 Jun 2026 09:00:00 +0000</pubDate>
+				<guid>https://847850277.github.io/categories/scalarfunctionexpr/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Java</title>
+				<link>https://847850277.github.io/categories/java/</link>
+				<pubDate>Sun, 11 Jan 2026 09:00:00 +0000</pubDate>
+				<guid>https://847850277.github.io/categories/java/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Match 语法</title>
+				<link>https://847850277.github.io/categories/match-%E8%AF%AD%E6%B3%95/</link>
+				<pubDate>Sun, 11 Jan 2026 09:00:00 +0000</pubDate>
+				<guid>https://847850277.github.io/categories/match-%E8%AF%AD%E6%B3%95/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Gpui</title>
+				<link>https://847850277.github.io/categories/gpui/</link>
+				<pubDate>Sun, 01 Jun 2025 09:00:00 +0000</pubDate>
+				<guid>https://847850277.github.io/categories/gpui/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Gui</title>
+				<link>https://847850277.github.io/categories/gui/</link>
+				<pubDate>Sun, 01 Jun 2025 09:00:00 +0000</pubDate>
+				<guid>https://847850277.github.io/categories/gui/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Snippet</title>
+				<link>https://847850277.github.io/categories/snippet/</link>
+				<pubDate>Mon, 04 Nov 2024 10:00:00 +0000</pubDate>
+				<guid>https://847850277.github.io/categories/snippet/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Http Web Server</title>
+				<link>https://847850277.github.io/categories/http-web-server/</link>
+				<pubDate>Sun, 03 Nov 2024 10:00:00 +0000</pubDate>
+				<guid>https://847850277.github.io/categories/http-web-server/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Mario</title>
+				<link>https://847850277.github.io/categories/mario/</link>
+				<pubDate>Sun, 03 Nov 2024 10:00:00 +0000</pubDate>
+				<guid>https://847850277.github.io/categories/mario/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Gateway</title>
+				<link>https://847850277.github.io/categories/gateway/</link>
+				<pubDate>Sun, 29 Oct 2023 09:00:00 +0000</pubDate>
+				<guid>https://847850277.github.io/categories/gateway/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>网关</title>
+				<link>https://847850277.github.io/categories/%E7%BD%91%E5%85%B3/</link>
+				<pubDate>Sun, 29 Oct 2023 09:00:00 +0000</pubDate>
+				<guid>https://847850277.github.io/categories/%E7%BD%91%E5%85%B3/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Event-Log</title>
+				<link>https://847850277.github.io/categories/event-log/</link>
+				<pubDate>Thu, 19 Oct 2023 09:00:00 +0000</pubDate>
+				<guid>https://847850277.github.io/categories/event-log/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Metadata</title>
+				<link>https://847850277.github.io/categories/metadata/</link>
+				<pubDate>Sat, 01 Jul 2023 09:00:00 +0000</pubDate>
+				<guid>https://847850277.github.io/categories/metadata/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Terminal</title>
+				<link>https://847850277.github.io/categories/terminal/</link>
+				<pubDate>Mon, 19 Jun 2023 09:00:00 +0000</pubDate>
+				<guid>https://847850277.github.io/categories/terminal/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Web</title>
+				<link>https://847850277.github.io/categories/web/</link>
+				<pubDate>Mon, 19 Jun 2023 09:00:00 +0000</pubDate>
+				<guid>https://847850277.github.io/categories/web/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>命令</title>
+				<link>https://847850277.github.io/categories/%E5%91%BD%E4%BB%A4/</link>
+				<pubDate>Mon, 19 Jun 2023 09:00:00 +0000</pubDate>
+				<guid>https://847850277.github.io/categories/%E5%91%BD%E4%BB%A4/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Apache Shenyu</title>
+				<link>https://847850277.github.io/categories/apache-shenyu/</link>
+				<pubDate>Fri, 16 Jun 2023 09:00:00 +0000</pubDate>
+				<guid>https://847850277.github.io/categories/apache-shenyu/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Spi</title>
+				<link>https://847850277.github.io/categories/spi/</link>
+				<pubDate>Fri, 16 Jun 2023 09:00:00 +0000</pubDate>
+				<guid>https://847850277.github.io/categories/spi/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Dubbo</title>
+				<link>https://847850277.github.io/categories/dubbo/</link>
+				<pubDate>Sat, 10 Jun 2023 09:00:00 +0000</pubDate>
+				<guid>https://847850277.github.io/categories/dubbo/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Upload</title>
+				<link>https://847850277.github.io/categories/upload/</link>
+				<pubDate>Sat, 10 Jun 2023 09:00:00 +0000</pubDate>
+				<guid>https://847850277.github.io/categories/upload/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Hello-World</title>
+				<link>https://847850277.github.io/categories/hello-world/</link>
+				<pubDate>Thu, 01 Jun 2023 09:00:00 +0000</pubDate>
+				<guid>https://847850277.github.io/categories/hello-world/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Test</title>
+				<link>https://847850277.github.io/categories/test/</link>
+				<pubDate>Thu, 01 Jun 2023 09:00:00 +0000</pubDate>
+				<guid>https://847850277.github.io/categories/test/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Redis</title>
+				<link>https://847850277.github.io/categories/redis/</link>
+				<pubDate>Sat, 27 Nov 2021 09:00:00 +0000</pubDate>
+				<guid>https://847850277.github.io/categories/redis/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Bug</title>
+				<link>https://847850277.github.io/categories/bug/</link>
+				<pubDate>Wed, 01 Jul 2015 09:00:00 +0000</pubDate>
+				<guid>https://847850277.github.io/categories/bug/</guid>
+				<description></description>
+			</item>
+	</channel>
 </rss>

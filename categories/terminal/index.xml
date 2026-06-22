@@ -1,15 +1,24 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
-    <channel>
-        <title>terminal - Category - ZhengPengDe Blog</title>
-        <link>https://847850277.github.io/categories/terminal/</link>
-        <description>terminal - Category - ZhengPengDe Blog</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Mon, 19 Jun 2023 09:00:00 &#43;0000</lastBuildDate><atom:link href="https://847850277.github.io/categories/terminal/" rel="self" type="application/rss+xml" /><item>
-    <title>常用命令记录</title>
-    <link>https://847850277.github.io/posts/2023/terminal/</link>
-    <pubDate>Mon, 19 Jun 2023 09:00:00 &#43;0000</pubDate>
-    <author>zhengpengde</author>
-    <guid>https://847850277.github.io/posts/2023/terminal/</guid>
-    <description><![CDATA[常用命令记录 通用命令 -- 查询系统超过100M的文件 sudo find / -type f -size +100M -- 查找某某文件 sudo find / -name *.java ubuntu常用命令 -- 安装jdk sudo apt install openjdk-8-jdk -- 卸载jdk sudo apt purge openjdk-8-jdk -- 切换java版本 sudo update-alternatives --config java ]]></description>
-</item>
-</channel>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Terminal on ZhengPengDe Blog</title>
+		<link>https://847850277.github.io/categories/terminal/</link>
+		<description>Recent content in Terminal on ZhengPengDe Blog</description>
+		<generator>Hugo</generator>
+		<language>zh-CN</language>
+		
+		
+		
+		
+			<lastBuildDate>Tue, 20 Jun 2023 10:00:00 +0000</lastBuildDate>
+		
+			<atom:link href="https://847850277.github.io/categories/terminal/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>常用命令记录</title>
+				<link>https://847850277.github.io/posts/2023/terminal/</link>
+				<pubDate>Mon, 19 Jun 2023 09:00:00 +0000</pubDate>
+				<guid>https://847850277.github.io/posts/2023/terminal/</guid>
+				<description>&lt;h1 id=&#34;常用命令记录&#34;&gt;常用命令记录&lt;/h1&gt;&#xA;&lt;h2 id=&#34;通用命令&#34;&gt;通用命令&lt;/h2&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;-- 查询系统超过100M的文件&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo find / -type f -size +100M&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;-- 查找某某文件&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo find / -name *.java&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;ubuntu常用命令&#34;&gt;ubuntu常用命令&lt;/h2&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;-- 安装jdk&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apt install openjdk-8-jdk&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;-- 卸载jdk&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo apt purge openjdk-8-jdk&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;-- 切换java版本&#xA;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo update-alternatives --config java &#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+			</item>
+	</channel>
 </rss>

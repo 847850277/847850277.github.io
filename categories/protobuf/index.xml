@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Protobuf on ZhengPengDe Blog</title>
+		<link>https://847850277.github.io/categories/protobuf/</link>
+		<description>Recent content in Protobuf on ZhengPengDe Blog</description>
+		<generator>Hugo</generator>
+		<language>zh-CN</language>
+		
+		
+		
+		
+			<lastBuildDate>Mon, 22 Jun 2026 10:00:00 +0000</lastBuildDate>
+		
+			<atom:link href="https://847850277.github.io/categories/protobuf/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>ScalarFunctionExpr protobuf 序列化/反序列化 最小例子</title>
+				<link>https://847850277.github.io/posts/2026/datafusion_scalarfunctionexpr_protobuf_mini_example/</link>
+				<pubDate>Sat, 20 Jun 2026 09:00:00 +0000</pubDate>
+				<guid>https://847850277.github.io/posts/2026/datafusion_scalarfunctionexpr_protobuf_mini_example/</guid>
+				<description>&lt;h1 id=&#34;scalarfunctionexpr-protobuf-序列化反序列化-最小例子&#34;&gt;ScalarFunctionExpr protobuf 序列化/反序列化 最小例子&lt;/h1&gt;&#xA;&lt;h2 id=&#34;什么是-scalarfunctionexpr&#34;&gt;什么是 ScalarFunctionExpr&lt;/h2&gt;&#xA;&lt;h2 id=&#34;什么是-protobuf&#34;&gt;什么是 protobuf&lt;/h2&gt;&#xA;&lt;h2 id=&#34;如何写最小例子&#34;&gt;如何写最小例子&lt;/h2&gt;&#xA;&lt;h2 id=&#34;完整例子代码&#34;&gt;完整例子代码&lt;/h2&gt;</description>
+			</item>
+	</channel>
+</rss>
