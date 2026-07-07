@@ -2,19 +2,22 @@
     xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
     ><url>
-            <loc>https://847850277.github.io/categories/</loc><lastmod>2026-06-22T10:00:00&#43;00:00</lastmod></url><url>
-            <loc>https://847850277.github.io/categories/datafusion/</loc><lastmod>2026-06-22T10:00:00&#43;00:00</lastmod></url><url>
-            <loc>https://847850277.github.io/tags/datafusion/</loc><lastmod>2026-06-22T10:00:00&#43;00:00</lastmod></url><url>
-            <loc>https://847850277.github.io/posts/</loc><lastmod>2026-06-22T10:00:00&#43;00:00</lastmod></url><url>
+            <loc>https://847850277.github.io/categories/</loc><lastmod>2026-06-29T18:00:00&#43;00:00</lastmod></url><url>
+            <loc>https://847850277.github.io/categories/datafusion/</loc><lastmod>2026-06-29T18:00:00&#43;00:00</lastmod></url><url>
+            <loc>https://847850277.github.io/tags/datafusion/</loc><lastmod>2026-06-29T18:00:00&#43;00:00</lastmod></url><url>
+            <loc>https://847850277.github.io/posts/2026/datafusion_sql_unparser_error/</loc><lastmod>2026-06-29T18:00:00&#43;00:00</lastmod></url><url>
+            <loc>https://847850277.github.io/posts/</loc><lastmod>2026-06-29T18:00:00&#43;00:00</lastmod></url><url>
+            <loc>https://847850277.github.io/categories/rust/</loc><lastmod>2026-06-29T18:00:00&#43;00:00</lastmod></url><url>
+            <loc>https://847850277.github.io/tags/rust/</loc><lastmod>2026-06-29T18:00:00&#43;00:00</lastmod></url><url>
+            <loc>https://847850277.github.io/tags/</loc><lastmod>2026-06-29T18:00:00&#43;00:00</lastmod></url><url>
+            <loc>https://847850277.github.io/categories/unparser/</loc><lastmod>2026-06-29T18:00:00&#43;00:00</lastmod></url><url>
+            <loc>https://847850277.github.io/tags/unparser/</loc><lastmod>2026-06-29T18:00:00&#43;00:00</lastmod></url><url>
+            <loc>https://847850277.github.io/</loc><lastmod>2026-06-29T18:00:00&#43;00:00</lastmod></url><url>
             <loc>https://847850277.github.io/categories/protobuf/</loc><lastmod>2026-06-22T10:00:00&#43;00:00</lastmod></url><url>
             <loc>https://847850277.github.io/tags/protobuf/</loc><lastmod>2026-06-22T10:00:00&#43;00:00</lastmod></url><url>
-            <loc>https://847850277.github.io/categories/rust/</loc><lastmod>2026-06-22T10:00:00&#43;00:00</lastmod></url><url>
-            <loc>https://847850277.github.io/tags/rust/</loc><lastmod>2026-06-22T10:00:00&#43;00:00</lastmod></url><url>
             <loc>https://847850277.github.io/categories/scalarfunctionexpr/</loc><lastmod>2026-06-22T10:00:00&#43;00:00</lastmod></url><url>
             <loc>https://847850277.github.io/tags/scalarfunctionexpr/</loc><lastmod>2026-06-22T10:00:00&#43;00:00</lastmod></url><url>
             <loc>https://847850277.github.io/posts/2026/datafusion_scalarfunctionexpr_protobuf_mini_example/</loc><lastmod>2026-06-22T10:00:00&#43;00:00</lastmod></url><url>
-            <loc>https://847850277.github.io/tags/</loc><lastmod>2026-06-22T10:00:00&#43;00:00</lastmod></url><url>
-            <loc>https://847850277.github.io/</loc><lastmod>2026-06-22T10:00:00&#43;00:00</lastmod></url><url>
             <loc>https://847850277.github.io/categories/java/</loc><lastmod>2026-01-12T10:00:00&#43;00:00</lastmod></url><url>
             <loc>https://847850277.github.io/tags/java/</loc><lastmod>2026-01-12T10:00:00&#43;00:00</lastmod></url><url>
             <loc>https://847850277.github.io/posts/2026/java_reference_rust_match/</loc><lastmod>2026-01-12T10:00:00&#43;00:00</lastmod></url><url>

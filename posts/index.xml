@@ -2,7 +2,541 @@
         <title>所有文章 - ZhengPengDe Blog</title>
         <link>https://847850277.github.io/posts/</link>
         <description>所有文章 | ZhengPengDe Blog</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Sat, 20 Jun 2026 09:00:00 &#43;0000</lastBuildDate><atom:link href="https://847850277.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Mon, 29 Jun 2026 09:00:00 &#43;0000</lastBuildDate><atom:link href="https://847850277.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+    <title>datafusion sql unparser 错误sql</title>
+    <link>https://847850277.github.io/posts/2026/datafusion_sql_unparser_error/</link>
+    <pubDate>Mon, 29 Jun 2026 09:00:00 &#43;0000</pubDate>
+    <author>zhengpengde</author>
+    <guid>https://847850277.github.io/posts/2026/datafusion_sql_unparser_error/</guid>
+    <description><![CDATA[<h1 id="datafusion-sql-unparser-error-生成错误sql">datafusion sql unparser error 生成错误sql</h1>
+<h2 id="问题描述">问题描述</h2>
+<ul>
+<li>从订单明细表取订单id，从订单表取订单id和折扣百分比，使用USING连接两个子查询，生成的优化后的SQL在DuckDB中无法执行。</li>
+<li>两个子查询join后，DataFusion 把优化后的 LogicalPlan 转回 SQL 时，生成的 SQL 里面 alias 作用域错了，所以 DuckDB 执行这个生成 SQL 会报错</li>
+</ul>
+<h2 id="复现">复现</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-sql" data-lang="sql"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#66d9ef">FROM</span>
+</span></span><span style="display:flex;"><span>(
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">SELECT</span> order_id
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">FROM</span> <span style="color:#e6db74">&#34;warehouse&#34;</span>.<span style="color:#e6db74">&#34;main&#34;</span>.<span style="color:#e6db74">&#34;order_items&#34;</span>
+</span></span><span style="display:flex;"><span>) oi
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">JOIN</span> (
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">SELECT</span>
+</span></span><span style="display:flex;"><span>        order_id,
+</span></span><span style="display:flex;"><span>        coalesce(discount_pct, <span style="color:#ae81ff">0</span>) <span style="color:#66d9ef">AS</span> discount_pct_2
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">FROM</span> <span style="color:#e6db74">&#34;warehouse&#34;</span>.<span style="color:#e6db74">&#34;main&#34;</span>.<span style="color:#e6db74">&#34;orders&#34;</span>
+</span></span><span style="display:flex;"><span>) o <span style="color:#66d9ef">USING</span> (order_id)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> std::sync::Arc;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> datafusion::arrow::datatypes::{DataType, Field, Schema};
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> datafusion::catalog::{
+</span></span><span style="display:flex;"><span>    CatalogProvider, MemoryCatalogProvider, MemorySchemaProvider, SchemaProvider,
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> datafusion::datasource::empty::EmptyTable;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> datafusion::prelude::<span style="color:#f92672">*</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> datafusion::sql::unparser::dialect::DuckDBDialect;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> datafusion::sql::unparser::Unparser;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> duckdb::Connection;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">QUERY</span>: <span style="color:#66d9ef">&amp;</span><span style="color:#66d9ef">str</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">r</span><span style="color:#e6db74">#&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">SELECT * FROM
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">(
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">SELECT
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        order_id
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    FROM
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;warehouse&#34;.&#34;main&#34;.&#34;order_items&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">) oi
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">JOIN (
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    SELECT
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        order_id,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        coalesce(discount_pct, 0) AS discount_pct_2
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    FROM
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;warehouse&#34;.&#34;main&#34;.&#34;orders&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">) o USING (order_id)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;#</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#[tokio::main]</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">main</span>() -&gt; Result<span style="color:#f92672">&lt;</span>(), Box<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">dyn</span> std::error::Error<span style="color:#f92672">&gt;&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> ctx <span style="color:#f92672">=</span> build_datafusion_context()<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> conn <span style="color:#f92672">=</span> Connection::open_in_memory()<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>    register_duckdb_tables(<span style="color:#f92672">&amp;</span>conn)<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> dialect <span style="color:#f92672">=</span> DuckDBDialect::new();
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Unparser 是用来把 DataFusion 的内部计划再转回 SQL 字符串 的
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> unparser <span style="color:#f92672">=</span> Unparser::new(<span style="color:#f92672">&amp;</span>dialect);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> unoptimized_plan <span style="color:#f92672">=</span> ctx.sql(<span style="color:#66d9ef">QUERY</span>).<span style="color:#66d9ef">await</span><span style="color:#f92672">?</span>.into_unoptimized_plan();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> unoptimized_sql <span style="color:#f92672">=</span> unparser.plan_to_sql(<span style="color:#f92672">&amp;</span>unoptimized_plan)<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">println!</span>(<span style="color:#e6db74">&#34;=== Unoptimized SQL ===</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">{unoptimized_sql}</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">match</span> conn.prepare(<span style="color:#f92672">&amp;</span>unoptimized_sql.to_string()) {
+</span></span><span style="display:flex;"><span>        Ok(_) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">println!</span>(<span style="color:#e6db74">&#34;unoptimized query is valid in DuckDB</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>),
+</span></span><span style="display:flex;"><span>        Err(e) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">println!</span>(<span style="color:#e6db74">&#34;unoptimized query is not valid in DuckDB: </span><span style="color:#e6db74">{e}</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>),
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> optimized_plan <span style="color:#f92672">=</span> ctx.sql(<span style="color:#66d9ef">QUERY</span>).<span style="color:#66d9ef">await</span><span style="color:#f92672">?</span>.into_optimized_plan()<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> optimized_sql <span style="color:#f92672">=</span> <span style="color:#66d9ef">match</span> unparser.plan_to_sql(<span style="color:#f92672">&amp;</span>optimized_plan) {
+</span></span><span style="display:flex;"><span>        Ok(sql) <span style="color:#f92672">=&gt;</span> sql,
+</span></span><span style="display:flex;"><span>        Err(e) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">println!</span>(<span style="color:#e6db74">&#34;reproduced #23138: optimized plan cannot be unparsed&#34;</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">println!</span>(<span style="color:#e6db74">&#34;Unparser error: </span><span style="color:#e6db74">{e}</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">println!</span>(
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;=== Optimized Plan ===</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>                optimized_plan.display_indent()
+</span></span><span style="display:flex;"><span>            );
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> Ok(());
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">println!</span>(<span style="color:#e6db74">&#34;=== Optimized SQL ===</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">{optimized_sql}</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">println!</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;=== Optimized Plan ===</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">{}</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span>        optimized_plan.display_indent()
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">match</span> conn.prepare(<span style="color:#f92672">&amp;</span>optimized_sql.to_string()) {
+</span></span><span style="display:flex;"><span>        Ok(_) <span style="color:#f92672">=&gt;</span> <span style="color:#a6e22e">println!</span>(<span style="color:#e6db74">&#34;unexpected: optimized query is valid in DuckDB&#34;</span>),
+</span></span><span style="display:flex;"><span>        Err(e) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">println!</span>(<span style="color:#e6db74">&#34;reproduced #23138: optimized query is invalid in DuckDB&#34;</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">println!</span>(<span style="color:#e6db74">&#34;DuckDB error: </span><span style="color:#e6db74">{e}</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Ok(())
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">register_duckdb_tables</span>(conn: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">Connection</span>) -&gt; <span style="color:#a6e22e">duckdb</span>::Result<span style="color:#f92672">&lt;</span>()<span style="color:#f92672">&gt;</span> {
+</span></span><span style="display:flex;"><span>    conn.execute_batch(
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">r</span><span style="color:#e6db74">#&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        ATTACH &#39;:memory:&#39; AS warehouse;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        CREATE TABLE warehouse.main.order_items(order_id INTEGER);
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        CREATE TABLE warehouse.main.orders(
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            order_id INTEGER NOT NULL,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            customer_id INTEGER,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">            discount_pct DECIMAL(5, 2)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        );
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;#</span>,
+</span></span><span style="display:flex;"><span>    )
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">/// catalog  ≈ 数据库实例 / 数据目录
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">/// schema   ≈ 库 / 命名空间
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">/// table    ≈ 表
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">build_datafusion_context</span>() -&gt; <span style="color:#a6e22e">datafusion</span>::common::Result<span style="color:#f92672">&lt;</span>SessionContext<span style="color:#f92672">&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 构建订单项 schema
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> order_items_schema <span style="color:#f92672">=</span> Arc::new(Schema::new(<span style="color:#a6e22e">vec!</span>[Field::new(
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;order_id&#34;</span>,
+</span></span><span style="display:flex;"><span>        DataType::Int32,
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">true</span>,
+</span></span><span style="display:flex;"><span>    )]));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// 构建订单 schema
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> orders_schema <span style="color:#f92672">=</span> Arc::new(Schema::new(<span style="color:#a6e22e">vec!</span>[
+</span></span><span style="display:flex;"><span>        Field::new(<span style="color:#e6db74">&#34;order_id&#34;</span>, DataType::Int32, <span style="color:#66d9ef">false</span>),
+</span></span><span style="display:flex;"><span>        Field::new(<span style="color:#e6db74">&#34;customer_id&#34;</span>, DataType::Int32, <span style="color:#66d9ef">true</span>),
+</span></span><span style="display:flex;"><span>        Field::new(<span style="color:#e6db74">&#34;discount_pct&#34;</span>, DataType::Decimal128(<span style="color:#ae81ff">5</span>, <span style="color:#ae81ff">2</span>), <span style="color:#66d9ef">true</span>),
+</span></span><span style="display:flex;"><span>    ]));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> schema_provider <span style="color:#f92672">=</span> Arc::new(MemorySchemaProvider::new());
+</span></span><span style="display:flex;"><span>    schema_provider.register_table(
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;order_items&#34;</span>.to_string(),
+</span></span><span style="display:flex;"><span>        Arc::new(EmptyTable::new(order_items_schema)),
+</span></span><span style="display:flex;"><span>    )<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>    schema_provider.register_table(
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;orders&#34;</span>.to_string(),
+</span></span><span style="display:flex;"><span>        Arc::new(EmptyTable::new(orders_schema)),
+</span></span><span style="display:flex;"><span>    )<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> catalog <span style="color:#f92672">=</span> Arc::new(MemoryCatalogProvider::new());
+</span></span><span style="display:flex;"><span>    catalog.register_schema(<span style="color:#e6db74">&#34;main&#34;</span>, schema_provider)<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> ctx <span style="color:#f92672">=</span> SessionContext::new();
+</span></span><span style="display:flex;"><span>    ctx.register_catalog(<span style="color:#e6db74">&#34;warehouse&#34;</span>, catalog);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Ok(ctx)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><ul>
+<li>执行后报错了</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===</span> Unoptimized SQL <span style="color:#f92672">===</span>
+</span></span><span style="display:flex;"><span>SELECT <span style="color:#e6db74">&#34;o&#34;</span>.<span style="color:#e6db74">&#34;order_id&#34;</span>, <span style="color:#e6db74">&#34;o&#34;</span>.<span style="color:#e6db74">&#34;discount_pct_2&#34;</span> FROM <span style="color:#f92672">(</span>SELECT <span style="color:#e6db74">&#34;order_items&#34;</span>.<span style="color:#e6db74">&#34;order_id&#34;</span> FROM <span style="color:#e6db74">&#34;warehouse&#34;</span>.<span style="color:#e6db74">&#34;main&#34;</span>.<span style="color:#e6db74">&#34;order_items&#34;</span><span style="color:#f92672">)</span> AS <span style="color:#e6db74">&#34;oi&#34;</span> INNER JOIN <span style="color:#f92672">(</span>SELECT <span style="color:#e6db74">&#34;orders&#34;</span>.<span style="color:#e6db74">&#34;order_id&#34;</span>, coalesce<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;orders&#34;</span>.<span style="color:#e6db74">&#34;discount_pct&#34;</span>, 0<span style="color:#f92672">)</span> AS <span style="color:#e6db74">&#34;discount_pct_2&#34;</span> FROM <span style="color:#e6db74">&#34;warehouse&#34;</span>.<span style="color:#e6db74">&#34;main&#34;</span>.<span style="color:#e6db74">&#34;orders&#34;</span><span style="color:#f92672">)</span> AS <span style="color:#e6db74">&#34;o&#34;</span> USING<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;order_id&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>unoptimized query is valid in DuckDB
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===</span> Optimized SQL <span style="color:#f92672">===</span>
+</span></span><span style="display:flex;"><span>SELECT <span style="color:#e6db74">&#34;o&#34;</span>.<span style="color:#e6db74">&#34;order_id&#34;</span>, <span style="color:#e6db74">&#34;o&#34;</span>.<span style="color:#e6db74">&#34;discount_pct_2&#34;</span> FROM <span style="color:#e6db74">&#34;warehouse&#34;</span>.<span style="color:#e6db74">&#34;main&#34;</span>.<span style="color:#e6db74">&#34;order_items&#34;</span> AS <span style="color:#e6db74">&#34;oi&#34;</span> INNER JOIN <span style="color:#f92672">(</span>SELECT <span style="color:#e6db74">&#34;o&#34;</span>.<span style="color:#e6db74">&#34;order_id&#34;</span>, CASE WHEN <span style="color:#e6db74">&#34;__common_expr_1&#34;</span> IS NOT NULL THEN <span style="color:#e6db74">&#34;__common_expr_1&#34;</span> ELSE 0.00 END AS <span style="color:#e6db74">&#34;discount_pct_2&#34;</span> FROM <span style="color:#f92672">(</span>SELECT CAST<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;o&#34;</span>.<span style="color:#e6db74">&#34;discount_pct&#34;</span> AS DECIMAL<span style="color:#f92672">(</span>22,2<span style="color:#f92672">))</span> AS <span style="color:#e6db74">&#34;__common_expr_1&#34;</span>, <span style="color:#e6db74">&#34;o&#34;</span>.<span style="color:#e6db74">&#34;order_id&#34;</span> FROM <span style="color:#e6db74">&#34;warehouse&#34;</span>.<span style="color:#e6db74">&#34;main&#34;</span>.<span style="color:#e6db74">&#34;orders&#34;</span> AS <span style="color:#e6db74">&#34;o&#34;</span><span style="color:#f92672">))</span> AS <span style="color:#e6db74">&#34;o&#34;</span> ON <span style="color:#e6db74">&#34;oi&#34;</span>.<span style="color:#e6db74">&#34;order_id&#34;</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;o&#34;</span>.<span style="color:#e6db74">&#34;order_id&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===</span> Optimized Plan <span style="color:#f92672">===</span>
+</span></span><span style="display:flex;"><span>Projection: o.order_id, o.discount_pct_2
+</span></span><span style="display:flex;"><span>  Inner Join: oi.order_id <span style="color:#f92672">=</span> o.order_id
+</span></span><span style="display:flex;"><span>    SubqueryAlias: oi
+</span></span><span style="display:flex;"><span>      TableScan: warehouse.main.order_items projection<span style="color:#f92672">=[</span>order_id<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>    SubqueryAlias: o
+</span></span><span style="display:flex;"><span>      Projection: warehouse.main.orders.order_id, CASE WHEN __common_expr_1 IS NOT NULL THEN __common_expr_1 ELSE Decimal128<span style="color:#f92672">(</span>0.00,22,2<span style="color:#f92672">)</span> END AS discount_pct_2
+</span></span><span style="display:flex;"><span>        Projection: CAST<span style="color:#f92672">(</span>warehouse.main.orders.discount_pct AS Decimal128<span style="color:#f92672">(</span>22, 2<span style="color:#f92672">))</span> AS __common_expr_1, warehouse.main.orders.order_id
+</span></span><span style="display:flex;"><span>          TableScan: warehouse.main.orders projection<span style="color:#f92672">=[</span>order_id, discount_pct<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>reproduced <span style="color:#75715e">#23138: optimized query is invalid in DuckDB</span>
+</span></span><span style="display:flex;"><span>DuckDB error: Binder Error: Referenced table <span style="color:#e6db74">&#34;o&#34;</span> not found!
+</span></span><span style="display:flex;"><span>Candidate tables: <span style="color:#e6db74">&#34;oi&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>LINE 1: ... <span style="color:#e6db74">&#34;warehouse&#34;</span>.<span style="color:#e6db74">&#34;main&#34;</span>.<span style="color:#e6db74">&#34;order_items&#34;</span> AS <span style="color:#e6db74">&#34;oi&#34;</span> INNER JOIN <span style="color:#f92672">(</span>SELECT <span style="color:#e6db74">&#34;o&#34;</span>.<span style="color:#e6db74">&#34;order_id&#34;</span>, CASE WHEN <span style="color:#e6db74">&#34;__common_expr_1&#34;</span> IS NOT NULL...
+</span></span></code></pre></div><h2 id="ai-如何解决的">ai 如何解决的</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#75715e">// datafusion/sql/src/unparser/plan.rs
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// AI 本地试修思路：
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 当 Projection 下面还是 Projection 时，说明外层 Projection 面对的是 derived table，
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 不能继续把列重写成 &#34;o&#34;.&#34;order_id&#34;，而应该重写成 derived table 输出列 &#34;order_id&#34;。
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">use</span> <span style="color:#66d9ef">crate</span>::unparser::rewrite::{
+</span></span><span style="display:flex;"><span>    ProjectionInputRewriter, TableAliasRewriter, inject_column_aliases_into_subquery,
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// ...
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>LogicalPlan::Projection(projection) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> input_is_projection <span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">matches!</span>(projection.input.as_ref(), LogicalPlan::Projection(_));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#66d9ef">let</span> Some(plan) <span style="color:#f92672">=</span> self.unparse_table_scan_pushdown(
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&amp;</span>projection.input,
+</span></span><span style="display:flex;"><span>        alias.clone(),
+</span></span><span style="display:flex;"><span>        already_projected,
+</span></span><span style="display:flex;"><span>    )<span style="color:#f92672">?</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> exprs <span style="color:#f92672">=</span> <span style="color:#66d9ef">if</span> input_is_projection {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> input_rewriter <span style="color:#f92672">=</span> ProjectionInputRewriter {
+</span></span><span style="display:flex;"><span>                input_schema: <span style="color:#a6e22e">plan</span>.schema().as_ref(),
+</span></span><span style="display:flex;"><span>            };
+</span></span><span style="display:flex;"><span>            projection
+</span></span><span style="display:flex;"><span>                .expr
+</span></span><span style="display:flex;"><span>                .iter()
+</span></span><span style="display:flex;"><span>                .cloned()
+</span></span><span style="display:flex;"><span>                .map(<span style="color:#f92672">|</span>expr<span style="color:#f92672">|</span> expr.rewrite(<span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> input_rewriter).data())
+</span></span><span style="display:flex;"><span>                .collect::<span style="color:#f92672">&lt;</span>Result<span style="color:#f92672">&lt;</span>Vec<span style="color:#f92672">&lt;</span>_<span style="color:#f92672">&gt;&gt;&gt;</span>()<span style="color:#f92672">?</span>
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> alias.is_some() {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> alias_rewriter <span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>                alias.as_ref().map(<span style="color:#f92672">|</span>alias_name<span style="color:#f92672">|</span> TableAliasRewriter {
+</span></span><span style="display:flex;"><span>                    table_schema: <span style="color:#a6e22e">plan</span>.schema().as_ref(),
+</span></span><span style="display:flex;"><span>                    alias_name: <span style="color:#a6e22e">alias_name</span>.clone(),
+</span></span><span style="display:flex;"><span>                    rewrite_unqualified: <span style="color:#a6e22e">false</span>,
+</span></span><span style="display:flex;"><span>                });
+</span></span><span style="display:flex;"><span>            projection
+</span></span><span style="display:flex;"><span>                .expr
+</span></span><span style="display:flex;"><span>                .iter()
+</span></span><span style="display:flex;"><span>                .cloned()
+</span></span><span style="display:flex;"><span>                .map(<span style="color:#f92672">|</span>expr<span style="color:#f92672">|</span> {
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">if</span> <span style="color:#66d9ef">let</span> Some(<span style="color:#66d9ef">ref</span> <span style="color:#66d9ef">mut</span> rewriter) <span style="color:#f92672">=</span> alias_rewriter {
+</span></span><span style="display:flex;"><span>                        expr.rewrite(rewriter).data()
+</span></span><span style="display:flex;"><span>                    } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>                        Ok(expr)
+</span></span><span style="display:flex;"><span>                    }
+</span></span><span style="display:flex;"><span>                })
+</span></span><span style="display:flex;"><span>                .collect::<span style="color:#f92672">&lt;</span>Result<span style="color:#f92672">&lt;</span>Vec<span style="color:#f92672">&lt;</span>_<span style="color:#f92672">&gt;&gt;&gt;</span>()<span style="color:#f92672">?</span>
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>            projection.expr.clone()
+</span></span><span style="display:flex;"><span>        };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        Ok(Some(LogicalPlan::Projection(
+</span></span><span style="display:flex;"><span>            Projection::try_new_with_schema(
+</span></span><span style="display:flex;"><span>                exprs,
+</span></span><span style="display:flex;"><span>                Arc::new(plan),
+</span></span><span style="display:flex;"><span>                Arc::clone(<span style="color:#f92672">&amp;</span>projection.schema),
+</span></span><span style="display:flex;"><span>            )<span style="color:#f92672">?</span>,
+</span></span><span style="display:flex;"><span>        )))
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>        Ok(None)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#75715e">// datafusion/sql/src/unparser/rewrite.rs
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// AI 本地试修新增的 rewriter：
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 用 input projection 的 schema，把原始 qualified column 改成 derived table 输出列。
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">/// A `TreeNodeRewriter` implementation that rewrites `Expr::Column` expressions
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">/// to the field names produced by an input projection.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">///
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">/// This is used when a projection is rebuilt on top of another projection that
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">/// will be unparsed as a derived subquery. In that SQL scope, the original table
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">/// qualifier is no longer visible, and the outer projection must refer to the
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">/// derived subquery&#39;s output columns by name.
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">ProjectionInputRewriter</span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">&#39;a</span><span style="color:#f92672">&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">pub</span> input_schema: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">&#39;a</span> <span style="color:#a6e22e">DFSchema</span>,
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">impl</span> TreeNodeRewriter <span style="color:#66d9ef">for</span> ProjectionInputRewriter<span style="color:#f92672">&lt;</span>&#39;_<span style="color:#f92672">&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Node</span> <span style="color:#f92672">=</span> Expr;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">f_down</span>(<span style="color:#f92672">&amp;</span><span style="color:#66d9ef">mut</span> self, expr: <span style="color:#a6e22e">Expr</span>) -&gt; Result<span style="color:#f92672">&lt;</span>Transformed<span style="color:#f92672">&lt;</span>Expr<span style="color:#f92672">&gt;&gt;</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">match</span> expr {
+</span></span><span style="display:flex;"><span>            Expr::Column(column) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">match</span> self
+</span></span><span style="display:flex;"><span>                    .input_schema
+</span></span><span style="display:flex;"><span>                    .qualified_field_from_column(<span style="color:#f92672">&amp;</span>column)
+</span></span><span style="display:flex;"><span>                    .or_else(<span style="color:#f92672">|</span>_<span style="color:#f92672">|</span> {
+</span></span><span style="display:flex;"><span>                        self.input_schema
+</span></span><span style="display:flex;"><span>                            .qualified_field_with_unqualified_name(<span style="color:#f92672">&amp;</span>column.name)
+</span></span><span style="display:flex;"><span>                    }) {
+</span></span><span style="display:flex;"><span>                    Ok((_qualifier, field)) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>                        <span style="color:#66d9ef">let</span> new_column <span style="color:#f92672">=</span> Column::new_unqualified(field.name().clone());
+</span></span><span style="display:flex;"><span>                        Ok(Transformed::yes(Expr::Column(new_column)))
+</span></span><span style="display:flex;"><span>                    }
+</span></span><span style="display:flex;"><span>                    Err(_) <span style="color:#f92672">=&gt;</span> Ok(Transformed::no(Expr::Column(column))),
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            _ <span style="color:#f92672">=&gt;</span> Ok(Transformed::no(expr)),
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#75715e">// datafusion/core/tests/sql/unparser.rs
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// AI 本地试修加的最小回归测试：
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 确认 optimized SQL 不再生成 out-of-scope alias: &#34;o&#34;.&#34;order_id&#34;。
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">ISSUE_23138_QUERY</span>: <span style="color:#66d9ef">&amp;</span><span style="color:#66d9ef">str</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">r</span><span style="color:#e6db74">#&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">SELECT * FROM
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">(
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">SELECT
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        order_id
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    FROM
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;warehouse&#34;.&#34;main&#34;.&#34;order_items&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">) oi
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">JOIN (
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    SELECT
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        order_id,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        coalesce(discount_pct, 0) AS discount_pct_2
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    FROM
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;warehouse&#34;.&#34;main&#34;.&#34;orders&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">) o USING (order_id)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;#</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#[tokio::test]</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">optimized_duckdb_unparse_resolves_columns_in_outer_query</span>() -&gt; Result<span style="color:#f92672">&lt;</span>()<span style="color:#f92672">&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> ctx <span style="color:#f92672">=</span> issue_22961_context()<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> plan <span style="color:#f92672">=</span> ctx.sql(<span style="color:#66d9ef">ISSUE_23138_QUERY</span>).<span style="color:#66d9ef">await</span><span style="color:#f92672">?</span>.into_optimized_plan()<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> dialect <span style="color:#f92672">=</span> DuckDBDialect::new();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> unparser <span style="color:#f92672">=</span> Unparser::new(<span style="color:#f92672">&amp;</span>dialect);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> sql <span style="color:#f92672">=</span> unparser.plan_to_sql(<span style="color:#f92672">&amp;</span>plan)<span style="color:#f92672">?</span>.to_string();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">assert!</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">!</span>sql.contains(<span style="color:#e6db74">r</span><span style="color:#e6db74">#&#34;INNER JOIN (SELECT &#34;o&#34;.&#34;order_id&#34;&#34;#</span>),
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;unparsed SQL references derived table alias before it is in scope: {sql}&#34;</span>
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">assert!</span>(
+</span></span><span style="display:flex;"><span>        sql.contains(<span style="color:#e6db74">r</span><span style="color:#e6db74">#&#34;INNER JOIN (SELECT &#34;order_id&#34;, CASE&#34;#</span>),
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;unparsed SQL should resolve columns against the derived query output: {sql}&#34;</span>
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Ok(())
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="官方解决">官方解决</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#75715e">// datafusion/sql/src/unparser/plan.rs
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 官方 PR #23176:
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// fix: unparse columns of stacked pushdown projections unqualified
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 核心：直接把 stacked pushdown projection 里的 column qualifier 去掉。
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">/// Strip the table qualifier from every column in a pushdown pass-through
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">/// projection expression, so it resolves against the unnamed derived table
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">/// rendered for the inner pushdown projection rather than a deeper table
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">/// alias that is out of scope at this nesting level.
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">strip_pushdown_column_qualifiers</span>(expr: <span style="color:#a6e22e">Expr</span>) -&gt; Result<span style="color:#f92672">&lt;</span>Expr<span style="color:#f92672">&gt;</span> {
+</span></span><span style="display:flex;"><span>    expr.transform(<span style="color:#f92672">|</span>e<span style="color:#f92672">|</span> <span style="color:#66d9ef">match</span> e {
+</span></span><span style="display:flex;"><span>        Expr::Column(<span style="color:#66d9ef">mut</span> column) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>            column.relation <span style="color:#f92672">=</span> None;
+</span></span><span style="display:flex;"><span>            Ok(Transformed::yes(Expr::Column(column)))
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        other <span style="color:#f92672">=&gt;</span> Ok(Transformed::no(other)),
+</span></span><span style="display:flex;"><span>    })
+</span></span><span style="display:flex;"><span>    .data()
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#75715e">// datafusion/sql/src/unparser/plan.rs
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 官方 PR #23176 在 unparse_table_scan_pushdown 的 Projection 分支里加的逻辑。
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>LogicalPlan::Projection(projection) <span style="color:#f92672">=&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#66d9ef">let</span> Some(plan) <span style="color:#f92672">=</span> self.unparse_table_scan_pushdown(
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&amp;</span>projection.input,
+</span></span><span style="display:flex;"><span>        alias.clone(),
+</span></span><span style="display:flex;"><span>        already_projected,
+</span></span><span style="display:flex;"><span>    )<span style="color:#f92672">?</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">// The pushed-down scan alias is only in scope for the
+</span></span></span><span style="display:flex;"><span>        <span style="color:#75715e">// projection directly above the aliased table scan. `plan`
+</span></span></span><span style="display:flex;"><span>        <span style="color:#75715e">// is the result of pushing the alias further down: if it is
+</span></span></span><span style="display:flex;"><span>        <span style="color:#75715e">// itself a `Projection`, the input was another projection
+</span></span></span><span style="display:flex;"><span>        <span style="color:#75715e">// (e.g. common subexpression elimination stacked one), so
+</span></span></span><span style="display:flex;"><span>        <span style="color:#75715e">// this projection sits over a derived table rather than
+</span></span></span><span style="display:flex;"><span>        <span style="color:#75715e">// directly over the aliased scan, and the alias is out of
+</span></span></span><span style="display:flex;"><span>        <span style="color:#75715e">// scope here. Its qualified pass-through columns must then
+</span></span></span><span style="display:flex;"><span>        <span style="color:#75715e">// reference the derived table&#39;s output unqualified instead
+</span></span></span><span style="display:flex;"><span>        <span style="color:#75715e">// of being rebased to the alias. Build it directly so the
+</span></span></span><span style="display:flex;"><span>        <span style="color:#75715e">// unqualified columns are not re-normalized back to the
+</span></span></span><span style="display:flex;"><span>        <span style="color:#75715e">// alias. (Otherwise `plan` is the scan-derived plan and we
+</span></span></span><span style="display:flex;"><span>        <span style="color:#75715e">// fall through to rebase to the alias, correct one level
+</span></span></span><span style="display:flex;"><span>        <span style="color:#75715e">// above the scan.)
+</span></span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> alias.is_some() <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">matches!</span>(plan, LogicalPlan::Projection(_)) {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">let</span> exprs <span style="color:#f92672">=</span> projection
+</span></span><span style="display:flex;"><span>                .expr
+</span></span><span style="display:flex;"><span>                .iter()
+</span></span><span style="display:flex;"><span>                .cloned()
+</span></span><span style="display:flex;"><span>                .map(Self::strip_pushdown_column_qualifiers)
+</span></span><span style="display:flex;"><span>                .collect::<span style="color:#f92672">&lt;</span>Result<span style="color:#f92672">&lt;</span>Vec<span style="color:#f92672">&lt;</span>_<span style="color:#f92672">&gt;&gt;&gt;</span>()<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> Ok(Some(LogicalPlan::Projection(Projection::try_new(
+</span></span><span style="display:flex;"><span>                exprs,
+</span></span><span style="display:flex;"><span>                Arc::new(plan),
+</span></span><span style="display:flex;"><span>            )<span style="color:#f92672">?</span>)));
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">let</span> exprs <span style="color:#f92672">=</span> <span style="color:#66d9ef">if</span> alias.is_some() {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> alias_rewriter <span style="color:#f92672">=</span>
+</span></span><span style="display:flex;"><span>                alias.as_ref().map(<span style="color:#f92672">|</span>alias_name<span style="color:#f92672">|</span> TableAliasRewriter {
+</span></span><span style="display:flex;"><span>                    table_schema: <span style="color:#a6e22e">plan</span>.schema().as_ref(),
+</span></span><span style="display:flex;"><span>                    alias_name: <span style="color:#a6e22e">alias_name</span>.clone(),
+</span></span><span style="display:flex;"><span>                    rewrite_unqualified: <span style="color:#a6e22e">false</span>,
+</span></span><span style="display:flex;"><span>                });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            projection
+</span></span><span style="display:flex;"><span>                .expr
+</span></span><span style="display:flex;"><span>                .iter()
+</span></span><span style="display:flex;"><span>                .cloned()
+</span></span><span style="display:flex;"><span>                .map(<span style="color:#f92672">|</span>expr<span style="color:#f92672">|</span> {
+</span></span><span style="display:flex;"><span>                    <span style="color:#66d9ef">if</span> <span style="color:#66d9ef">let</span> Some(<span style="color:#66d9ef">ref</span> <span style="color:#66d9ef">mut</span> rewriter) <span style="color:#f92672">=</span> alias_rewriter {
+</span></span><span style="display:flex;"><span>                        expr.rewrite(rewriter).data()
+</span></span><span style="display:flex;"><span>                    } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>                        Ok(expr)
+</span></span><span style="display:flex;"><span>                    }
+</span></span><span style="display:flex;"><span>                })
+</span></span><span style="display:flex;"><span>                .collect::<span style="color:#f92672">&lt;</span>Result<span style="color:#f92672">&lt;</span>Vec<span style="color:#f92672">&lt;</span>_<span style="color:#f92672">&gt;&gt;&gt;</span>()<span style="color:#f92672">?</span>
+</span></span><span style="display:flex;"><span>        } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>            projection.expr.clone()
+</span></span><span style="display:flex;"><span>        };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        Ok(Some(LogicalPlan::Projection(Projection::try_new(
+</span></span><span style="display:flex;"><span>            exprs,
+</span></span><span style="display:flex;"><span>            Arc::new(plan),
+</span></span><span style="display:flex;"><span>        )<span style="color:#f92672">?</span>)))
+</span></span><span style="display:flex;"><span>    } <span style="color:#66d9ef">else</span> {
+</span></span><span style="display:flex;"><span>        Ok(None)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#75715e">// datafusion/core/tests/sql/unparser.rs
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 官方 PR #23176 加的回归测试。
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// https://github.com/apache/datafusion/issues/23138
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// CSE on `coalesce(discount_pct, 0)` factors a shared CAST into an extra inner
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// projection, so `SubqueryAlias: o` ends up over two stacked projections. When
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// the unparser renders that as nested derived tables it must qualify the
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// pass-through `order_id` with a name in scope at each level -- it must not
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// rebase it to the outer subquery alias `o`, which is not visible inside the
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// inner derived table.
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">ISSUE_23138_QUERY</span>: <span style="color:#66d9ef">&amp;</span><span style="color:#66d9ef">str</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">r</span><span style="color:#e6db74">#&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">SELECT * FROM
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">(
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    SELECT order_id FROM &#34;warehouse&#34;.&#34;main&#34;.&#34;order_items&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">) oi
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">JOIN (
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    SELECT order_id, coalesce(discount_pct, 0) AS discount_pct_2
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    FROM &#34;warehouse&#34;.&#34;main&#34;.&#34;orders&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">) o USING (order_id)
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;#</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#[tokio::test]</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">async</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">optimized_duckdb_unparse_qualifies_nested_passthrough_column</span>() -&gt; Result<span style="color:#f92672">&lt;</span>()<span style="color:#f92672">&gt;</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> ctx <span style="color:#f92672">=</span> issue_22961_context()<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> plan <span style="color:#f92672">=</span> ctx.sql(<span style="color:#66d9ef">ISSUE_23138_QUERY</span>).<span style="color:#66d9ef">await</span><span style="color:#f92672">?</span>.into_optimized_plan()<span style="color:#f92672">?</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> dialect <span style="color:#f92672">=</span> DuckDBDialect::new();
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> unparser <span style="color:#f92672">=</span> Unparser::new(<span style="color:#f92672">&amp;</span>dialect);
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> sql <span style="color:#f92672">=</span> unparser.plan_to_sql(<span style="color:#f92672">&amp;</span>plan)<span style="color:#f92672">?</span>.to_string();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// The intermediate derived table has no `o` in scope, so the pass-through
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// `order_id` must be unqualified there, not rebased to the subquery alias
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// `o` (which is only the base-table alias one level deeper). The bug emitted
+</span></span></span><span style="display:flex;"><span>    <span style="color:#75715e">// `&#34;o&#34;.&#34;order_id&#34;` inside that derived table; the fix emits a bare column.
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> expected <span style="color:#f92672">=</span> <span style="color:#a6e22e">concat!</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">r</span><span style="color:#e6db74">#&#34;SELECT &#34;o&#34;.&#34;order_id&#34;, &#34;o&#34;.&#34;discount_pct_2&#34; &#34;#</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">r</span><span style="color:#e6db74">#&#34;FROM &#34;warehouse&#34;.&#34;main&#34;.&#34;order_items&#34; AS &#34;oi&#34; &#34;#</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">r</span><span style="color:#e6db74">#&#34;INNER JOIN (SELECT &#34;order_id&#34;, &#34;#</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">r</span><span style="color:#e6db74">#&#34;CASE WHEN &#34;__common_expr_1&#34; IS NOT NULL &#34;#</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">r</span><span style="color:#e6db74">#&#34;THEN &#34;__common_expr_1&#34; ELSE 0.00 END AS &#34;discount_pct_2&#34; &#34;#</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">r</span><span style="color:#e6db74">#&#34;FROM (SELECT CAST(&#34;o&#34;.&#34;discount_pct&#34; AS DECIMAL(22,2)) &#34;#</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">r</span><span style="color:#e6db74">#&#34;AS &#34;__common_expr_1&#34;, &#34;o&#34;.&#34;order_id&#34; &#34;#</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">r</span><span style="color:#e6db74">#&#34;FROM &#34;warehouse&#34;.&#34;main&#34;.&#34;orders&#34; AS &#34;o&#34;)) AS &#34;o&#34; &#34;#</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">r</span><span style="color:#e6db74">#&#34;ON &#34;oi&#34;.&#34;order_id&#34; = &#34;o&#34;.&#34;order_id&#34;&#34;#</span>,
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">assert_eq!</span>(sql, expected);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">assert!</span>(
+</span></span><span style="display:flex;"><span>        sql.contains(<span style="color:#e6db74">r</span><span style="color:#e6db74">#&#34;(SELECT &#34;order_id&#34;, CASE WHEN&#34;#</span>),
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;pass-through order_id should be unqualified in derived table: {sql}&#34;</span>
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">assert!</span>(
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">!</span>sql.contains(<span style="color:#e6db74">r</span><span style="color:#e6db74">#&#34;(SELECT &#34;o&#34;.&#34;order_id&#34;, CASE WHEN&#34;#</span>),
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;derived table must not reference out-of-scope alias o: {sql}&#34;</span>
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Ok(())
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="总结">总结</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#75715e">// #23138 的本质可以用这两个 SQL 片段总结。
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 修复前：错误。
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 这一层 SELECT 里面，&#34;o&#34; 还不在作用域里。
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> bad_sql <span style="color:#f92672">=</span> <span style="color:#e6db74">r</span><span style="color:#e6db74">#&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">INNER JOIN (
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  SELECT &#34;o&#34;.&#34;order_id&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         CASE WHEN &#34;__common_expr_1&#34; IS NOT NULL
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">              THEN &#34;__common_expr_1&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">              ELSE 0.00
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         END AS &#34;discount_pct_2&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  FROM (
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    SELECT CAST(&#34;o&#34;.&#34;discount_pct&#34; AS DECIMAL(22,2)) AS &#34;__common_expr_1&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">           &#34;o&#34;.&#34;order_id&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    FROM &#34;warehouse&#34;.&#34;main&#34;.&#34;orders&#34; AS &#34;o&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  )
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">) AS &#34;o&#34; ON ...
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;#</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// 修复后：正确。
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 外层 derived table 只能引用自己 input 的输出列，所以这里应该是 &#34;order_id&#34;。
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">let</span> good_sql <span style="color:#f92672">=</span> <span style="color:#e6db74">r</span><span style="color:#e6db74">#&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">INNER JOIN (
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  SELECT &#34;order_id&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         CASE WHEN &#34;__common_expr_1&#34; IS NOT NULL
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">              THEN &#34;__common_expr_1&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">              ELSE 0.00
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">         END AS &#34;discount_pct_2&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  FROM (
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    SELECT CAST(&#34;o&#34;.&#34;discount_pct&#34; AS DECIMAL(22,2)) AS &#34;__common_expr_1&#34;,
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">           &#34;o&#34;.&#34;order_id&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    FROM &#34;warehouse&#34;.&#34;main&#34;.&#34;orders&#34; AS &#34;o&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">  )
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">) AS &#34;o&#34; ON ...
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;#</span>;
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-rust" data-lang="rust"><span style="display:flex;"><span><span style="color:#75715e">// 最终结论：
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// LogicalPlan 没坏。
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// Optimizer 引入 __common_expr_1 也没坏。
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 坏在 SQL Unparser 把 stacked projection 转回 SQL 时，
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// 把内层 table alias 错误带到了外层 derived table。
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">issue_23138_summary</span>() {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> problem <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;SubqueryAlias(o) + Projection + Projection + TableScan&#34;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> wrong <span style="color:#f92672">=</span> <span style="color:#e6db74">r</span><span style="color:#e6db74">#&#34;&#34;o&#34;.&#34;order_id&#34;&#34;#</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">let</span> right <span style="color:#f92672">=</span> <span style="color:#e6db74">r</span><span style="color:#e6db74">#&#34;&#34;order_id&#34;&#34;#</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">println!</span>(<span style="color:#e6db74">&#34;problem shape: </span><span style="color:#e6db74">{problem}</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">println!</span>(<span style="color:#e6db74">&#34;wrong generated column: </span><span style="color:#e6db74">{wrong}</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">println!</span>(<span style="color:#e6db74">&#34;right generated column: </span><span style="color:#e6db74">{right}</span><span style="color:#e6db74">&#34;</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div>]]></description>
+</item>
+<item>
     <title>ScalarFunctionExpr protobuf 序列化/反序列化最小例子</title>
     <link>https://847850277.github.io/posts/2026/datafusion_scalarfunctionexpr_protobuf_mini_example/</link>
     <pubDate>Sat, 20 Jun 2026 09:00:00 &#43;0000</pubDate>
@@ -927,49 +1461,6 @@ protobuf:
 <li>Demultiplexing of service requests is performed by a synchronous event demultiplexer. 服务请求的解复用由同步事件解复用器执行</li>
 </ul>
 <h2 id="class-diagram-类图">Class diagram 类图</h2>
-<p></p>]]></description>
-</item>
-<item>
-    <title>Scalable in java 翻译</title>
-    <link>https://847850277.github.io/posts/2023/scalable_in_java_translate/</link>
-    <pubDate>Wed, 16 Aug 2023 09:27:36 &#43;0800</pubDate>
-    <author>zhengpengde</author>
-    <guid>https://847850277.github.io/posts/2023/scalable_in_java_translate/</guid>
-    <description><![CDATA[<h2 id="目录">目录</h2>
-<ul>
-<li><code>Scalable network services</code> 可扩展的网络服务</li>
-<li><code>Event-driven processing</code> 事件驱动处理</li>
-<li><code>Reactor pattern</code> Reactor 模式
-<ul>
-<li><code>Basic version</code> 基本版本</li>
-<li><code>Multithreaded versions</code> 多线程版本</li>
-<li><code>Other variants</code> 其他变体</li>
-</ul>
-</li>
-<li><code>Walkthrough of java.nio nonblocking IO APIs</code> 预编排<code>java.nio nonblocking IO APIs</code></li>
-</ul>
-<h2 id="network-services-网络服务">Network Services 网络服务</h2>
-<ul>
-<li>Web services, Distributed Objects, etc 网络服务,分布式对象，等等。</li>
-<li>Most have same basic structure: 大多数都有以下的基本结构
-<ul>
-<li>Read request 读请求</li>
-<li>Decode request 解码请求</li>
-<li>Process service 处理服务</li>
-<li>Encode reply 编码响应</li>
-<li>Send reply 发送响应</li>
-</ul>
-</li>
-<li>But differ in nature and cost of each step 当然在实际应用中每一步的运行效率都是不同的，例如其中可能涉及到xml解析、文件传输、web页面的加载、计算服务等不同功能
-<ul>
-<li>XML parsing, File transfer, Web page generation, computational services, &hellip;</li>
-</ul>
-</li>
-</ul>
-<h3 id="classic-service-designs-传统的服务设计">Classic Service Designs 传统的服务设计</h3>
-<ul>
-<li>Each handler may be started in its own thread  在一般的网络服务当中都会为每一个连接的处理开启一个新的线程，我们可以看下大致的示意图：</li>
-</ul>
 <p></p>]]></description>
 </item>
 </channel>

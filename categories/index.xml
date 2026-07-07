@@ -10,14 +10,28 @@
 		
 		
 		
-			<lastBuildDate>Mon, 22 Jun 2026 10:00:00 +0000</lastBuildDate>
+			<lastBuildDate>Mon, 29 Jun 2026 18:00:00 +0000</lastBuildDate>
 		
 			<atom:link href="https://847850277.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
 			<item>
 				<title>Datafusion</title>
 				<link>https://847850277.github.io/categories/datafusion/</link>
-				<pubDate>Sat, 20 Jun 2026 09:00:00 +0000</pubDate>
+				<pubDate>Mon, 29 Jun 2026 09:00:00 +0000</pubDate>
 				<guid>https://847850277.github.io/categories/datafusion/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Rust</title>
+				<link>https://847850277.github.io/categories/rust/</link>
+				<pubDate>Mon, 29 Jun 2026 09:00:00 +0000</pubDate>
+				<guid>https://847850277.github.io/categories/rust/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Unparser</title>
+				<link>https://847850277.github.io/categories/unparser/</link>
+				<pubDate>Mon, 29 Jun 2026 09:00:00 +0000</pubDate>
+				<guid>https://847850277.github.io/categories/unparser/</guid>
 				<description></description>
 			</item>
 			<item>
@@ -25,13 +39,6 @@
 				<link>https://847850277.github.io/categories/protobuf/</link>
 				<pubDate>Sat, 20 Jun 2026 09:00:00 +0000</pubDate>
 				<guid>https://847850277.github.io/categories/protobuf/</guid>
-				<description></description>
-			</item>
-			<item>
-				<title>Rust</title>
-				<link>https://847850277.github.io/categories/rust/</link>
-				<pubDate>Sat, 20 Jun 2026 09:00:00 +0000</pubDate>
-				<guid>https://847850277.github.io/categories/rust/</guid>
 				<description></description>
 			</item>
 			<item>
