@@ -10,20 +10,41 @@
 		
 		
 		
-			<lastBuildDate>Mon, 29 Jun 2026 18:00:00 +0000</lastBuildDate>
+			<lastBuildDate>Tue, 11 Aug 2026 18:00:00 +0000</lastBuildDate>
 		
 			<atom:link href="https://847850277.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
 			<item>
+				<title>Computer System</title>
+				<link>https://847850277.github.io/categories/computer-system/</link>
+				<pubDate>Mon, 10 Aug 2026 09:00:00 +0000</pubDate>
+				<guid>https://847850277.github.io/categories/computer-system/</guid>
+				<description></description>
+			</item>
+			<item>
 				<title>Datafusion</title>
 				<link>https://847850277.github.io/categories/datafusion/</link>
-				<pubDate>Mon, 29 Jun 2026 09:00:00 +0000</pubDate>
+				<pubDate>Mon, 10 Aug 2026 09:00:00 +0000</pubDate>
 				<guid>https://847850277.github.io/categories/datafusion/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>F Function</title>
+				<link>https://847850277.github.io/categories/f-function/</link>
+				<pubDate>Mon, 10 Aug 2026 09:00:00 +0000</pubDate>
+				<guid>https://847850277.github.io/categories/f-function/</guid>
+				<description></description>
+			</item>
+			<item>
+				<title>Note</title>
+				<link>https://847850277.github.io/categories/note/</link>
+				<pubDate>Mon, 10 Aug 2026 09:00:00 +0000</pubDate>
+				<guid>https://847850277.github.io/categories/note/</guid>
 				<description></description>
 			</item>
 			<item>
 				<title>Rust</title>
 				<link>https://847850277.github.io/categories/rust/</link>
-				<pubDate>Mon, 29 Jun 2026 09:00:00 +0000</pubDate>
+				<pubDate>Mon, 10 Aug 2026 09:00:00 +0000</pubDate>
 				<guid>https://847850277.github.io/categories/rust/</guid>
 				<description></description>
 			</item>

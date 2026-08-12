@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>F Function on ZhengPengDe Blog</title>
+		<link>https://847850277.github.io/tags/f-function/</link>
+		<description>Recent content in F Function on ZhengPengDe Blog</description>
+		<generator>Hugo</generator>
+		<language>zh-CN</language>
+		
+		
+		
+		
+			<lastBuildDate>Tue, 11 Aug 2026 18:00:00 +0000</lastBuildDate>
+		
+			<atom:link href="https://847850277.github.io/tags/f-function/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>datafusion note 01</title>
+				<link>https://847850277.github.io/posts/2026/datafusion_note_01/</link>
+				<pubDate>Mon, 10 Aug 2026 09:00:00 +0000</pubDate>
+				<guid>https://847850277.github.io/posts/2026/datafusion_note_01/</guid>
+				<description>&lt;h1 id=&#34;datafusion-note&#34;&gt;datafusion note&lt;/h1&gt;&#xA;&lt;h2 id=&#34;a-computer-system-can-be-abstracted-as-a-function&#34;&gt;A Computer System Can Be Abstracted as a Function&lt;/h2&gt;&#xA;&lt;p&gt;At the simplest level, a computer program can be modeled as a function:&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;output = F(input)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;However, most real computer systems have state and depend on their environment. A more general model is:&lt;/p&gt;&#xA;&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-text&#34; data-lang=&#34;text&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;(new state, output) = F(old state, input, environment)&#xA;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;A software engineer’s job is to design, implement, and compose these state-transition functions.&lt;/p&gt;&#xA;&lt;p&gt;A large system can usually be decomposed into smaller functions:&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

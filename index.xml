@@ -2,9 +2,24 @@
         <title>ZhengPengDe Blog</title>
         <link>https://847850277.github.io/</link>
         <description>This is ZhengPengDe网络日志</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Mon, 29 Jun 2026 09:00:00 &#43;0000</lastBuildDate>
+        <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><lastBuildDate>Mon, 10 Aug 2026 09:00:00 &#43;0000</lastBuildDate>
             <atom:link href="https://847850277.github.io/index.xml" rel="self" type="application/rss+xml" />
         <item>
+    <title>datafusion note 01</title>
+    <link>https://847850277.github.io/posts/2026/datafusion_note_01/</link>
+    <pubDate>Mon, 10 Aug 2026 09:00:00 &#43;0000</pubDate>
+    <author>zhengpengde</author>
+    <guid>https://847850277.github.io/posts/2026/datafusion_note_01/</guid>
+    <description><![CDATA[<h1 id="datafusion-note">datafusion note</h1>
+<h2 id="a-computer-system-can-be-abstracted-as-a-function">A Computer System Can Be Abstracted as a Function</h2>
+<p>At the simplest level, a computer program can be modeled as a function:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>output = F(input)
+</span></span></code></pre></div><p>However, most real computer systems have state and depend on their environment. A more general model is:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>(new state, output) = F(old state, input, environment)
+</span></span></code></pre></div><p>A software engineer’s job is to design, implement, and compose these state-transition functions.</p>
+<p>A large system can usually be decomposed into smaller functions:</p>]]></description>
+</item>
+<item>
     <title>datafusion sql unparser 错误sql</title>
     <link>https://847850277.github.io/posts/2026/datafusion_sql_unparser_error/</link>
     <pubDate>Mon, 29 Jun 2026 09:00:00 &#43;0000</pubDate>
@@ -1448,22 +1463,6 @@ protobuf:
 <p>除了流量转发，网关还需要限制恶意的请求过来，仅正确的用户、正确的请求才可以通过，也就是网关需要提供鉴权的功能。</p>
 <p>网关还有就是限制请求流量的作用，举个例子来说，当一台计算机器它的瞬时处理能力只有1千个请求，那瞬时有2千个请求过来，网关处理不过来的话，
 限流就在这种场景下面产生了。</p>]]></description>
-</item>
-<item>
-    <title>Reactor Pattern</title>
-    <link>https://847850277.github.io/posts/pattern/reactor/</link>
-    <pubDate>Fri, 18 Aug 2023 13:56:30 &#43;0800</pubDate>
-    <author>zhengpengde</author>
-    <guid>https://847850277.github.io/posts/pattern/reactor/</guid>
-    <description><![CDATA[<h2 id="intent-意图">Intent 意图</h2>
-<ul>
-<li>The Reactor design pattern handles service requests that are delivered concurrently to an application by one or more clients. 反应器设计模式处理由一个或多个客户端并发传递到应用程序的服务请求,</li>
-<li>The application can register specific handlers for processing which are called by reactor on specific events. 应用程序可以注册用于处理的特定处理程序，这些处理程序由反应器在特定事件上调用</li>
-<li>Dispatching of event handlers is performed by an initiation dispatcher, which manages the registered event handlers. 事件处理程序的分派由启动分派程序执行，该程序管理已注册的事件处理程序</li>
-<li>Demultiplexing of service requests is performed by a synchronous event demultiplexer. 服务请求的解复用由同步事件解复用器执行</li>
-</ul>
-<h2 id="class-diagram-类图">Class diagram 类图</h2>
-<p></p>]]></description>
 </item>
 </channel>
 </rss>
